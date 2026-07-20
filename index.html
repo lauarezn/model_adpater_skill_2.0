@@ -634,7 +634,29 @@
       +
       <span class="data-source-badge" style="background:#F59E0B;color:#FEF3C7">GitCode</span>
       <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank">GitCode AI 昇腾原生模型</a>
+      +
+      <span class="data-source-badge" style="background:#065F46;color:#A7F3D0">SACT</span>
+      <a href="https://ai.gitcode.com/Ascend-SACT/Ascend-SACT-README" target="_blank">Ascend-SACT 模型清单</a>
+      +
+      <span class="data-source-badge" style="background:#7C3AED;color:#DDD6FE">AI4S</span>
+      <a href="https://gitcode.com/AI4Science/partners/blob/main/README.md" target="_blank">AI4Science 科学智能</a>
+      +
+      <span class="data-source-badge" style="background:#1E40AF;color:#BFDBFE">Tribe</span>
+      <a href="https://gitcode.com/org/ascend-tribe/repos" target="_blank">Ascend Tribe</a>
+      +
+      <span class="data-source-badge" style="background:#9D174D;color:#FCE7F3">Atom</span>
+      <a href="https://gitcode.com/org/atomgit-ascend/repos" target="_blank">AtomGit Ascend</a>
       · <span class="refresh-status" id="refreshStatus">就绪</span>
+    </span>
+    <span style="font-size:0.75rem;color:#93C5FD;margin-top:4px;display:block">
+      更多资源：
+      <a href="https://ai.gitcode.com/Ascend-SACT/Ascend-SACT-README" target="_blank" style="color:#FBBF24">Ascend-SACT 模型清单</a>
+      ·
+      <a href="https://gitcode.com/AI4Science/partners/blob/main/README.md" target="_blank" style="color:#FBBF24">AI4Science 科学智能</a>
+      ·
+      <a href="https://gitcode.com/org/ascend-tribe/repos" target="_blank" style="color:#FBBF24">Ascend Tribe 项目</a>
+      ·
+      <a href="https://gitcode.com/org/atomgit-ascend/repos" target="_blank" style="color:#FBBF24">AtomGit Ascend 项目</a>
     </span>
     <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">🔄 手动刷新</button>
   </div>
@@ -730,7 +752,7 @@
 
 <footer>
   <div class="container">
-    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank" style="color:var(--color-accent)">vLLM Omni 支持模型</a> · <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank" style="color:var(--color-accent)">SGLang Ascend 支持模型</a> · <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank" style="color:var(--color-accent)">GitCode AI 昇腾原生模型</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
+    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank" style="color:var(--color-accent)">vLLM Omni 支持模型</a> · <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank" style="color:var(--color-accent)">SGLang Ascend 支持模型</a> · <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank" style="color:var(--color-accent)">GitCode AI 昇腾原生模型</a> · <a href="https://ai.gitcode.com/Ascend-SACT/Ascend-SACT-README" target="_blank" style="color:var(--color-accent)">Ascend-SACT 模型清单</a> · <a href="https://gitcode.com/AI4Science/partners/blob/main/README.md" target="_blank" style="color:var(--color-accent)">AI4Science 科学智能</a> · <a href="https://gitcode.com/org/ascend-tribe/repos" target="_blank" style="color:var(--color-accent)">Ascend Tribe 项目</a> · <a href="https://gitcode.com/org/atomgit-ascend/repos" target="_blank" style="color:var(--color-accent)">AtomGit Ascend 项目</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
     <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 · 数据自动同步 · 点击模型卡片查看部署文档</p>
   </div>
 </footer>
@@ -758,6 +780,7 @@ const CORS_PROXIES = [
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  url => `https://proxy.cors.sh/${url}`,
 ];
 
 async function fetchWithProxy(url, timeoutMs = 15000) {
