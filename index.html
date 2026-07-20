@@ -256,6 +256,7 @@
     .meta-tag.source-ascend { background: #DBEAFE; color: #1E40AF; }
     .meta-tag.source-omni { background: #EDE9FE; color: #6D28D9; }
     .meta-tag.source-sglang { background: #D1FAE5; color: #065F46; }
+    .meta-tag.source-gitcode { background: #FEF3C7; color: #92400E; }
 
     .model-card-details {
       display: grid;
@@ -630,6 +631,9 @@
       +
       <span class="data-source-badge" style="background:#065F46;color:#A7F3D0">SGLang</span>
       <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank">SGLang Ascend 支持模型</a>
+      +
+      <span class="data-source-badge" style="background:#F59E0B;color:#FEF3C7">GitCode</span>
+      <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank">GitCode AI 昇腾原生模型</a>
       · <span class="refresh-status" id="refreshStatus">就绪</span>
     </span>
     <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">🔄 手动刷新</button>
@@ -726,7 +730,7 @@
 
 <footer>
   <div class="container">
-    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank" style="color:var(--color-accent)">vLLM Omni 支持模型</a> · <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank" style="color:var(--color-accent)">SGLang Ascend 支持模型</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
+    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank" style="color:var(--color-accent)">vLLM Omni 支持模型</a> · <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank" style="color:var(--color-accent)">SGLang Ascend 支持模型</a> · <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank" style="color:var(--color-accent)">GitCode AI 昇腾原生模型</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
     <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 · 数据自动同步 · 点击模型卡片查看部署文档</p>
   </div>
 </footer>
@@ -747,6 +751,7 @@ const VLLM_OMNI_URL = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/
 const VLLM_OMNI_BASE = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
 const SGLANG_ASCEND_URL = 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models';
 const SGLANG_ASCEND_BASE = 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/';
+const GITCODE_AI_URL = 'https://ai.gitcode.com/models?ascendNative=true';
 
 // Multiple CORS proxy fallbacks
 const CORS_PROXIES = [
@@ -1177,6 +1182,7 @@ async function fetchOmniData() {
 
 // ============ SGLang Ascend Data Parser ============
 let sglangModels = [];
+let gitcodeModels = [];
 
 async function fetchSGLangData() {
   try {
@@ -1269,6 +1275,144 @@ async function fetchSGLangData() {
   }
 }
 
+// ============ GitCode AI Data Parser ============
+async function fetchGitCodeData() {
+  try {
+    const html = await fetchWithProxy(GITCODE_AI_URL);
+    if (!html) return false;
+
+    // Parse Next.js dehydrated data from self.__next_f.push entries
+    const pushMatches = html.matchAll(/self\.__next_f\.push\(\[1,"(.*?)"\]\)/g);
+    let content = null;
+
+    for (const match of pushMatches) {
+      let decoded;
+      try {
+        decoded = match[1].replace(/\\(.)/g, (_, c) => c === 'n' ? '\n' : c === 't' ? '\t' : c === '\\' ? '\\' : c === '"' ? '"' : c);
+      } catch (e) {
+        continue;
+      }
+
+      // Look for the data object with content array
+      const dataMatch = decoded.match(/"data":(\{.*)/);
+      if (!dataMatch) continue;
+
+      let dataStr = dataMatch[1];
+      // Find matching closing brace
+      let depth = 0, endIdx = 0;
+      for (let i = 0; i < dataStr.length; i++) {
+        if (dataStr[i] === '{') depth++;
+        else if (dataStr[i] === '}') { depth--; if (depth === 0) { endIdx = i + 1; break; } }
+      }
+      if (!endIdx) continue;
+
+      try {
+        const dataObj = JSON.parse(dataStr.substring(0, endIdx));
+        if (dataObj.content && Array.isArray(dataObj.content)) {
+          content = dataObj.content;
+          break;
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+
+    if (!content || content.length === 0) return false;
+
+    const parsedModels = [];
+
+    content.forEach(m => {
+      const name = m.name || '';
+      const namespace = m.namespace || '';
+      const webUrl = m.web_url || '';
+      const description = m.description || '';
+      const task = m.task && m.task.length > 0 ? m.task[0] : null;
+      const taskName = task ? (task.name_en || '') : '';
+      const licenseInfo = m.license && m.license.length > 0 ? m.license[0] : null;
+      const licenseName = licenseInfo ? (licenseInfo.code || '') : '';
+      const downloadCount = m.download_count || 0;
+      const starCount = m.star_count || 0;
+      const creatorName = m.creator_name || '';
+      const namespaceInfo = m.namespace_info || {};
+      const orgName = namespaceInfo.name || '';
+
+      // Determine category based on task
+      let category = 'LLM';
+      if (taskName.includes('Audio') || taskName.includes('Speech') || taskName.includes('Voice')) category = '语音';
+      else if (taskName.includes('Image') || taskName.includes('Visual') || taskName.includes('Video')) category = '多模态';
+      else if (taskName.includes('Feature') || taskName.includes('Embedding')) category = '嵌入/排序';
+      else if (taskName.includes('Document') || taskName.includes('QA')) category = '多模态';
+      else if (taskName.includes('Text')) category = 'LLM';
+      else if (name.includes('VL') || name.includes('Vision') || name.includes('Omni') || name.includes('Image') || name.includes('Diffusion')) category = '多模态';
+      else if (name.includes('Audio') || name.includes('Voice') || name.includes('Speech') || name.includes('ASR') || name.includes('TTS')) category = '语音';
+      else if (name.includes('Embedding') || name.includes('Reranker')) category = '嵌入/排序';
+      else if (name.includes('Coder') || name.includes('Code')) category = '代码';
+
+      // Determine developer
+      let developer = '社区';
+      if (name.includes('DeepSeek')) developer = '深度求索';
+      else if (name.includes('Qwen')) developer = '阿里云';
+      else if (name.includes('GLM') || name.includes('ChatGLM') || name.includes('CodeGeeX')) developer = '智谱AI';
+      else if (name.includes('Baichuan')) developer = '百川智能';
+      else if (name.includes('LLaMA') || name.includes('Llama')) developer = 'Meta';
+      else if (name.includes('Yi')) developer = '零一万物';
+      else if (name.includes('Intern')) developer = '上海AI实验室';
+      else if (name.includes('Mistral') || name.includes('Mixtral')) developer = 'Mistral AI';
+      else if (name.includes('MiniCPM')) developer = '面壁智能';
+      else if (name.includes('Phi')) developer = 'Microsoft';
+      else if (name.includes('Gemma')) developer = 'Google';
+      else if (name.includes('Kimi')) developer = '月之暗面';
+      else if (name.includes('MiniMax')) developer = 'MiniMax';
+      else if (name.includes('Ernie')) developer = '百度';
+      else if (name.includes('Stable') || name.includes('SD')) developer = 'Stability AI';
+      else if (name.includes('Whisper')) developer = 'OpenAI';
+      else if (name.includes('openPangu') || name.includes('Pangu')) developer = '华为';
+      else if (name.includes('Hunyuan')) developer = '腾讯';
+      else if (name.includes('RoseTTAFold') || name.includes('AIMNet')) developer = 'AI4Science';
+      else if (orgName.includes('Ascend') || orgName.includes('ascend')) developer = '华为';
+      else if (orgName.includes('atomgit')) developer = '华为';
+
+      // Determine architecture
+      let architecture = 'Transformer';
+      if (name.includes('MoE') || name.includes('A3B') || name.includes('A22B')) architecture = 'MoE';
+      else if (name.includes('VL') || name.includes('Vision') || name.includes('Omni')) architecture = 'Vision-Language';
+      else if (name.includes('Diffusion') || name.includes('SD')) architecture = 'Diffusion';
+      else if (name.includes('Embedding') || name.includes('Reranker')) architecture = 'Embedding';
+
+      const tags = [category];
+      if (architecture === 'MoE') tags.push('MoE');
+      if (name.includes('VL') || name.includes('Vision') || name.includes('Omni')) tags.push('视觉');
+      if (name.includes('Coder') || name.includes('Code')) tags.push('代码');
+      if (name.includes('Embedding')) tags.push('嵌入');
+      if (name.includes('Reranker')) tags.push('排序');
+      if (name.includes('Audio') || name.includes('Voice') || name.includes('Speech') || name.includes('ASR')) tags.push('音频');
+      if (name.includes('Thinking') || name.includes('R1')) tags.push('推理');
+
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+      parsedModels.push({
+        id, name, category, developer,
+        parameters: downloadCount > 1000 ? `下载 ${(downloadCount/1000).toFixed(1)}k` : `下载 ${downloadCount}`,
+        architecture, supportLevel: '✅ 已支持', framework: 'PyTorch',
+        minHardware: 'Atlas 800I A3',
+        recommendedHardware: 'Atlas 800T A3',
+        inferencePerf: '良',
+        trainingPerf: '良',
+        mindsporeSupport: ['华为','阿里云','智谱AI','百川智能','上海AI实验室','面壁智能','深度求索'].includes(developer) ? '支持' : '需迁移',
+        cannVersion: '7.0+',
+        notes: `GitCode AI · 昇腾原生 · ${webUrl}`,
+        tags, docUrl: webUrl, source: 'GitCode AI'
+      });
+    });
+
+    gitcodeModels = parsedModels;
+    return parsedModels.length > 0;
+  } catch (e) {
+    console.warn('GitCode AI获取失败:', e.message);
+    return false;
+  }
+}
+
 // ============ Merge models from both sources ============
 function mergeModels() {
   const merged = [];
@@ -1301,6 +1445,15 @@ function mergeModels() {
     }
   });
 
+  // Add GitCode AI models that are not already in Ascend, Omni or SGLang
+  gitcodeModels.forEach(m => {
+    const key = m.name.toLowerCase().replace(/[\s/-]/g, '');
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(m);
+    }
+  });
+
   return merged;
 }
 
@@ -1310,18 +1463,19 @@ async function init() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
   btn.disabled = true;
-  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang 获取最新数据...';
+  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang + GitCode AI 获取最新数据...';
 
   // Fetch from all sources
-  const [ascendOk, omniOk, sglangOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData()]);
+  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
 
-  if (ascendOk || omniOk || sglangOk) {
+  if (ascendOk || omniOk || sglangOk || gitcodeOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
     if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
     if (omniOk) parts.push(`Omni ${omniModels.length}个`);
     if (sglangOk) parts.push(`SGLang ${sglangModels.length}个`);
+    if (gitcodeOk) parts.push(`GitCode ${gitcodeModels.length}个`);
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
@@ -1371,17 +1525,18 @@ async function refreshData() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
   btn.disabled = true;
-  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang 获取最新数据...';
+  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang + GitCode AI 获取最新数据...';
 
-  const [ascendOk, omniOk, sglangOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData()]);
+  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
 
-  if (ascendOk || omniOk || sglangOk) {
+  if (ascendOk || omniOk || sglangOk || gitcodeOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
     if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
     if (omniOk) parts.push(`Omni ${omniModels.length}个`);
     if (sglangOk) parts.push(`SGLang ${sglangModels.length}个`);
+    if (gitcodeOk) parts.push(`GitCode ${gitcodeModels.length}个`);
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
@@ -1427,8 +1582,8 @@ function renderModels(data) {
                          m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
     const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
     const hasDoc = m.docUrl && m.docUrl.length > 0;
-    const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : m.source === 'SGLang Ascend' ? 'source-sglang' : 'source-ascend';
-    const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : m.source === 'SGLang Ascend' ? 'SGLang' : 'Ascend';
+    const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : m.source === 'SGLang Ascend' ? 'source-sglang' : m.source === 'GitCode AI' ? 'source-gitcode' : 'source-ascend';
+    const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : m.source === 'SGLang Ascend' ? 'SGLang' : m.source === 'GitCode AI' ? 'GitCode' : 'Ascend';
 
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
@@ -1492,11 +1647,13 @@ function showModelDetail(id) {
                        m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
   const hasDoc = m.docUrl && m.docUrl.length > 0;
 
-  const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : m.source === 'SGLang Ascend' ? 'SGLang Ascend' : 'vLLM Ascend';
+  const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : m.source === 'SGLang Ascend' ? 'SGLang Ascend' : m.source === 'GitCode AI' ? 'GitCode AI' : 'vLLM Ascend';
+
+  const sourceColor = m.source === 'vLLM Omni' ? '#7C3AED' : m.source === 'SGLang Ascend' ? '#065F46' : m.source === 'GitCode AI' ? '#92400E' : '#2563EB';
 
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
-    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${m.source === 'vLLM Omni' ? '#7C3AED' : m.source === 'SGLang Ascend' ? '#065F46' : '#2563EB'}">数据源: ${sourceLabel}</span></p>
+    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${sourceColor}">数据源: ${sourceLabel}</span></p>
     <dl>
       <dt>架构</dt><dd>${m.architecture}</dd>
       <dt>适配状态</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
