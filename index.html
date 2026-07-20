@@ -325,6 +325,76 @@
     .hardware-specs dt { color: var(--color-text-tertiary); font-weight: 500; }
     .hardware-specs dd { color: var(--color-text); }
 
+    /* Ascend Hardware Grid (from Huawei) */
+    .ascend-hardware-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+    .ascend-hw-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--color-card-shadow);
+      border: 1px solid var(--color-border);
+      transition: var(--transition);
+      border-left: 4px solid var(--color-primary);
+    }
+    .ascend-hw-card:hover { box-shadow: var(--color-card-shadow-hover); transform: translateY(-2px); }
+    .ascend-hw-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--color-text);
+    }
+    .ascend-hw-card .hw-subtitle {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 12px;
+    }
+    .ascend-hw-card .hw-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .hw-badge.train { background: #DCFCE7; color: #166534; }
+    .hw-badge.infer { background: #DBEAFE; color: #1E40AF; }
+    .hw-badge.cluster { background: #FEF3C7; color: #92400E; }
+    .hw-badge.edge { background: #EDE9FE; color: #6D28D9; }
+    .hw-badge.accelerator { background: #FCE7F3; color: #9D174D; }
+    .hw-badge.card { background: #E0E7FF; color: #3730A3; }
+    .ascend-hw-card .hw-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    .ascend-hw-card .hw-specs dt { color: var(--color-text-tertiary); font-weight: 500; }
+    .ascend-hw-card .hw-specs dd { color: var(--color-text); }
+    .ascend-hw-card .hw-desc {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      padding: 12px;
+      background: var(--color-bg-secondary);
+      border-radius: 6px;
+    }
+    .ascend-hw-card .hw-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .ascend-hw-card .hw-link:hover { text-decoration: underline; }
+
     /* Flashcard Mode */
     .flashcard-container {
       max-width: 600px;
@@ -566,7 +636,7 @@
   <div class="container">
     <button class="nav-btn active" data-section="browse">📋 模型清单</button>
     <button class="nav-btn" data-section="hardware">🖥️ 服务器</button>
-    <button class="nav-btn" data-section="flashcards">🃏 闪卡学习</button>
+    <button class="nav-btn" data-section="ascend-hardware">🖥️ 昇腾硬件</button>
     <button class="nav-btn" data-section="quiz">📝 知识测试</button>
   </div>
 </nav>
@@ -608,25 +678,36 @@
     <div class="hardware-grid" id="hardwareGrid"></div>
   </div>
 
-  <!-- Flashcards Section -->
-  <div class="section" id="section-flashcards">
-    <div class="flashcard-container">
-      <div class="flashcard" id="flashcard" onclick="toggleFlashcard()">
-        <div class="flashcard-question" id="fcQuestion"></div>
-        <div class="flashcard-answer" id="fcAnswer"></div>
-        <div class="flashcard-hint">👆 点击翻转</div>
-      </div>
-      <div class="flashcard-counter" id="fcCounter"></div>
-      <div class="progress-bar"><div class="progress-fill" id="fcProgress" style="width:0%"></div></div>
-      <div class="flashcard-actions">
-        <button class="btn btn-outline" onclick="prevFlashcard()">← 上一张</button>
-        <button class="btn btn-accent" onclick="nextFlashcard()">下一张 →</button>
-      </div>
-      <div style="text-align:center;margin-top:12px">
-        <select id="fcCategoryFilter" onchange="initFlashcards()" style="padding:8px 12px;border:1px solid var(--color-border);border-radius:6px;font-size:0.85rem">
-          <option value="all">全部类别</option>
-        </select>
-      </div>
+  <!-- Ascend Hardware Section (from Huawei official) -->
+  <div class="section" id="section-ascend-hardware">
+    <div class="search-bar">
+      <input type="text" class="search-input" id="hwSearchInput" placeholder="🔍 搜索硬件名称、类型、芯片..." oninput="filterAscendHardware()">
+      <select class="filter-select" id="hwTypeFilter" onchange="filterAscendHardware()">
+        <option value="all">全部类型</option>
+        <option value="训练服务器">训练服务器</option>
+        <option value="推理服务器">推理服务器</option>
+        <option value="AI集群">AI集群</option>
+        <option value="边缘服务器">边缘服务器</option>
+        <option value="AI加速模块">AI加速模块</option>
+        <option value="AI加速卡">AI加速卡</option>
+      </select>
+      <select class="filter-select" id="hwChipFilter" onchange="filterAscendHardware()">
+        <option value="all">全部芯片</option>
+        <option value="昇腾910B">昇腾910B</option>
+        <option value="昇腾910">昇腾910</option>
+        <option value="昇腾310">昇腾310</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;padding:16px;background:#EFF6FF;border-radius:8px;border:1px solid #DBEAFE">
+      <p style="font-size:0.9rem;color:#1E40AF">
+        📡 硬件数据来源：<a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:#2563EB;font-weight:500">华为企业业务官网 - AI计算平台</a>
+        · 华为昇腾计算产品线
+      </p>
+    </div>
+    <div class="ascend-hardware-grid" id="ascendHardwareGrid"></div>
+    <div class="empty-state" id="hwEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>没有找到匹配的硬件，试试其他关键词</p>
     </div>
   </div>
 
@@ -641,7 +722,7 @@
 
 <footer>
   <div class="container">
-    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · 华为昇腾社区 · 仅供参考，请以官方最新公告为准</p>
+    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
     <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 · 数据自动同步 · 点击模型卡片查看部署文档</p>
   </div>
 </footer>
@@ -1070,12 +1151,10 @@ async function init() {
 
   // Populate filters
   const catFilter = document.getElementById('categoryFilter');
-  const fcCatFilter = document.getElementById('fcCategoryFilter');
   const hwFilter = document.getElementById('hardwareFilter');
 
   categories.forEach(c => {
     catFilter.innerHTML += `<option value="${c}">${c}</option>`;
-    fcCatFilter.innerHTML += `<option value="${c}">${c}</option>`;
   });
 
   const hwSet = new Set();
@@ -1093,7 +1172,7 @@ async function init() {
 
   renderModels(models);
   renderHardware();
-  initFlashcards();
+  renderAscendHardware(ASCEND_HARDWARE_DATA);
   initQuiz();
 }
 
@@ -1128,7 +1207,7 @@ async function refreshData() {
   document.getElementById('modelGrid').style.display = '';
 
   renderModels(models);
-  initFlashcards();
+  renderAscendHardware(ASCEND_HARDWARE_DATA);
   initQuiz();
 }
 
@@ -1281,51 +1360,192 @@ function renderHardware() {
   `).join('');
 }
 
-// ============ Flashcards ============
-let fcData = [];
-let fcIndex = 0;
+// ============ Ascend Hardware (from Huawei) ============
+const ASCEND_HARDWARE_DATA = [
+  {
+    id: 'atlas-800t-a3',
+    name: 'Atlas 800T A3 超节点服务器',
+    type: '训练服务器',
+    chip: '昇腾910B',
+    chipCount: 8,
+    fp16Perf: '3200 TFLOPS',
+    memory: '64GB × 8 (HBM2e)',
+    interconnect: 'HCCS 高速互联',
+    scenario: '大模型训练 / 推理',
+    description: '具有超强AI算力、更优AI能效、极佳AI拓展等特点，可广泛应用于深度学习模型开发和训练。支持DeepSeek-V3/R1、Qwen3-235B等超大模型训练。',
+    features: ['训练推理一体', '超节点扩展', 'HCCS高速互联', '大模型训练'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800t-a3-pid-252212012',
+    badgeClass: 'train'
+  },
+  {
+    id: 'atlas-800i-a3',
+    name: 'Atlas 800I A3 超节点服务器',
+    type: '推理服务器',
+    chip: '昇腾910B',
+    chipCount: '4-8',
+    fp16Perf: '1600 TFLOPS',
+    memory: '64GB × 4-8 (HBM2e)',
+    interconnect: 'HCCS',
+    scenario: '大模型推理 / 微调',
+    description: '面向互联网、金融等行业大模型中心推理等场景提供的集群推理解决方案。支持Qwen3-Dense、Baichuan2、MiniMax-M2等模型推理。',
+    features: ['推理优化', '高吞吐', '低延迟', '集群推理'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800i-a3-pid-252212012',
+    badgeClass: 'infer'
+  },
+  {
+    id: 'atlas-900-a3',
+    name: 'Atlas 900 A3 SuperPoD',
+    type: 'AI集群',
+    chip: '昇腾910B × N',
+    chipCount: '数百至数千',
+    fp16Perf: 'EH级',
+    memory: 'HBM2e 大容量',
+    interconnect: 'HCCS + 高速网络',
+    scenario: '超大模型训练 / 集群推理',
+    description: '面向开发者和企业提供一个基于昇腾AI处理器进行AI模型训练任务的软硬件平台。支持万卡互联，适用于DeepSeek-V3集群训练、Qwen3-235B等超大规模场景。',
+    features: ['超大规模', '集群训练', '万卡互联', 'EH级算力'],
+    docUrl: 'https://e.huawei.com/cn/products/computing/ascend',
+    badgeClass: 'cluster'
+  },
+  {
+    id: 'atlas-800-3000',
+    name: 'Atlas 800 推理服务器 (型号：3000)',
+    type: '推理服务器',
+    chip: '昇腾910',
+    chipCount: 4,
+    fp16Perf: '640 TFLOPS',
+    memory: '32GB × 4 (HBM2)',
+    interconnect: 'PCIe 4.0',
+    scenario: 'AI推理 / 视频分析',
+    description: '具有超强计算性能，可广泛应用于中心侧AI推理、深度学习模型开发和训练场景。支持Qwen2-VL、DeepSeekOCR2等视觉模型推理。',
+    features: ['推理专用', '视频分析', '多路并发', '高性价比'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800-3000-pid-252212012',
+    badgeClass: 'infer'
+  },
+  {
+    id: 'atlas-500-pro',
+    name: 'Atlas 500 Pro 智能边缘服务器 (型号：3000)',
+    type: '边缘服务器',
+    chip: '昇腾310',
+    chipCount: '1-2',
+    fp16Perf: '32 TFLOPS',
+    memory: '8GB × 1-2',
+    interconnect: 'PCIe',
+    scenario: '边缘推理 / 端侧部署',
+    description: '具有超强计算性能、体积小、环境适应性强、易于维护等特点，可以在边缘场景广泛部署。支持MiniCPM、轻量模型等端侧推理。',
+    features: ['边缘部署', '低功耗', '环境适应性强', '易于维护'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-500-pro-pid-252212012',
+    badgeClass: 'edge'
+  },
+  {
+    id: 'atlas-200i',
+    name: 'Atlas 200I AI加速模块',
+    type: 'AI加速模块',
+    chip: '昇腾310',
+    chipCount: 1,
+    fp16Perf: '16 TFLOPS',
+    memory: '8GB',
+    interconnect: 'PCIe / USB',
+    scenario: '端侧推理 / 嵌入式',
+    description: '在端侧实现目标识别、图像分类等，广泛用于智能摄像机、机器人、无人机等端侧AI场景。支持MiniCPM、轻量视觉模型。',
+    features: ['超小体积', '低功耗', '嵌入式集成', '端侧AI'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-200i-pid-252212012',
+    badgeClass: 'accelerator'
+  },
+  {
+    id: 'atlas-300v-pro',
+    name: 'Atlas 300V Pro 视频解析卡',
+    type: 'AI加速卡',
+    chip: '昇腾310',
+    chipCount: 1,
+    fp16Perf: '16 TFLOPS',
+    memory: '8GB',
+    interconnect: 'PCIe 4.0',
+    scenario: '视频分析 / 图像识别',
+    description: '提供AI推理、视频分析等功能，支持检索聚类、OCR识别、语音分析、视频分析等场景。支持DeepSeekOCR2、视觉模型。',
+    features: ['视频硬解码', '多路并发', '低延迟', 'AI推理'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300v-pro-pid-252212012',
+    badgeClass: 'card'
+  },
+  {
+    id: 'atlas-300i-pro',
+    name: 'Atlas 300I Pro 推理卡',
+    type: 'AI加速卡',
+    chip: '昇腾910',
+    chipCount: 1,
+    fp16Perf: '160 TFLOPS',
+    memory: '24GB',
+    interconnect: 'PCIe 4.0',
+    scenario: 'AI推理加速',
+    description: '面向AI推理场景的高性能加速卡，支持主流深度学习模型推理加速，适用于数据中心和边缘场景。',
+    features: ['推理加速', '高能效', 'PCIe即插即用', '广泛兼容'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300i-pro-pid-252212012',
+    badgeClass: 'card'
+  },
+  {
+    id: 'atlas-300i-duo',
+    name: 'Atlas 300I Duo 推理卡',
+    type: 'AI加速卡',
+    chip: '昇腾910',
+    chipCount: 2,
+    fp16Perf: '320 TFLOPS',
+    memory: '48GB',
+    interconnect: 'PCIe 4.0',
+    scenario: '高密度AI推理',
+    description: '双芯片推理卡，提供更高密度的AI推理能力，适用于大规模推理部署场景。',
+    features: ['双芯片', '高密度', '高吞吐', '数据中心'],
+    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300i-duo-pid-252212012',
+    badgeClass: 'card'
+  }
+];
 
-function initFlashcards() {
-  const cat = document.getElementById('fcCategoryFilter').value;
-  fcData = cat === 'all' ? [...models] : models.filter(m => m.category === cat);
-  fcIndex = 0;
-  showFlashcard();
-}
+function renderAscendHardware(data) {
+  const grid = document.getElementById('ascendHardwareGrid');
+  const empty = document.getElementById('hwEmptyState');
 
-function showFlashcard() {
-  if (fcData.length === 0) {
-    document.getElementById('fcQuestion').textContent = '没有可用的闪卡';
-    document.getElementById('fcAnswer').textContent = '';
-    document.getElementById('fcCounter').textContent = '0 / 0';
-    document.getElementById('fcProgress').style.width = '0%';
+  if (data.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
     return;
   }
-  const card = document.getElementById('flashcard');
-  card.classList.remove('show-answer');
-  const m = fcData[fcIndex];
-  const hasDoc = m.docUrl && m.docUrl.length > 0;
-  document.getElementById('fcQuestion').textContent = `${m.name} 的适配状态和推荐硬件是什么？`;
-  document.getElementById('fcAnswer').innerHTML = `
-    <strong>${m.name}</strong><br>
-    开发者：${m.developer}<br>
-    适配状态：${m.supportLevel}<br>
-    推荐硬件：${m.recommendedHardware}<br>
-    推理性能：${m.inferencePerf} · 框架：${m.framework}
-    ${hasDoc ? `<br><br><a href="${m.docUrl}" target="_blank" style="color:var(--color-primary);font-size:0.9rem">📄 查看部署文档</a>` : ''}
-  `;
-  document.getElementById('fcCounter').textContent = `${fcIndex + 1} / ${fcData.length}`;
-  document.getElementById('fcProgress').style.width = `${((fcIndex + 1) / fcData.length) * 100}%`;
+  empty.style.display = 'none';
+
+  grid.innerHTML = data.map(h => `
+    <div class="ascend-hw-card">
+      <h3>${h.name}</h3>
+      <div class="hw-subtitle">${h.chip} · ${h.chipCount}芯片 · ${h.fp16Perf}</div>
+      <span class="hw-badge ${h.badgeClass}">${h.type}</span>
+      <div class="hw-specs">
+        <dt>芯片</dt><dd>${h.chip}</dd>
+        <dt>芯片数量</dt><dd>${h.chipCount}</dd>
+        <dt>FP16算力</dt><dd>${h.fp16Perf}</dd>
+        <dt>显存</dt><dd>${h.memory}</dd>
+        <dt>互联方式</dt><dd>${h.interconnect}</dd>
+        <dt>适用场景</dt><dd>${h.scenario}</dd>
+      </div>
+      <div class="hw-desc">${h.description}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${h.features.map(f => `<span class="tag">${f}</span>`).join('')}
+        </div>
+        <a href="${h.docUrl}" target="_blank" class="hw-link">华为官方详情 →</a>
+      </div>
+    </div>
+  `).join('');
 }
 
-function toggleFlashcard() {
-  document.getElementById('flashcard').classList.toggle('show-answer');
-}
+function filterAscendHardware() {
+  const search = document.getElementById('hwSearchInput').value.toLowerCase();
+  const type = document.getElementById('hwTypeFilter').value;
+  const chip = document.getElementById('hwChipFilter').value;
 
-function nextFlashcard() {
-  if (fcIndex < fcData.length - 1) { fcIndex++; showFlashcard(); }
-}
-function prevFlashcard() {
-  if (fcIndex > 0) { fcIndex--; showFlashcard(); }
+  let filtered = ASCEND_HARDWARE_DATA.filter(h => {
+    if (search && !h.name.toLowerCase().includes(search) && !h.type.toLowerCase().includes(search) && !h.chip.toLowerCase().includes(search) && !h.description.toLowerCase().includes(search)) return false;
+    if (type !== 'all' && h.type !== type) return false;
+    if (chip !== 'all' && !h.chip.includes(chip)) return false;
+    return true;
+  });
+  renderAscendHardware(filtered);
 }
 
 // ============ Quiz ============
@@ -1362,7 +1582,7 @@ function showQuiz() {
         <div style="font-size:3rem;margin-bottom:16px">🎉</div>
         <h2>测试完成！</h2>
         <p style="font-size:1.5rem;margin:16px 0">得分：${quizScore} / ${quizQuestions.length}</p>
-        <p style="color:var(--color-text-secondary)">${quizScore === quizQuestions.length ? '完美！你对昇腾适配模型了如指掌！' : quizScore >= 7 ? '不错！继续加油！' : '再复习一下闪卡吧！'}</p>
+        <p style="color:var(--color-text-secondary)">${quizScore === quizQuestions.length ? '完美！你对昇腾适配模型了如指掌！' : quizScore >= 7 ? '不错！继续加油！' : '再看看模型清单复习一下吧！'}</p>
         <button class="btn btn-primary" onclick="initQuiz()" style="margin-top:20px">重新测试</button>
       </div>
     `;
