@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="昇腾服务器大模型适配清单查询网站 - 数据自动同步自 vLLM Ascend 官方支持矩阵">
+  <meta name="description" content="昇腾服务器大模型适配清单查询网站 - 数据自动同步自 vLLM Ascend + vLLM Omni 官方支持矩阵">
   <meta property="og:title" content="昇腾服务器大模型适配清单">
-  <meta property="og:description" content="查询大模型在华为昇腾平台上的适配状态与性能指南 | 数据自动同步自 vLLM Ascend">
+  <meta property="og:description" content="查询大模型在华为昇腾平台上的适配状态与性能指南 | 数据自动同步自 vLLM Ascend + vLLM Omni">
   <meta property="og:type" content="website">
   <title>昇腾服务器大模型适配清单</title>
   <style>
@@ -88,7 +88,7 @@
       background: #1E3A5F;
       color: #93C5FD;
       padding: 10px 0;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       border-bottom: 1px solid #1E40AF;
     }
     .data-source-banner .container {
@@ -96,10 +96,20 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
     .data-source-banner a { color: var(--color-accent); text-decoration: none; }
     .data-source-banner a:hover { text-decoration: underline; }
+    .data-source-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-right: 2px;
+    }
+    .data-source-badge.ascend { background: #1E40AF; color: #BFDBFE; }
+    .data-source-badge.omni { background: #7C3AED; color: #DDD6FE; }
     .refresh-btn {
       padding: 4px 14px;
       border: 1px solid var(--color-accent);
@@ -243,6 +253,8 @@
     }
     .meta-tag.category { background: var(--color-primary-light); color: var(--color-primary); }
     .meta-tag.hardware { background: #FEF3C7; color: #92400E; }
+    .meta-tag.source-ascend { background: #DBEAFE; color: #1E40AF; }
+    .meta-tag.source-omni { background: #EDE9FE; color: #6D28D9; }
 
     .model-card-details {
       display: grid;
@@ -538,7 +550,12 @@
 <div class="data-source-banner">
   <div class="container">
     <span>
-      📡 数据自动同步自 <a href="https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html" target="_blank">vLLM Ascend 官方支持矩阵</a>
+      📡 数据自动同步自
+      <span class="data-source-badge ascend">Ascend</span>
+      <a href="https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html" target="_blank">vLLM Ascend 支持矩阵</a>
+      +
+      <span class="data-source-badge omni">Omni</span>
+      <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank">vLLM Omni 支持模型</a>
       · <span class="refresh-status" id="refreshStatus">就绪</span>
     </span>
     <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">🔄 手动刷新</button>
@@ -638,9 +655,11 @@
 </div>
 
 <script>
-// ============ vLLM Ascend Data Fetcher ============
+// ============ vLLM Data Fetchers ============
 const VLLM_ASCEND_URL = 'https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html';
 const VLLM_ASCEND_BASE = 'https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/';
+const VLLM_OMNI_URL = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
+const VLLM_OMNI_BASE = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
 
 // Offline fallback data (29 models)
 const FALLBACK_MODELS = [
@@ -689,37 +708,31 @@ const FALLBACK_HARDWARE = [
 let models = [];
 let hardware = FALLBACK_HARDWARE;
 let dataSource = 'local';
+let ascendModels = [];
+let omniModels = [];
 
 // ============ vLLM Ascend Data Parser ============
-async function fetchVLLMData() {
+async function fetchAscendData() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
-  btn.disabled = true;
-  statusEl.textContent = '正在获取最新数据...';
 
   try {
     const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(VLLM_ASCEND_URL)}`;
     const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
     const html = await resp.text();
 
-    // Parse the HTML table
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-
-    // Find all tables
     const tables = doc.querySelectorAll('table');
     const parsedModels = [];
 
-    // Process each table
-    tables.forEach((table, tableIdx) => {
+    tables.forEach((table) => {
       const prevText = table.previousElementSibling ? table.previousElementSibling.textContent : '';
       const prevPrevText = table.previousElementSibling?.previousElementSibling?.textContent || '';
 
       let category = 'LLM';
-      let subCategory = 'Core Supported';
       if (prevText.includes('Multimodal') || prevPrevText.includes('Multimodal')) category = '多模态';
       if (prevText.includes('Pooling')) category = '嵌入/排序';
-      if (prevText.includes('Extended Compatible') || prevPrevText.includes('Extended Compatible')) subCategory = 'Extended Compatible';
 
       const rows = table.querySelectorAll('tbody tr');
       rows.forEach(row => {
@@ -731,17 +744,14 @@ async function fetchVLLMData() {
         const modelName = modelLink ? modelLink.textContent.trim() : modelCell.textContent.trim();
         const docHref = modelLink ? modelLink.getAttribute('href') : '';
 
-        // Determine support level
         const supportCell = cells[1];
         const supportText = supportCell.textContent.trim();
 
         let supportLevel = '扩展兼容';
         if (supportText.includes('✅')) supportLevel = '✅ 已支持';
         else if (supportText.includes('🔵')) supportLevel = '🔵 实验性';
-        else if (supportText.includes('❌')) return; // Skip unsupported
+        else if (supportText.includes('❌')) return;
 
-        // Get supported hardware
-        let hardwareIdx = -1;
         let supportedHardware = 'A2/A3';
         for (let i = 2; i < cells.length; i++) {
           const header = table.querySelectorAll('thead th')[i];
@@ -751,7 +761,6 @@ async function fetchVLLMData() {
           }
         }
 
-        // Get Doc link
         let docUrl = '';
         for (let i = 2; i < cells.length; i++) {
           const header = table.querySelectorAll('thead th')[i];
@@ -769,7 +778,6 @@ async function fetchVLLMData() {
           docUrl = docHref.startsWith('http') ? docHref : VLLM_ASCEND_BASE + docHref;
         }
 
-        // Get max-model-len
         let maxLen = '';
         for (let i = 2; i < cells.length; i++) {
           const header = table.querySelectorAll('thead th')[i];
@@ -779,23 +787,21 @@ async function fetchVLLMData() {
           }
         }
 
-        // Determine developer
         let developer = '社区';
         if (modelName.includes('DeepSeek')) developer = '深度求索';
         else if (modelName.includes('Qwen')) developer = '阿里云';
         else if (modelName.includes('GLM') || modelName.includes('ChatGLM') || modelName.includes('CodeGeeX')) developer = '智谱AI';
         else if (modelName.includes('Baichuan')) developer = '百川智能';
-        else if (modelName.includes('LLaMA') || modelName.includes('Llama') || modelName.includes('SAM')) developer = 'Meta';
+        else if (modelName.includes('LLaMA') || modelName.includes('Llama')) developer = 'Meta';
         else if (modelName.includes('Yi')) developer = '零一万物';
-        else if (modelName.includes('Intern') || modelName.includes('InternVL')) developer = '上海AI实验室';
-        else if (modelName.includes('Mistral') || modelName.includes('Mixtral') || modelName.includes('Codestral')) developer = 'Mistral AI';
+        else if (modelName.includes('Intern')) developer = '上海AI实验室';
+        else if (modelName.includes('Mistral') || modelName.includes('Mixtral')) developer = 'Mistral AI';
         else if (modelName.includes('MiniCPM')) developer = '面壁智能';
         else if (modelName.includes('Phi')) developer = 'Microsoft';
         else if (modelName.includes('Gemma')) developer = 'Google';
         else if (modelName.includes('Kimi')) developer = '月之暗面';
         else if (modelName.includes('MiniMax')) developer = 'MiniMax';
         else if (modelName.includes('Ernie')) developer = '百度';
-        else if (modelName.includes('BLOOM')) developer = 'BigScience';
         else if (modelName.includes('LLaVA')) developer = '社区';
         else if (modelName.includes('Aria')) developer = 'Rhymes AI';
         else if (modelName.includes('Florence')) developer = 'Microsoft';
@@ -805,16 +811,14 @@ async function fetchVLLMData() {
         else if (modelName.includes('Molmo')) developer = 'Allen AI';
         else if (modelName.includes('Bert') || modelName.includes('RoBERTa')) developer = 'Google';
 
-        // Determine architecture
         let architecture = 'Transformer';
-        if (modelName.includes('MoE') || modelName.includes('A3B') || modelName.includes('A22B') || modelName.includes('MoE')) architecture = 'MoE';
+        if (modelName.includes('MoE') || modelName.includes('A3B') || modelName.includes('A22B')) architecture = 'MoE';
         else if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) architecture = 'Vision-Language';
         else if (modelName.includes('Diffusion') || modelName.includes('SD')) architecture = 'Diffusion';
         else if (modelName.includes('Reward') || modelName.includes('RM')) architecture = 'Reward Model';
         else if (modelName.includes('Embedding') || modelName.includes('Reranker')) architecture = 'Embedding';
         else if (modelName.includes('OCR')) architecture = 'Vision-Language';
 
-        // Determine tags
         const tags = [category];
         if (architecture === 'MoE') tags.push('MoE');
         if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) tags.push('视觉');
@@ -829,56 +833,236 @@ async function fetchVLLMData() {
         const id = modelName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
         parsedModels.push({
-          id,
-          name: modelName,
-          category,
-          developer,
+          id, name: modelName, category, developer,
           parameters: maxLen ? `支持 ${maxLen} 上下文` : '多尺寸',
-          architecture,
-          supportLevel,
-          framework: 'PyTorch',
+          architecture, supportLevel, framework: 'PyTorch',
           minHardware: supportedHardware.includes('A2') ? 'Atlas 800I A3' : 'Atlas 800T A3',
           recommendedHardware: supportedHardware.includes('A3') ? 'Atlas 800T A3' : 'Atlas 800I A3',
           inferencePerf: supportLevel === '✅ 已支持' ? '优' : '良',
           trainingPerf: '良',
-          mindsporeSupport: developer === '阿里云' || developer === '智谱AI' || developer === '百川智能' || developer === '上海AI实验室' || developer === '面壁智能' || developer === '深度求索' ? '支持' : '需迁移',
+          mindsporeSupport: ['阿里云','智谱AI','百川智能','上海AI实验室','面壁智能','深度求索'].includes(developer) ? '支持' : '需迁移',
           cannVersion: '7.0+',
           notes: `vLLM Ascend ${supportLevel} · 硬件: ${supportedHardware}`,
-          tags,
-          docUrl
+          tags, docUrl, source: 'vLLM Ascend'
         });
       });
     });
 
-    if (parsedModels.length > 0) {
-      models = parsedModels;
-      dataSource = 'vllm-ascend';
-      statusEl.textContent = `✅ 已从 vLLM Ascend 获取 ${models.length} 个模型`;
-      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
-      return true;
-    }
-    throw new Error('未解析到模型数据');
+    ascendModels = parsedModels;
+    return parsedModels.length > 0;
   } catch (e) {
-    console.warn('vLLM数据获取失败，使用离线数据:', e.message);
-    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    console.warn('vLLM Ascend获取失败:', e.message);
     return false;
-  } finally {
-    btn.disabled = false;
   }
+}
+
+// ============ vLLM Omni Data Parser ============
+async function fetchOmniData() {
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(VLLM_OMNI_URL)}`;
+    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
+    const html = await resp.text();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const tables = doc.querySelectorAll('table');
+    const parsedModels = [];
+
+    tables.forEach((table) => {
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 4) return;
+
+        const archCell = cells[0];
+        const modelCell = cells[1];
+        const hfCell = cells[2];
+        const ascendCell = cells[3]; // Ascend NPU column
+
+        const archName = archCell.textContent.trim();
+        const modelName = modelCell.textContent.trim();
+        const hfModels = hfCell.textContent.trim();
+        const ascendSupport = ascendCell.textContent.trim();
+
+        // Only include models that support Ascend NPU
+        if (!ascendSupport.includes('✅')) return;
+
+        // Parse individual model names from the cell
+        const modelNames = modelName.split(',').map(s => s.trim()).filter(Boolean);
+        // Also try to extract from HF models
+        const hfNames = hfModels.split(',').map(s => s.trim()).filter(Boolean);
+
+        // Use the model names from the "Models" column
+        const namesToAdd = modelNames.length > 0 ? modelNames : [modelName];
+
+        namesToAdd.forEach(name => {
+          // Clean up model name
+          let cleanName = name.replace(/\(.*?\)/g, '').trim();
+          if (!cleanName) cleanName = name;
+
+          // Determine category based on model type
+          let category = '多模态';
+          if (cleanName.includes('TTS') || cleanName.includes('Audio') || cleanName.includes('Voice') || cleanName.includes('Speech') || cleanName.includes('Singer') || cleanName.includes('SVC')) category = '语音';
+          else if (cleanName.includes('Video') || cleanName.includes('T2V') || cleanName.includes('I2V') || cleanName.includes('V2V') || cleanName.includes('S2V')) category = '视频生成';
+          else if (cleanName.includes('Image') || cleanName.includes('Edit') || cleanName.includes('DiT') || cleanName.includes('Diffusion') || cleanName.includes('SD') || cleanName.includes('FLUX') || cleanName.includes('Pipeline')) category = '图像生成';
+          else if (cleanName.includes('Omni') || cleanName.includes('Omni')) category = '多模态';
+          else if (cleanName.includes('Robot') || cleanName.includes('VLA') || cleanName.includes('GR00T')) category = '具身智能';
+
+          // Determine developer
+          let developer = '社区';
+          if (cleanName.includes('Qwen')) developer = '阿里云';
+          else if (cleanName.includes('GLM') || cleanName.includes('GLM')) developer = '智谱AI';
+          else if (cleanName.includes('Intern') || cleanName.includes('InternVL')) developer = '上海AI实验室';
+          else if (cleanName.includes('MiniCPM')) developer = '面壁智能';
+          else if (cleanName.includes('Mistral') || cleanName.includes('Voxtral')) developer = 'Mistral AI';
+          else if (cleanName.includes('Phi')) developer = 'Microsoft';
+          else if (cleanName.includes('Gemma')) developer = 'Google';
+          else if (cleanName.includes('Stable') || cleanName.includes('SD')) developer = 'Stability AI';
+          else if (cleanName.includes('FLUX')) developer = 'Black Forest Labs';
+          else if (cleanName.includes('Wan') || cleanName.includes('Wan')) developer = 'Wan AI';
+          else if (cleanName.includes('Cosmos')) developer = 'NVIDIA';
+          else if (cleanName.includes('Hunyuan')) developer = '腾讯';
+          else if (cleanName.includes('LTX')) developer = 'Lightricks';
+          else if (cleanName.includes('BAGEL') || cleanName.includes('ByteDance') || cleanName.includes('Mammoth')) developer = '字节跳动';
+          else if (cleanName.includes('Helios')) developer = 'BestWishYsh';
+          else if (cleanName.includes('MagiHuman')) developer = 'SII-GAIR';
+          else if (cleanName.includes('Ovis')) developer = 'OvisAI';
+          else if (cleanName.includes('LongCat') || cleanName.includes('meituan')) developer = '美团';
+          else if (cleanName.includes('CosyVoice') || cleanName.includes('FunAudio')) developer = 'FunAudioLLM';
+          else if (cleanName.includes('OmniVoice') || cleanName.includes('k2-fsa')) developer = 'k2-fsa';
+          else if (cleanName.includes('VoxCPM') || cleanName.includes('openbmb')) developer = 'OpenBMB';
+          else if (cleanName.includes('Ming') || cleanName.includes('inclusionAI')) developer = 'Inclusion AI';
+          else if (cleanName.includes('MOSS')) developer = 'OpenMOSS';
+          else if (cleanName.includes('Higgs') || cleanName.includes('bosonai')) developer = 'Boson AI';
+          else if (cleanName.includes('IndexTTS')) developer = 'IndexTeam';
+          else if (cleanName.includes('NextStep') || cleanName.includes('stepfun')) developer = '阶跃星辰';
+          else if (cleanName.includes('MiMo') || cleanName.includes('Xiaomi')) developer = '小米';
+          else if (cleanName.includes('Fish') || cleanName.includes('fishaudio')) developer = 'Fish Audio';
+          else if (cleanName.includes('DreamID')) developer = 'XuGuo699';
+          else if (cleanName.includes('SenseNova')) developer = '商汤';
+          else if (cleanName.includes('Lance')) developer = '字节跳动';
+          else if (cleanName.includes('Ernie') || cleanName.includes('ERNIE') || cleanName.includes('baidu')) developer = '百度';
+          else if (cleanName.includes('HiDream')) developer = 'HiDream';
+          else if (cleanName.includes('Krea')) developer = 'Krea';
+          else if (cleanName.includes('DreamZero') || cleanName.includes('GEAR')) developer = 'GEAR Dreams';
+          else if (cleanName.includes('Dynin') || cleanName.includes('snu')) developer = 'SNU';
+          else if (cleanName.includes('Covo') || cleanName.includes('tencent')) developer = '腾讯';
+          else if (cleanName.includes('OmniGen')) developer = 'OmniGen';
+          else if (cleanName.includes('SoulX')) developer = 'Soul AI Lab';
+          else if (cleanName.includes('AudioX')) developer = 'zhangj1an';
+          else if (cleanName.includes('GR00T') || cleanName.includes('nvidia')) developer = 'NVIDIA';
+
+          // Determine architecture
+          let architecture = 'Transformer';
+          if (cleanName.includes('MoE') || cleanName.includes('MoT')) architecture = 'MoE';
+          else if (cleanName.includes('Diffusion') || cleanName.includes('DiT') || cleanName.includes('Pipeline')) architecture = 'Diffusion';
+          else if (cleanName.includes('VL') || cleanName.includes('Vision') || cleanName.includes('Omni')) architecture = 'Vision-Language';
+          else if (cleanName.includes('TTS') || cleanName.includes('Voice') || cleanName.includes('Speech') || cleanName.includes('Singer') || cleanName.includes('Audio')) architecture = '语音模型';
+          else if (cleanName.includes('Reward') || cleanName.includes('RM')) architecture = 'Reward Model';
+          else if (cleanName.includes('VLA')) architecture = 'VLA';
+
+          // Determine support level
+          let supportLevel = '✅ 已支持';
+          if (cleanName.includes('experimental') || cleanName.includes('Experimental')) supportLevel = '🔵 实验性';
+
+          // Determine tags
+          const tags = [category];
+          if (architecture === 'MoE') tags.push('MoE');
+          if (cleanName.includes('VL') || cleanName.includes('Vision') || cleanName.includes('Image')) tags.push('视觉');
+          if (cleanName.includes('Video') || cleanName.includes('T2V') || cleanName.includes('I2V')) tags.push('视频');
+          if (cleanName.includes('TTS') || cleanName.includes('Voice') || cleanName.includes('Speech')) tags.push('语音合成');
+          if (cleanName.includes('Audio')) tags.push('音频');
+          if (cleanName.includes('Edit')) tags.push('编辑');
+          if (cleanName.includes('Diffusion') || cleanName.includes('DiT')) tags.push('扩散模型');
+          if (cleanName.includes('Robot') || cleanName.includes('VLA')) tags.push('具身智能');
+          if (cleanName.includes('Singer') || cleanName.includes('SVC')) tags.push('歌声合成');
+
+          const id = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+          // Extract HF model link
+          let hfLink = '';
+          const hfLinkEl = hfCell.querySelector('a');
+          if (hfLinkEl) hfLink = hfLinkEl.getAttribute('href') || '';
+
+          parsedModels.push({
+            id, name: cleanName, category, developer,
+            parameters: '多尺寸',
+            architecture, supportLevel, framework: 'PyTorch',
+            minHardware: 'Atlas 800I A3',
+            recommendedHardware: 'Atlas 800T A3',
+            inferencePerf: '良',
+            trainingPerf: '良',
+            mindsporeSupport: '需迁移',
+            cannVersion: '7.0+',
+            notes: `vLLM Omni 支持 · 架构: ${archName}`,
+            tags, docUrl: hfLink, source: 'vLLM Omni',
+            archName
+          });
+        });
+      });
+    });
+
+    omniModels = parsedModels;
+    return parsedModels.length > 0;
+  } catch (e) {
+    console.warn('vLLM Omni获取失败:', e.message);
+    return false;
+  }
+}
+
+// ============ Merge models from both sources ============
+function mergeModels() {
+  const merged = [];
+  const seen = new Set();
+
+  // Add Ascend models first (higher priority)
+  ascendModels.forEach(m => {
+    const key = m.name.toLowerCase().replace(/[\s/-]/g, '');
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(m);
+    }
+  });
+
+  // Add Omni models that are not already in Ascend
+  omniModels.forEach(m => {
+    const key = m.name.toLowerCase().replace(/[\s/-]/g, '');
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(m);
+    }
+  });
+
+  return merged;
 }
 
 // ============ Init ============
 async function init() {
   document.getElementById('hardwareCount').textContent = hardware.length;
+  const statusEl = document.getElementById('refreshStatus');
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  statusEl.textContent = '正在从 vLLM Ascend + Omni 获取最新数据...';
 
-  // Try to fetch from vLLM first
-  const success = await fetchVLLMData();
+  // Fetch from both sources
+  const [ascendOk, omniOk] = await Promise.all([fetchAscendData(), fetchOmniData()]);
 
-  if (!success) {
+  if (ascendOk || omniOk) {
+    models = mergeModels();
+    dataSource = 'merged';
+    const parts = [];
+    if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
+    if (omniOk) parts.push(`Omni ${omniModels.length}个`);
+    statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
+    document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+  } else {
     models = FALLBACK_MODELS;
     dataSource = 'local';
+    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
     document.getElementById('dataDate').textContent = '2026-07-20 (离线数据)';
   }
+
+  btn.disabled = false;
 
   document.getElementById('modelCount').textContent = models.length;
   const categories = [...new Set(models.map(m => m.category))];
@@ -917,13 +1101,28 @@ async function init() {
 async function refreshData() {
   document.getElementById('loadingIndicator').style.display = '';
   document.getElementById('modelGrid').style.display = 'none';
+  const statusEl = document.getElementById('refreshStatus');
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  statusEl.textContent = '正在从 vLLM Ascend + Omni 获取最新数据...';
 
-  const success = await fetchVLLMData();
-  if (!success) {
+  const [ascendOk, omniOk] = await Promise.all([fetchAscendData(), fetchOmniData()]);
+
+  if (ascendOk || omniOk) {
+    models = mergeModels();
+    dataSource = 'merged';
+    const parts = [];
+    if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
+    if (omniOk) parts.push(`Omni ${omniModels.length}个`);
+    statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
+    document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+  } else {
     models = FALLBACK_MODELS;
     dataSource = 'local';
+    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
   }
 
+  btn.disabled = false;
   document.getElementById('modelCount').textContent = models.length;
   document.getElementById('loadingIndicator').style.display = 'none';
   document.getElementById('modelGrid').style.display = '';
@@ -960,6 +1159,8 @@ function renderModels(data) {
                          m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
     const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
     const hasDoc = m.docUrl && m.docUrl.length > 0;
+    const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : 'source-ascend';
+    const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : 'Ascend';
 
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
@@ -974,6 +1175,7 @@ function renderModels(data) {
           <span class="meta-tag category">${m.category}</span>
           <span class="meta-tag">${m.architecture}</span>
           <span class="meta-tag hardware">${m.minHardware}</span>
+          <span class="meta-tag ${sourceClass}">${sourceLabel}</span>
         </div>
         <dl class="model-card-details">
           <dt>适配状态</dt>
@@ -1022,9 +1224,11 @@ function showModelDetail(id) {
                        m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
   const hasDoc = m.docUrl && m.docUrl.length > 0;
 
+  const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : 'vLLM Ascend';
+
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
-    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category}</p>
+    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${m.source === 'vLLM Omni' ? '#7C3AED' : '#2563EB'}">数据源: ${sourceLabel}</span></p>
     <dl>
       <dt>架构</dt><dd>${m.architecture}</dd>
       <dt>适配状态</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
@@ -1036,7 +1240,7 @@ function showModelDetail(id) {
       <dt>备注</dt><dd>${m.notes}</dd>
       ${hasDoc ? `<dt>📄 部署文档</dt><dd><a href="${m.docUrl}" target="_blank" style="color:var(--color-primary)">${m.docUrl}</a></dd>` : ''}
     </dl>
-    <div class="tags" style="margin-top:16px">${m.tags.map(t => `<span class="tag">${t}</span>`).join('')</div>
+    <div class="tags" style="margin-top:16px">${m.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
     ${hasDoc ? `<div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border-radius:8px">
       <a href="${m.docUrl}" target="_blank" style="color:var(--color-primary);font-weight:600;text-decoration:none;font-size:1rem">
         📖 查看 ${m.name} 部署指南 →
