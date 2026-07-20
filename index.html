@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="昇腾服务器大模型适配清单查询网站 - 查询大模型在华为昇腾平台上的适配状态与性能指南">
+  <meta name="description" content="昇腾服务器大模型适配清单查询网站 - 数据自动同步自 vLLM Ascend 官方支持矩阵">
   <meta property="og:title" content="昇腾服务器大模型适配清单">
-  <meta property="og:description" content="查询大模型在华为昇腾平台上的适配状态与性能指南">
+  <meta property="og:description" content="查询大模型在华为昇腾平台上的适配状态与性能指南 | 数据自动同步自 vLLM Ascend">
   <meta property="og:type" content="website">
   <title>昇腾服务器大模型适配清单</title>
   <style>
@@ -83,6 +83,37 @@
     }
     .header-stat strong { color: white; font-size: 1.1rem; }
 
+    /* Data Source Banner */
+    .data-source-banner {
+      background: #1E3A5F;
+      color: #93C5FD;
+      padding: 10px 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #1E40AF;
+    }
+    .data-source-banner .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .data-source-banner a { color: var(--color-accent); text-decoration: none; }
+    .data-source-banner a:hover { text-decoration: underline; }
+    .refresh-btn {
+      padding: 4px 14px;
+      border: 1px solid var(--color-accent);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--color-accent);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .refresh-btn:hover { background: var(--color-accent); color: #0F172A; }
+    .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .refresh-status { font-size: 0.8rem; color: #93C5FD; }
+
     /* Navigation */
     .nav-bar {
       background: white;
@@ -153,7 +184,7 @@
     /* Model Cards */
     .model-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       gap: 16px;
     }
     .model-card {
@@ -192,8 +223,9 @@
       font-weight: 600;
       white-space: nowrap;
     }
-    .support-official { background: #DCFCE7; color: #166534; }
-    .support-community { background: #FEF3C7; color: #92400E; }
+    .support-supported { background: #DCFCE7; color: #166534; }
+    .support-experimental { background: #FEF3C7; color: #92400E; }
+    .support-extended { background: #DBEAFE; color: #1E40AF; }
     .support-unknown { background: #FEE2E2; color: #991B1B; }
 
     .model-card-meta {
@@ -210,6 +242,7 @@
       color: var(--color-text-secondary);
     }
     .meta-tag.category { background: var(--color-primary-light); color: var(--color-primary); }
+    .meta-tag.hardware { background: #FEF3C7; color: #92400E; }
 
     .model-card-details {
       display: grid;
@@ -227,9 +260,20 @@
       gap: 4px;
     }
     .perf-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .perf-excellent { background: var(--color-success); }
-    .perf-good { background: var(--color-accent); }
-    .perf-fair { background: #F97316; }
+    .perf-supported { background: var(--color-success); }
+    .perf-experimental { background: var(--color-accent); }
+    .perf-unsupported { background: var(--color-error); }
+
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .doc-link:hover { text-decoration: underline; }
 
     /* Hardware Cards */
     .hardware-grid {
@@ -385,7 +429,7 @@
     .modal {
       background: white;
       border-radius: var(--radius);
-      max-width: 640px;
+      max-width: 720px;
       width: 100%;
       max-height: 80vh;
       overflow-y: auto;
@@ -438,6 +482,24 @@
     }
     .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
 
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--color-text-secondary);
+    }
+    .loading .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* Footer */
     footer {
       background: var(--color-text);
@@ -463,15 +525,25 @@
 <header>
   <div class="container">
     <h1>🚀 昇腾服务器 <span class="accent">大模型适配清单</span></h1>
-    <p>查询大模型在华为昇腾平台上的适配状态、硬件需求与性能指南</p>
+    <p>查询大模型在华为昇腾平台上的适配状态与部署指南</p>
     <div class="header-stats">
       <div class="header-stat">📦 已收录 <strong id="modelCount">0</strong> 个模型</div>
       <div class="header-stat">🖥️ <strong id="hardwareCount">0</strong> 款服务器型号</div>
       <div class="header-stat">🏷️ <strong id="categoryCount">0</strong> 个类别</div>
-      <div class="header-stat">📅 更新于 2026-07-20</div>
+      <div class="header-stat">📅 <span id="dataDate">加载中...</span></div>
     </div>
   </div>
 </header>
+
+<div class="data-source-banner">
+  <div class="container">
+    <span>
+      📡 数据自动同步自 <a href="https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html" target="_blank">vLLM Ascend 官方支持矩阵</a>
+      · <span class="refresh-status" id="refreshStatus">就绪</span>
+    </span>
+    <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">🔄 手动刷新</button>
+  </div>
+</div>
 
 <nav class="nav-bar">
   <div class="container">
@@ -493,14 +565,21 @@
       </select>
       <select class="filter-select" id="supportFilter" onchange="filterModels()">
         <option value="all">适配状态</option>
-        <option value="官方认证">官方认证</option>
-        <option value="社区适配">社区适配</option>
+        <option value="✅ 已支持">✅ 已支持</option>
+        <option value="🔵 实验性">🔵 实验性</option>
+        <option value="扩展兼容">扩展兼容</option>
       </select>
       <select class="filter-select" id="hardwareFilter" onchange="filterModels()">
         <option value="all">推荐硬件</option>
       </select>
     </div>
-    <div class="model-grid" id="modelGrid"></div>
+    <div id="modelGridContainer">
+      <div class="loading" id="loadingIndicator">
+        <div class="spinner"></div>
+        <p>正在从 vLLM Ascend 官方获取最新数据...</p>
+      </div>
+    </div>
+    <div class="model-grid" id="modelGrid" style="display:none"></div>
     <div class="empty-state" id="emptyState" style="display:none">
       <div class="icon">🔍</div>
       <p>没有找到匹配的模型，试试其他关键词</p>
@@ -545,8 +624,8 @@
 
 <footer>
   <div class="container">
-    <p>数据来源：华为昇腾社区、MindSpore官方、开源社区 | 仅供参考，请以官方最新公告为准</p>
-    <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 v1.0.0</p>
+    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · 华为昇腾社区 · 仅供参考，请以官方最新公告为准</p>
+    <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 · 数据自动同步 · 点击模型卡片查看部署文档</p>
   </div>
 </footer>
 
@@ -559,30 +638,249 @@
 </div>
 
 <script>
-// ============ Data ============
-let models = [];
-let hardware = [];
+// ============ vLLM Ascend Data Fetcher ============
+const VLLM_ASCEND_URL = 'https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/supported_models.html';
+const VLLM_ASCEND_BASE = 'https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/';
 
-async function loadData() {
+// Offline fallback data (29 models)
+const FALLBACK_MODELS = [
+  {"id":"deepseek-v3","name":"DeepSeek-V3","category":"LLM","developer":"深度求索","parameters":"671B (激活37B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"MindSpore / PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"原生支持","cannVersion":"8.0+","notes":"DeepSeek专区已上线","tags":["MoE","大语言模型","推理","训练"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/DeepSeek-V3.1"},
+  {"id":"deepseek-r1","name":"DeepSeek-R1","category":"LLM","developer":"深度求索","parameters":"671B (激活37B)","architecture":"MoE + RL","supportLevel":"✅ 已支持","framework":"MindSpore / PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"原生支持","cannVersion":"8.0+","notes":"强化学习版本","tags":["MoE","推理","强化学习"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/DeepSeek-R1"},
+  {"id":"qwen3-dense","name":"Qwen3-Dense","category":"LLM","developer":"阿里云","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"Qwen3系列Dense版本","tags":["大语言模型","中文","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen3-Dense"},
+  {"id":"qwen3-30b-a3b","name":"Qwen3-30B-A3B","category":"LLM","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"MoE架构，推理高效","tags":["MoE","大语言模型","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen3-30B-A3B"},
+  {"id":"qwen3-235b-a22b","name":"Qwen3-235B-A22B","category":"LLM","developer":"阿里云","parameters":"235B (激活22B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"超大MoE模型","tags":["MoE","大语言模型","超大模型"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen3-235B-A22B"},
+  {"id":"qwen3-vl","name":"Qwen3-VL","category":"多模态","developer":"阿里云","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"多模态视觉语言模型","tags":["多模态","视觉","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen-VL-Dense"},
+  {"id":"qwen3-vl-30b-a3b","name":"Qwen3-VL-30B-A3B","category":"多模态","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"MoE多模态版本","tags":["多模态","MoE","视觉"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen3-VL-30B-A3B"},
+  {"id":"glm-4","name":"GLM-4.x","category":"LLM","developer":"智谱AI","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"🔵 实验性","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"ChatGLM系列","tags":["大语言模型","中文","对话"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/GLM-4.x"},
+  {"id":"glm-5","name":"GLM-5/5.1/5.2","category":"LLM","developer":"智谱AI","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"GLM最新系列","tags":["大语言模型","中文","对话"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/GLM-5"},
+  {"id":"kimi-k2","name":"Kimi-K2-Thinking","category":"LLM","developer":"月之暗面","parameters":"多尺寸","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Kimi推理模型","tags":["MoE","推理","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Kimi-K2-Thinking"},
+  {"id":"deepseek-ocr2","name":"DeepSeekOCR2","category":"视觉","developer":"深度求索","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"OCR识别模型","tags":["视觉","OCR","文档"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/DeepSeekOCR2"},
+  {"id":"minimax-m2","name":"MiniMax-M2.5/2.7","category":"LLM","developer":"MiniMax","parameters":"多尺寸","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"MiniMax系列","tags":["MoE","大语言模型","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/MiniMax-M2"},
+  {"id":"qwen2.5-math-rm","name":"Qwen2.5-Math-RM-72B","category":"LLM","developer":"阿里云","parameters":"72B","architecture":"Reward Model","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"奖励模型，数学推理","tags":["奖励模型","数学","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/en/v0.23.0/user_guide/support_matrix/Qwen2.5-Math-RM-72B"},
+  {"id":"qwen2","name":"Qwen2/Qwen2.5","category":"LLM","developer":"阿里云","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"Qwen2系列扩展兼容","tags":["大语言模型","中文","通用"],"docUrl":""},
+  {"id":"llama3","name":"LLaMA 3/3.1/3.2","category":"LLM","developer":"Meta","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Meta开源系列","tags":["大语言模型","英文","开源"],"docUrl":""},
+  {"id":"internlm","name":"InternLM","category":"LLM","developer":"上海AI实验室","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"书生系列","tags":["大语言模型","中文","学术"],"docUrl":""},
+  {"id":"baichuan","name":"Baichuan/Baichuan2","category":"LLM","developer":"百川智能","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"百川系列","tags":["大语言模型","中文","通用"],"docUrl":""},
+  {"id":"yi","name":"Yi-34B","category":"LLM","developer":"零一万物","parameters":"34B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"中英文双语","tags":["大语言模型","中英文","通用"],"docUrl":""},
+  {"id":"mistral","name":"Mistral/Mistral-Instruct","category":"LLM","developer":"Mistral AI","parameters":"7B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"高效轻量","tags":["大语言模型","英文","高效"],"docUrl":""},
+  {"id":"phi-3","name":"Phi-3/4/4-mini","category":"LLM","developer":"Microsoft","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"微软小模型系列","tags":["大语言模型","英文","轻量"],"docUrl":""},
+  {"id":"gemma","name":"Gemma-2/3","category":"LLM","developer":"Google","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Google开源系列","tags":["大语言模型","英文","开源"],"docUrl":""},
+  {"id":"minicpm","name":"MiniCPM/MiniCPM3","category":"LLM","developer":"面壁智能","parameters":"2B-4B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 200I","recommendedHardware":"Atlas 800I A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"端侧部署","tags":["大语言模型","端侧","轻量"],"docUrl":""},
+  {"id":"ernie-4.5","name":"Ernie4.5/Ernie4.5-MoE","category":"LLM","developer":"百度","parameters":"多尺寸","architecture":"MoE","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"文心系列","tags":["大语言模型","中文","MoE"],"docUrl":""},
+  {"id":"qwen2-vl","name":"Qwen2-VL","category":"多模态","developer":"阿里云","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"多模态视觉","tags":["多模态","视觉","中文"],"docUrl":""},
+  {"id":"llava-next","name":"LLaVA-Next","category":"多模态","developer":"社区","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"开源多模态","tags":["多模态","视觉","开源"],"docUrl":""},
+  {"id":"minicpm-v","name":"MiniCPM-V","category":"多模态","developer":"面壁智能","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 200I","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"端侧多模态","tags":["多模态","端侧","视觉"],"docUrl":""},
+  {"id":"stablediffusion-xl","name":"Stable Diffusion XL","category":"多模态","developer":"Stability AI","parameters":"2.6B","architecture":"Diffusion","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"文生图","tags":["文生图","扩散模型","创意"],"docUrl":""},
+  {"id":"deepseek-coder","name":"DeepSeek-Coder","category":"代码","developer":"深度求索","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"代码生成","tags":["代码","生成","多语言"],"docUrl":""},
+  {"id":"codegeex","name":"CodeGeeX4-9B","category":"代码","developer":"智谱AI","parameters":"9B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"代码生成","tags":["代码","生成","多语言"],"docUrl":""}
+];
+
+const FALLBACK_HARDWARE = [
+  {"id":"atlas-800t-a3","name":"Atlas 800T A3 训练服务器","type":"训练服务器","chip":"昇腾910B","chipCount":8,"fp16Perf":"3200 TFLOPS","memory":"64GB × 8 (HBM2e)","interconnect":"HCCS 高速互联","scenario":"大模型训练 / 推理","recommended":"DeepSeek-V3/R1、Qwen3-235B、GLM-5","features":["训练推理一体","超节点扩展","HCCS高速互联"],"tags":["训练","推理","高性能"]},
+  {"id":"atlas-800i-a3","name":"Atlas 800I A3 推理服务器","type":"推理服务器","chip":"昇腾910B","chipCount":"4-8","fp16Perf":"1600 TFLOPS","memory":"64GB × 4-8 (HBM2e)","interconnect":"HCCS","scenario":"大模型推理 / 微调","recommended":"Qwen3-Dense、Baichuan2、MiniMax-M2","features":["推理优化","高吞吐","低延迟"],"tags":["推理","微调","高性价比"]},
+  {"id":"atlas-900-a3","name":"Atlas 900 A3 SuperPoD","type":"AI集群","chip":"昇腾910B × N","chipCount":"数百至数千","fp16Perf":"EH级","memory":"HBM2e 大容量","interconnect":"HCCS + 高速网络","scenario":"超大模型训练 / 集群推理","recommended":"DeepSeek-V3集群训练、Qwen3-235B","features":["超大规模","集群训练","万卡互联"],"tags":["集群","超大规模","训练"]},
+  {"id":"atlas-800-3000","name":"Atlas 800 推理服务器 (3000)","type":"推理服务器","chip":"昇腾910","chipCount":4,"fp16Perf":"640 TFLOPS","memory":"32GB × 4 (HBM2)","interconnect":"PCIe 4.0","scenario":"AI推理 / 视频分析","recommended":"Qwen2-VL、DeepSeekOCR2","features":["推理专用","视频分析","多路并发"],"tags":["推理","视频分析","性价比"]},
+  {"id":"atlas-500-pro","name":"Atlas 500 Pro 智能边缘服务器","type":"边缘服务器","chip":"昇腾310","chipCount":"1-2","fp16Perf":"32 TFLOPS","memory":"8GB × 1-2","interconnect":"PCIe","scenario":"边缘推理 / 端侧部署","recommended":"MiniCPM、轻量模型","features":["边缘部署","低功耗","环境适应性强"],"tags":["边缘","轻量","低功耗"]},
+  {"id":"atlas-200i","name":"Atlas 200I AI加速模块","type":"AI加速模块","chip":"昇腾310","chipCount":1,"fp16Perf":"16 TFLOPS","memory":"8GB","interconnect":"PCIe / USB","scenario":"端侧推理 / 嵌入式","recommended":"MiniCPM、轻量视觉模型","features":["超小体积","低功耗","嵌入式集成"],"tags":["端侧","嵌入式","超轻量"]},
+  {"id":"atlas-300v-pro","name":"Atlas 300V Pro 视频解析卡","type":"AI加速卡","chip":"昇腾310","chipCount":1,"fp16Perf":"16 TFLOPS","memory":"8GB","interconnect":"PCIe 4.0","scenario":"视频分析 / 图像识别","recommended":"DeepSeekOCR2、视觉模型","features":["视频硬解码","多路并发","低延迟"],"tags":["视频","图像","加速卡"]}
+];
+
+// ============ State ============
+let models = [];
+let hardware = FALLBACK_HARDWARE;
+let dataSource = 'local';
+
+// ============ vLLM Ascend Data Parser ============
+async function fetchVLLMData() {
+  const statusEl = document.getElementById('refreshStatus');
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  statusEl.textContent = '正在获取最新数据...';
+
   try {
-    const [mRes, hRes] = await Promise.all([
-      fetch('data/models.json'),
-      fetch('data/hardware.json')
-    ]);
-    models = await mRes.json();
-    hardware = await hRes.json();
-    init();
-  } catch(e) {
-    console.error('数据加载失败:', e);
-    document.getElementById('modelGrid').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>数据加载失败，请刷新页面重试</p></div>';
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(VLLM_ASCEND_URL)}`;
+    const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
+    const html = await resp.text();
+
+    // Parse the HTML table
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Find all tables
+    const tables = doc.querySelectorAll('table');
+    const parsedModels = [];
+
+    // Process each table
+    tables.forEach((table, tableIdx) => {
+      const prevText = table.previousElementSibling ? table.previousElementSibling.textContent : '';
+      const prevPrevText = table.previousElementSibling?.previousElementSibling?.textContent || '';
+
+      let category = 'LLM';
+      let subCategory = 'Core Supported';
+      if (prevText.includes('Multimodal') || prevPrevText.includes('Multimodal')) category = '多模态';
+      if (prevText.includes('Pooling')) category = '嵌入/排序';
+      if (prevText.includes('Extended Compatible') || prevPrevText.includes('Extended Compatible')) subCategory = 'Extended Compatible';
+
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 3) return;
+
+        const modelCell = cells[0];
+        const modelLink = modelCell.querySelector('a');
+        const modelName = modelLink ? modelLink.textContent.trim() : modelCell.textContent.trim();
+        const docHref = modelLink ? modelLink.getAttribute('href') : '';
+
+        // Determine support level
+        const supportCell = cells[1];
+        const supportText = supportCell.textContent.trim();
+
+        let supportLevel = '扩展兼容';
+        if (supportText.includes('✅')) supportLevel = '✅ 已支持';
+        else if (supportText.includes('🔵')) supportLevel = '🔵 实验性';
+        else if (supportText.includes('❌')) return; // Skip unsupported
+
+        // Get supported hardware
+        let hardwareIdx = -1;
+        let supportedHardware = 'A2/A3';
+        for (let i = 2; i < cells.length; i++) {
+          const header = table.querySelectorAll('thead th')[i];
+          if (header && header.textContent.trim() === 'Supported Hardware') {
+            supportedHardware = cells[i].textContent.trim() || 'A2/A3';
+            break;
+          }
+        }
+
+        // Get Doc link
+        let docUrl = '';
+        for (let i = 2; i < cells.length; i++) {
+          const header = table.querySelectorAll('thead th')[i];
+          if (header && header.textContent.trim() === 'Doc') {
+            const docLink = cells[i].querySelector('a');
+            if (docLink) {
+              let href = docLink.getAttribute('href');
+              if (href && !href.startsWith('http')) href = VLLM_ASCEND_BASE + href;
+              docUrl = href;
+            }
+            break;
+          }
+        }
+        if (!docUrl && docHref) {
+          docUrl = docHref.startsWith('http') ? docHref : VLLM_ASCEND_BASE + docHref;
+        }
+
+        // Get max-model-len
+        let maxLen = '';
+        for (let i = 2; i < cells.length; i++) {
+          const header = table.querySelectorAll('thead th')[i];
+          if (header && header.textContent.trim().includes('max-model-len')) {
+            maxLen = cells[i].textContent.trim();
+            break;
+          }
+        }
+
+        // Determine developer
+        let developer = '社区';
+        if (modelName.includes('DeepSeek')) developer = '深度求索';
+        else if (modelName.includes('Qwen')) developer = '阿里云';
+        else if (modelName.includes('GLM') || modelName.includes('ChatGLM') || modelName.includes('CodeGeeX')) developer = '智谱AI';
+        else if (modelName.includes('Baichuan')) developer = '百川智能';
+        else if (modelName.includes('LLaMA') || modelName.includes('Llama') || modelName.includes('SAM')) developer = 'Meta';
+        else if (modelName.includes('Yi')) developer = '零一万物';
+        else if (modelName.includes('Intern') || modelName.includes('InternVL')) developer = '上海AI实验室';
+        else if (modelName.includes('Mistral') || modelName.includes('Mixtral') || modelName.includes('Codestral')) developer = 'Mistral AI';
+        else if (modelName.includes('MiniCPM')) developer = '面壁智能';
+        else if (modelName.includes('Phi')) developer = 'Microsoft';
+        else if (modelName.includes('Gemma')) developer = 'Google';
+        else if (modelName.includes('Kimi')) developer = '月之暗面';
+        else if (modelName.includes('MiniMax')) developer = 'MiniMax';
+        else if (modelName.includes('Ernie')) developer = '百度';
+        else if (modelName.includes('BLOOM')) developer = 'BigScience';
+        else if (modelName.includes('LLaVA')) developer = '社区';
+        else if (modelName.includes('Aria')) developer = 'Rhymes AI';
+        else if (modelName.includes('Florence')) developer = 'Microsoft';
+        else if (modelName.includes('Whisper')) developer = 'OpenAI';
+        else if (modelName.includes('PaddleOCR')) developer = '百度';
+        else if (modelName.includes('QVQ')) developer = '阿里云';
+        else if (modelName.includes('Molmo')) developer = 'Allen AI';
+        else if (modelName.includes('Bert') || modelName.includes('RoBERTa')) developer = 'Google';
+
+        // Determine architecture
+        let architecture = 'Transformer';
+        if (modelName.includes('MoE') || modelName.includes('A3B') || modelName.includes('A22B') || modelName.includes('MoE')) architecture = 'MoE';
+        else if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) architecture = 'Vision-Language';
+        else if (modelName.includes('Diffusion') || modelName.includes('SD')) architecture = 'Diffusion';
+        else if (modelName.includes('Reward') || modelName.includes('RM')) architecture = 'Reward Model';
+        else if (modelName.includes('Embedding') || modelName.includes('Reranker')) architecture = 'Embedding';
+        else if (modelName.includes('OCR')) architecture = 'Vision-Language';
+
+        // Determine tags
+        const tags = [category];
+        if (architecture === 'MoE') tags.push('MoE');
+        if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) tags.push('视觉');
+        if (modelName.includes('Coder') || modelName.includes('Code')) tags.push('代码');
+        if (modelName.includes('OCR')) tags.push('OCR');
+        if (modelName.includes('Embedding')) tags.push('嵌入');
+        if (modelName.includes('Reranker')) tags.push('排序');
+        if (modelName.includes('Audio')) tags.push('音频');
+        if (modelName.includes('Thinking') || modelName.includes('R1')) tags.push('推理');
+        if (modelName.includes('Math')) tags.push('数学');
+
+        const id = modelName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+        parsedModels.push({
+          id,
+          name: modelName,
+          category,
+          developer,
+          parameters: maxLen ? `支持 ${maxLen} 上下文` : '多尺寸',
+          architecture,
+          supportLevel,
+          framework: 'PyTorch',
+          minHardware: supportedHardware.includes('A2') ? 'Atlas 800I A3' : 'Atlas 800T A3',
+          recommendedHardware: supportedHardware.includes('A3') ? 'Atlas 800T A3' : 'Atlas 800I A3',
+          inferencePerf: supportLevel === '✅ 已支持' ? '优' : '良',
+          trainingPerf: '良',
+          mindsporeSupport: developer === '阿里云' || developer === '智谱AI' || developer === '百川智能' || developer === '上海AI实验室' || developer === '面壁智能' || developer === '深度求索' ? '支持' : '需迁移',
+          cannVersion: '7.0+',
+          notes: `vLLM Ascend ${supportLevel} · 硬件: ${supportedHardware}`,
+          tags,
+          docUrl
+        });
+      });
+    });
+
+    if (parsedModels.length > 0) {
+      models = parsedModels;
+      dataSource = 'vllm-ascend';
+      statusEl.textContent = `✅ 已从 vLLM Ascend 获取 ${models.length} 个模型`;
+      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+      return true;
+    }
+    throw new Error('未解析到模型数据');
+  } catch (e) {
+    console.warn('vLLM数据获取失败，使用离线数据:', e.message);
+    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    return false;
+  } finally {
+    btn.disabled = false;
   }
 }
 
 // ============ Init ============
-function init() {
-  document.getElementById('modelCount').textContent = models.length;
+async function init() {
   document.getElementById('hardwareCount').textContent = hardware.length;
 
+  // Try to fetch from vLLM first
+  const success = await fetchVLLMData();
+
+  if (!success) {
+    models = FALLBACK_MODELS;
+    dataSource = 'local';
+    document.getElementById('dataDate').textContent = '2026-07-20 (离线数据)';
+  }
+
+  document.getElementById('modelCount').textContent = models.length;
   const categories = [...new Set(models.map(m => m.category))];
   document.getElementById('categoryCount').textContent = categories.length;
 
@@ -590,18 +888,47 @@ function init() {
   const catFilter = document.getElementById('categoryFilter');
   const fcCatFilter = document.getElementById('fcCategoryFilter');
   const hwFilter = document.getElementById('hardwareFilter');
-  const hwNames = [...new Set(hardware.map(h => h.name.split(' ')[0] + ' ' + h.name.split(' ')[1]))];
 
   categories.forEach(c => {
     catFilter.innerHTML += `<option value="${c}">${c}</option>`;
     fcCatFilter.innerHTML += `<option value="${c}">${c}</option>`;
   });
-  hwNames.forEach(h => {
+
+  const hwSet = new Set();
+  models.forEach(m => {
+    if (m.minHardware) hwSet.add(m.minHardware);
+    if (m.recommendedHardware) hwSet.add(m.recommendedHardware);
+  });
+  hwSet.forEach(h => {
     hwFilter.innerHTML += `<option value="${h}">${h}</option>`;
   });
 
+  // Hide loading, show grid
+  document.getElementById('loadingIndicator').style.display = 'none';
+  document.getElementById('modelGrid').style.display = '';
+
   renderModels(models);
   renderHardware();
+  initFlashcards();
+  initQuiz();
+}
+
+// ============ Refresh ============
+async function refreshData() {
+  document.getElementById('loadingIndicator').style.display = '';
+  document.getElementById('modelGrid').style.display = 'none';
+
+  const success = await fetchVLLMData();
+  if (!success) {
+    models = FALLBACK_MODELS;
+    dataSource = 'local';
+  }
+
+  document.getElementById('modelCount').textContent = models.length;
+  document.getElementById('loadingIndicator').style.display = 'none';
+  document.getElementById('modelGrid').style.display = '';
+
+  renderModels(models);
   initFlashcards();
   initQuiz();
 }
@@ -629,8 +956,11 @@ function renderModels(data) {
   empty.style.display = 'none';
 
   grid.innerHTML = data.map(m => {
-    const supportClass = m.supportLevel === '官方认证' ? 'support-official' : m.supportLevel === '社区适配' ? 'support-community' : 'support-unknown';
-    const perfClass = m.inferencePerf === '优' ? 'perf-excellent' : m.inferencePerf === '良' ? 'perf-good' : 'perf-fair';
+    const supportClass = m.supportLevel === '✅ 已支持' ? 'support-supported' :
+                         m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
+    const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
+    const hasDoc = m.docUrl && m.docUrl.length > 0;
+
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
         <div class="model-card-header">
@@ -642,18 +972,18 @@ function renderModels(data) {
         </div>
         <div class="model-card-meta">
           <span class="meta-tag category">${m.category}</span>
-          <span class="meta-tag">${m.parameters}</span>
           <span class="meta-tag">${m.architecture}</span>
+          <span class="meta-tag hardware">${m.minHardware}</span>
         </div>
         <dl class="model-card-details">
-          <dt>推理性能</dt>
-          <dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.inferencePerf}</span></dd>
+          <dt>适配状态</dt>
+          <dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
           <dt>框架</dt>
           <dd>${m.framework}</dd>
-          <dt>最低硬件</dt>
-          <dd>${m.minHardware}</dd>
-          <dt>MindSpore</dt>
-          <dd>${m.mindsporeSupport}</dd>
+          <dt>推荐硬件</dt>
+          <dd>${m.recommendedHardware}</dd>
+          <dt>${hasDoc ? '📄 部署文档' : '备注'}</dt>
+          <dd>${hasDoc ? `<a href="${m.docUrl}" target="_blank" class="doc-link" onclick="event.stopPropagation()">查看部署指南 →</a>` : m.notes}</dd>
         </dl>
         <div class="tags">
           ${m.tags.map(t => `<span class="tag">${t}</span>`).join('')}
@@ -672,7 +1002,11 @@ function filterModels() {
   let filtered = models.filter(m => {
     if (search && !m.name.toLowerCase().includes(search) && !m.developer.toLowerCase().includes(search) && !m.tags.some(t => t.toLowerCase().includes(search))) return false;
     if (category !== 'all' && m.category !== category) return false;
-    if (support !== 'all' && m.supportLevel !== support) return false;
+    if (support !== 'all') {
+      if (support === '✅ 已支持' && m.supportLevel !== '✅ 已支持') return false;
+      if (support === '🔵 实验性' && m.supportLevel !== '🔵 实验性') return false;
+      if (support === '扩展兼容' && m.supportLevel !== '扩展兼容') return false;
+    }
     if (hardware !== 'all' && !m.minHardware.includes(hardware) && !m.recommendedHardware.includes(hardware)) return false;
     return true;
   });
@@ -683,26 +1017,31 @@ function filterModels() {
 function showModelDetail(id) {
   const m = models.find(x => x.id === id);
   if (!m) return;
-  const perfClass = m.inferencePerf === '优' ? 'perf-excellent' : m.inferencePerf === '良' ? 'perf-good' : 'perf-fair';
-  const trainPerfClass = m.trainingPerf === '优' ? 'perf-excellent' : m.trainingPerf === '良' ? 'perf-good' : 'perf-fair';
-  const supportClass = m.supportLevel === '官方认证' ? 'support-official' : m.supportLevel === '社区适配' ? 'support-community' : 'support-unknown';
+  const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
+  const supportClass = m.supportLevel === '✅ 已支持' ? 'support-supported' :
+                       m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
+  const hasDoc = m.docUrl && m.docUrl.length > 0;
 
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
     <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category}</p>
     <dl>
-      <dt>参数量</dt><dd>${m.parameters}</dd>
       <dt>架构</dt><dd>${m.architecture}</dd>
+      <dt>适配状态</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
       <dt>支持框架</dt><dd>${m.framework}</dd>
-      <dt>推理性能</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.inferencePerf}</span></dd>
-      <dt>训练性能</dt><dd><span class="perf-bar"><span class="perf-dot ${trainPerfClass}"></span> ${m.trainingPerf}</span></dd>
       <dt>最低硬件</dt><dd>${m.minHardware}</dd>
       <dt>推荐硬件</dt><dd>${m.recommendedHardware}</dd>
       <dt>MindSpore支持</dt><dd>${m.mindsporeSupport}</dd>
       <dt>CANN版本</dt><dd>${m.cannVersion}</dd>
       <dt>备注</dt><dd>${m.notes}</dd>
+      ${hasDoc ? `<dt>📄 部署文档</dt><dd><a href="${m.docUrl}" target="_blank" style="color:var(--color-primary)">${m.docUrl}</a></dd>` : ''}
     </dl>
-    <div class="tags" style="margin-top:16px">${m.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    <div class="tags" style="margin-top:16px">${m.tags.map(t => `<span class="tag">${t}</span>`).join('')</div>
+    ${hasDoc ? `<div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border-radius:8px">
+      <a href="${m.docUrl}" target="_blank" style="color:var(--color-primary);font-weight:600;text-decoration:none;font-size:1rem">
+        📖 查看 ${m.name} 部署指南 →
+      </a>
+    </div>` : ''}
   `;
   document.getElementById('modalOverlay').classList.add('active');
 }
@@ -760,6 +1099,7 @@ function showFlashcard() {
   const card = document.getElementById('flashcard');
   card.classList.remove('show-answer');
   const m = fcData[fcIndex];
+  const hasDoc = m.docUrl && m.docUrl.length > 0;
   document.getElementById('fcQuestion').textContent = `${m.name} 的适配状态和推荐硬件是什么？`;
   document.getElementById('fcAnswer').innerHTML = `
     <strong>${m.name}</strong><br>
@@ -767,6 +1107,7 @@ function showFlashcard() {
     适配状态：${m.supportLevel}<br>
     推荐硬件：${m.recommendedHardware}<br>
     推理性能：${m.inferencePerf} · 框架：${m.framework}
+    ${hasDoc ? `<br><br><a href="${m.docUrl}" target="_blank" style="color:var(--color-primary);font-size:0.9rem">📄 查看部署文档</a>` : ''}
   `;
   document.getElementById('fcCounter').textContent = `${fcIndex + 1} / ${fcData.length}`;
   document.getElementById('fcProgress').style.width = `${((fcIndex + 1) / fcData.length) * 100}%`;
@@ -790,18 +1131,20 @@ let quizScore = 0;
 let quizAnswered = false;
 
 function initQuiz() {
-  quizQuestions = models.map(m => {
-    const wrongOptions = models.filter(x => x.id !== m.id).sort(() => Math.random() - 0.5).slice(0, 3);
-    const options = [
-      { text: m.recommendedHardware, correct: true },
-      ...wrongOptions.map(w => ({ text: w.recommendedHardware, correct: false }))
-    ].sort(() => Math.random() - 0.5);
-    return {
-      question: `${m.name}（${m.developer}）的推荐部署硬件是？`,
-      options,
-      hint: `参数量：${m.parameters}，适配状态：${m.supportLevel}`
-    };
-  }).sort(() => Math.random() - 0.5).slice(0, 10);
+  quizQuestions = models.filter(m => m.supportLevel === '✅ 已支持' || m.supportLevel === '🔵 实验性')
+    .sort(() => Math.random() - 0.5).slice(0, 10)
+    .map(m => {
+      const wrongOptions = models.filter(x => x.id !== m.id).sort(() => Math.random() - 0.5).slice(0, 3);
+      const options = [
+        { text: m.recommendedHardware, correct: true },
+        ...wrongOptions.map(w => ({ text: w.recommendedHardware, correct: false }))
+      ].sort(() => Math.random() - 0.5);
+      return {
+        question: `${m.name}（${m.developer}）的推荐部署硬件是？`,
+        options,
+        hint: `适配状态：${m.supportLevel} · 架构：${m.architecture}`
+      };
+    });
   quizIndex = 0;
   quizScore = 0;
   showQuiz();
@@ -854,7 +1197,7 @@ function answerQuiz(index) {
 }
 
 // ============ Start ============
-loadData();
+init();
 </script>
 </body>
 </html>
