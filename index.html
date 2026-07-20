@@ -255,6 +255,7 @@
     .meta-tag.hardware { background: #FEF3C7; color: #92400E; }
     .meta-tag.source-ascend { background: #DBEAFE; color: #1E40AF; }
     .meta-tag.source-omni { background: #EDE9FE; color: #6D28D9; }
+    .meta-tag.source-sglang { background: #D1FAE5; color: #065F46; }
 
     .model-card-details {
       display: grid;
@@ -626,6 +627,9 @@
       +
       <span class="data-source-badge omni">Omni</span>
       <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank">vLLM Omni 支持模型</a>
+      +
+      <span class="data-source-badge" style="background:#065F46;color:#A7F3D0">SGLang</span>
+      <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank">SGLang Ascend 支持模型</a>
       · <span class="refresh-status" id="refreshStatus">就绪</span>
     </span>
     <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">🔄 手动刷新</button>
@@ -722,7 +726,7 @@
 
 <footer>
   <div class="container">
-    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
+    <p>数据来源：<a href="https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html" target="_blank" style="color:var(--color-accent)">vLLM Ascend 官方支持矩阵</a> · <a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/" target="_blank" style="color:var(--color-accent)">vLLM Omni 支持模型</a> · <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank" style="color:var(--color-accent)">SGLang Ascend 支持模型</a> · <a href="https://support.huawei.com/enterprise/zh/category/ai-computing-platform-pid-1557196528909?submodel=doc" target="_blank" style="color:var(--color-accent)">华为企业业务官网</a> · 仅供参考，请以官方最新公告为准</p>
     <p style="margin-top:8px;font-size:0.8rem">昇腾服务器大模型适配清单 · 数据自动同步 · 点击模型卡片查看部署文档</p>
   </div>
 </footer>
@@ -741,6 +745,8 @@ const VLLM_ASCEND_URL = 'https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_
 const VLLM_ASCEND_BASE = 'https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/';
 const VLLM_OMNI_URL = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
 const VLLM_OMNI_BASE = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
+const SGLANG_ASCEND_URL = 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models';
+const SGLANG_ASCEND_BASE = 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/';
 
 // Multiple CORS proxy fallbacks
 const CORS_PROXIES = [
@@ -1169,6 +1175,100 @@ async function fetchOmniData() {
   }
 }
 
+// ============ SGLang Ascend Data Parser ============
+let sglangModels = [];
+
+async function fetchSGLangData() {
+  try {
+    const html = await fetchWithProxy(SGLANG_ASCEND_URL);
+    if (!html) return false;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const tables = doc.querySelectorAll('table');
+    const parsedModels = [];
+
+    tables.forEach((table) => {
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 2) return;
+
+        const modelName = cells[0].textContent.trim();
+        if (!modelName) return;
+
+        // Determine category
+        let category = 'LLM';
+        if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) category = '多模态';
+        else if (modelName.includes('Coder') || modelName.includes('Code')) category = '代码';
+        else if (modelName.includes('Audio') || modelName.includes('Voice') || modelName.includes('Speech')) category = '语音';
+        else if (modelName.includes('Embedding') || modelName.includes('Reranker')) category = '嵌入/排序';
+
+        // Determine developer
+        let developer = '社区';
+        if (modelName.includes('DeepSeek')) developer = '深度求索';
+        else if (modelName.includes('Qwen')) developer = '阿里云';
+        else if (modelName.includes('GLM') || modelName.includes('ChatGLM') || modelName.includes('CodeGeeX')) developer = '智谱AI';
+        else if (modelName.includes('Baichuan')) developer = '百川智能';
+        else if (modelName.includes('LLaMA') || modelName.includes('Llama')) developer = 'Meta';
+        else if (modelName.includes('Yi')) developer = '零一万物';
+        else if (modelName.includes('Intern')) developer = '上海AI实验室';
+        else if (modelName.includes('Mistral') || modelName.includes('Mixtral')) developer = 'Mistral AI';
+        else if (modelName.includes('MiniCPM')) developer = '面壁智能';
+        else if (modelName.includes('Phi')) developer = 'Microsoft';
+        else if (modelName.includes('Gemma')) developer = 'Google';
+        else if (modelName.includes('Kimi')) developer = '月之暗面';
+        else if (modelName.includes('MiniMax')) developer = 'MiniMax';
+        else if (modelName.includes('Ernie')) developer = '百度';
+        else if (modelName.includes('Stable') || modelName.includes('SD')) developer = 'Stability AI';
+        else if (modelName.includes('Whisper')) developer = 'OpenAI';
+
+        // Determine architecture
+        let architecture = 'Transformer';
+        if (modelName.includes('MoE') || modelName.includes('A3B') || modelName.includes('A22B')) architecture = 'MoE';
+        else if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) architecture = 'Vision-Language';
+        else if (modelName.includes('Diffusion') || modelName.includes('SD')) architecture = 'Diffusion';
+        else if (modelName.includes('Embedding')) architecture = 'Embedding';
+
+        // Determine support level
+        let supportLevel = '✅ 已支持';
+        if (modelName.includes('experimental') || modelName.includes('Experimental')) supportLevel = '🔵 实验性';
+
+        const tags = [category];
+        if (architecture === 'MoE') tags.push('MoE');
+        if (modelName.includes('VL') || modelName.includes('Vision') || modelName.includes('Omni')) tags.push('视觉');
+        if (modelName.includes('Coder') || modelName.includes('Code')) tags.push('代码');
+        if (modelName.includes('Embedding')) tags.push('嵌入');
+        if (modelName.includes('Reranker')) tags.push('排序');
+        if (modelName.includes('Audio')) tags.push('音频');
+        if (modelName.includes('Thinking') || modelName.includes('R1')) tags.push('推理');
+
+        const id = modelName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+        parsedModels.push({
+          id, name: modelName, category, developer,
+          parameters: '多尺寸',
+          architecture, supportLevel, framework: 'PyTorch',
+          minHardware: 'Atlas 800I A3',
+          recommendedHardware: 'Atlas 800T A3',
+          inferencePerf: '良',
+          trainingPerf: '良',
+          mindsporeSupport: '需迁移',
+          cannVersion: '7.0+',
+          notes: `SGLang Ascend 支持`,
+          tags, docUrl: '', source: 'SGLang Ascend'
+        });
+      });
+    });
+
+    sglangModels = parsedModels;
+    return parsedModels.length > 0;
+  } catch (e) {
+    console.warn('SGLang Ascend获取失败:', e.message);
+    return false;
+  }
+}
+
 // ============ Merge models from both sources ============
 function mergeModels() {
   const merged = [];
@@ -1192,6 +1292,15 @@ function mergeModels() {
     }
   });
 
+  // Add SGLang models that are not already in Ascend or Omni
+  sglangModels.forEach(m => {
+    const key = m.name.toLowerCase().replace(/[\s/-]/g, '');
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(m);
+    }
+  });
+
   return merged;
 }
 
@@ -1201,17 +1310,18 @@ async function init() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
   btn.disabled = true;
-  statusEl.textContent = '正在从 vLLM Ascend + Omni 获取最新数据...';
+  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang 获取最新数据...';
 
-  // Fetch from both sources
-  const [ascendOk, omniOk] = await Promise.all([fetchAscendData(), fetchOmniData()]);
+  // Fetch from all sources
+  const [ascendOk, omniOk, sglangOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData()]);
 
-  if (ascendOk || omniOk) {
+  if (ascendOk || omniOk || sglangOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
     if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
     if (omniOk) parts.push(`Omni ${omniModels.length}个`);
+    if (sglangOk) parts.push(`SGLang ${sglangModels.length}个`);
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
@@ -1261,16 +1371,17 @@ async function refreshData() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
   btn.disabled = true;
-  statusEl.textContent = '正在从 vLLM Ascend + Omni 获取最新数据...';
+  statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang 获取最新数据...';
 
-  const [ascendOk, omniOk] = await Promise.all([fetchAscendData(), fetchOmniData()]);
+  const [ascendOk, omniOk, sglangOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData()]);
 
-  if (ascendOk || omniOk) {
+  if (ascendOk || omniOk || sglangOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
     if (ascendOk) parts.push(`Ascend ${ascendModels.length}个`);
     if (omniOk) parts.push(`Omni ${omniModels.length}个`);
+    if (sglangOk) parts.push(`SGLang ${sglangModels.length}个`);
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
@@ -1316,8 +1427,8 @@ function renderModels(data) {
                          m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
     const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
     const hasDoc = m.docUrl && m.docUrl.length > 0;
-    const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : 'source-ascend';
-    const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : 'Ascend';
+    const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : m.source === 'SGLang Ascend' ? 'source-sglang' : 'source-ascend';
+    const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : m.source === 'SGLang Ascend' ? 'SGLang' : 'Ascend';
 
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
@@ -1381,11 +1492,11 @@ function showModelDetail(id) {
                        m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
   const hasDoc = m.docUrl && m.docUrl.length > 0;
 
-  const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : 'vLLM Ascend';
+  const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : m.source === 'SGLang Ascend' ? 'SGLang Ascend' : 'vLLM Ascend';
 
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
-    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${m.source === 'vLLM Omni' ? '#7C3AED' : '#2563EB'}">数据源: ${sourceLabel}</span></p>
+    <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${m.source === 'vLLM Omni' ? '#7C3AED' : m.source === 'SGLang Ascend' ? '#065F46' : '#2563EB'}">数据源: ${sourceLabel}</span></p>
     <dl>
       <dt>架构</dt><dd>${m.architecture}</dd>
       <dt>适配状态</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
