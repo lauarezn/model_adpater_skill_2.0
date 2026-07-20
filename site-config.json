@@ -1,0 +1,19 @@
+{
+  "siteName": "昇腾服务器大模型适配清单",
+  "siteSubtitle": "查询大模型在华为昇腾平台上的适配状态与性能指南",
+  "themeColor": "#FBBF24",
+  "primaryColor": "#2563EB",
+  "secondaryColor": "#0F172A",
+  "logo": "🚀",
+  "footer": "数据来源：华为昇腾社区、MindSpore官方、开源社区 | 仅供参考，请以官方最新公告为准",
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-20",
+  "features": {
+    "flashcards": true,
+    "quiz": true,
+    "search": true,
+    "filter": true,
+    "progress": true,
+    "index": true
+  }
+}
