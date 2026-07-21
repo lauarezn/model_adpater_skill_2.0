@@ -6,8 +6,8 @@
   "secondaryColor": "#0F172A",
   "logo": "🚀",
   "footer": "数据来源：华为昇腾社区、MindSpore官方、开源社区 | 仅供参考，请以官方最新公告为准",
-  "version": "1.0.0",
-  "lastUpdated": "2026-07-20",
+  "version": "1.1.0",
+  "lastUpdated": "2026-07-21",
   "features": {
     "flashcards": true,
     "quiz": true,

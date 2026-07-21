@@ -1307,6 +1307,7 @@ async function fetchGitCodeData() {
     // Parse Next.js dehydrated data from self.__next_f.push entries
     const pushMatches = html.matchAll(/self\.__next_f\.push\(\[1,"(.*?)"\]\)/g);
     let content = null;
+    let totalCount = 0;
 
     for (const match of pushMatches) {
       let decoded;
@@ -1316,12 +1317,17 @@ async function fetchGitCodeData() {
         continue;
       }
 
-      // Look for the data object with content array
-      const dataMatch = decoded.match(/"data":(\{.*)/);
+      // Look for React Query cache data pattern: {"state":{"queries":[{"state":{"data":{"content":[...],"total":"..."}}}]}}
+      // This is the format used by GitCode AI's Next.js page with React Query SSR dehydration
+      const queryMatch = decoded.match(/"queryKey":\["aiProjectsSearch"/);
+      if (!queryMatch) continue;
+
+      // Find the data object containing content array
+      const dataMatch = decoded.match(/"data":(\{.*?"content":\[)/);
       if (!dataMatch) continue;
 
       let dataStr = dataMatch[1];
-      // Find matching closing brace
+      // Find matching closing brace for the data object
       let depth = 0, endIdx = 0;
       for (let i = 0; i < dataStr.length; i++) {
         if (dataStr[i] === '{') depth++;
@@ -1333,6 +1339,7 @@ async function fetchGitCodeData() {
         const dataObj = JSON.parse(dataStr.substring(0, endIdx));
         if (dataObj.content && Array.isArray(dataObj.content)) {
           content = dataObj.content;
+          totalCount = parseInt(dataObj.total) || 0;
           break;
         }
       } catch (e) {
