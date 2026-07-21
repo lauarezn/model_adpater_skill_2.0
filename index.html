@@ -2590,26 +2590,46 @@ async function init() {
   // Fetch from all sources
   const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
 
-  // 始终优先加载本地数据
+  // 先尝试在线获取数据
+  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
+  if (ascendOk || omniOk || sglangOk || gitcodeOk) {
+    models = mergeModels();
+    dataSource = 'merged';
+    const parts = [];
+    if (ascendOk) parts.push('Ascend ' + ascendModels.length + '个');
+    if (omniOk) parts.push('Omni ' + omniModels.length + '个');
+    if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
+    if (gitcodeOk) parts.push('GitCode ' + gitcodeModels.length + '个');
+    statusEl.textContent = '✅ 已获取 ' + parts.join(' + ') + '，共 ' + models.length + ' 个模型';
+    document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+  }
+  // 加载本地数据作为补充（去重合并）
   try {
     const resp = await fetch('data/models.json');
     if (resp.ok) {
-      models = await resp.json();
-      dataSource = 'local-file';
-      statusEl.textContent = '✅ 已加载本地数据，共 ' + models.length + ' 个模型';
-      document.getElementById('dataDate').textContent = '2026-07-21 (本地数据)';
-    } else {
-      models = FALLBACK_MODELS;
-      dataSource = 'local';
-      statusEl.textContent = '⚠️ 加载本地数据失败，使用离线数据';
+      const localModels = await resp.json();
+      const seen = new Set(models.map(m => m.name.toLowerCase().replace(/[\s\/-]/g, '')));
+      let added = 0;
+      localModels.forEach(m => {
+        const key = m.name.toLowerCase().replace(/[\s\/-]/g, '');
+        if (!seen.has(key)) {
+          seen.add(key);
+          models.push(m);
+          added++;
+        }
+      });
+      if (added > 0) {
+        statusEl.textContent = statusEl.textContent + ' | 本地补充 ' + added + ' 个';
+      }
     }
   } catch(e) {
-    models = FALLBACK_MODELS;
-    dataSource = 'local';
-    statusEl.textContent = '⚠️ 加载本地数据失败，使用离线数据';
-  }
-  // 在线数据作为补充（异步，不阻塞页面渲染）
-  loadOnlineData();btn.disabled = false;
+    // 如果在线和本地都失败，使用 FALLBACK_MODELS
+    if (models.length === 0) {
+      models = FALLBACK_MODELS;
+      dataSource = 'local';
+      statusEl.textContent = '⚠️ 获取失败，使用离线数据';
+    }
+  }btn.disabled = false;
 
   document.getElementById('modelCount').textContent = models.length;
   const categories = [...new Set(models.map(m => m.category))];
@@ -2644,36 +2664,7 @@ async function init() {
 
 
 // ============ 在线数据补充加载 ============
-async function loadOnlineData() {
-  const statusEl = document.getElementById('refreshStatus');
-  statusEl.textContent = statusEl.textContent + ' | 正在补充在线数据...';
-  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
-  if (ascendOk || omniOk || sglangOk || gitcodeOk) {
-    const onlineModels = mergeModels();
-    // 合并在线数据到现有 models（去重）
-    const seen = new Set(models.map(m => m.name.toLowerCase().replace(/[\s\/-]/g, '')));
-    let added = 0;
-    onlineModels.forEach(m => {
-      const key = m.name.toLowerCase().replace(/[\s\/-]/g, '');
-      if (!seen.has(key)) {
-        seen.add(key);
-        models.push(m);
-        added++;
-      }
-    });
-    const parts = [];
-    if (ascendOk) parts.push('Ascend ' + ascendModels.length + '个');
-    if (omniOk) parts.push('Omni ' + omniModels.length + '个');
-    if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
-    if (gitcodeOk) parts.push('GitCode ' + gitcodeModels.length + '个');
-    statusEl.textContent = '✅ 本地数据 ' + models.length + ' 个 | 在线补充 ' + parts.join(' + ') + '，新增 ' + added + ' 个';
-    document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
-    document.getElementById('modelCount').textContent = models.length;
-    renderModels(models);
-  } else {
-    statusEl.textContent = '✅ 已加载本地数据，共 ' + models.length + ' 个模型（在线数据获取失败）';
-  }
-}// ============ Refresh ============
+// ============ Refresh ============
 async function refreshData() {
   document.getElementById('loadingIndicator').style.display = '';
   document.getElementById('modelGrid').style.display = 'none';
@@ -2684,26 +2675,46 @@ async function refreshData() {
 
   const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
 
-  // 始终优先加载本地数据
+  // 先尝试在线获取数据
+  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
+  if (ascendOk || omniOk || sglangOk || gitcodeOk) {
+    models = mergeModels();
+    dataSource = 'merged';
+    const parts = [];
+    if (ascendOk) parts.push('Ascend ' + ascendModels.length + '个');
+    if (omniOk) parts.push('Omni ' + omniModels.length + '个');
+    if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
+    if (gitcodeOk) parts.push('GitCode ' + gitcodeModels.length + '个');
+    statusEl.textContent = '✅ 已获取 ' + parts.join(' + ') + '，共 ' + models.length + ' 个模型';
+    document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+  }
+  // 加载本地数据作为补充（去重合并）
   try {
     const resp = await fetch('data/models.json');
     if (resp.ok) {
-      models = await resp.json();
-      dataSource = 'local-file';
-      statusEl.textContent = '✅ 已加载本地数据，共 ' + models.length + ' 个模型';
-      document.getElementById('dataDate').textContent = '2026-07-21 (本地数据)';
-    } else {
-      models = FALLBACK_MODELS;
-      dataSource = 'local';
-      statusEl.textContent = '⚠️ 加载本地数据失败，使用离线数据';
+      const localModels = await resp.json();
+      const seen = new Set(models.map(m => m.name.toLowerCase().replace(/[\s\/-]/g, '')));
+      let added = 0;
+      localModels.forEach(m => {
+        const key = m.name.toLowerCase().replace(/[\s\/-]/g, '');
+        if (!seen.has(key)) {
+          seen.add(key);
+          models.push(m);
+          added++;
+        }
+      });
+      if (added > 0) {
+        statusEl.textContent = statusEl.textContent + ' | 本地补充 ' + added + ' 个';
+      }
     }
   } catch(e) {
-    models = FALLBACK_MODELS;
-    dataSource = 'local';
-    statusEl.textContent = '⚠️ 加载本地数据失败，使用离线数据';
-  }
-  // 在线数据作为补充（异步，不阻塞页面渲染）
-  loadOnlineData();btn.disabled = false;
+    // 如果在线和本地都失败，使用 FALLBACK_MODELS
+    if (models.length === 0) {
+      models = FALLBACK_MODELS;
+      dataSource = 'local';
+      statusEl.textContent = '⚠️ 获取失败，使用离线数据';
+    }
+  }btn.disabled = false;
   document.getElementById('modelCount').textContent = models.length;
   document.getElementById('loadingIndicator').style.display = 'none';
   document.getElementById('modelGrid').style.display = '';
