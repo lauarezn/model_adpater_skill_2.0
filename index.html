@@ -845,48 +845,1134 @@ function buildDocUrl(modelName, baseUrl) {
 
 // Offline fallback data (48 models with complete docUrls)
 const FALLBACK_MODELS = [
-  {"id":"deepseek-v3","name":"DeepSeek-V3","category":"LLM","developer":"深度求索","parameters":"671B (激活37B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"MindSpore / PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"原生支持","cannVersion":"8.0+","notes":"DeepSeek专区已上线","tags":["MoE","大语言模型","推理","训练"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-V3.1"},
-  {"id":"deepseek-r1","name":"DeepSeek-R1","category":"LLM","developer":"深度求索","parameters":"671B (激活37B)","architecture":"MoE + RL","supportLevel":"✅ 已支持","framework":"MindSpore / PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"原生支持","cannVersion":"8.0+","notes":"强化学习版本","tags":["MoE","推理","强化学习"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-R1"},
-  {"id":"deepseek-v4-flash","name":"DeepSeek V4-Flash","category":"LLM","developer":"深度求索","parameters":"多尺寸","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"8.0+","notes":"DeepSeek V4系列","tags":["MoE","大语言模型","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-V4-Flash"},
-  {"id":"deepseek-v4-pro","name":"DeepSeek V4-Pro","category":"LLM","developer":"深度求索","parameters":"多尺寸","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"8.0+","notes":"DeepSeek V4系列","tags":["MoE","大语言模型","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-V4-Pro"},
-  {"id":"deepseek-v32","name":"DeepSeek V3.2","category":"LLM","developer":"深度求索","parameters":"多尺寸","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"8.0+","notes":"DeepSeek V3.2","tags":["MoE","大语言模型","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-V3.2"},
-  {"id":"qwen3-dense","name":"Qwen3-Dense","category":"LLM","developer":"阿里云","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"Qwen3系列Dense版本","tags":["大语言模型","中文","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-Dense"},
-  {"id":"qwen3-30b-a3b","name":"Qwen3-30B-A3B","category":"LLM","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"MoE架构，推理高效","tags":["MoE","大语言模型","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-30B-A3B"},
-  {"id":"qwen3-coder-30b","name":"Qwen3-Coder-30B-A3B","category":"代码","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"代码生成MoE模型","tags":["代码","MoE","生成"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-Coder-30B-A3B"},
-  {"id":"qwen3-235b-a22b","name":"Qwen3-235B-A22B","category":"LLM","developer":"阿里云","parameters":"235B (激活22B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch / MindSpore","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"超大MoE模型","tags":["MoE","大语言模型","超大模型"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-235B-A22B"},
-  {"id":"qwen3-next","name":"Qwen3-Next","category":"LLM","developer":"阿里云","parameters":"多尺寸","architecture":"Transformer","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"Qwen3下一代","tags":["大语言模型","中文","实验性"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-Next"},
-  {"id":"qwen3-vl","name":"Qwen3-VL","category":"多模态","developer":"阿里云","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"多模态视觉语言模型","tags":["多模态","视觉","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen-VL-Dense"},
-  {"id":"qwen3-vl-30b-a3b","name":"Qwen3-VL-30B-A3B","category":"多模态","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"MoE多模态版本","tags":["多模态","MoE","视觉"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-VL-30B-A3B"},
-  {"id":"qwen35-397b","name":"Qwen3.5-397B-A17B","category":"多模态","developer":"阿里云","parameters":"397B (激活17B)","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3 集群","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"超大MoE多模态","tags":["多模态","MoE","超大模型"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3.5-397B-A17B"},
-  {"id":"qwen36-35b","name":"Qwen3.6-35B-A3B","category":"多模态","developer":"阿里云","parameters":"35B (激活3B)","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"MoE多模态","tags":["多模态","MoE","实验性"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3.6-35B-A3B"},
-  {"id":"kimi-k25","name":"Kimi-K2.5/Kimi-K2.6","category":"多模态","developer":"月之暗面","parameters":"多尺寸","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Kimi多模态系列","tags":["多模态","MoE","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Kimi-K2.5"},
-  {"id":"glm-4","name":"GLM-4.x","category":"LLM","developer":"智谱AI","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"🔵 实验性","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"ChatGLM系列","tags":["大语言模型","中文","对话"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/GLM-4.x"},
-  {"id":"glm-5","name":"GLM-5/5.1/5.2","category":"LLM","developer":"智谱AI","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"GLM最新系列","tags":["大语言模型","中文","对话"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/GLM-5"},
-  {"id":"gemma4","name":"Gemma4","category":"LLM","developer":"Google","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Google最新开源","tags":["大语言模型","英文","开源"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Gemma4"},
-  {"id":"kimi-k2","name":"Kimi-K2-Thinking","category":"LLM","developer":"月之暗面","parameters":"多尺寸","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800T A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Kimi推理模型","tags":["MoE","推理","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Kimi-K2-Thinking"},
-  {"id":"deepseek-ocr2","name":"DeepSeekOCR2","category":"视觉","developer":"深度求索","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"优","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"OCR识别模型","tags":["视觉","OCR","文档"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeekOCR2"},
-  {"id":"minimax-m2","name":"MiniMax-M2.5/2.7","category":"LLM","developer":"MiniMax","parameters":"多尺寸","architecture":"MoE","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"MiniMax系列","tags":["MoE","大语言模型","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/MiniMax-M2"},
-  {"id":"qwen2.5-math-rm","name":"Qwen2.5-Math-RM-72B","category":"LLM","developer":"阿里云","parameters":"72B","architecture":"Reward Model","supportLevel":"✅ 已支持","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"奖励模型，数学推理","tags":["奖励模型","数学","推理"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen2.5-Math-RM-72B"},
-  {"id":"qwen3-omni","name":"Qwen3-Omni-30B-A3B-Thinking","category":"多模态","developer":"阿里云","parameters":"30B (激活3B)","architecture":"MoE","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"全模态MoE","tags":["多模态","MoE","全模态"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3-Omni-30B-A3B-Thinking"},
-  {"id":"qwen3-embedding","name":"Qwen3-Embedding","category":"嵌入/排序","developer":"阿里云","parameters":"多尺寸","architecture":"Embedding","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"文本嵌入模型","tags":["嵌入","排序","检索"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3_embedding"},
-  {"id":"qwen3-reranker","name":"Qwen3-Reranker","category":"嵌入/排序","developer":"阿里云","parameters":"多尺寸","architecture":"Embedding","supportLevel":"🔵 实验性","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"重排序模型","tags":["排序","检索","嵌入"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/Qwen3_reranker"},
-  {"id":"qwq-32b","name":"QwQ-32B","category":"LLM","developer":"阿里云","parameters":"32B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"推理增强","tags":["大语言模型","推理","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"qwen2","name":"Qwen2/Qwen2.5","category":"LLM","developer":"阿里云","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"Qwen2系列扩展兼容","tags":["大语言模型","中文","通用"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"llama3","name":"LLaMA 3/3.1/3.2","category":"LLM","developer":"Meta","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Meta开源系列","tags":["大语言模型","英文","开源"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"internlm","name":"InternLM","category":"LLM","developer":"上海AI实验室","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"书生系列","tags":["大语言模型","中文","学术"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"baichuan","name":"Baichuan/Baichuan2","category":"LLM","developer":"百川智能","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"百川系列","tags":["大语言模型","中文","通用"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"yi","name":"Yi-34B","category":"LLM","developer":"零一万物","parameters":"34B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"中英文双语","tags":["大语言模型","中英文","通用"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"mistral","name":"Mistral/Mistral-Instruct","category":"LLM","developer":"Mistral AI","parameters":"7B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"高效轻量","tags":["大语言模型","英文","高效"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"phi-3","name":"Phi-3/4/4-mini","category":"LLM","developer":"Microsoft","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"微软小模型系列","tags":["大语言模型","英文","轻量"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"gemma","name":"Gemma-2/3","category":"LLM","developer":"Google","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"Google开源系列","tags":["大语言模型","英文","开源"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"minicpm","name":"MiniCPM/MiniCPM3","category":"LLM","developer":"面壁智能","parameters":"2B-4B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 200I","recommendedHardware":"Atlas 800I A3","inferencePerf":"优","trainingPerf":"优","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"端侧部署","tags":["大语言模型","端侧","轻量"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"ernie-4.5","name":"Ernie4.5/Ernie4.5-MoE","category":"LLM","developer":"百度","parameters":"多尺寸","architecture":"MoE","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"文心系列","tags":["大语言模型","中文","MoE"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"qwen2-vl","name":"Qwen2-VL","category":"多模态","developer":"阿里云","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"多模态视觉","tags":["多模态","视觉","中文"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"llava-next","name":"LLaVA-Next","category":"多模态","developer":"社区","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"开源多模态","tags":["多模态","视觉","开源"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"minicpm-v","name":"MiniCPM-V","category":"多模态","developer":"面壁智能","parameters":"多尺寸","architecture":"Vision-Language","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 200I","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"端侧多模态","tags":["多模态","端侧","视觉"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"stablediffusion-xl","name":"Stable Diffusion XL","category":"多模态","developer":"Stability AI","parameters":"2.6B","architecture":"Diffusion","supportLevel":"扩展兼容","framework":"PyTorch","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"需迁移","cannVersion":"7.0+","notes":"文生图","tags":["文生图","扩散模型","创意"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"deepseek-coder","name":"DeepSeek-Coder","category":"代码","developer":"深度求索","parameters":"多尺寸","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800T A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"代码生成","tags":["代码","生成","多语言"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"},
-  {"id":"codegeex","name":"CodeGeeX4-9B","category":"代码","developer":"智谱AI","parameters":"9B","architecture":"Dense Transformer","supportLevel":"扩展兼容","framework":"PyTorch / MindSpore","minHardware":"Atlas 800I A3","recommendedHardware":"Atlas 800I A3","inferencePerf":"良","trainingPerf":"良","mindsporeSupport":"支持","cannVersion":"7.0+","notes":"代码生成","tags":["代码","生成","多语言"],"docUrl":"https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"}
+  {
+    "id": "aigc-txt-detect",
+    "name": "AIGC_txt_detect",
+    "category": "LLM",
+    "developer": "roberta/bert",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "roberta/bert"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "bagel-7b-mot",
+    "name": "BAGEL-7B-MoT",
+    "category": "多模态",
+    "developer": "Seed",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理",
+    "tags": [
+      "多模态",
+      "Seed"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "baichuan",
+    "name": "Baichuan/Baichuan2",
+    "category": "LLM",
+    "developer": "百川智能",
+    "parameters": "多尺寸",
+    "architecture": "Dense Transformer",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "百川系列",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "通用"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "baichuan2-13b",
+    "name": "Baichuan2-13B",
+    "category": "LLM",
+    "developer": "百川智能",
+    "parameters": "13B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "百川系列，中文预训练优势",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "通用"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "baichuan2-7b",
+    "name": "Baichuan2-7B",
+    "category": "LLM",
+    "developer": "百川智能",
+    "parameters": "7B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "轻量级，适合快速部署",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "轻量"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "bge-vl-large",
+    "name": "BGE-VL-Large",
+    "category": "多模态",
+    "developer": "BGE",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend:0.11.0rc2",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理",
+    "tags": [
+      "多模态",
+      "BGE"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "bloom-176b",
+    "name": "BLOOM-176B",
+    "category": "LLM",
+    "developer": "BigScience",
+    "parameters": "176B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800T A3 集群",
+    "recommendedHardware": "Atlas 900 A3 SuperPoD",
+    "inferencePerf": "一般",
+    "trainingPerf": "一般",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "多语言大模型，参数量大",
+    "tags": [
+      "大语言模型",
+      "多语言",
+      "超大模型"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "chatglm4-130b",
+    "name": "GLM-4-130B",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "130B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3 集群",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "超大参数版本，适合复杂推理",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "超大模型"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "chatglm4-9b",
+    "name": "GLM-4-9B",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "9B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "ChatGLM系列最新版本",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "对话"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "co-detr",
+    "name": "Co-DETR",
+    "category": "视觉",
+    "developer": "Co-DETR",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "mindspore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT CV模型，场景：训练/推理",
+    "tags": [
+      "CV",
+      "Co-DETR"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "codegeex",
+    "name": "CodeGeeX4-9B",
+    "category": "代码",
+    "developer": "智谱AI",
+    "parameters": "9B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "代码生成",
+    "tags": [
+      "代码",
+      "生成",
+      "多语言"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "codestral-22b",
+    "name": "Codestral-22B",
+    "category": "代码",
+    "developer": "Mistral AI",
+    "parameters": "22B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "代码生成专用模型",
+    "tags": [
+      "代码",
+      "生成",
+      "英文"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "cosyvoice2",
+    "name": "Cosyvoice2",
+    "category": "语音",
+    "developer": "CosyVoice",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 语音合成模型，场景：推理",
+    "tags": [
+      "语音合成",
+      "CosyVoice"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "deeponet-grid-uq",
+    "name": "DeepONet-Grid-UQ",
+    "category": "科学计算",
+    "developer": "AI4Sci",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "mindspore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT AI4Sci模型，场景：训练/推理",
+    "tags": [
+      "AI4Sci",
+      "AI4Sci"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "deepseek-coder",
+    "name": "DeepSeek-Coder",
+    "category": "代码",
+    "developer": "深度求索",
+    "parameters": "多尺寸",
+    "architecture": "Dense Transformer",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "代码生成",
+    "tags": [
+      "代码",
+      "生成",
+      "多语言"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "deepseek-coder-33b",
+    "name": "DeepSeek-Coder-33B",
+    "category": "代码",
+    "developer": "深度求索",
+    "parameters": "33B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "优",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "代码能力突出，支持多语言",
+    "tags": [
+      "代码",
+      "生成",
+      "多语言"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "deepseek-ocr-ascend-tested-images",
+    "name": "DeepSeek-OCR-Ascend-Tested-Images",
+    "category": "多模态",
+    "developer": "DeepSeek",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理",
+    "tags": [
+      "多模态",
+      "DeepSeek"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "deepseek-ocr2",
+    "name": "DeepSeekOCR2",
+    "category": "视觉",
+    "developer": "深度求索",
+    "parameters": "多尺寸",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "优",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "OCR识别模型",
+    "tags": [
+      "视觉",
+      "OCR",
+      "文档"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeekOCR2"
+  },
+  {
+    "id": "deepseek-r1",
+    "name": "DeepSeek-R1",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "671B (激活37B)",
+    "architecture": "MoE + RL",
+    "supportLevel": "✅ 已支持",
+    "framework": "MindSpore / PyTorch",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3 集群",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "原生支持",
+    "cannVersion": "8.0+",
+    "notes": "强化学习版本",
+    "tags": [
+      "MoE",
+      "推理",
+      "强化学习"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-R1"
+  },
+  {
+    "id": "deepseek-v3",
+    "name": "DeepSeek-V3",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "671B (激活37B)",
+    "architecture": "MoE",
+    "supportLevel": "✅ 已支持",
+    "framework": "MindSpore / PyTorch",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3 集群",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "原生支持",
+    "cannVersion": "8.0+",
+    "notes": "DeepSeek专区已上线",
+    "tags": [
+      "MoE",
+      "大语言模型",
+      "推理",
+      "训练"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/DeepSeek-V3.1"
+  },
+  {
+    "id": "dinov3-vitb16-pretrain-lvd1689m",
+    "name": "dinov3-vitb16-pretrain-lvd1689m",
+    "category": "视觉",
+    "developer": "DINOv3",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend:0.11.0rc2",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 视觉基础模型，场景：推理",
+    "tags": [
+      "视觉基础",
+      "DINOv3"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "dots-ocr",
+    "name": "dots.ocr",
+    "category": "多模态",
+    "developer": "dots.ocr",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理",
+    "tags": [
+      "多模态",
+      "dots.ocr"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "dpot",
+    "name": "DPOT",
+    "category": "科学计算",
+    "developer": "DPOT",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "MindSpeed",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT AI4Sci模型，场景：训练/推理",
+    "tags": [
+      "AI4Sci",
+      "DPOT"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "ernie-4.5",
+    "name": "Ernie4.5/Ernie4.5-MoE",
+    "category": "LLM",
+    "developer": "百度",
+    "parameters": "多尺寸",
+    "architecture": "MoE",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "文心系列",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "MoE"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "ernie-45-vl",
+    "name": "ERNIE-4.5-VL-28B-A3B",
+    "category": "多模态",
+    "developer": "百度",
+    "parameters": "28B (激活3B)",
+    "architecture": "MoE Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "百度文心多模态版本",
+    "tags": [
+      "多模态",
+      "视觉",
+      "中文"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "ernie-image",
+    "name": "ernie-image",
+    "category": "多模态",
+    "developer": "ernie",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend 0.19.0rc1",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理/性能调优",
+    "tags": [
+      "多模态",
+      "ernie"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "flux",
+    "name": "Flux",
+    "category": "视觉",
+    "developer": "Flux",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "MindIE",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT CV模型，场景：推理",
+    "tags": [
+      "CV",
+      "Flux"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "fun-cosyvoice3-0-5b-2512",
+    "name": "Fun-CosyVoice3-0.5B-2512",
+    "category": "语音",
+    "developer": "CosyVoice",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 语音合成模型，场景：推理",
+    "tags": [
+      "语音合成",
+      "CosyVoice"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "gemma",
+    "name": "Gemma-2/3",
+    "category": "LLM",
+    "developer": "Google",
+    "parameters": "多尺寸",
+    "architecture": "Dense Transformer",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Google开源系列",
+    "tags": [
+      "大语言模型",
+      "英文",
+      "开源"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "gemma-2-9b",
+    "name": "gemma-2-9b",
+    "category": "LLM",
+    "developer": "gemma",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "gemma"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "genos-v2-10b",
+    "name": "Genos-V2-10B",
+    "category": "科学计算",
+    "developer": "Genos",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend/transformers",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT AI4Sci模型，场景：推理",
+    "tags": [
+      "AI4Sci",
+      "Genos"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-45",
+    "name": "GLM-4.5",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "系列模型",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "8.0+",
+    "notes": "GLM-4.5系列，性能全面提升",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "通用"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-46",
+    "name": "GLM-4.6",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "系列模型",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "8.0+",
+    "notes": "GLM-4.6系列，推理能力增强",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "通用"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-47",
+    "name": "GLM-4.7",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "系列模型",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "8.0+",
+    "notes": "GLM-4.7系列，最新版本",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "通用"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-5-1-w8a8",
+    "name": "GLM-5.1-W8A8",
+    "category": "LLM",
+    "developer": "GLM",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "GLM"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-5-2",
+    "name": "GLM-5.2",
+    "category": "LLM",
+    "developer": "GLM",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend 0.21.0",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "GLM"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-5-2-w4a8",
+    "name": "GLM-5.2-w4a8",
+    "category": "LLM",
+    "developer": "GLM",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "GLM"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-image",
+    "name": "GLM-Image",
+    "category": "多模态",
+    "developer": "智谱AI",
+    "parameters": "图像生成",
+    "architecture": "Diffusion",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "智谱AI图像生成模型",
+    "tags": [
+      "多模态",
+      "图像生成",
+      "中文"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "glm-ocr",
+    "name": "GLM-OCR",
+    "category": "视觉",
+    "developer": "智谱AI",
+    "parameters": "OCR模型",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "智谱AI文字识别模型",
+    "tags": [
+      "视觉",
+      "OCR",
+      "中文"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "gpt-oss-120b-bf16",
+    "name": "GPT-OSS-120B-BF16",
+    "category": "LLM",
+    "developer": "GPT",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "GPT"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "gpt-oss-20b-bf16-based-vllm-ascend",
+    "name": "GPT-OSS-20B-BF16-based-vllm-ascend",
+    "category": "LLM",
+    "developer": "GPT",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 自然语言处理模型，场景：推理",
+    "tags": [
+      "自然语言处理",
+      "GPT"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "hunyuan-video",
+    "name": "HunyuanVideo",
+    "category": "多模态",
+    "developer": "腾讯",
+    "parameters": "视频生成模型",
+    "architecture": "Diffusion",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "腾讯混元视频生成模型",
+    "tags": [
+      "多模态",
+      "视频生成",
+      "中文"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "hunyuanocr",
+    "name": "HunyuanOCR",
+    "category": "多模态",
+    "developer": "HunyuanOCR",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 多模态模型，场景：推理",
+    "tags": [
+      "多模态",
+      "HunyuanOCR"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "index-tts-vllm",
+    "name": "Index-TTS-vLLM",
+    "category": "语音",
+    "developer": "Index-TTS",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "vLLM-Ascend:v0.11.0rc1",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 语音合成模型，场景：推理",
+    "tags": [
+      "语音合成",
+      "Index-TTS"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "infermetricsmonitor",
+    "name": "InferMetricsMonitor",
+    "category": "工具",
+    "developer": "NA",
+    "parameters": "",
+    "architecture": "",
+    "supportLevel": "✅ 已支持",
+    "framework": "mindie",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT 指标监控模型，场景：推理",
+    "tags": [
+      "指标监控",
+      "NA"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "intern-s1",
+    "name": "Intern-S1",
+    "category": "多模态",
+    "developer": "上海AI实验室",
+    "parameters": "科学多模态大模型",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3 集群",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "书生·万象科学多模态大模型",
+    "tags": [
+      "多模态",
+      "科学",
+      "视觉"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "intern-s2",
+    "name": "Intern-S2-Preview",
+    "category": "多模态",
+    "developer": "上海AI实验室",
+    "parameters": "下一代科学多模态",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800T A3",
+    "recommendedHardware": "Atlas 800T A3 集群",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "需迁移",
+    "cannVersion": "8.0+",
+    "notes": "书生·万象S2预览版",
+    "tags": [
+      "多模态",
+      "科学",
+      "视觉"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "internlm",
+    "name": "InternLM",
+    "category": "LLM",
+    "developer": "上海AI实验室",
+    "parameters": "多尺寸",
+    "architecture": "Dense Transformer",
+    "supportLevel": "扩展兼容",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "书生系列",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "学术"
+    ],
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/"
+  },
+  {
+    "id": "internlm2-20b",
+    "name": "InternLM2-20B",
+    "category": "LLM",
+    "developer": "上海AI实验室",
+    "parameters": "20B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "书生系列，学术背景深厚",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "学术"
+    ],
+    "docUrl": ""
+  },
+  {
+    "id": "internlm2-7b",
+    "name": "InternLM2-7B",
+    "category": "LLM",
+    "developer": "上海AI实验室",
+    "parameters": "7B",
+    "architecture": "Dense Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch / MindSpore",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800I A3",
+    "inferencePerf": "优",
+    "trainingPerf": "优",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "书生系列轻量版",
+    "tags": [
+      "大语言模型",
+      "中文",
+      "轻量"
+    ],
+    "docUrl": ""
+  }
 ];
 
 const FALLBACK_HARDWARE = [
@@ -1509,9 +2595,22 @@ async function init() {
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
-    models = FALLBACK_MODELS;
-    dataSource = 'local';
-    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    try {
+      const resp = await fetch('data/models.json');
+      if (resp.ok) {
+        models = await resp.json();
+        dataSource = 'local-file';
+        statusEl.textContent = '✅ 已加载本地数据，共 ' + models.length + ' 个模型';
+      } else {
+        models = FALLBACK_MODELS;
+        dataSource = 'local';
+        statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+      }
+    } catch(e) {
+      models = FALLBACK_MODELS;
+      dataSource = 'local';
+      statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    }
     document.getElementById('dataDate').textContent = '2026-07-20 (离线数据)';
   }
 
@@ -1570,9 +2669,22 @@ async function refreshData() {
     statusEl.textContent = `✅ 已获取 ${parts.join(' + ')}，共 ${models.length} 个模型`;
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   } else {
-    models = FALLBACK_MODELS;
-    dataSource = 'local';
-    statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    try {
+      const resp = await fetch('data/models.json');
+      if (resp.ok) {
+        models = await resp.json();
+        dataSource = 'local-file';
+        statusEl.textContent = '✅ 已加载本地数据，共 ' + models.length + ' 个模型';
+      } else {
+        models = FALLBACK_MODELS;
+        dataSource = 'local';
+        statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+      }
+    } catch(e) {
+      models = FALLBACK_MODELS;
+      dataSource = 'local';
+      statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+    }
   }
 
   btn.disabled = false;
