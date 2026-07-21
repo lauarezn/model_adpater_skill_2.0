@@ -1,0 +1,18 @@
+{
+  "name": "ascend-model-adapter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "crawl_gitcode_full.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://lauare:oFbU8WZUHh3S2doiDDe1sCKW@gitcode.com/lauare/model_adpater_skill.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.61.1"
+  }
+}

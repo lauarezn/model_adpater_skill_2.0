@@ -19,7 +19,7 @@
       "未分类",
       "142"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/142/多模态"
   },
   {
     "id": "-2",
@@ -41,7 +41,7 @@
       "未分类",
       "12"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/12/语音合成"
   },
   {
     "id": "-3",
@@ -63,7 +63,7 @@
       "未分类",
       "4"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/4/语音分类与识别"
   },
   {
     "id": "-4",
@@ -85,7 +85,7 @@
       "未分类",
       "2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/2/智驾模型"
   },
   {
     "id": "-5",
@@ -107,7 +107,7 @@
       "未分类",
       "1"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/1/镜像包"
   },
   {
     "id": "-6",
@@ -129,7 +129,7 @@
       "未分类",
       "1"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/1/强化学习训练框架"
   },
   {
     "id": "-7",
@@ -151,7 +151,7 @@
       "未分类",
       "1"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/1/音频-音乐理解"
   },
   {
     "id": "-8",
@@ -173,7 +173,7 @@
       "未分类",
       "1"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/1/全景图生成"
   },
   {
     "id": "aasist",
@@ -195,7 +195,7 @@
       "语音安全与鉴伪",
       "AASIST"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AASIST/AASIST"
   },
   {
     "id": "acot-vla",
@@ -217,7 +217,7 @@
       "VLA",
       "ACoT-VLA"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/ACoT-VLA/ACoT-VLA"
   },
   {
     "id": "aigc-txt-detect",
@@ -239,7 +239,7 @@
       "自然语言处理",
       "roberta/bert"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/roberta-bert/AIGC-txt-detect"
   },
   {
     "id": "alloybert",
@@ -327,7 +327,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/AtomicConv"
   },
   {
     "id": "attentivefp",
@@ -349,7 +349,7 @@
       "科学计算",
       "AttentiveFP"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AttentiveFP/AttentiveFP"
   },
   {
     "id": "audiocraft-musicgen",
@@ -371,7 +371,7 @@
       "多模态",
       "audiocraft"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/audiocraft/audiocraft-musicgen"
   },
   {
     "id": "aurora-iclr26",
@@ -393,7 +393,7 @@
       "预测",
       "Aurora-ICLR26"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Aurora-ICLR26/Aurora-ICLR26"
   },
   {
     "id": "bagel-7b-mot",
@@ -415,7 +415,7 @@
       "多模态",
       "Seed"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Seed/BAGEL-7B-MoT"
   },
   {
     "id": "baichuan",
@@ -461,7 +461,7 @@
       "中文",
       "通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/百川智能/Baichuan2-13B"
   },
   {
     "id": "baichuan2-7b",
@@ -484,7 +484,7 @@
       "中文",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/百川智能/Baichuan2-7B"
   },
   {
     "id": "bart",
@@ -528,7 +528,7 @@
       "自然语言处理",
       "BCEmbedding"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BCEmbedding/bce-embedding-base-v1"
   },
   {
     "id": "beats",
@@ -550,7 +550,7 @@
       "音频/音乐理解",
       "UniLM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/UniLM/Beats"
   },
   {
     "id": "bert",
@@ -572,7 +572,7 @@
       "自然语言处理",
       "Bert"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Bert/Bert"
   },
   {
     "id": "bge-large-zh-v1-5",
@@ -594,7 +594,7 @@
       "自然语言处理",
       "bge"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/bge/bge-large-zh-v1.5"
   },
   {
     "id": "bge-m3",
@@ -616,7 +616,7 @@
       "自然语言处理",
       "bge"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/bge/bge-m3"
   },
   {
     "id": "bge-reranker-v2-m3",
@@ -638,7 +638,7 @@
       "自然语言处理",
       "bge"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/bge/bge-reranker-v2-m3"
   },
   {
     "id": "bge-vl-large",
@@ -660,7 +660,7 @@
       "多模态",
       "BGE"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BGE/BGE-VL-Large"
   },
   {
     "id": "bigvgan",
@@ -682,7 +682,7 @@
       "自然语言处理",
       "BigVGAN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BigVGAN/BigVGAN"
   },
   {
     "id": "biomedkg",
@@ -704,7 +704,7 @@
       "AI4Sci",
       "BioMedKG"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BioMedKG/BioMedKG"
   },
   {
     "id": "blendmask",
@@ -726,7 +726,7 @@
       "CV",
       "BlendMask"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BlendMask/BlendMask"
   },
   {
     "id": "blip2",
@@ -748,7 +748,7 @@
       "多模态",
       "blip2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/blip2/blip2"
   },
   {
     "id": "bloom-176b",
@@ -771,7 +771,7 @@
       "多语言",
       "超大模型"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BigScience/BLOOM-176B"
   },
   {
     "id": "boltz2",
@@ -793,7 +793,7 @@
       "科学计算",
       "Boltz"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Boltz/Boltz2"
   },
   {
     "id": "canary-1b",
@@ -815,7 +815,7 @@
       "语音识别",
       "NeMo"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/NeMo/Canary-1B"
   },
   {
     "id": "cbs",
@@ -837,7 +837,7 @@
       "科学计算",
       "CBS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CBS/CBS"
   },
   {
     "id": "chatglm4-130b",
@@ -860,7 +860,7 @@
       "中文",
       "超大模型"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-4-130B"
   },
   {
     "id": "chatglm4-9b",
@@ -883,7 +883,7 @@
       "中文",
       "对话"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-4-9B"
   },
   {
     "id": "chemberta",
@@ -905,7 +905,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/chemBERTa"
   },
   {
     "id": "chemception",
@@ -927,7 +927,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/ChemCeption"
   },
   {
     "id": "chemprop",
@@ -949,7 +949,7 @@
       "科学计算",
       "Chemprop"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Chemprop/Chemprop"
   },
   {
     "id": "chinese-license-plate-detection-recognition",
@@ -971,7 +971,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/Chinese-license-plate-detection-recognition"
   },
   {
     "id": "chronos-forecasting",
@@ -993,7 +993,7 @@
       "时序",
       "Chronos"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Chronos/chronos-forecasting"
   },
   {
     "id": "clip",
@@ -1015,7 +1015,7 @@
       "多模态",
       "clip"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/clip/clip"
   },
   {
     "id": "clip-vit-base-patch32",
@@ -1037,7 +1037,7 @@
       "CV",
       "CLIP"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CLIP/clip-vit-base-patch32"
   },
   {
     "id": "clip-vit-large-patch14-336",
@@ -1059,7 +1059,7 @@
       "多模态",
       "clip"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/clip/clip-vit-large-patch14-336"
   },
   {
     "id": "co-detr",
@@ -1081,7 +1081,7 @@
       "CV",
       "Co-DETR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Co-DETR/Co-DETR"
   },
   {
     "id": "codegeex",
@@ -1127,7 +1127,7 @@
       "生成",
       "英文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Mistral-AI/Codestral-22B"
   },
   {
     "id": "cogview4",
@@ -1149,7 +1149,7 @@
       "多模态图像生成",
       "CogView"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CogView/cogview4"
   },
   {
     "id": "convtext",
@@ -1171,7 +1171,7 @@
       "多模态",
       "convtext"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/convtext/convtext"
   },
   {
     "id": "cosyvoice2",
@@ -1193,7 +1193,7 @@
       "语音合成",
       "CosyVoice"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CosyVoice/Cosyvoice2"
   },
   {
     "id": "cosyvoice2-0-5",
@@ -1215,7 +1215,7 @@
       "语音合成",
       "CosyVoice"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CosyVoice/CosyVoice2-0.5"
   },
   {
     "id": "cosyvoice2-0-5b",
@@ -1237,7 +1237,7 @@
       "语音合成",
       "CosyVoice"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CosyVoice/CosyVoice2-0.5B"
   },
   {
     "id": "crnn",
@@ -1259,7 +1259,7 @@
       "OCR",
       "CRNN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CRNN/CRNN"
   },
   {
     "id": "d-fine",
@@ -1281,7 +1281,7 @@
       "CV",
       "D-FINE"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/D-FINE/D-FINE"
   },
   {
     "id": "dbnet",
@@ -1303,7 +1303,7 @@
       "自然语言处理",
       "DBNet"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DBNet/DBNet"
   },
   {
     "id": "dct-net",
@@ -1325,7 +1325,7 @@
       "CV",
       "DCT-Net"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DCT-Net/DCT-Net"
   },
   {
     "id": "deeponet-grid-uq",
@@ -1347,7 +1347,7 @@
       "AI4Sci",
       "AI4Sci"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AI4Sci/DeepONet-Grid-UQ"
   },
   {
     "id": "deepseek-coder",
@@ -1393,7 +1393,7 @@
       "生成",
       "多语言"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/深度求索/DeepSeek-Coder-33B"
   },
   {
     "id": "deepseek-ocr-ascend-tested-images",
@@ -1415,7 +1415,7 @@
       "多模态",
       "DeepSeek"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepSeek/DeepSeek-OCR-Ascend-Tested-Images"
   },
   {
     "id": "deepseek-ocr2",
@@ -1576,7 +1576,7 @@
       "CV",
       "depth"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/depth/depth-anything-v2"
   },
   {
     "id": "detectron2",
@@ -1598,7 +1598,7 @@
       "CV",
       "Detectron2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Detectron2/Detectron2"
   },
   {
     "id": "detr",
@@ -1620,7 +1620,7 @@
       "CV",
       "DETR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DETR/DETR"
   },
   {
     "id": "diarizen",
@@ -1642,7 +1642,7 @@
       "语音识别",
       "BUTSpeechFIT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/BUTSpeechFIT/DiariZen"
   },
   {
     "id": "dino",
@@ -1664,7 +1664,7 @@
       "CV",
       "DINO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DINO/DINO"
   },
   {
     "id": "dinomaly",
@@ -1686,7 +1686,7 @@
       "CV",
       "Dinomaly"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Dinomaly/Dinomaly"
   },
   {
     "id": "dinov2",
@@ -1708,7 +1708,7 @@
       "CV",
       "DINO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DINO/DINOv2"
   },
   {
     "id": "dinov3",
@@ -1730,7 +1730,7 @@
       "CV",
       "DINO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DINO/DINOv3"
   },
   {
     "id": "dinov3-vitb16-pretrain-lvd1689m",
@@ -1752,7 +1752,7 @@
       "视觉基础",
       "DINOv3"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DINOv3/dinov3-vitb16-pretrain-lvd1689m"
   },
   {
     "id": "dists",
@@ -1774,7 +1774,7 @@
       "CV",
       "DISTS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DISTS/DISTS"
   },
   {
     "id": "dmpnn",
@@ -1796,7 +1796,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/DMPNN"
   },
   {
     "id": "dnsmos",
@@ -1818,7 +1818,7 @@
       "语音质量评估",
       "DNSMOS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DNSMOS/DNSMOS"
   },
   {
     "id": "dots-ocr",
@@ -1840,7 +1840,7 @@
       "多模态",
       "dots.ocr"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/dots.ocr/dots.ocr"
   },
   {
     "id": "dpot",
@@ -1862,7 +1862,7 @@
       "AI4Sci",
       "DPOT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DPOT/DPOT"
   },
   {
     "id": "dpt",
@@ -1884,7 +1884,7 @@
       "CV",
       "DPT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DPT/DPT"
   },
   {
     "id": "drugclip",
@@ -1906,7 +1906,7 @@
       "科学计算",
       "DrugCLIP"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DrugCLIP/DrugCLIP"
   },
   {
     "id": "dssm",
@@ -1928,7 +1928,7 @@
       "自然语言处理",
       "DSSM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DSSM/DSSM"
   },
   {
     "id": "dtnn",
@@ -1950,7 +1950,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/DTNN"
   },
   {
     "id": "eccv2022-rife",
@@ -1972,7 +1972,7 @@
       "多模态",
       "RIFE"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/RIFE/ECCV2022-RIFE"
   },
   {
     "id": "efficientloftr",
@@ -1994,7 +1994,7 @@
       "CV",
       "LoFTR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/LoFTR/EfficientLoFTR"
   },
   {
     "id": "emotion2vec-base",
@@ -2016,7 +2016,7 @@
       "语音分类与识别",
       "emotion2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/emotion2/emotion2vec-base"
   },
   {
     "id": "emotion2vec-plus-base",
@@ -2038,7 +2038,7 @@
       "语音分类与识别",
       "emotion2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/emotion2/emotion2vec-plus-base"
   },
   {
     "id": "emotion2vec-plus-large",
@@ -2060,7 +2060,7 @@
       "语音分类与识别",
       "emotion2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/emotion2/emotion2vec-plus-large"
   },
   {
     "id": "emotion2vec-plus-seed",
@@ -2082,7 +2082,7 @@
       "语音分类与识别",
       "emotion2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/emotion2/emotion2vec-plus-seed"
   },
   {
     "id": "ernie-4.5",
@@ -2128,7 +2128,7 @@
       "视觉",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/百度/ERNIE-4.5-VL-28B-A3B"
   },
   {
     "id": "ernie-image",
@@ -2150,7 +2150,7 @@
       "多模态",
       "ernie"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/ernie/ernie-image"
   },
   {
     "id": "esm-c-650m",
@@ -2172,7 +2172,7 @@
       "AI4Sci",
       "ESM-2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/ESM-2/ESM-C-650M"
   },
   {
     "id": "f3net",
@@ -2194,7 +2194,7 @@
       "CV",
       "F3NET"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/F3NET/F3NET"
   },
   {
     "id": "fasterrcnn",
@@ -2216,7 +2216,7 @@
       "CV",
       "FasterRCNN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FasterRCNN/FasterRCNN"
   },
   {
     "id": "fireredasr-aed",
@@ -2238,7 +2238,7 @@
       "语音识别",
       "FireRedASR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FireRedASR/FireRedASR-AED"
   },
   {
     "id": "flan-t5",
@@ -2260,7 +2260,7 @@
       "CV",
       "Flan-T5"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Flan-T5/Flan-T5"
   },
   {
     "id": "flashvsr-v1-1",
@@ -2282,7 +2282,7 @@
       "多模态",
       "FlashVSR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FlashVSR/FlashVSR-V1.1"
   },
   {
     "id": "florence-2-large",
@@ -2304,7 +2304,7 @@
       "多模态",
       "Florence"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Florence/Florence-2-large"
   },
   {
     "id": "flux",
@@ -2326,7 +2326,7 @@
       "CV",
       "Flux"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Flux/Flux"
   },
   {
     "id": "fno-3d",
@@ -2348,7 +2348,7 @@
       "科学计算",
       "FNO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FNO/FNO-3D"
   },
   {
     "id": "focalformer3d",
@@ -2370,7 +2370,7 @@
       "多模态",
       "FocalFormer3D"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FocalFormer3D/FocalFormer3D"
   },
   {
     "id": "fun-asr-nano-2512",
@@ -2392,7 +2392,7 @@
       "语音识别",
       "FunASR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FunASR/Fun-ASR-Nano-2512"
   },
   {
     "id": "fun-asr-nano-2512-sft",
@@ -2414,7 +2414,7 @@
       "语音识别",
       "FunASR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FunASR/Fun-ASR-Nano-2512-SFT"
   },
   {
     "id": "fun-cosyvoice3-0-5b-2512",
@@ -2436,7 +2436,7 @@
       "语音合成",
       "CosyVoice"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/CosyVoice/Fun-CosyVoice3-0.5B-2512"
   },
   {
     "id": "funasr-paraformer-ziphance-vad-ct-transformer-speaker",
@@ -2458,7 +2458,7 @@
       "语音识别",
       "FunASR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FunASR/FunASR（paraformer-ziphance-vad-ct-transformer-speaker）"
   },
   {
     "id": "funasr-vad-sensevoice-small-cam",
@@ -2480,7 +2480,7 @@
       "语音识别",
       "FunASR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/FunASR/FunASR（VAD-+-SenseVoice-Small-+-CAM++）"
   },
   {
     "id": "gan",
@@ -2502,7 +2502,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/GAN"
   },
   {
     "id": "gemma",
@@ -2547,7 +2547,7 @@
       "自然语言处理",
       "gemma"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/gemma/gemma-2-9b"
   },
   {
     "id": "gemma4",
@@ -2592,7 +2592,7 @@
       "AI4Sci",
       "Genos"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Genos/Genos-V2-10B"
   },
   {
     "id": "glm-4",
@@ -2638,7 +2638,7 @@
       "中文",
       "通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-4.5"
   },
   {
     "id": "glm-46",
@@ -2661,7 +2661,7 @@
       "中文",
       "通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-4.6"
   },
   {
     "id": "glm-47",
@@ -2684,7 +2684,7 @@
       "中文",
       "通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-4.7"
   },
   {
     "id": "glm-5",
@@ -2729,7 +2729,7 @@
       "自然语言处理",
       "GLM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GLM/GLM-5.1-W8A8"
   },
   {
     "id": "glm-5-2",
@@ -2751,7 +2751,7 @@
       "自然语言处理",
       "GLM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GLM/GLM-5.2"
   },
   {
     "id": "glm-5-2-w4a8",
@@ -2773,7 +2773,7 @@
       "自然语言处理",
       "GLM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GLM/GLM-5.2-w4a8"
   },
   {
     "id": "glm-5-w4a8",
@@ -2795,7 +2795,7 @@
       "自然语言处理",
       "GLM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GLM/GLM-5-w4A8"
   },
   {
     "id": "glm-image",
@@ -2818,7 +2818,7 @@
       "图像生成",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-Image"
   },
   {
     "id": "glm-ocr",
@@ -2841,7 +2841,7 @@
       "OCR",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/智谱AI/GLM-OCR"
   },
   {
     "id": "gnnmodular",
@@ -2863,7 +2863,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/GNNModular"
   },
   {
     "id": "gpt-oss-120b-bf16",
@@ -2885,7 +2885,7 @@
       "自然语言处理",
       "GPT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GPT/GPT-OSS-120B-BF16"
   },
   {
     "id": "gpt-oss-20b-bf16-based-vllm-ascend",
@@ -2907,7 +2907,7 @@
       "自然语言处理",
       "GPT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GPT/GPT-OSS-20B-BF16-based-vllm-ascend"
   },
   {
     "id": "groundingdino",
@@ -2929,7 +2929,7 @@
       "CV",
       "DINO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DINO/GroundingDINO"
   },
   {
     "id": "grover",
@@ -2951,7 +2951,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/Grover"
   },
   {
     "id": "gte-multilingual-reranker-base",
@@ -2973,7 +2973,7 @@
       "排序模型",
       "GTE"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GTE/gte-multilingual-reranker-base"
   },
   {
     "id": "gtt",
@@ -2995,7 +2995,7 @@
       "预测",
       "GTT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GTT/GTT"
   },
   {
     "id": "head-ani-2x",
@@ -3017,7 +3017,7 @@
       "AI4Sci",
       "HEAD"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/HEAD/HEAD(ANI-2X)"
   },
   {
     "id": "hidream-i1",
@@ -3039,7 +3039,7 @@
       "多模态",
       "HiDream"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/HiDream/HiDream-I1"
   },
   {
     "id": "hunyuan-video",
@@ -3062,7 +3062,7 @@
       "视频生成",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/腾讯/HunyuanVideo"
   },
   {
     "id": "hunyuanocr",
@@ -3084,7 +3084,7 @@
       "多模态",
       "HunyuanOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/HunyuanOCR/HunyuanOCR"
   },
   {
     "id": "hy-world2-0-hy-pano-2",
@@ -3106,7 +3106,7 @@
       "全景图生成",
       "HY-World-2.0"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/HY-World-2.0/HY-World2.0--HY-Pano-2"
   },
   {
     "id": "index-tts-2",
@@ -3128,7 +3128,7 @@
       "语音合成",
       "Index-TTS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Index-TTS/Index-TTS-2"
   },
   {
     "id": "index-tts-vllm",
@@ -3150,7 +3150,7 @@
       "语音合成",
       "Index-TTS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Index-TTS/Index-TTS-vLLM"
   },
   {
     "id": "infermetricsmonitor",
@@ -3194,7 +3194,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/InfoGraph"
   },
   {
     "id": "intern-s1",
@@ -3217,7 +3217,7 @@
       "科学",
       "视觉"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/上海AI实验室/Intern-S1"
   },
   {
     "id": "intern-s2",
@@ -3240,7 +3240,7 @@
       "科学",
       "视觉"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/上海AI实验室/Intern-S2-Preview"
   },
   {
     "id": "internlm",
@@ -3286,7 +3286,7 @@
       "中文",
       "学术"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/上海AI实验室/InternLM2-20B"
   },
   {
     "id": "internlm2-7b",
@@ -3309,7 +3309,7 @@
       "中文",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/上海AI实验室/InternLM2-7B"
   },
   {
     "id": "internvl-3-5-241b",
@@ -3331,7 +3331,7 @@
       "多模态",
       "InternVL"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/InternVL/InternVL-3.5-241B"
   },
   {
     "id": "internvl2-5-1b-mpo",
@@ -3353,7 +3353,7 @@
       "多模态",
       "InternVL"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/InternVL/InternVL2-5-1B-MPO"
   },
   {
     "id": "jina-jina-embeddings-v5-text-small-retrieval",
@@ -3375,7 +3375,7 @@
       "文本嵌入",
       "Jina Embeddings"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Jina-Embeddings/jina-jina-embeddings-v5-text-small-retrieval"
   },
   {
     "id": "jina-reranker-v3",
@@ -3397,7 +3397,7 @@
       "重排打分模型",
       "Jina Reranker"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Jina-Reranker/jina-reranker-v3"
   },
   {
     "id": "kimi-k2",
@@ -3442,7 +3442,7 @@
       "多模态",
       "Kimi"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Kimi/Kimi-K2.5-W4A8"
   },
   {
     "id": "kimi-k2-instruct-w8a8",
@@ -3464,7 +3464,7 @@
       "自然语言处理",
       "Kimi"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Kimi/Kimi-K2-Instruct-W8A8"
   },
   {
     "id": "kimi-k25",
@@ -3510,7 +3510,7 @@
       "视觉",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/月之暗面/Kimi-VL-A3B"
   },
   {
     "id": "kokoro",
@@ -3532,7 +3532,7 @@
       "多模态",
       "Kokoro"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Kokoro/Kokoro"
   },
   {
     "id": "kolors",
@@ -3554,7 +3554,7 @@
       "多模态图像生成",
       "Kolors"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Kolors/Kolors"
   },
   {
     "id": "kolors-inpainting-controlnet",
@@ -3576,7 +3576,7 @@
       "多模态",
       "Kolors"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Kolors/Kolors-inpainting-controlnet"
   },
   {
     "id": "kunpeng-gromacs",
@@ -3620,7 +3620,7 @@
       "OCR",
       "LightOnOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/LightOnOCR/LightOnOCR-2-1B"
   },
   {
     "id": "lightx2v",
@@ -3642,7 +3642,7 @@
       "多模态",
       "LightX2V"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/LightX2V/LightX2V"
   },
   {
     "id": "lingshu-7b",
@@ -3664,7 +3664,7 @@
       "多模态",
       "qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/qwen/lingshu-7b"
   },
   {
     "id": "llama3",
@@ -3710,7 +3710,7 @@
       "英文",
       "开源"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Meta/LLaMA-3.1-70B"
   },
   {
     "id": "llama3-8b",
@@ -3734,7 +3734,7 @@
       "开源",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Meta/LLaMA-3.1-8B"
   },
   {
     "id": "llava-13b",
@@ -3757,7 +3757,7 @@
       "视觉",
       "对话"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/UW-Madison/LLaVA-1.6-13B"
   },
   {
     "id": "llava-next",
@@ -3824,7 +3824,7 @@
       "CV",
       "英伟达图像识别"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/英伟达图像识别/LocateAnything-3B"
   },
   {
     "id": "m2m100",
@@ -3846,7 +3846,7 @@
       "多语言机器翻译",
       "M2M100"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/M2M100/M2M100"
   },
   {
     "id": "mapformer",
@@ -3868,7 +3868,7 @@
       "CV",
       "MapFormer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MapFormer/MapFormer"
   },
   {
     "id": "matmodel",
@@ -3890,7 +3890,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/MATModel"
   },
   {
     "id": "matscibert",
@@ -3934,7 +3934,7 @@
       "AI4Sci",
       "AI4Sci"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AI4Sci/MatterGen"
   },
   {
     "id": "mattersim",
@@ -3956,7 +3956,7 @@
       "AI4Sci",
       "AI4Sci"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AI4Sci/MatterSim"
   },
   {
     "id": "midashenglm-7b",
@@ -3978,7 +3978,7 @@
       "多模态",
       "MiDasheng"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MiDasheng/MiDashengLM-7B"
   },
   {
     "id": "mimo-v2-5",
@@ -4000,7 +4000,7 @@
       "全模态",
       "MiMo"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MiMo/MiMo-v2.5"
   },
   {
     "id": "mindyolo",
@@ -4022,7 +4022,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/mindyolo套件"
   },
   {
     "id": "mineru-2-7-6",
@@ -4044,7 +4044,7 @@
       "文档智能处理",
       "MinerU"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MinerU/MinerU-2.7.6"
   },
   {
     "id": "mineru2-5",
@@ -4066,7 +4066,7 @@
       "多模态",
       "MinerU"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MinerU/MinerU2.5"
   },
   {
     "id": "mineru2-7-4",
@@ -4088,7 +4088,7 @@
       "多模态",
       "MinerU"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MinerU/MinerU2.7.4"
   },
   {
     "id": "mineru3-3",
@@ -4110,7 +4110,7 @@
       "多模态",
       "MinerU"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MinerU/MinerU3.3"
   },
   {
     "id": "minicpm",
@@ -4156,7 +4156,7 @@
       "端侧",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/面壁智能/MiniCPM-2B"
   },
   {
     "id": "minicpm-o-26",
@@ -4179,7 +4179,7 @@
       "端侧",
       "视觉"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/面壁智能/MiniCPM-o-2.6"
   },
   {
     "id": "minicpm-v",
@@ -4225,7 +4225,7 @@
       "端侧",
       "视觉"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/面壁智能/MiniCPM-V-2B"
   },
   {
     "id": "minicpm5-1b",
@@ -4247,7 +4247,7 @@
       "自然语言处理",
       "OpenBMB"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OpenBMB/MiniCPM5-1B"
   },
   {
     "id": "minimax-m2",
@@ -4293,7 +4293,7 @@
       "大语言模型",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MiniMax/MiniMax-M3"
   },
   {
     "id": "mirothinker-1-7",
@@ -4315,7 +4315,7 @@
       "研究智能体",
       "MiroThinker"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MiroThinker/MiroThinker-1.7"
   },
   {
     "id": "mistral",
@@ -4361,7 +4361,7 @@
       "英文",
       "高效"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Mistral-AI/Mistral-7B"
   },
   {
     "id": "mixtral-8x7b",
@@ -4384,7 +4384,7 @@
       "大语言模型",
       "英文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Mistral-AI/Mixtral-8x7B"
   },
   {
     "id": "mllm-benchmark-tuning",
@@ -4406,7 +4406,7 @@
       "多模态",
       "多模态通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/多模态通用/MLLM-Benchmark-Tuning"
   },
   {
     "id": "mmaudio",
@@ -4428,7 +4428,7 @@
       "多模态",
       "MMAudio"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MMAudio/MMAudio"
   },
   {
     "id": "mobileclip-b-lt",
@@ -4450,7 +4450,7 @@
       "CV",
       "MobileClip"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MobileClip/MobileCLIP-B-LT"
   },
   {
     "id": "molformer",
@@ -4472,7 +4472,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/MoLFormer"
   },
   {
     "id": "molgan",
@@ -4494,7 +4494,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/MolGan"
   },
   {
     "id": "molscribe",
@@ -4516,7 +4516,7 @@
       "科学计算",
       "MolScribe"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MolScribe/MolScribe"
   },
   {
     "id": "mono3d",
@@ -4538,7 +4538,7 @@
       "智驾模型",
       "两段式端到端"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/两段式端到端/Mono3D"
   },
   {
     "id": "moss-speech",
@@ -4560,7 +4560,7 @@
       "语音语言",
       "openmoss"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openmoss/MOSS-Speech"
   },
   {
     "id": "moss-ttsd-v0-5",
@@ -4582,7 +4582,7 @@
       "语音合成",
       "MOSS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MOSS/MOSS-TTSD-v0.5"
   },
   {
     "id": "mossformer2-se-48k",
@@ -4604,7 +4604,7 @@
       "语音增强",
       "MossFormer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MossFormer/MossFormer2-SE-48K"
   },
   {
     "id": "mova",
@@ -4626,7 +4626,7 @@
       "多模态",
       "MOSS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MOSS/MOVA"
   },
   {
     "id": "mova-x86-pytorch",
@@ -4648,7 +4648,7 @@
       "多模态",
       "MOVA"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MOVA/MOVA-X86-pytorch"
   },
   {
     "id": "msserviceprofiler",
@@ -4692,7 +4692,7 @@
       "科学计算",
       "MTAN-ADMET"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MTAN-ADMET/MTAN-ADMET"
   },
   {
     "id": "multitalk",
@@ -4714,7 +4714,7 @@
       "多模态",
       "MultiTalk"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MultiTalk/MultiTalk"
   },
   {
     "id": "nex-n2-mini",
@@ -4736,7 +4736,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Nex-N2-mini"
   },
   {
     "id": "nex-n2-pro",
@@ -4758,7 +4758,7 @@
       "智能体模型",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Nex-N2-Pro"
   },
   {
     "id": "nllb200-1-3b",
@@ -4780,7 +4780,7 @@
       "自然语言处理",
       "nllb200"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/nllb200/nllb200-1.3b"
   },
   {
     "id": "npu-adapter",
@@ -4824,7 +4824,7 @@
       "CV",
       "Occformer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Occformer/Occformer"
   },
   {
     "id": "oligoformer",
@@ -4846,7 +4846,7 @@
       "科学计算",
       "OligoFormer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OligoFormer/OligoFormer"
   },
   {
     "id": "omnidocbench-renamed-only-images",
@@ -4868,7 +4868,7 @@
       "数据集",
       "图片"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/图片/Omnidocbench-Renamed-Only-Images"
   },
   {
     "id": "omninet",
@@ -4890,7 +4890,7 @@
       "多模态",
       "OmniNet"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OmniNet/OmniNet"
   },
   {
     "id": "omniparserv2",
@@ -4912,7 +4912,7 @@
       "多模态",
       "OmniParser"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OmniParser/OmniParserV2"
   },
   {
     "id": "openfold2",
@@ -4934,7 +4934,7 @@
       "科学计算",
       "Alpha Fold"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Alpha-Fold/OpenFold2"
   },
   {
     "id": "openpangu-20-flash",
@@ -4957,7 +4957,7 @@
       "中文",
       "高效"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/昇腾原生/openPangu-2.0-Flash"
   },
   {
     "id": "openpangu-embedded-1b",
@@ -4979,7 +4979,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Embedded-1B"
   },
   {
     "id": "openpangu-embedded-1b-v1-1-7b-v1-1",
@@ -5001,7 +5001,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Embedded-1B-V1.1-&-7B-V1.1"
   },
   {
     "id": "openpangu-embedded-7b",
@@ -5023,7 +5023,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Embedded-7B"
   },
   {
     "id": "openpangu-embedded-7b-v1-1",
@@ -5045,7 +5045,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Embedded-7B-V1.1"
   },
   {
     "id": "openpangu-r-72b",
@@ -5068,7 +5068,7 @@
       "中文",
       "高性能"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/昇腾原生/openPangu-R-72B"
   },
   {
     "id": "openpangu-sft-examples",
@@ -5090,7 +5090,7 @@
       "自然语言处理",
       "OpenPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OpenPangu/OpenPangu-SFT-Examples"
   },
   {
     "id": "openpangu-ultra-moe-718b-v1-1",
@@ -5112,7 +5112,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Ultra-MoE-718B-V1.1"
   },
   {
     "id": "openpangu-ultra-moe-718b-v1-1-w8a8",
@@ -5134,7 +5134,7 @@
       "自然语言处理",
       "openPangu"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/openPangu/openPangu-Ultra-MoE-718B-V1.1-W8A8"
   },
   {
     "id": "paddleocr",
@@ -5156,7 +5156,7 @@
       "CV",
       "OCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OCR/PaddleOCR"
   },
   {
     "id": "paddleocr-pp-ocrv5",
@@ -5178,7 +5178,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PaddleOCR-PP-OCRv5"
   },
   {
     "id": "paddleocr-vl",
@@ -5200,7 +5200,7 @@
       "多模态",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PaddleOCR-VL"
   },
   {
     "id": "paddleocr-vl-0-9b",
@@ -5222,7 +5222,7 @@
       "多模态",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PaddleOCR-VL-0.9B"
   },
   {
     "id": "paddleocr-vl-1-5",
@@ -5244,7 +5244,7 @@
       "多模态",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PaddleOCR-VL-1.5"
   },
   {
     "id": "paddleocr-vl-1-6",
@@ -5266,7 +5266,7 @@
       "多模态",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PaddleOCR-VL-1.6"
   },
   {
     "id": "paddleocrv5",
@@ -5288,7 +5288,7 @@
       "CV",
       "OCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OCR/PaddleOCRv5"
   },
   {
     "id": "paligemma-3b-mix-224",
@@ -5310,7 +5310,7 @@
       "多模态",
       "PaliGemma"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaliGemma/paligemma-3b-mix-224"
   },
   {
     "id": "patchcore",
@@ -5332,7 +5332,7 @@
       "CV",
       "PatchCore"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PatchCore/PatchCore"
   },
   {
     "id": "phi-3",
@@ -5377,7 +5377,7 @@
       "VLA",
       "Pi-0"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Pi-0/pi0"
   },
   {
     "id": "pid-gan",
@@ -5399,7 +5399,7 @@
       "科学计算",
       "GAN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/GAN/PID-GAN"
   },
   {
     "id": "pocketxmol",
@@ -5421,7 +5421,7 @@
       "AI4Sci",
       "PocketXMol"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PocketXMol/PocketXMol"
   },
   {
     "id": "powerflownet",
@@ -5443,7 +5443,7 @@
       "AI4Sci",
       "AI4Sci"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/AI4Sci/PowerFlowNet"
   },
   {
     "id": "pp-docbee-2b",
@@ -5465,7 +5465,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-DocBee-2B"
   },
   {
     "id": "pp-doclayout-plus-l",
@@ -5487,7 +5487,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-DocLayout-plus-L"
   },
   {
     "id": "pp-doclayoutv3-paddleocr-vl-1-5",
@@ -5509,7 +5509,7 @@
       "OCR",
       "paddle"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/paddle/PP-DocLayoutV3-PaddleOCR-VL-1.5"
   },
   {
     "id": "pp-lcnet-x1-0-table-cls",
@@ -5531,7 +5531,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-LCNet-x1-0-table-cls"
   },
   {
     "id": "pp-ocrv3",
@@ -5553,7 +5553,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-OCRv3"
   },
   {
     "id": "pp-ocrv4-server-seal-det",
@@ -5575,7 +5575,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-OCRv4-server-seal-det"
   },
   {
     "id": "pp-ocrv5",
@@ -5597,7 +5597,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/PP-OCRv5"
   },
   {
     "id": "progressive-multitask",
@@ -5619,7 +5619,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/Progressive-Multitask"
   },
   {
     "id": "promptir",
@@ -5641,7 +5641,7 @@
       "多模态",
       "promptIR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/promptIR/promptIR"
   },
   {
     "id": "protbert",
@@ -5663,7 +5663,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/ProtBert"
   },
   {
     "id": "qianfan-ocr",
@@ -5685,7 +5685,7 @@
       "多模态",
       "Qianfan-OCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qianfan-OCR/Qianfan-OCR"
   },
   {
     "id": "qwen-image",
@@ -5708,7 +5708,7 @@
       "图像",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen-Image"
   },
   {
     "id": "qwen2",
@@ -5753,7 +5753,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-14B"
   },
   {
     "id": "qwen2-5-14b-finetune",
@@ -5775,7 +5775,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-14B-finetune"
   },
   {
     "id": "qwen2-5-14b-instruct",
@@ -5797,7 +5797,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-14B-Instruct"
   },
   {
     "id": "qwen2-5-14b-pretrain",
@@ -5819,7 +5819,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-14B-pretrain"
   },
   {
     "id": "qwen2-5-32b",
@@ -5841,7 +5841,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-32B"
   },
   {
     "id": "qwen2-5-3b-instruct",
@@ -5863,7 +5863,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-3B-Instruct"
   },
   {
     "id": "qwen2-5-omni-3b",
@@ -5885,7 +5885,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-Omni-3B"
   },
   {
     "id": "qwen2-5-vl-32b",
@@ -5907,7 +5907,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-32B"
   },
   {
     "id": "qwen2-5-vl-3b-instruct",
@@ -5929,7 +5929,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-3B-Instruct"
   },
   {
     "id": "qwen2-5-vl-7b",
@@ -5951,7 +5951,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-7B"
   },
   {
     "id": "qwen2-5-vl-7b-4",
@@ -5973,7 +5973,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-7B"
   },
   {
     "id": "qwen2-5-vl-7b-instruct",
@@ -5995,7 +5995,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-7B-Instruct"
   },
   {
     "id": "qwen2-5-vl-7b-instruct-w8a8",
@@ -6017,7 +6017,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-7B-Instruct-w8a8"
   },
   {
     "id": "qwen2-5-vl-omni-7b-mrope-opt",
@@ -6039,7 +6039,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5-VL-Omni-7B-Mrope-Opt"
   },
   {
     "id": "qwen2-5vl-7b-instruct",
@@ -6061,7 +6061,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen2.5VL-7B-Instruct"
   },
   {
     "id": "qwen2-72b",
@@ -6084,7 +6084,7 @@
       "中文",
       "推理"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen2.5-72B"
   },
   {
     "id": "qwen2-7b",
@@ -6107,7 +6107,7 @@
       "中文",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen2.5-7B"
   },
   {
     "id": "qwen2-vl",
@@ -6153,7 +6153,7 @@
       "视觉",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen2.5-VL-72B"
   },
   {
     "id": "qwen2.5-math-rm",
@@ -6198,7 +6198,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-0.6B"
   },
   {
     "id": "qwen3-0-6b-w8a8",
@@ -6220,7 +6220,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-0.6B-w8a8"
   },
   {
     "id": "qwen3-14b",
@@ -6243,7 +6243,7 @@
       "中文",
       "通用"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-14B"
   },
   {
     "id": "qwen3-235b-a22b",
@@ -6312,7 +6312,7 @@
       "中文",
       "高性能"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-32B"
   },
   {
     "id": "qwen3-4b",
@@ -6334,7 +6334,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-4B"
   },
   {
     "id": "qwen3-4b-grpo-2k-verl",
@@ -6356,7 +6356,7 @@
       "强化学习训练框架",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-4B-GRPO-2K-VeRL"
   },
   {
     "id": "qwen3-4b-instruct-2507",
@@ -6378,7 +6378,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-4B-Instruct-2507"
   },
   {
     "id": "qwen3-6-27b",
@@ -6400,7 +6400,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3.6-27B"
   },
   {
     "id": "qwen3-8b",
@@ -6423,7 +6423,7 @@
       "中文",
       "轻量"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-8B"
   },
   {
     "id": "qwen3-asr",
@@ -6446,7 +6446,7 @@
       "识别",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-ASR"
   },
   {
     "id": "qwen3-coder-30b",
@@ -6491,7 +6491,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-Coder-480B-A35B-Instruct-w8a8"
   },
   {
     "id": "qwen3-coder-480b-vllm-ascend",
@@ -6513,7 +6513,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-Coder-480B-vLLM-ascend"
   },
   {
     "id": "qwen3-coder-480b-w8a8",
@@ -6535,7 +6535,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-Coder-480B-W8A8"
   },
   {
     "id": "qwen3-coder-next",
@@ -6558,7 +6558,7 @@
       "生成",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-Coder-Next"
   },
   {
     "id": "qwen3-dense",
@@ -6626,7 +6626,7 @@
       "自然语言处理",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-MOE-235B-A22B-W8A8"
   },
   {
     "id": "qwen3-next",
@@ -6694,7 +6694,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-omni-captioner-X86-vLLM"
   },
   {
     "id": "qwen3-omni-thinking-x86-vllm",
@@ -6716,7 +6716,7 @@
       "多模态",
       "Qwen"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Qwen/Qwen3-omni-thinking-X86-vLLM"
   },
   {
     "id": "qwen3-reranker",
@@ -6762,7 +6762,7 @@
       "合成",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3-TTS"
   },
   {
     "id": "qwen3-vl",
@@ -6831,7 +6831,7 @@
       "中文",
       "高性能"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3.5-27B"
   },
   {
     "id": "qwen35-35b-a3b",
@@ -6855,7 +6855,7 @@
       "中文",
       "高效"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Qwen3.5-35B-A3B"
   },
   {
     "id": "qwen35-397b",
@@ -6946,7 +6946,7 @@
       "多模态",
       "R-ESRGAN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/R-ESRGAN/R-ESRGAN"
   },
   {
     "id": "raft-stereo",
@@ -6968,7 +6968,7 @@
       "CV",
       "RAFT-STEREO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/RAFT-STEREO/RAFT-STEREO"
   },
   {
     "id": "real-esrgan",
@@ -7012,7 +7012,7 @@
       "科学计算",
       "reinvent4"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/reinvent4/reinvent4"
   },
   {
     "id": "repvit",
@@ -7034,7 +7034,7 @@
       "CV",
       "RepVit"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/RepVit/RepVit"
   },
   {
     "id": "resnet1d",
@@ -7056,7 +7056,7 @@
       "CV",
       "Resnet"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Resnet/Resnet1D"
   },
   {
     "id": "retinaface",
@@ -7078,7 +7078,7 @@
       "CV",
       "Retinaface"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Retinaface/Retinaface"
   },
   {
     "id": "rex-omni",
@@ -7100,7 +7100,7 @@
       "多模态",
       "IDEA-Research"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/IDEA-Research/Rex-Omni"
   },
   {
     "id": "rf-detr",
@@ -7122,7 +7122,7 @@
       "CV",
       "DETR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DETR/RF-DETR"
   },
   {
     "id": "rt-detr",
@@ -7144,7 +7144,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/RT-DETR"
   },
   {
     "id": "rt-detr-l-wired-table-cell-det",
@@ -7166,7 +7166,7 @@
       "CV",
       "PaddleOCR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/PaddleOCR/RT-DETR-L-wired-table-cell-det"
   },
   {
     "id": "rt-detrv4",
@@ -7188,7 +7188,7 @@
       "CV",
       "RT-DETR"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/RT-DETR/RT-DETRv4"
   },
   {
     "id": "rtmpose",
@@ -7210,7 +7210,7 @@
       "CV",
       "MMPose"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MMPose/RTMPose"
   },
   {
     "id": "run-benchmark",
@@ -7255,7 +7255,7 @@
       "分割",
       "图像"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Meta/SAM-2"
   },
   {
     "id": "sam3",
@@ -7277,7 +7277,7 @@
       "CV",
       "Segment Anything"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Segment-Anything/SAM3"
   },
   {
     "id": "samrs",
@@ -7299,7 +7299,7 @@
       "CV",
       "SAMRS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/SAMRS/SAMRS"
   },
   {
     "id": "samrs-dcnv3",
@@ -7321,7 +7321,7 @@
       "CV",
       "SAM"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/SAM/SAMRS-DCNv3"
   },
   {
     "id": "sdxl",
@@ -7343,7 +7343,7 @@
       "多模态",
       "Diffusers"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Diffusers/sdxl"
   },
   {
     "id": "seallm-7b",
@@ -7366,7 +7366,7 @@
       "多语言",
       "东南亚"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Sea-AI-Lab/SeaLLM-7B"
   },
   {
     "id": "sensevoice-6b",
@@ -7389,7 +7389,7 @@
       "识别",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/商汤科技/SenseVoice-6B"
   },
   {
     "id": "sensevoicesmall",
@@ -7411,7 +7411,7 @@
       "语音合成",
       "SenseVoice"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/SenseVoice/SenseVoiceSmall"
   },
   {
     "id": "sherpa-onnx-kokoro",
@@ -7433,7 +7433,7 @@
       "语音合成",
       "sherpa-onnx"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/sherpa-onnx/sherpa-onnx-kokoro"
   },
   {
     "id": "sparsetrack",
@@ -7455,7 +7455,7 @@
       "智驾模型",
       "两段式端到端"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/两段式端到端/SparseTrack"
   },
   {
     "id": "speaker-diarization-3-1",
@@ -7477,7 +7477,7 @@
       "语音识别",
       "Pyannote"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Pyannote/Speaker-Diarization-3.1"
   },
   {
     "id": "speechscorer",
@@ -7499,7 +7499,7 @@
       "语音识别与解码",
       "speechscorer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/speechscorer/speechscorer"
   },
   {
     "id": "stablediffusion-xl",
@@ -7545,7 +7545,7 @@
       "中文",
       "高效"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阶跃星辰/Step-3.7-Flash"
   },
   {
     "id": "step3-235b",
@@ -7567,7 +7567,7 @@
       "自然语言处理",
       "Step"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Step/Step3-235B"
   },
   {
     "id": "suiren-confavg",
@@ -7589,7 +7589,7 @@
       "预测",
       "Suiren"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Suiren/Suiren-ConfAvg"
   },
   {
     "id": "surya",
@@ -7611,7 +7611,7 @@
       "OCR",
       "Surya"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Surya/Surya"
   },
   {
     "id": "swin-transformer",
@@ -7633,7 +7633,7 @@
       "CV",
       "Swin Transformer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Swin-Transformer/Swin-Transformer"
   },
   {
     "id": "t5",
@@ -7655,7 +7655,7 @@
       "自然语言处理",
       "T5"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/T5/T5"
   },
   {
     "id": "tabpfnv2-0-9",
@@ -7677,7 +7677,7 @@
       "预测",
       "TabPFN"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/TabPFN/TabPFNv2.0.9"
   },
   {
     "id": "tacotron2",
@@ -7699,7 +7699,7 @@
       "语音合成",
       "tacotron2"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/tacotron2/tacotron2"
   },
   {
     "id": "textcnn",
@@ -7721,7 +7721,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/TextCNN"
   },
   {
     "id": "time-moe",
@@ -7743,7 +7743,7 @@
       "时序",
       "Timer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Timer/Time-MoE"
   },
   {
     "id": "timecma",
@@ -7765,7 +7765,7 @@
       "时序",
       "Time"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Time/TimeCMA"
   },
   {
     "id": "timer",
@@ -7787,7 +7787,7 @@
       "时序",
       "Timer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Timer/Timer"
   },
   {
     "id": "timer-s1",
@@ -7809,7 +7809,7 @@
       "时序",
       "Timer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Timer/Timer-S1"
   },
   {
     "id": "timer-xl-finetune",
@@ -7831,7 +7831,7 @@
       "时序",
       "Timer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Timer/Timer-XL-FineTune"
   },
   {
     "id": "timerxl",
@@ -7853,7 +7853,7 @@
       "时序",
       "Timer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Timer/TimerXL"
   },
   {
     "id": "tokenmol",
@@ -7875,7 +7875,7 @@
       "科学计算",
       "TokenMol"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/TokenMol/TokenMol"
   },
   {
     "id": "transformer-dpt",
@@ -7897,7 +7897,7 @@
       "CV",
       "DPT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DPT/transformer-dpt"
   },
   {
     "id": "transolver",
@@ -7919,7 +7919,7 @@
       "科学计算",
       "Transolver"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Transolver/Transolver++"
   },
   {
     "id": "unet",
@@ -7941,7 +7941,7 @@
       "CV",
       "Unet"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Unet/Unet"
   },
   {
     "id": "unetmodel",
@@ -7963,7 +7963,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/UnetModel"
   },
   {
     "id": "unimol",
@@ -7985,7 +7985,7 @@
       "科学计算",
       "unimol"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/unimol/unimol"
   },
   {
     "id": "unimol2",
@@ -8007,7 +8007,7 @@
       "科学计算",
       "unimol"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/unimol/unimol2"
   },
   {
     "id": "units",
@@ -8029,7 +8029,7 @@
       "时序",
       "UniTS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/UniTS/UniTS"
   },
   {
     "id": "uvr-mdx-net-inst-hq-3",
@@ -8051,7 +8051,7 @@
       "音频分离模型",
       "uvr-mdx-infer"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/uvr-mdx-infer/UVR-MDX-NET-Inst-HQ-3"
   },
   {
     "id": "videobench",
@@ -8073,7 +8073,7 @@
       "数据集",
       "音视频精度数据集"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/音视频精度数据集/Videobench"
   },
   {
     "id": "videobench-performance",
@@ -8095,7 +8095,7 @@
       "数据集",
       "视频"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/视频/videobench-performance"
   },
   {
     "id": "videomaev2",
@@ -8117,7 +8117,7 @@
       "CV",
       "VideoMAE"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/VideoMAE/VideoMAEv2"
   },
   {
     "id": "vidmuse",
@@ -8139,7 +8139,7 @@
       "多模态",
       "VidMuse"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/VidMuse/VidMuse"
   },
   {
     "id": "vit",
@@ -8161,7 +8161,7 @@
       "CV",
       "ViT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/ViT/ViT"
   },
   {
     "id": "vit-base-patch16-224",
@@ -8183,7 +8183,7 @@
       "CV",
       "ViT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/ViT/vit-base-patch16-224"
   },
   {
     "id": "vit-large",
@@ -8205,7 +8205,7 @@
       "CV",
       "VIT"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/VIT/Vit-Large"
   },
   {
     "id": "vocalsound",
@@ -8227,7 +8227,7 @@
       "数据集",
       "音频精度数据集"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/音频精度数据集/VocalSound"
   },
   {
     "id": "wall-oss-flow",
@@ -8249,7 +8249,7 @@
       "VLA",
       "WALL-OSS"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/WALL-OSS/WALL-OSS-FLOW"
   },
   {
     "id": "wan22",
@@ -8272,7 +8272,7 @@
       "视频生成",
       "中文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/阿里云/Wan2.2"
   },
   {
     "id": "wenet",
@@ -8294,7 +8294,7 @@
       "语音识别",
       "WeNet"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/WeNet/WeNet"
   },
   {
     "id": "wganmodel",
@@ -8316,7 +8316,7 @@
       "科学计算",
       "DeepChem"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/DeepChem/WGANModel"
   },
   {
     "id": "whisper-large-v3",
@@ -8339,7 +8339,7 @@
       "识别",
       "多语言"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/OpenAI/Whisper-Large-v3"
   },
   {
     "id": "winclip",
@@ -8361,7 +8361,7 @@
       "CV",
       "WinCLIP"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/WinCLIP/WinCLIP"
   },
   {
     "id": "xiaomi-mimo-vl-miloco-7b",
@@ -8383,7 +8383,7 @@
       "多模态",
       "MiMo"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/MiMo/Xiaomi-MiMo-VL-Miloco-7B"
   },
   {
     "id": "yi",
@@ -8429,7 +8429,7 @@
       "视觉",
       "中英文"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/零一万物/Yi-VL-34B"
   },
   {
     "id": "yingmusic-svc",
@@ -8451,7 +8451,7 @@
       "多模态",
       "YingMusic"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YingMusic/YingMusic-SVC"
   },
   {
     "id": "yolo-v5",
@@ -8473,7 +8473,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/Yolo-v5"
   },
   {
     "id": "yolo-world",
@@ -8495,7 +8495,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/yolo-world"
   },
   {
     "id": "yolo-world-2",
@@ -8517,7 +8517,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/Yolo-world"
   },
   {
     "id": "yolo10",
@@ -8539,7 +8539,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/yolo10"
   },
   {
     "id": "yolo11",
@@ -8561,7 +8561,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/yolo11"
   },
   {
     "id": "yolo11s-cls",
@@ -8583,7 +8583,7 @@
       "多模态",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/YOLO11s-cls"
   },
   {
     "id": "yolov11",
@@ -8605,7 +8605,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/YOLOv11"
   },
   {
     "id": "yolov12",
@@ -8627,7 +8627,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/Yolov12"
   },
   {
     "id": "yolov13",
@@ -8649,7 +8649,7 @@
       "CV",
       "Yolov"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Yolov/Yolov13"
   },
   {
     "id": "yolov26",
@@ -8671,7 +8671,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/yolov26"
   },
   {
     "id": "yolov4",
@@ -8693,7 +8693,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/YOLOv4"
   },
   {
     "id": "yolov5",
@@ -8715,7 +8715,7 @@
       "多模态",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/YOLOv5"
   },
   {
     "id": "yolov8",
@@ -8737,7 +8737,7 @@
       "CV",
       "YOLO"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/YOLO/YOLOv8"
   },
   {
     "id": "yolov8x",
@@ -8759,7 +8759,7 @@
       "CV",
       "Yolo"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Yolo/Yolov8X"
   },
   {
     "id": "z-image-turbo-vllm",
@@ -8781,7 +8781,7 @@
       "多模态",
       "Tongyi-MAI"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/Tongyi-MAI/Z-Image-Turbo-vllm"
   },
   {
     "id": "zipenhancer",
@@ -8802,7 +8802,7 @@
     "tags": [
       "音频增强"
     ],
-    "docUrl": ""
+    "docUrl": "https://gitcode.com/社区/ZipEnhancer"
   },
   {
     "id": "gitcode-ascend-tribe-openpangu-2-0-flash-int8",

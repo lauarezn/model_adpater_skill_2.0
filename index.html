@@ -290,40 +290,16 @@
     .doc-link:hover { text-decoration: underline; }
 
     /* Hardware Cards */
-    .hardware-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 16px;
-    }
-    .hardware-card {
-      background: white;
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--color-card-shadow);
-      border: 1px solid var(--color-border);
-      transition: var(--transition);
-    }
+    
+    
     .hardware-card:hover { box-shadow: var(--color-card-shadow-hover); }
     .hardware-card h3 {
       font-size: 1.1rem;
       font-weight: 700;
       margin-bottom: 4px;
     }
-    .hardware-type {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      background: #EFF6FF;
-      color: var(--color-primary);
-      margin-bottom: 12px;
-    }
-    .hardware-specs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      font-size: 0.85rem;
-    }
+    
+    
     .hardware-specs dt { color: var(--color-text-tertiary); font-weight: 500; }
     .hardware-specs dd { color: var(--color-text); }
 
@@ -602,7 +578,48 @@
       .search-bar { flex-direction: column; }
       .modal dl { grid-template-columns: 1fr; }
     }
-  </style>
+  
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+      padding: 16px 0;
+      flex-wrap: wrap;
+    }
+    .pagination-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: white;
+      color: var(--color-text);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 36px;
+      text-align: center;
+    }
+    .pagination-btn:hover:not(:disabled):not(.active) {
+      background: var(--color-bg-tertiary);
+      border-color: var(--color-primary);
+    }
+    .pagination-btn.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .pagination-info {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      padding: 0 8px;
+    }
+</style>
 </head>
 <body>
 
@@ -653,7 +670,7 @@
 <nav class="nav-bar">
   <div class="container">
     <button class="nav-btn active" data-section="browse">📋 模型清单</button>
-    <button class="nav-btn" data-section="hardware">🖥️ 服务器</button>
+    
     <button class="nav-btn" data-section="ascend-hardware">🖥️ 昇腾硬件</button>
     <button class="nav-btn" data-section="quiz">📝 知识测试</button>
   </div>
@@ -693,13 +710,14 @@
     <div class="model-grid" id="modelGrid" style="display:none"></div>
     <div class="empty-state" id="emptyState" style="display:none">
       <div class="icon">🔍</div>
+    <div class="pagination" id="pagination" style="display:none">
+      <button class="pagination-btn" id="pagePrev" onclick="goToPage(currentPage - 1)" disabled>&#8249;</button>
+      <div id="pageNumbers"></div>
+      <button class="pagination-btn" id="pageNext" onclick="goToPage(currentPage + 1)" disabled>&#8250;</button>
+      <span class="pagination-info" id="pageInfo"></span>
+    </div>
       <p>没有找到匹配的模型，试试其他关键词</p>
     </div>
-  </div>
-
-  <!-- Hardware Section -->
-  <div class="section" id="section-hardware">
-    <div class="hardware-grid" id="hardwareGrid"></div>
   </div>
 
   <!-- Ascend Hardware Section (from Huawei official) -->
@@ -1969,19 +1987,11 @@ const FALLBACK_MODELS = [
   }
 ];
 
-const FALLBACK_HARDWARE = [
-  {"id":"atlas-800t-a3","name":"Atlas 800T A3 训练服务器","type":"训练服务器","chip":"昇腾910B","chipCount":8,"fp16Perf":"3200 TFLOPS","memory":"64GB × 8 (HBM2e)","interconnect":"HCCS 高速互联","scenario":"大模型训练 / 推理","recommended":"DeepSeek-V3/R1、Qwen3-235B、GLM-5","features":["训练推理一体","超节点扩展","HCCS高速互联"],"tags":["训练","推理","高性能"]},
-  {"id":"atlas-800i-a3","name":"Atlas 800I A3 推理服务器","type":"推理服务器","chip":"昇腾910B","chipCount":"4-8","fp16Perf":"1600 TFLOPS","memory":"64GB × 4-8 (HBM2e)","interconnect":"HCCS","scenario":"大模型推理 / 微调","recommended":"Qwen3-Dense、Baichuan2、MiniMax-M2","features":["推理优化","高吞吐","低延迟"],"tags":["推理","微调","高性价比"]},
-  {"id":"atlas-900-a3","name":"Atlas 900 A3 SuperPoD","type":"AI集群","chip":"昇腾910B × N","chipCount":"数百至数千","fp16Perf":"EH级","memory":"HBM2e 大容量","interconnect":"HCCS + 高速网络","scenario":"超大模型训练 / 集群推理","recommended":"DeepSeek-V3集群训练、Qwen3-235B","features":["超大规模","集群训练","万卡互联"],"tags":["集群","超大规模","训练"]},
-  {"id":"atlas-800-3000","name":"Atlas 800 推理服务器 (3000)","type":"推理服务器","chip":"昇腾910","chipCount":4,"fp16Perf":"640 TFLOPS","memory":"32GB × 4 (HBM2)","interconnect":"PCIe 4.0","scenario":"AI推理 / 视频分析","recommended":"Qwen2-VL、DeepSeekOCR2","features":["推理专用","视频分析","多路并发"],"tags":["推理","视频分析","性价比"]},
-  {"id":"atlas-500-pro","name":"Atlas 500 Pro 智能边缘服务器","type":"边缘服务器","chip":"昇腾310","chipCount":"1-2","fp16Perf":"32 TFLOPS","memory":"8GB × 1-2","interconnect":"PCIe","scenario":"边缘推理 / 端侧部署","recommended":"MiniCPM、轻量模型","features":["边缘部署","低功耗","环境适应性强"],"tags":["边缘","轻量","低功耗"]},
-  {"id":"atlas-200i","name":"Atlas 200I AI加速模块","type":"AI加速模块","chip":"昇腾310","chipCount":1,"fp16Perf":"16 TFLOPS","memory":"8GB","interconnect":"PCIe / USB","scenario":"端侧推理 / 嵌入式","recommended":"MiniCPM、轻量视觉模型","features":["超小体积","低功耗","嵌入式集成"],"tags":["端侧","嵌入式","超轻量"]},
-  {"id":"atlas-300v-pro","name":"Atlas 300V Pro 视频解析卡","type":"AI加速卡","chip":"昇腾310","chipCount":1,"fp16Perf":"16 TFLOPS","memory":"8GB","interconnect":"PCIe 4.0","scenario":"视频分析 / 图像识别","recommended":"DeepSeekOCR2、视觉模型","features":["视频硬解码","多路并发","低延迟"],"tags":["视频","图像","加速卡"]}
-];
+
 
 // ============ State ============
 let models = [];
-let hardware = FALLBACK_HARDWARE;
+
 let dataSource = 'local';
 let ascendModels = [];
 let omniModels = [];
@@ -2645,7 +2655,274 @@ async function init() {
   document.getElementById('modelGrid').style.display = '';
 
   renderModels(models);
-  renderHardware();
+  
+  const ASCEND_HARDWARE_DATA = [
+  {
+    "id": "atlas-800t-a3",
+    "name": "Atlas 800T A3 训练服务器",
+    "type": "训练服务器",
+    "chip": "昇腾910B",
+    "chipCount": 8,
+    "fp16Perf": "3200 TFLOPS",
+    "memory": "64GB × 8 (HBM2e)",
+    "interconnect": "HCCS 高速互联",
+    "scenario": "大模型训练 / 推理",
+    "recommended": "DeepSeek-V3/R1、Qwen2.5-72B、GLM-4-130B",
+    "features": [
+      "训练推理一体",
+      "超节点扩展",
+      "HCCS高速互联"
+    ],
+    "tags": [
+      "训练",
+      "推理",
+      "高性能"
+    ]
+  },
+  {
+    "id": "atlas-800t-a3-supernode",
+    "name": "Atlas 800T A3 超节点服务器",
+    "type": "训练服务器",
+    "chip": "昇腾910B",
+    "chipCount": "16-64",
+    "fp16Perf": "6400-25600 TFLOPS",
+    "memory": "64GB × 16-64 (HBM2e)",
+    "interconnect": "HCCS + 高速网络互联",
+    "scenario": "超大模型训练 / 集群训练",
+    "recommended": "DeepSeek-V3/R1、BLOOM-176B、万亿参数MoE模型",
+    "features": [
+      "超节点架构",
+      "大规模并行训练",
+      "超高算力密度"
+    ],
+    "tags": [
+      "超节点",
+      "大规模训练",
+      "集群"
+    ]
+  },
+  {
+    "id": "atlas-800i-a3",
+    "name": "Atlas 800I A3 推理服务器",
+    "type": "推理服务器",
+    "chip": "昇腾910B",
+    "chipCount": "4-8",
+    "fp16Perf": "1600 TFLOPS",
+    "memory": "64GB × 4-8 (HBM2e)",
+    "interconnect": "HCCS",
+    "scenario": "大模型推理 / 微调",
+    "recommended": "Qwen2.5-7B/72B、Baichuan2、Yi-34B",
+    "features": [
+      "推理优化",
+      "高吞吐",
+      "低延迟"
+    ],
+    "tags": [
+      "推理",
+      "微调",
+      "高性价比"
+    ]
+  },
+  {
+    "id": "atlas-800i-a3-supernode",
+    "name": "Atlas 800I A3 超节点服务器",
+    "type": "推理服务器",
+    "chip": "昇腾910B",
+    "chipCount": "16-64",
+    "fp16Perf": "6400-25600 TFLOPS",
+    "memory": "64GB × 16-64 (HBM2e)",
+    "interconnect": "HCCS + 高速网络互联",
+    "scenario": "大模型集群推理 / 在线服务",
+    "recommended": "DeepSeek-R1、Qwen2.5系列、GLM系列",
+    "features": [
+      "集群推理",
+      "高并发",
+      "弹性扩展"
+    ],
+    "tags": [
+      "超节点",
+      "集群推理",
+      "高并发"
+    ]
+  },
+  {
+    "id": "atlas-900-a3",
+    "name": "Atlas 900 A3 SuperPoD",
+    "type": "AI集群",
+    "chip": "昇腾910B × N",
+    "chipCount": "数百至数千",
+    "fp16Perf": "EH级",
+    "memory": "HBM2e 大容量",
+    "interconnect": "HCCS + 高速网络",
+    "scenario": "超大模型训练 / 集群推理",
+    "recommended": "BLOOM-176B、DeepSeek-V3集群训练",
+    "features": [
+      "超大规模",
+      "集群训练",
+      "万卡互联"
+    ],
+    "tags": [
+      "集群",
+      "超大规模",
+      "训练"
+    ]
+  },
+  {
+    "id": "atlas-800-3000",
+    "name": "Atlas 800 推理服务器 (型号：3000)",
+    "type": "推理服务器",
+    "chip": "昇腾910",
+    "chipCount": 4,
+    "fp16Perf": "640 TFLOPS",
+    "memory": "32GB × 4 (HBM2)",
+    "interconnect": "PCIe 4.0",
+    "scenario": "AI推理 / 视频分析",
+    "recommended": "Whisper、SAM2、Stable Diffusion XL",
+    "features": [
+      "推理专用",
+      "视频分析",
+      "多路并发"
+    ],
+    "tags": [
+      "推理",
+      "视频分析",
+      "性价比"
+    ]
+  },
+  {
+    "id": "atlas-800-3010",
+    "name": "Atlas 800 推理服务器 (型号：3010)",
+    "type": "推理服务器",
+    "chip": "昇腾910B",
+    "chipCount": 4,
+    "fp16Perf": "1600 TFLOPS",
+    "memory": "64GB × 4 (HBM2e)",
+    "interconnect": "PCIe 4.0",
+    "scenario": "AI推理 / 模型部署",
+    "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
+    "features": [
+      "推理优化",
+      "高吞吐",
+      "大显存"
+    ],
+    "tags": [
+      "推理",
+      "部署",
+      "高性能"
+    ]
+  },
+  {
+    "id": "atlas-500-pro",
+    "name": "Atlas 500 Pro 智能边缘服务器 (型号：3000)",
+    "type": "边缘服务器",
+    "chip": "昇腾310",
+    "chipCount": "1-2",
+    "fp16Perf": "32 TFLOPS",
+    "memory": "8GB × 1-2",
+    "interconnect": "PCIe",
+    "scenario": "边缘推理 / 端侧部署",
+    "recommended": "MiniCPM-2B、Whisper、轻量模型",
+    "features": [
+      "边缘部署",
+      "低功耗",
+      "环境适应性强"
+    ],
+    "tags": [
+      "边缘",
+      "轻量",
+      "低功耗"
+    ]
+  },
+  {
+    "id": "atlas-200i",
+    "name": "Atlas 200I AI加速模块",
+    "type": "AI加速模块",
+    "chip": "昇腾310",
+    "chipCount": 1,
+    "fp16Perf": "16 TFLOPS",
+    "memory": "8GB",
+    "interconnect": "PCIe / USB",
+    "scenario": "端侧推理 / 嵌入式",
+    "recommended": "MiniCPM-2B、轻量视觉模型",
+    "features": [
+      "超小体积",
+      "低功耗",
+      "嵌入式集成"
+    ],
+    "tags": [
+      "端侧",
+      "嵌入式",
+      "超轻量"
+    ]
+  },
+  {
+    "id": "atlas-300v-pro",
+    "name": "Atlas 300V Pro 视频解析卡",
+    "type": "AI加速卡",
+    "chip": "昇腾310",
+    "chipCount": 1,
+    "fp16Perf": "16 TFLOPS",
+    "memory": "8GB",
+    "interconnect": "PCIe 4.0",
+    "scenario": "视频分析 / 图像识别",
+    "recommended": "SAM2、视觉模型",
+    "features": [
+      "视频硬解码",
+      "多路并发",
+      "低延迟"
+    ],
+    "tags": [
+      "视频",
+      "图像",
+      "加速卡"
+    ]
+  },
+  {
+    "id": "atlas-300i-pro",
+    "name": "Atlas 300I Pro 推理卡",
+    "type": "AI加速卡",
+    "chip": "昇腾910B",
+    "chipCount": 1,
+    "fp16Perf": "400 TFLOPS",
+    "memory": "64GB (HBM2e)",
+    "interconnect": "PCIe 4.0",
+    "scenario": "AI推理加速 / 模型部署",
+    "recommended": "Qwen2.5系列、DeepSeek系列",
+    "features": [
+      "推理加速",
+      "大显存",
+      "高吞吐"
+    ],
+    "tags": [
+      "推理卡",
+      "加速卡",
+      "高性能"
+    ]
+  },
+  {
+    "id": "atlas-300i-duo",
+    "name": "Atlas 300I Duo 推理卡",
+    "type": "AI加速卡",
+    "chip": "昇腾910B × 2",
+    "chipCount": 2,
+    "fp16Perf": "800 TFLOPS",
+    "memory": "64GB × 2 (HBM2e)",
+    "interconnect": "PCIe 4.0",
+    "scenario": "AI推理加速 / 模型部署",
+    "recommended": "DeepSeek-R1、Qwen2.5-72B、GLM-4-130B",
+    "features": [
+      "双芯推理",
+      "超大显存",
+      "高算力密度"
+    ],
+    "tags": [
+      "推理卡",
+      "双芯",
+      "旗舰"
+    ]
+  }
+];
+
   renderAscendHardware(ASCEND_HARDWARE_DATA);
   initQuiz();
 }
@@ -2775,6 +3052,11 @@ function renderModels(data) {
   }).join('');
 }
 
+// 分页状态
+let currentPage = 1;
+const PAGE_SIZE = 30;
+let filteredModels = [];
+
 function filterModels() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const category = document.getElementById('categoryFilter').value;
@@ -2782,7 +3064,7 @@ function filterModels() {
   const hardware = document.getElementById('hardwareFilter').value;
   const sort = document.getElementById('sortFilter').value;
 
-  let filtered = models.filter(m => {
+  filteredModels = models.filter(m => {
     if (search && !m.name.toLowerCase().includes(search) && !m.developer.toLowerCase().includes(search) && !m.tags.some(t => t.toLowerCase().includes(search))) return false;
     if (category !== 'all' && m.category !== category) return false;
     if (support !== 'all') {
@@ -2796,25 +3078,83 @@ function filterModels() {
 
   // 排序
   if (sort === 'popular') {
-    // 最受欢迎：按 developer 中的数字降序（模型数量），或按 id 降序
-    filtered.sort((a, b) => {
+    filteredModels.sort((a, b) => {
       const aNum = parseInt(a.developer) || 0;
       const bNum = parseInt(b.developer) || 0;
       if (bNum !== aNum) return bNum - aNum;
       return parseInt(b.id) - parseInt(a.id);
     });
   } else if (sort === 'newest') {
-    // 最新创建：按 id 降序
-    filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+    filteredModels.sort((a, b) => parseInt(b.id) - parseInt(a.id));
   } else if (sort === 'updated') {
-    // 最近更新：按 id 降序（与最新创建类似）
-    filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+    filteredModels.sort((a, b) => parseInt(b.id) - parseInt(a.id));
   } else {
-    // 综合排序：保持原有顺序（按 id 升序）
-    filtered.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    filteredModels.sort((a, b) => parseInt(a.id) - parseInt(b.id));
   }
 
-  renderModels(filtered);
+  currentPage = 1;
+  renderPage();
+}
+
+function renderPage() {
+  const totalPages = Math.ceil(filteredModels.length / PAGE_SIZE) || 1;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const end = Math.min(start + PAGE_SIZE, filteredModels.length);
+  const pageData = filteredModels.slice(start, end);
+
+  renderModels(pageData);
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  const pagination = document.getElementById('pagination');
+  const pageNumbers = document.getElementById('pageNumbers');
+  const pagePrev = document.getElementById('pagePrev');
+  const pageNext = document.getElementById('pageNext');
+  const pageInfo = document.getElementById('pageInfo');
+
+  if (filteredModels.length === 0) {
+    pagination.style.display = 'none';
+    return;
+  }
+  pagination.style.display = 'flex';
+
+  pagePrev.disabled = currentPage <= 1;
+  pageNext.disabled = currentPage >= totalPages;
+
+  pageInfo.textContent = '共 ' + filteredModels.length + ' 个模型，第 ' + currentPage + '/' + totalPages + ' 页';
+
+  // 生成页码按钮
+  let html = '';
+  const maxVisible = 7;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+  if (endPage - startPage + 1 < maxVisible) {
+    startPage = Math.max(1, endPage - maxVisible + 1);
+  }
+
+  if (startPage > 1) {
+    html += '<button class="pagination-btn" onclick="goToPage(1)">1</button>';
+    if (startPage > 2) html += '<span class="pagination-info">...</span>';
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    html += '<button class="pagination-btn' + (i === currentPage ? ' active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+  }
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) html += '<span class="pagination-info">...</span>';
+    html += '<button class="pagination-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
+  }
+
+  pageNumbers.innerHTML = html;
+}
+
+function goToPage(page) {
+  const totalPages = Math.ceil(filteredModels.length / PAGE_SIZE) || 1;
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderPage();
+  // 滚动到模型网格顶部
+  document.getElementById('modelGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }// ============ Model Detail Modal ============
 function showModelDetail(id) {
   const m = models.find(x => x.id === id);
@@ -2858,170 +3198,6 @@ function closeModal(e) {
 }
 
 // ============ Hardware ============
-function renderHardware() {
-  const grid = document.getElementById('hardwareGrid');
-  grid.innerHTML = hardware.map(h => `
-    <div class="hardware-card">
-      <h3>${h.name}</h3>
-      <span class="hardware-type">${h.type}</span>
-      <dl class="hardware-specs">
-        <dt>芯片</dt><dd>${h.chip}</dd>
-        <dt>芯片数量</dt><dd>${h.chipCount}</dd>
-        <dt>FP16算力</dt><dd>${h.fp16Perf}</dd>
-        <dt>显存</dt><dd>${h.memory}</dd>
-        <dt>互联</dt><dd>${h.interconnect}</dd>
-        <dt>适用场景</dt><dd>${h.scenario}</dd>
-      </dl>
-      <div style="margin-top:12px;font-size:0.85rem">
-        <strong style="color:var(--color-text-tertiary)">推荐模型：</strong>
-        <span style="color:var(--color-text)">${h.recommended}</span>
-      </div>
-      <div class="tags" style="margin-top:8px">
-        ${h.features.map(f => `<span class="tag">${f}</span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-// ============ Ascend Hardware (from Huawei) ============
-const ASCEND_HARDWARE_DATA = [
-  {
-    id: 'atlas-800t-a3',
-    name: 'Atlas 800T A3 超节点服务器',
-    type: '训练服务器',
-    chip: '昇腾910B',
-    chipCount: 8,
-    fp16Perf: '3200 TFLOPS',
-    memory: '64GB × 8 (HBM2e)',
-    interconnect: 'HCCS 高速互联',
-    scenario: '大模型训练 / 推理',
-    description: '具有超强AI算力、更优AI能效、极佳AI拓展等特点，可广泛应用于深度学习模型开发和训练。支持DeepSeek-V3/R1、Qwen3-235B等超大模型训练。',
-    features: ['训练推理一体', '超节点扩展', 'HCCS高速互联', '大模型训练'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800t-a3-pid-252212012',
-    badgeClass: 'train'
-  },
-  {
-    id: 'atlas-800i-a3',
-    name: 'Atlas 800I A3 超节点服务器',
-    type: '推理服务器',
-    chip: '昇腾910B',
-    chipCount: '4-8',
-    fp16Perf: '1600 TFLOPS',
-    memory: '64GB × 4-8 (HBM2e)',
-    interconnect: 'HCCS',
-    scenario: '大模型推理 / 微调',
-    description: '面向互联网、金融等行业大模型中心推理等场景提供的集群推理解决方案。支持Qwen3-Dense、Baichuan2、MiniMax-M2等模型推理。',
-    features: ['推理优化', '高吞吐', '低延迟', '集群推理'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800i-a3-pid-252212012',
-    badgeClass: 'infer'
-  },
-  {
-    id: 'atlas-900-a3',
-    name: 'Atlas 900 A3 SuperPoD',
-    type: 'AI集群',
-    chip: '昇腾910B × N',
-    chipCount: '数百至数千',
-    fp16Perf: 'EH级',
-    memory: 'HBM2e 大容量',
-    interconnect: 'HCCS + 高速网络',
-    scenario: '超大模型训练 / 集群推理',
-    description: '面向开发者和企业提供一个基于昇腾AI处理器进行AI模型训练任务的软硬件平台。支持万卡互联，适用于DeepSeek-V3集群训练、Qwen3-235B等超大规模场景。',
-    features: ['超大规模', '集群训练', '万卡互联', 'EH级算力'],
-    docUrl: 'https://e.huawei.com/cn/products/computing/ascend',
-    badgeClass: 'cluster'
-  },
-  {
-    id: 'atlas-800-3000',
-    name: 'Atlas 800 推理服务器 (型号：3000)',
-    type: '推理服务器',
-    chip: '昇腾910',
-    chipCount: 4,
-    fp16Perf: '640 TFLOPS',
-    memory: '32GB × 4 (HBM2)',
-    interconnect: 'PCIe 4.0',
-    scenario: 'AI推理 / 视频分析',
-    description: '具有超强计算性能，可广泛应用于中心侧AI推理、深度学习模型开发和训练场景。支持Qwen2-VL、DeepSeekOCR2等视觉模型推理。',
-    features: ['推理专用', '视频分析', '多路并发', '高性价比'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-800-3000-pid-252212012',
-    badgeClass: 'infer'
-  },
-  {
-    id: 'atlas-500-pro',
-    name: 'Atlas 500 Pro 智能边缘服务器 (型号：3000)',
-    type: '边缘服务器',
-    chip: '昇腾310',
-    chipCount: '1-2',
-    fp16Perf: '32 TFLOPS',
-    memory: '8GB × 1-2',
-    interconnect: 'PCIe',
-    scenario: '边缘推理 / 端侧部署',
-    description: '具有超强计算性能、体积小、环境适应性强、易于维护等特点，可以在边缘场景广泛部署。支持MiniCPM、轻量模型等端侧推理。',
-    features: ['边缘部署', '低功耗', '环境适应性强', '易于维护'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-500-pro-pid-252212012',
-    badgeClass: 'edge'
-  },
-  {
-    id: 'atlas-200i',
-    name: 'Atlas 200I AI加速模块',
-    type: 'AI加速模块',
-    chip: '昇腾310',
-    chipCount: 1,
-    fp16Perf: '16 TFLOPS',
-    memory: '8GB',
-    interconnect: 'PCIe / USB',
-    scenario: '端侧推理 / 嵌入式',
-    description: '在端侧实现目标识别、图像分类等，广泛用于智能摄像机、机器人、无人机等端侧AI场景。支持MiniCPM、轻量视觉模型。',
-    features: ['超小体积', '低功耗', '嵌入式集成', '端侧AI'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-200i-pid-252212012',
-    badgeClass: 'accelerator'
-  },
-  {
-    id: 'atlas-300v-pro',
-    name: 'Atlas 300V Pro 视频解析卡',
-    type: 'AI加速卡',
-    chip: '昇腾310',
-    chipCount: 1,
-    fp16Perf: '16 TFLOPS',
-    memory: '8GB',
-    interconnect: 'PCIe 4.0',
-    scenario: '视频分析 / 图像识别',
-    description: '提供AI推理、视频分析等功能，支持检索聚类、OCR识别、语音分析、视频分析等场景。支持DeepSeekOCR2、视觉模型。',
-    features: ['视频硬解码', '多路并发', '低延迟', 'AI推理'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300v-pro-pid-252212012',
-    badgeClass: 'card'
-  },
-  {
-    id: 'atlas-300i-pro',
-    name: 'Atlas 300I Pro 推理卡',
-    type: 'AI加速卡',
-    chip: '昇腾910',
-    chipCount: 1,
-    fp16Perf: '160 TFLOPS',
-    memory: '24GB',
-    interconnect: 'PCIe 4.0',
-    scenario: 'AI推理加速',
-    description: '面向AI推理场景的高性能加速卡，支持主流深度学习模型推理加速，适用于数据中心和边缘场景。',
-    features: ['推理加速', '高能效', 'PCIe即插即用', '广泛兼容'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300i-pro-pid-252212012',
-    badgeClass: 'card'
-  },
-  {
-    id: 'atlas-300i-duo',
-    name: 'Atlas 300I Duo 推理卡',
-    type: 'AI加速卡',
-    chip: '昇腾910',
-    chipCount: 2,
-    fp16Perf: '320 TFLOPS',
-    memory: '48GB',
-    interconnect: 'PCIe 4.0',
-    scenario: '高密度AI推理',
-    description: '双芯片推理卡，提供更高密度的AI推理能力，适用于大规模推理部署场景。',
-    features: ['双芯片', '高密度', '高吞吐', '数据中心'],
-    docUrl: 'https://support.huawei.com/enterprise/zh/ai-computing-platform/atlas-300i-duo-pid-252212012',
-    badgeClass: 'card'
-  }
-];
-
 function renderAscendHardware(data) {
   const grid = document.getElementById('ascendHardwareGrid');
   const empty = document.getElementById('hwEmptyState');
