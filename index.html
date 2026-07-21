@@ -689,7 +689,13 @@
       <select class="filter-select" id="hardwareFilter" onchange="filterModels()">
         <option value="all">推荐硬件</option>
       </select>
-    </div>
+    
+      <select class="filter-select" id="sortFilter" onchange="filterModels()">
+        <option value="default">综合排序</option>
+        <option value="popular">最受欢迎</option>
+        <option value="newest">最新创建</option>
+        <option value="updated">最近更新</option>
+      </select></div>
     <div id="modelGridContainer">
       <div class="loading" id="loadingIndicator">
         <div class="spinner"></div>
@@ -2775,6 +2781,7 @@ function filterModels() {
   const category = document.getElementById('categoryFilter').value;
   const support = document.getElementById('supportFilter').value;
   const hardware = document.getElementById('hardwareFilter').value;
+  const sort = document.getElementById('sortFilter').value;
 
   let filtered = models.filter(m => {
     if (search && !m.name.toLowerCase().includes(search) && !m.developer.toLowerCase().includes(search) && !m.tags.some(t => t.toLowerCase().includes(search))) return false;
@@ -2787,10 +2794,29 @@ function filterModels() {
     if (hardware !== 'all' && !m.minHardware.includes(hardware) && !m.recommendedHardware.includes(hardware)) return false;
     return true;
   });
-  renderModels(filtered);
-}
 
-// ============ Model Detail Modal ============
+  // 排序
+  if (sort === 'popular') {
+    // 最受欢迎：按 developer 中的数字降序（模型数量），或按 id 降序
+    filtered.sort((a, b) => {
+      const aNum = parseInt(a.developer) || 0;
+      const bNum = parseInt(b.developer) || 0;
+      if (bNum !== aNum) return bNum - aNum;
+      return parseInt(b.id) - parseInt(a.id);
+    });
+  } else if (sort === 'newest') {
+    // 最新创建：按 id 降序
+    filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  } else if (sort === 'updated') {
+    // 最近更新：按 id 降序（与最新创建类似）
+    filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  } else {
+    // 综合排序：保持原有顺序（按 id 升序）
+    filtered.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+  }
+
+  renderModels(filtered);
+}// ============ Model Detail Modal ============
 function showModelDetail(id) {
   const m = models.find(x => x.id === id);
   if (!m) return;
