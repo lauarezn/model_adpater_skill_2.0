@@ -633,19 +633,7 @@
       <a href="https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models" target="_blank">SGLang Ascend 支持模型</a>
       +
       <span class="data-source-badge" style="background:#F59E0B;color:#FEF3C7">GitCode</span>
-      <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank">GitCode AI 昇腾原生模型</a>
-      +
-      <span class="data-source-badge" style="background:#065F46;color:#A7F3D0">SACT</span>
-      <a href="https://ai.gitcode.com/Ascend-SACT/Ascend-SACT-README" target="_blank">Ascend-SACT 模型清单</a>
-      +
-      <span class="data-source-badge" style="background:#7C3AED;color:#DDD6FE">AI4S</span>
-      <a href="https://gitcode.com/AI4Science/partners/blob/main/README.md" target="_blank">AI4Science 科学智能</a>
-      +
-      <span class="data-source-badge" style="background:#1E40AF;color:#BFDBFE">Tribe</span>
-      <a href="https://gitcode.com/org/ascend-tribe/repos" target="_blank">Ascend Tribe</a>
-      +
-      <span class="data-source-badge" style="background:#9D174D;color:#FCE7F3">Atom</span>
-      <a href="https://gitcode.com/org/atomgit-ascend/repos" target="_blank">AtomGit Ascend</a>
+      <a href="https://ai.gitcode.com/models?ascendNative=true" target="_blank">GitCode AI 昇腾原生模型</a>;
       · <span class="refresh-status" id="refreshStatus">就绪</span>
     </span>
     <span style="font-size:0.75rem;color:#93C5FD;margin-top:4px;display:block">
@@ -2588,19 +2576,17 @@ async function init() {
   statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang + GitCode AI 获取最新数据...';
 
   // Fetch from all sources
-  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
-
   // 先尝试在线获取数据
   const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
   if (ascendOk || omniOk || sglangOk || gitcodeOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
-    if (ascendOk) parts.push('Ascend ' + ascendModels.length + '个');
+    if (ascendOk) parts.push('Ascend-vllm ' + ascendModels.length + '个');
     if (omniOk) parts.push('Omni ' + omniModels.length + '个');
     if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
-    if (gitcodeOk) parts.push('GitCode ' + gitcodeModels.length + '个');
-    statusEl.textContent = '✅ 已获取 ' + parts.join(' + ') + '，共 ' + models.length + ' 个模型';
+    if (gitcodeOk) parts.push('AtomGit Ascend ' + gitcodeModels.length + '个');
+    statusEl.textContent = '在线补充 ' + parts.join(' + ') + '，共 ' + models.length + ' 个';
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   }
   // 加载本地数据作为补充（去重合并）
@@ -2619,7 +2605,9 @@ async function init() {
         }
       });
       if (added > 0) {
-        statusEl.textContent = statusEl.textContent + ' | 本地补充 ' + added + ' 个';
+        statusEl.textContent = '本地数据 ' + localModels.length + ' 个 | ' + statusEl.textContent + '，新增 ' + added + ' 个';
+      } else {
+        statusEl.textContent = '本地数据 ' + localModels.length + ' 个 | ' + statusEl.textContent;
       }
     }
   } catch(e) {
@@ -2673,19 +2661,17 @@ async function refreshData() {
   btn.disabled = true;
   statusEl.textContent = '正在从 vLLM Ascend + Omni + SGLang + GitCode AI 获取最新数据...';
 
-  const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
-
   // 先尝试在线获取数据
   const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
   if (ascendOk || omniOk || sglangOk || gitcodeOk) {
     models = mergeModels();
     dataSource = 'merged';
     const parts = [];
-    if (ascendOk) parts.push('Ascend ' + ascendModels.length + '个');
+    if (ascendOk) parts.push('Ascend-vllm ' + ascendModels.length + '个');
     if (omniOk) parts.push('Omni ' + omniModels.length + '个');
     if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
-    if (gitcodeOk) parts.push('GitCode ' + gitcodeModels.length + '个');
-    statusEl.textContent = '✅ 已获取 ' + parts.join(' + ') + '，共 ' + models.length + ' 个模型';
+    if (gitcodeOk) parts.push('AtomGit Ascend ' + gitcodeModels.length + '个');
+    statusEl.textContent = '在线补充 ' + parts.join(' + ') + '，共 ' + models.length + ' 个';
     document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
   }
   // 加载本地数据作为补充（去重合并）
@@ -2704,7 +2690,9 @@ async function refreshData() {
         }
       });
       if (added > 0) {
-        statusEl.textContent = statusEl.textContent + ' | 本地补充 ' + added + ' 个';
+        statusEl.textContent = '本地数据 ' + localModels.length + ' 个 | ' + statusEl.textContent + '，新增 ' + added + ' 个';
+      } else {
+        statusEl.textContent = '本地数据 ' + localModels.length + ' 个 | ' + statusEl.textContent;
       }
     }
   } catch(e) {
