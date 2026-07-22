@@ -2736,7 +2736,7 @@ const ASCEND_HARDWARE_DATA = [
   {
     "id": "atlas-800t-a3",
     "name": "Atlas 800T A3 训练服务器",
-    "type": "训练服务器",
+    "type": "中心训练硬件",
     "chip": "昇腾910B",
     "chipCount": 8,
     "fp16Perf": "3200 TFLOPS",
@@ -2758,7 +2758,7 @@ const ASCEND_HARDWARE_DATA = [
   {
     "id": "atlas-800t-a3-supernode",
     "name": "Atlas 800T A3 超节点服务器",
-    "type": "训练服务器",
+    "type": "中心训练硬件",
     "chip": "昇腾910B",
     "chipCount": "16-64",
     "fp16Perf": "6400-25600 TFLOPS",
@@ -2778,9 +2778,31 @@ const ASCEND_HARDWARE_DATA = [
     ]
   },
   {
+    "id": "atlas-900-a3",
+    "name": "Atlas 900 A3 SuperPoD",
+    "type": "中心训练硬件",
+    "chip": "昇腾910B × N",
+    "chipCount": "数百至数千",
+    "fp16Perf": "EH级",
+    "memory": "HBM2e 大容量",
+    "interconnect": "HCCS + 高速网络",
+    "scenario": "超大模型训练 / 集群推理",
+    "recommended": "BLOOM-176B、DeepSeek-V3集群训练",
+    "features": [
+      "超大规模",
+      "集群训练",
+      "万卡互联"
+    ],
+    "tags": [
+      "集群",
+      "超大规模",
+      "训练"
+    ]
+  },
+  {
     "id": "atlas-800i-a3",
     "name": "Atlas 800I A3 推理服务器",
-    "type": "推理服务器",
+    "type": "中心推理硬件",
     "chip": "昇腾910B",
     "chipCount": "4-8",
     "fp16Perf": "1600 TFLOPS",
@@ -2802,7 +2824,7 @@ const ASCEND_HARDWARE_DATA = [
   {
     "id": "atlas-800i-a3-supernode",
     "name": "Atlas 800I A3 超节点服务器",
-    "type": "推理服务器",
+    "type": "中心推理硬件",
     "chip": "昇腾910B",
     "chipCount": "16-64",
     "fp16Perf": "6400-25600 TFLOPS",
@@ -2822,31 +2844,9 @@ const ASCEND_HARDWARE_DATA = [
     ]
   },
   {
-    "id": "atlas-900-a3",
-    "name": "Atlas 900 A3 SuperPoD",
-    "type": "AI集群",
-    "chip": "昇腾910B × N",
-    "chipCount": "数百至数千",
-    "fp16Perf": "EH级",
-    "memory": "HBM2e 大容量",
-    "interconnect": "HCCS + 高速网络",
-    "scenario": "超大模型训练 / 集群推理",
-    "recommended": "BLOOM-176B、DeepSeek-V3集群训练",
-    "features": [
-      "超大规模",
-      "集群训练",
-      "万卡互联"
-    ],
-    "tags": [
-      "集群",
-      "超大规模",
-      "训练"
-    ]
-  },
-  {
     "id": "atlas-800-3000",
     "name": "Atlas 800 推理服务器 (型号：3000)",
-    "type": "推理服务器",
+    "type": "中心推理硬件",
     "chip": "昇腾910",
     "chipCount": 4,
     "fp16Perf": "640 TFLOPS",
@@ -2868,7 +2868,7 @@ const ASCEND_HARDWARE_DATA = [
   {
     "id": "atlas-800-3010",
     "name": "Atlas 800 推理服务器 (型号：3010)",
-    "type": "推理服务器",
+    "type": "中心推理硬件",
     "chip": "昇腾910B",
     "chipCount": 4,
     "fp16Perf": "1600 TFLOPS",
@@ -2885,116 +2885,6 @@ const ASCEND_HARDWARE_DATA = [
       "推理",
       "部署",
       "高性能"
-    ]
-  },
-  {
-    "id": "atlas-500-pro",
-    "name": "Atlas 500 Pro 智能边缘服务器 (型号：3000)",
-    "type": "边缘服务器",
-    "chip": "昇腾310",
-    "chipCount": "1-2",
-    "fp16Perf": "32 TFLOPS",
-    "memory": "8GB × 1-2",
-    "interconnect": "PCIe",
-    "scenario": "边缘推理 / 端侧部署",
-    "recommended": "MiniCPM-2B、Whisper、轻量模型",
-    "features": [
-      "边缘部署",
-      "低功耗",
-      "环境适应性强"
-    ],
-    "tags": [
-      "边缘",
-      "轻量",
-      "低功耗"
-    ]
-  },
-  {
-    "id": "atlas-200i",
-    "name": "Atlas 200I AI加速模块",
-    "type": "AI加速模块",
-    "chip": "昇腾310",
-    "chipCount": 1,
-    "fp16Perf": "16 TFLOPS",
-    "memory": "8GB",
-    "interconnect": "PCIe / USB",
-    "scenario": "端侧推理 / 嵌入式",
-    "recommended": "MiniCPM-2B、轻量视觉模型",
-    "features": [
-      "超小体积",
-      "低功耗",
-      "嵌入式集成"
-    ],
-    "tags": [
-      "端侧",
-      "嵌入式",
-      "超轻量"
-    ]
-  },
-  {
-    "id": "atlas-300v-pro",
-    "name": "Atlas 300V Pro 视频解析卡",
-    "type": "AI加速卡",
-    "chip": "昇腾310",
-    "chipCount": 1,
-    "fp16Perf": "16 TFLOPS",
-    "memory": "8GB",
-    "interconnect": "PCIe 4.0",
-    "scenario": "视频分析 / 图像识别",
-    "recommended": "SAM2、视觉模型",
-    "features": [
-      "视频硬解码",
-      "多路并发",
-      "低延迟"
-    ],
-    "tags": [
-      "视频",
-      "图像",
-      "加速卡"
-    ]
-  },
-  {
-    "id": "atlas-300i-pro",
-    "name": "Atlas 300I Pro 推理卡",
-    "type": "AI加速卡",
-    "chip": "昇腾910B",
-    "chipCount": 1,
-    "fp16Perf": "400 TFLOPS",
-    "memory": "64GB (HBM2e)",
-    "interconnect": "PCIe 4.0",
-    "scenario": "AI推理加速 / 模型部署",
-    "recommended": "Qwen2.5系列、DeepSeek系列",
-    "features": [
-      "推理加速",
-      "大显存",
-      "高吞吐"
-    ],
-    "tags": [
-      "推理卡",
-      "加速卡",
-      "高性能"
-    ]
-  },
-  {
-    "id": "atlas-300i-duo",
-    "name": "Atlas 300I Duo 推理卡",
-    "type": "AI加速卡",
-    "chip": "昇腾910B × 2",
-    "chipCount": 2,
-    "fp16Perf": "800 TFLOPS",
-    "memory": "64GB × 2 (HBM2e)",
-    "interconnect": "PCIe 4.0",
-    "scenario": "AI推理加速 / 模型部署",
-    "recommended": "DeepSeek-R1、Qwen2.5-72B、GLM-4-130B",
-    "features": [
-      "双芯推理",
-      "超大显存",
-      "高算力密度"
-    ],
-    "tags": [
-      "推理卡",
-      "双芯",
-      "旗舰"
     ]
   }
 ];
