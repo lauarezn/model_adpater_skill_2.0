@@ -2577,76 +2577,8 @@ function mergeModels() {
   return merged;
 }
 
-// ============ Init ============
-async function init() {
-  document.getElementById('hardwareCount').textContent = hardware.length;
-  const statusEl = document.getElementById('refreshStatus');
-  const btn = document.getElementById('refreshBtn');
-
-  // 默认优先加载本地数据
-  statusEl.textContent = '正在加载本地数据...';
-  try {
-    const resp = await fetch('data/models.json');
-    if (resp.ok) {
-      const localModels = await resp.json();
-      models = localModels;
-      dataSource = 'local';
-      statusEl.textContent = '本地数据 ' + localModels.length + ' 个（点击「手动刷新」获取最新在线数据）';
-      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
-    } else {
-      throw new Error('本地数据加载失败');
-    }
-  } catch(e) {
-    // 本地数据加载失败时，尝试在线获取
-    statusEl.textContent = '本地数据加载失败，尝试在线获取...';
-    const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
-    if (ascendOk || omniOk || sglangOk || gitcodeOk) {
-      models = mergeModels();
-      dataSource = 'merged';
-      const parts = [];
-      if (ascendOk) parts.push('Ascend-vllm ' + ascendModels.length + '个');
-      if (omniOk) parts.push('Omni ' + omniModels.length + '个');
-      if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
-      if (gitcodeOk) parts.push('AtomGit Ascend ' + gitcodeModels.length + '个');
-      statusEl.textContent = '在线补充 ' + parts.join(' + ') + '，共 ' + models.length + ' 个';
-      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
-    } else {
-      // 在线也失败，使用 FALLBACK_MODELS
-      models = FALLBACK_MODELS;
-      dataSource = 'local';
-      statusEl.textContent = '⚠️ 获取失败，使用离线数据';
-    }
-  }
-  btn.disabled = false;
-
-  document.getElementById('modelCount').textContent = models.length;
-  const categories = [...new Set(models.map(m => m.category))];
-  document.getElementById('categoryCount').textContent = categories.length;
-
-  // Populate filters
-  const catFilter = document.getElementById('categoryFilter');
-  const hwFilter = document.getElementById('hardwareFilter');
-
-  categories.forEach(c => {
-    catFilter.innerHTML += `<option value="${c}">${c}</option>`;
-  });
-
-  const hwSet = new Set();
-  models.forEach(m => {
-    if (m.minHardware) hwSet.add(m.minHardware);
-    if (m.recommendedHardware) hwSet.add(m.recommendedHardware);
-  });
-  hwSet.forEach(h => {
-    hwFilter.innerHTML += `<option value="${h}">${h}</option>`;
-  });
-
-  // Hide loading, show grid
-  document.getElementById('loadingIndicator').style.display = 'none';
-  document.getElementById('modelGrid').style.display = '';
-
-  filterModels();
-
-  const ASCEND_HARDWARE_DATA = [
+// ============ 昇腾硬件数据 ============
+const ASCEND_HARDWARE_DATA = [
   {
     "id": "atlas-800t-a3",
     "name": "Atlas 800T A3 训练服务器",
@@ -2912,6 +2844,75 @@ async function init() {
     ]
   }
 ];
+
+// ============ Init ============
+async function init() {
+  document.getElementById('hardwareCount').textContent = ASCEND_HARDWARE_DATA.length;
+  const statusEl = document.getElementById('refreshStatus');
+  const btn = document.getElementById('refreshBtn');
+
+  // 默认优先加载本地数据
+  statusEl.textContent = '正在加载本地数据...';
+  try {
+    const resp = await fetch('data/models.json');
+    if (resp.ok) {
+      const localModels = await resp.json();
+      models = localModels;
+      dataSource = 'local';
+      statusEl.textContent = '本地数据 ' + localModels.length + ' 个（点击「手动刷新」获取最新在线数据）';
+      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+    } else {
+      throw new Error('本地数据加载失败');
+    }
+  } catch(e) {
+    // 本地数据加载失败时，尝试在线获取
+    statusEl.textContent = '本地数据加载失败，尝试在线获取...';
+    const [ascendOk, omniOk, sglangOk, gitcodeOk] = await Promise.all([fetchAscendData(), fetchOmniData(), fetchSGLangData(), fetchGitCodeData()]);
+    if (ascendOk || omniOk || sglangOk || gitcodeOk) {
+      models = mergeModels();
+      dataSource = 'merged';
+      const parts = [];
+      if (ascendOk) parts.push('Ascend-vllm ' + ascendModels.length + '个');
+      if (omniOk) parts.push('Omni ' + omniModels.length + '个');
+      if (sglangOk) parts.push('SGLang ' + sglangModels.length + '个');
+      if (gitcodeOk) parts.push('AtomGit Ascend ' + gitcodeModels.length + '个');
+      statusEl.textContent = '在线补充 ' + parts.join(' + ') + '，共 ' + models.length + ' 个';
+      document.getElementById('dataDate').textContent = new Date().toLocaleString('zh-CN');
+    } else {
+      // 在线也失败，使用 FALLBACK_MODELS
+      models = FALLBACK_MODELS;
+      dataSource = 'local';
+      statusEl.textContent = '⚠️ 获取失败，使用离线数据';
+    }
+  }
+  btn.disabled = false;
+
+  document.getElementById('modelCount').textContent = models.length;
+  const categories = [...new Set(models.map(m => m.category))];
+  document.getElementById('categoryCount').textContent = categories.length;
+
+  // Populate filters
+  const catFilter = document.getElementById('categoryFilter');
+  const hwFilter = document.getElementById('hardwareFilter');
+
+  categories.forEach(c => {
+    catFilter.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  const hwSet = new Set();
+  models.forEach(m => {
+    if (m.minHardware) hwSet.add(m.minHardware);
+    if (m.recommendedHardware) hwSet.add(m.recommendedHardware);
+  });
+  hwSet.forEach(h => {
+    hwFilter.innerHTML += `<option value="${h}">${h}</option>`;
+  });
+
+  // Hide loading, show grid
+  document.getElementById('loadingIndicator').style.display = 'none';
+  document.getElementById('modelGrid').style.display = '';
+
+  filterModels();
 
   renderAscendHardware(ASCEND_HARDWARE_DATA);
   initQuiz();
