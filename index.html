@@ -726,12 +726,8 @@
       <input type="text" class="search-input" id="hwSearchInput" placeholder="🔍 搜索硬件名称、类型、芯片..." oninput="filterAscendHardware()">
       <select class="filter-select" id="hwTypeFilter" onchange="filterAscendHardware()">
         <option value="all">全部类型</option>
-        <option value="训练服务器">训练服务器</option>
-        <option value="推理服务器">推理服务器</option>
-        <option value="AI集群">AI集群</option>
-        <option value="边缘服务器">边缘服务器</option>
-        <option value="AI加速模块">AI加速模块</option>
-        <option value="AI加速卡">AI加速卡</option>
+        <option value="中心训练硬件">中心训练硬件</option>
+        <option value="中心推理硬件">中心推理硬件</option>
       </select>
       <select class="filter-select" id="hwChipFilter" onchange="filterAscendHardware()">
         <option value="all">全部芯片</option>
@@ -2847,48 +2843,109 @@ const ASCEND_HARDWARE_DATA = [
     "tags": ["超节点", "集群推理", "高并发"]
   },
   {
-    "id": "atlas-800-3000",
-    "name": "Atlas 800 推理服务器 (型号：3000)",
+    "id": "atlas-800i-a2-32g-hccs",
+    "name": "Atlas 800I A2 推理服务器（32GB HCCS款）",
     "type": "中心推理硬件",
-    "chip": "昇腾910",
-    "chipCount": 4,
-    "fp16Perf": "640 TFLOPS",
-    "memory": "32GB × 4 (HBM2)",
-    "interconnect": "PCIe 4.0",
-    "scenario": "AI推理 / 视频分析",
-    "recommended": "Whisper、SAM2、Stable Diffusion XL",
-    "features": [
-      "推理专用",
-      "视频分析",
-      "多路并发"
-    ],
-    "tags": [
-      "推理",
-      "视频分析",
-      "性价比"
-    ]
+    "chip": "昇腾",
+    "chipCount": 8,
+    "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
+    "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
+    "onChipMemory": "容量32GB，带宽800GB/s",
+    "interconnect": "HCCS full-mesh，每路AI处理器7条HCCS互连链路，最大理论带宽392GB/s",
+    "network": "200GE QSFP接口直出，RoCE协议",
+    "cpu": "4路鲲鹏920（鲲鹏920 7265 64核3.0GHz 或 鲲鹏920 5250 48核2.6GHz），L3 Cache 64MB",
+    "memory": "最多32个DDR4内存插槽，RDIMM，最大速率3200MT/s，单根16GB/32GB/64GB",
+    "codec": "1080p 480 FPS视频解码，1080p 12288 FPS JPEG解码（最大16384×16384），1080p 1024 FPS JPEG编码（最大8192×8192）",
+    "modulePower": "最大功耗350W",
+    "scenario": "大模型推理 / 边缘推理",
+    "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
+    "features": ["推理优化", "HCCS全互联", "200GE RoCE", "编解码加速"],
+    "tags": ["推理", "HCCS", "高性价比"]
   },
   {
-    "id": "atlas-800-3010",
-    "name": "Atlas 800 推理服务器 (型号：3010)",
+    "id": "atlas-800i-a2-32g-pcie",
+    "name": "Atlas 800I A2 推理服务器（32GB PCIe款）",
     "type": "中心推理硬件",
-    "chip": "昇腾910B",
-    "chipCount": 4,
-    "fp16Perf": "1600 TFLOPS",
-    "memory": "64GB × 4 (HBM2e)",
-    "interconnect": "PCIe 4.0",
-    "scenario": "AI推理 / 模型部署",
+    "chip": "昇腾",
+    "chipCount": 8,
+    "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
+    "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
+    "onChipMemory": "容量32GB，带宽800GB/s",
+    "interconnect": "PCIe",
+    "network": "200GE QSFP接口直出，RoCE协议",
+    "cpu": "4路鲲鹏920（鲲鹏920 7265 64核3.0GHz 或 鲲鹏920 5250 48核2.6GHz），L3 Cache 64MB",
+    "memory": "最多32个DDR4内存插槽，RDIMM，最大速率3200MT/s，单根16GB/32GB/64GB",
+    "codec": "1080p 480 FPS视频解码，1080p 12288 FPS JPEG解码（最大16384×16384），1080p 1024 FPS JPEG编码（最大8192×8192）",
+    "modulePower": "最大功耗350W",
+    "scenario": "大模型推理 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
-    "features": [
-      "推理优化",
-      "高吞吐",
-      "大显存"
-    ],
-    "tags": [
-      "推理",
-      "部署",
-      "高性能"
-    ]
+    "features": ["推理优化", "PCIe互联", "200GE RoCE", "编解码加速"],
+    "tags": ["推理", "PCIe", "高性价比"]
+  },
+  {
+    "id": "atlas-800i-a2-64g-hccs",
+    "name": "Atlas 800I A2 推理服务器（64GB HCCS款）",
+    "type": "中心推理硬件",
+    "chip": "昇腾",
+    "chipCount": 8,
+    "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
+    "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
+    "onChipMemory": "容量64GB，带宽1600GB/s",
+    "interconnect": "HCCS full-mesh，每路AI处理器7条HCCS互连链路，最大理论带宽392GB/s",
+    "network": "200GE QSFP接口直出，RoCE协议",
+    "cpu": "4路鲲鹏920（鲲鹏920 7265 64核3.0GHz 或 鲲鹏920 5250 48核2.6GHz），L3 Cache 64MB",
+    "memory": "最多32个DDR4内存插槽，RDIMM，最大速率3200MT/s，单根16GB/32GB/64GB",
+    "codec": "1080p 480 FPS视频解码，1080p 12288 FPS JPEG解码（最大16384×16384），1080p 1024 FPS JPEG编码（最大8192×8192）",
+    "modulePower": "最大功耗350W",
+    "scenario": "大模型推理 / 边缘推理",
+    "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
+    "features": ["推理优化", "HCCS全互联", "200GE RoCE", "编解码加速", "大显存"],
+    "tags": ["推理", "HCCS", "大显存"]
+  },
+  {
+    "id": "atlas-300i-duo",
+    "name": "Atlas 300I Duo 推理卡",
+    "type": "中心推理硬件",
+    "chip": "昇腾",
+    "chipCount": 2,
+    "fp16Perf": "560 TFLOPS",
+    "fp32Perf": "150 TFLOPS",
+    "memory": "2×32GB (HBM2e)",
+    "interconnect": "HCCS",
+    "scenario": "大模型推理 / 边缘推理",
+    "recommended": "Qwen2.5系列、DeepSeek系列",
+    "features": ["双芯推理卡", "高密度", "低功耗"],
+    "tags": ["推理卡", "双芯", "高密度"]
+  },
+  {
+    "id": "atlas-300i-a3",
+    "name": "Atlas 300I A3 推理卡",
+    "type": "中心推理硬件",
+    "chip": "昇腾",
+    "chipCount": 1,
+    "fp16Perf": "280 TFLOPS",
+    "fp32Perf": "75 TFLOPS",
+    "memory": "32GB (HBM2e)",
+    "interconnect": "PCIe 5.0",
+    "scenario": "大模型推理 / 边缘推理",
+    "recommended": "Qwen2.5系列、Baichuan2系列",
+    "features": ["单芯推理卡", "PCIe 5.0", "低功耗"],
+    "tags": ["推理卡", "单芯", "PCIe5.0"]
+  },
+  {
+    "id": "atlas-350",
+    "name": "Atlas 350 推理卡",
+    "type": "中心推理硬件",
+    "chip": "昇腾",
+    "chipCount": 1,
+    "fp16Perf": "140 TFLOPS",
+    "fp32Perf": "37.5 TFLOPS",
+    "memory": "16GB (HBM2e)",
+    "interconnect": "PCIe 4.0",
+    "scenario": "边缘推理 / 轻量推理",
+    "recommended": "Whisper、SAM2、轻量模型",
+    "features": ["轻量推理卡", "低功耗", "边缘部署"],
+    "tags": ["推理卡", "轻量", "边缘"]
   }
 ];
 
@@ -3308,14 +3365,12 @@ function renderAscendHardware(data) {
     <div class="ascend-hw-card">
       <h3>${h.name}</h3>
       <div class="hw-subtitle">${h.chip} · ${h.chipCount}芯片 · ${h.fp16Perf}</div>
-      <span class="hw-badge ${h.badgeClass}">${h.type}</span>
+      <span class="hw-badge">${h.type}</span>
       <div class="hw-specs">${specsHtml}</div>
-      <div class="hw-desc">${h.description}</div>
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div style="display:flex;gap:4px;flex-wrap:wrap">
           ${h.features.map(f => `<span class="tag">${f}</span>`).join('')}
         </div>
-        <a href="${h.docUrl}" target="_blank" class="hw-link">华为官方详情 →</a>
       </div>
     </div>`;
   }).join('');
@@ -3327,7 +3382,7 @@ function filterAscendHardware() {
   const chip = document.getElementById('hwChipFilter').value;
 
   let filtered = ASCEND_HARDWARE_DATA.filter(h => {
-    if (search && !h.name.toLowerCase().includes(search) && !h.type.toLowerCase().includes(search) && !h.chip.toLowerCase().includes(search) && !h.description.toLowerCase().includes(search)) return false;
+    if (search && !h.name.toLowerCase().includes(search) && !h.type.toLowerCase().includes(search) && !h.chip.toLowerCase().includes(search) && !h.scenario.toLowerCase().includes(search)) return false;
     if (type !== 'all' && h.type !== type) return false;
     if (chip !== 'all' && !h.chip.includes(chip)) return false;
     return true;
