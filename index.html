@@ -2734,28 +2734,6 @@ function mergeModels() {
 // ============ 昇腾硬件数据 ============
 const ASCEND_HARDWARE_DATA = [
   {
-    "id": "atlas-800t-a3",
-    "name": "Atlas 800T A3 训练服务器",
-    "type": "中心训练硬件",
-    "chip": "昇腾910B",
-    "chipCount": 8,
-    "fp16Perf": "3200 TFLOPS",
-    "memory": "64GB × 8 (HBM2e)",
-    "interconnect": "HCCS 高速互联",
-    "scenario": "大模型训练 / 推理",
-    "recommended": "DeepSeek-V3/R1、Qwen2.5-72B、GLM-4-130B",
-    "features": [
-      "训练推理一体",
-      "超节点扩展",
-      "HCCS高速互联"
-    ],
-    "tags": [
-      "训练",
-      "推理",
-      "高性能"
-    ]
-  },
-  {
     "id": "atlas-800t-a3-supernode",
     "name": "Atlas 800T A3 超节点服务器",
     "type": "中心训练硬件",
@@ -2971,29 +2949,6 @@ const ASCEND_HARDWARE_DATA = [
       "双芯",
       "编解码",
       "虚拟化"
-    ]
-  },
-  {
-    "id": "atlas-300i-a3",
-    "name": "Atlas 300I A3 推理卡",
-    "type": "中心推理硬件",
-    "chip": "昇腾",
-    "chipCount": 1,
-    "fp16Perf": "280 TFLOPS",
-    "fp32Perf": "75 TFLOPS",
-    "memory": "32GB (HBM2e)",
-    "interconnect": "PCIe 5.0",
-    "scenario": "大模型推理 / 边缘推理",
-    "recommended": "Qwen2.5系列、Baichuan2系列",
-    "features": [
-      "单芯推理卡",
-      "PCIe 5.0",
-      "低功耗"
-    ],
-    "tags": [
-      "推理卡",
-      "单芯",
-      "PCIe5.0"
     ]
   },
   {

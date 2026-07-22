@@ -1,19 +1,5 @@
 [
   {
-    "id": "atlas-800t-a3",
-    "name": "Atlas 800T A3 训练服务器",
-    "type": "中心训练硬件",
-    "chip": "昇腾910B",
-    "chipCount": 8,
-    "fp16Perf": "3200 TFLOPS",
-    "memory": "64GB × 8 (HBM2e)",
-    "interconnect": "HCCS 高速互联",
-    "scenario": "大模型训练 / 推理",
-    "recommended": "DeepSeek-V3/R1、Qwen2.5-72B、GLM-4-130B",
-    "features": ["训练推理一体", "超节点扩展", "HCCS高速互联"],
-    "tags": ["训练", "推理", "高性能"]
-  },
-  {
     "id": "atlas-800t-a3-supernode",
     "name": "Atlas 800T A3 超节点服务器",
     "type": "中心训练硬件",
@@ -26,8 +12,17 @@
     "interconnect": "灵衢互联1.0 + RoCE（400Gbps）",
     "scenario": "超大模型训练 / 集群训练",
     "recommended": "DeepSeek-V3/R1、BLOOM-176B、万亿参数MoE模型",
-    "features": ["超节点架构", "10U风冷训练", "灵衢互联1.0", "大规模并行训练"],
-    "tags": ["超节点", "大规模训练", "集群"]
+    "features": [
+      "超节点架构",
+      "10U风冷训练",
+      "灵衢互联1.0",
+      "大规模并行训练"
+    ],
+    "tags": [
+      "超节点",
+      "大规模训练",
+      "集群"
+    ]
   },
   {
     "id": "atlas-900-a3",
@@ -40,8 +35,16 @@
     "interconnect": "HCCS + 高速网络",
     "scenario": "超大模型训练 / 集群推理",
     "recommended": "BLOOM-176B、DeepSeek-V3集群训练",
-    "features": ["超大规模", "集群训练", "万卡互联"],
-    "tags": ["集群", "超大规模", "训练"]
+    "features": [
+      "超大规模",
+      "集群训练",
+      "万卡互联"
+    ],
+    "tags": [
+      "集群",
+      "超大规模",
+      "训练"
+    ]
   },
   {
     "id": "atlas-800i-a3",
@@ -54,8 +57,16 @@
     "interconnect": "HCCS",
     "scenario": "大模型推理 / 微调",
     "recommended": "Qwen2.5-7B/72B、Baichuan2、Yi-34B",
-    "features": ["推理优化", "高吞吐", "低延迟"],
-    "tags": ["推理", "微调", "高性价比"]
+    "features": [
+      "推理优化",
+      "高吞吐",
+      "低延迟"
+    ],
+    "tags": [
+      "推理",
+      "微调",
+      "高性价比"
+    ]
   },
   {
     "id": "atlas-800i-a3-supernode",
@@ -70,8 +81,18 @@
     "interconnect": "灵衢互联1.0 + RoCE（400Gbps）",
     "scenario": "大模型集群推理 / 在线服务",
     "recommended": "DeepSeek-R1、Qwen2.5系列、GLM系列",
-    "features": ["集群推理", "高并发", "弹性扩展", "灵衢互联1.0", "10U风冷"],
-    "tags": ["超节点", "集群推理", "高并发"]
+    "features": [
+      "集群推理",
+      "高并发",
+      "弹性扩展",
+      "灵衢互联1.0",
+      "10U风冷"
+    ],
+    "tags": [
+      "超节点",
+      "集群推理",
+      "高并发"
+    ]
   },
   {
     "id": "atlas-800i-a2-32g-hccs",
@@ -85,8 +106,17 @@
     "interconnect": "HCCS full-mesh，392GB/s",
     "scenario": "大模型推理 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
-    "features": ["推理优化", "HCCS全互联", "200GE RoCE", "编解码加速"],
-    "tags": ["推理", "HCCS", "高性价比"]
+    "features": [
+      "推理优化",
+      "HCCS全互联",
+      "200GE RoCE",
+      "编解码加速"
+    ],
+    "tags": [
+      "推理",
+      "HCCS",
+      "高性价比"
+    ]
   },
   {
     "id": "atlas-800i-a2-32g-pcie",
@@ -100,8 +130,17 @@
     "interconnect": "PCIe",
     "scenario": "大模型推理 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
-    "features": ["推理优化", "PCIe互联", "200GE RoCE", "编解码加速"],
-    "tags": ["推理", "PCIe", "高性价比"]
+    "features": [
+      "推理优化",
+      "PCIe互联",
+      "200GE RoCE",
+      "编解码加速"
+    ],
+    "tags": [
+      "推理",
+      "PCIe",
+      "高性价比"
+    ]
   },
   {
     "id": "atlas-800i-a2-64g-hccs",
@@ -115,8 +154,18 @@
     "interconnect": "HCCS full-mesh，392GB/s",
     "scenario": "大模型推理 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、GLM系列",
-    "features": ["推理优化", "HCCS全互联", "200GE RoCE", "编解码加速", "大显存"],
-    "tags": ["推理", "HCCS", "大显存"]
+    "features": [
+      "推理优化",
+      "HCCS全互联",
+      "200GE RoCE",
+      "编解码加速",
+      "大显存"
+    ],
+    "tags": [
+      "推理",
+      "HCCS",
+      "大显存"
+    ]
   },
   {
     "id": "atlas-300i-a2",
@@ -130,8 +179,18 @@
     "interconnect": "PCIe x16 Gen5.0",
     "scenario": "AI推理 / 视频分析 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、Whisper、SAM2",
-    "features": ["910 AI处理器", "PCIe Gen5.0", "HBM大显存", "编解码加速"],
-    "tags": ["推理卡", "PCIe5.0", "编解码", "高性价比"]
+    "features": [
+      "910 AI处理器",
+      "PCIe Gen5.0",
+      "HBM大显存",
+      "编解码加速"
+    ],
+    "tags": [
+      "推理卡",
+      "PCIe5.0",
+      "编解码",
+      "高性价比"
+    ]
   },
   {
     "id": "atlas-300i-duo",
@@ -145,23 +204,18 @@
     "interconnect": "PCIe Gen4.0 x16",
     "scenario": "AI推理 / 视频分析 / 边缘推理",
     "recommended": "Qwen2.5系列、DeepSeek系列、Whisper、SAM2",
-    "features": ["双芯推理卡", "310系列处理器", "H.264/H.265编解码", "虚拟NPU"],
-    "tags": ["推理卡", "双芯", "编解码", "虚拟化"]
-  },
-  {
-    "id": "atlas-300i-a3",
-    "name": "Atlas 300I A3 推理卡",
-    "type": "中心推理硬件",
-    "chip": "昇腾",
-    "chipCount": 1,
-    "fp16Perf": "280 TFLOPS",
-    "fp32Perf": "75 TFLOPS",
-    "memory": "32GB (HBM2e)",
-    "interconnect": "PCIe 5.0",
-    "scenario": "大模型推理 / 边缘推理",
-    "recommended": "Qwen2.5系列、Baichuan2系列",
-    "features": ["单芯推理卡", "PCIe 5.0", "低功耗"],
-    "tags": ["推理卡", "单芯", "PCIe5.0"]
+    "features": [
+      "双芯推理卡",
+      "310系列处理器",
+      "H.264/H.265编解码",
+      "虚拟NPU"
+    ],
+    "tags": [
+      "推理卡",
+      "双芯",
+      "编解码",
+      "虚拟化"
+    ]
   },
   {
     "id": "atlas-350",
@@ -176,7 +230,17 @@
     "interconnect": "PCIe 5.0 x16，双向128GBps",
     "scenario": "大模型推理 / 训练 / 高性能计算",
     "recommended": "DeepSeek系列、Qwen2.5系列、GLM系列",
-    "features": ["昇腾950PR处理器", "PCIe 5.0 x16", "112GB大显存", "卡间互连"],
-    "tags": ["加速卡", "高性能", "大显存", "PCIe5.0"]
+    "features": [
+      "昇腾950PR处理器",
+      "PCIe 5.0 x16",
+      "112GB大显存",
+      "卡间互连"
+    ],
+    "tags": [
+      "加速卡",
+      "高性能",
+      "大显存",
+      "PCIe5.0"
+    ]
   }
 ]
