@@ -2916,10 +2916,15 @@ async function init() {
   const initialCount = Math.min(50, models.length);
   const initialData = models.slice(0, initialCount);
   renderModels(initialData);
-  // 显示分页信息但暂不启用完整分页
+  // 显示分页信息
   const totalPages = Math.ceil(models.length / PAGE_SIZE) || 1;
   renderPagination(totalPages);
   statusEl.textContent = '本地数据 ' + models.length + ' 个（点击「手动刷新」获取最新在线数据）';
+
+  // 后台继续初始化完整筛选和分页
+  setTimeout(() => {
+    filterModels();
+  }, 100);
 
   // 后台继续加载详情数据（用于模型详情弹窗）
   fetch('data/models-detail.json').then(r => r.json()).then(detailModels => {
