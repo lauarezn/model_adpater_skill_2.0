@@ -2759,23 +2759,24 @@ const ASCEND_HARDWARE_DATA = [
     "id": "atlas-800t-a3-supernode",
     "name": "Atlas 800T A3 超节点服务器",
     "type": "中心训练硬件",
+    "formFactor": "10U风冷训练服务器",
     "chip": "昇腾910B",
-    "chipCount": "16-64",
-    "fp16Perf": "6400-25600 TFLOPS",
-    "memory": "64GB × 16-64 (HBM2e)",
-    "interconnect": "HCCS + 高速网络互联",
+    "chipCount": 8,
+    "npuModule": "支持8个NPU模组，单AI模组支持7路灵衢互联1.0+1路RoCE，用于AI处理器之间互连。服务器内任意两个NPU模组之间高速总线互联理论带宽达到双向784GB/s",
+    "fp16Perf": "6.016 PFLOPS@FP16 / 5.008 PFLOPS@FP16（单处理器 752 TFLOPS@FP16 / 626 TFLOPS@FP16）",
+    "fp32Perf": "1.584 PFLOPS@FP32 / 1.32 PFLOPS@FP32（单处理器 198 TFLOPS@FP32 / 165 TFLOPS@FP32）",
+    "onChipMemory": "整机1024GB，单模组最大128GB，带宽速率最大为2×1600GB/s",
+    "cpu": "4个鲲鹏920处理器（80核，2.9GHz/3.0GHz/3.1GHz，L1 64KB I-Cache+64KB D-Cache，L2 1.25MB，L3 140MB共享）",
+    "memory": "64个DDR内存插槽，支持RDIMM，最大速率5200MT/s，单根最大64GB",
+    "interconnect": "灵衢互联1.0（7个交换芯片，1:1无收敛）+ RoCE（NPU模组直出400Gbps通过CDR芯片，1:1无收敛）",
+    "pcieSlots": "最多5个PCIe 5.0扩展插槽（2个全高半长x16 + 2个半高半长x8 + 1个全高全长x16）",
+    "interfaces": "前面板：1个灵衢网络近端运维串口、1个BMC近端运维串口、1个灵衢网络管理网口、1个BMC管理网口、1个VGA接口、2个USB 2.0接口、56个400Gbps灵衢总线接口、8个400Gbps参数面接口；后面板：12个HVDC/AC电源接口",
+    "management": "iBMC支持IPMI、SOL、KVM over IP及虚拟媒体，1个10/100/1000Mbps管理网口汇聚到机柜管理板；灵衢总线板管理芯片（交换CPU）对交换芯片进行管理，1个10/100/1000Mbps管理网口汇聚到机柜管理板",
+    "cooling": "风冷，支持LAAC模块漏液检测和告警",
     "scenario": "超大模型训练 / 集群训练",
     "recommended": "DeepSeek-V3/R1、BLOOM-176B、万亿参数MoE模型",
-    "features": [
-      "超节点架构",
-      "大规模并行训练",
-      "超高算力密度"
-    ],
-    "tags": [
-      "超节点",
-      "大规模训练",
-      "集群"
-    ]
+    "features": ["超节点架构", "10U风冷训练", "灵衢互联1.0", "大规模并行训练", "超高算力密度"],
+    "tags": ["超节点", "大规模训练", "集群"]
   },
   {
     "id": "atlas-900-a3",
