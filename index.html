@@ -2851,10 +2851,10 @@ async function init() {
   const statusEl = document.getElementById('refreshStatus');
   const btn = document.getElementById('refreshBtn');
 
-  // 默认优先加载本地数据
+  // 默认优先加载本地轻量数据
   statusEl.textContent = '正在加载本地数据...';
   try {
-    const resp = await fetch('data/models.json');
+    const resp = await fetch('data/models-lite.json');
     if (resp.ok) {
       const localModels = await resp.json();
       models = localModels;
@@ -2912,7 +2912,21 @@ async function init() {
   document.getElementById('loadingIndicator').style.display = 'none';
   document.getElementById('modelGrid').style.display = '';
 
-  filterModels();
+  // 增量渲染：先显示前50个模型，让用户立刻看到内容
+  const initialCount = Math.min(50, models.length);
+  const initialData = models.slice(0, initialCount);
+  renderModels(initialData);
+  // 显示分页信息但暂不启用完整分页
+  const totalPages = Math.ceil(models.length / PAGE_SIZE) || 1;
+  renderPagination(totalPages);
+  statusEl.textContent = '本地数据 ' + models.length + ' 个（点击「手动刷新」获取最新在线数据）';
+
+  // 后台继续加载详情数据（用于模型详情弹窗）
+  fetch('data/models-detail.json').then(r => r.json()).then(detailModels => {
+    window._detailModels = detailModels;
+  }).catch(() => {
+    window._detailModels = null;
+  });
 
   renderAscendHardware(ASCEND_HARDWARE_DATA);
   initQuiz();
@@ -2944,7 +2958,7 @@ async function refreshData() {
   }
   // 加载本地数据作为补充（去重合并）
   try {
-    const resp = await fetch('data/models.json');
+    const resp = await fetch('data/models-lite.json');
     if (resp.ok) {
       const localModels = await resp.json();
       const seen = new Set(models.map(m => m.name.toLowerCase().replace(/[\s\/-]/g, '')));
@@ -2974,6 +2988,13 @@ async function refreshData() {
   document.getElementById('modelCount').textContent = models.length;
   document.getElementById('loadingIndicator').style.display = 'none';
   document.getElementById('modelGrid').style.display = '';
+
+  // 后台加载详情数据
+  fetch('data/models-detail.json').then(r => r.json()).then(detailModels => {
+    window._detailModels = detailModels;
+  }).catch(() => {
+    window._detailModels = null;
+  });
 
   filterModels();
   renderAscendHardware(ASCEND_HARDWARE_DATA);
@@ -3148,7 +3169,14 @@ function goToPage(page) {
   document.getElementById('modelGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }// ============ Model Detail Modal ============
 function showModelDetail(id) {
-  const m = models.find(x => x.id === id);
+  // 优先从详情数据中查找，否则从当前 models 中查找
+  let m = null;
+  if (window._detailModels) {
+    m = window._detailModels.find(x => x.id === id);
+  }
+  if (!m) {
+    m = models.find(x => x.id === id);
+  }
   if (!m) return;
   const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
   const supportClass = m.supportLevel === '✅ 已支持' ? 'support-supported' :
