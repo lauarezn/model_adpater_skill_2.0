@@ -338,21 +338,25 @@
       font-weight: 600;
       margin-bottom: 12px;
     }
-    .hw-badge.train { background: #DCFCE7; color: #166534; }
-    .hw-badge.infer { background: #DBEAFE; color: #1E40AF; }
-    .hw-badge.cluster { background: #FEF3C7; color: #92400E; }
-    .hw-badge.edge { background: #EDE9FE; color: #6D28D9; }
-    .hw-badge.accelerator { background: #FCE7F3; color: #9D174D; }
-    .hw-badge.card { background: #E0E7FF; color: #3730A3; }
+    .hw-badge[data-type="中心训练硬件"] { background: #DCFCE7; color: #166534; }
+    .hw-badge[data-type="中心推理硬件"] { background: #DBEAFE; color: #1E40AF; }
     .ascend-hw-card .hw-specs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 16px;
+      grid-template-columns: auto 1fr;
+      gap: 6px 16px;
       font-size: 0.85rem;
       margin-bottom: 12px;
     }
-    .ascend-hw-card .hw-specs dt { color: var(--color-text-tertiary); font-weight: 500; }
-    .ascend-hw-card .hw-specs dd { color: var(--color-text); }
+    .ascend-hw-card .hw-specs dt {
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      white-space: nowrap;
+      min-width: 80px;
+    }
+    .ascend-hw-card .hw-specs dd {
+      color: var(--color-text);
+      word-break: break-word;
+    }
     .ascend-hw-card .hw-desc {
       font-size: 0.85rem;
       color: var(--color-text-secondary);
@@ -3365,7 +3369,7 @@ function renderAscendHardware(data) {
     <div class="ascend-hw-card">
       <h3>${h.name}</h3>
       <div class="hw-subtitle">${h.chip} · ${h.chipCount}芯片 · ${h.fp16Perf}</div>
-      <span class="hw-badge">${h.type}</span>
+      <span class="hw-badge" data-type="${h.type}">${h.type}</span>
       <div class="hw-specs">${specsHtml}</div>
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div style="display:flex;gap:4px;flex-wrap:wrap">
