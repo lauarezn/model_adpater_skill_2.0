@@ -2553,6 +2553,8 @@ async function fetchAscendSACTData() {
     const totalPages = Math.ceil(totalCount / pageSize);
 
     // Fetch all pages in parallel
+    // For paginated pages, try direct fetch first (GitCode may allow it),
+    // then fall back to CORS proxy
     const pageUrls = [];
     for (let page = 2; page <= totalPages; page++) {
       pageUrls.push(`${ASCEND_SACT_URL}?page=${page}`);
@@ -2560,14 +2562,31 @@ async function fetchAscendSACTData() {
 
     const allHtmls = [firstHtml];
     if (pageUrls.length > 0) {
-      const results = await Promise.allSettled(
-        pageUrls.map(url => fetchWithProxy(url))
+      // Try direct fetch for all pages first (faster, no CORS proxy overhead)
+      const directResults = await Promise.allSettled(
+        pageUrls.map(url => fetch(url, { signal: AbortSignal.timeout(10000) }).then(r => r.ok ? r.text() : null))
       );
-      results.forEach(r => {
-        if (r.status === 'fulfilled' && r.value) {
+
+      const failedUrls = [];
+      directResults.forEach((r, i) => {
+        if (r.status === 'fulfilled' && r.value && r.value.length > 100) {
           allHtmls.push(r.value);
+        } else {
+          failedUrls.push(pageUrls[i]);
         }
       });
+
+      // For pages that failed direct fetch, try CORS proxy
+      if (failedUrls.length > 0) {
+        const proxyResults = await Promise.allSettled(
+          failedUrls.map(url => fetchWithProxy(url))
+        );
+        proxyResults.forEach(r => {
+          if (r.status === 'fulfilled' && r.value) {
+            allHtmls.push(r.value);
+          }
+        });
+      }
     }
 
     // Parse all pages
