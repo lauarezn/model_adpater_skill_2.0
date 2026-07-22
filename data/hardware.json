@@ -25,28 +25,6 @@
     ]
   },
   {
-    "id": "atlas-900-a3",
-    "name": "Atlas 900 A3 SuperPoD",
-    "type": "中心训练硬件",
-    "chip": "昇腾910B × N",
-    "chipCount": "数百至数千",
-    "fp16Perf": "EH级",
-    "memory": "HBM2e 大容量",
-    "interconnect": "HCCS + 高速网络",
-    "scenario": "超大模型训练 / 集群推理",
-    "recommended": "BLOOM-176B、DeepSeek-V3集群训练",
-    "features": [
-      "超大规模",
-      "集群训练",
-      "万卡互联"
-    ],
-    "tags": [
-      "集群",
-      "超大规模",
-      "训练"
-    ]
-  },
-  {
     "id": "atlas-800i-a3",
     "name": "Atlas 800I A3 推理服务器",
     "type": "中心推理硬件",
