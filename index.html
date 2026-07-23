@@ -2473,7 +2473,7 @@ async function fetchGitCodeData() {
 
     // Parse Next.js dehydrated data from self.__next_f.push entries
     const pushMatches = html.matchAll(/self\.__next_f\.push\(\[1,"(.*?)"\]\)/g);
-    let content = null;
+    let allContent = [];
     let totalCount = 0;
 
     for (const match of pushMatches) {
@@ -2484,28 +2484,25 @@ async function fetchGitCodeData() {
         continue;
       }
 
-      // Look for React Query cache data pattern: {"state":{"queries":[{"state":{"data":{"content":[...],"total":"..."}}}]}}
-      // This is the format used by GitCode AI's Next.js page with React Query SSR dehydration
-      const queryMatch = decoded.match(/"queryKey":\["aiProjectsSearch"/);
-      if (!queryMatch) continue;
+      // Look for React Query cache data pattern
+      if (!decoded.includes('aiProjectsSearch')) continue;
 
-      // Find the data object containing content array
-      const dataMatch = decoded.match(/"data":(\{.*?"content":\[)/);
-      if (!dataMatch) continue;
+      // Find the data object: look for "data":{"page_num":...
+      const dataIdx = decoded.indexOf('"data":{"page_num"');
+      if (dataIdx < 0) continue;
 
-      let dataStr = dataMatch[1];
-      // Find matching closing brace for the data object
+      const dataStart = dataIdx + '"data":'.length;
       let depth = 0, endIdx = 0;
-      for (let i = 0; i < dataStr.length; i++) {
-        if (dataStr[i] === '{') depth++;
-        else if (dataStr[i] === '}') { depth--; if (depth === 0) { endIdx = i + 1; break; } }
+      for (let i = dataStart; i < decoded.length; i++) {
+        if (decoded[i] === '{') depth++;
+        else if (decoded[i] === '}') { depth--; if (depth === 0) { endIdx = i + 1; break; } }
       }
       if (!endIdx) continue;
 
       try {
-        const dataObj = JSON.parse(dataStr.substring(0, endIdx));
+        const dataObj = JSON.parse(decoded.substring(dataStart, dataStart + endIdx));
         if (dataObj.content && Array.isArray(dataObj.content)) {
-          content = dataObj.content;
+          allContent = dataObj.content;
           totalCount = parseInt(dataObj.total) || 0;
           break;
         }
@@ -2514,11 +2511,11 @@ async function fetchGitCodeData() {
       }
     }
 
-    if (!content || content.length === 0) return false;
+    if (allContent.length === 0) return false;
 
     const parsedModels = [];
 
-    content.forEach(m => {
+    allContent.forEach(m => {
       const name = m.name || '';
       const namespace = m.namespace || '';
       const webUrl = m.web_url || '';
