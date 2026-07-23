@@ -3163,7 +3163,7 @@ const ASCEND_HARDWARE_DATA = [
     "id": "atlas-300i-a2",
     "name": "Atlas 300I A2 推理卡",
     "type": "中心推理硬件",
-    "formFactor": "双槽位全高全长PCIe卡",
+    "formFactor": "双槽位全高全长（FHFL）PCIe卡",
     "chip": "昇腾910",
     "chipCount": 1,
     "fp16Perf": "280 TFLOPS",
@@ -3182,7 +3182,16 @@ const ASCEND_HARDWARE_DATA = [
       "PCIe5.0",
       "编解码",
       "高性价比"
-    ]
+    ],
+    "detailSpecs": {
+      "formFactorDetail": "双槽位全高全长（FHFL）PCIe卡。散热方式：被动风冷。尺寸：266.7mm × 39.04mm × 111.15mm。重量：1.32 kg。",
+      "aiProcessor": "1 × 910 AI处理器。核心配置：集成20个AI Core + 8个TaiShan Core。",
+      "memorySpec": "32GB版本：容量32GB HBM，带宽800 GB/s，支持ECC。64GB版本：容量64GB HBM，带宽1.6 TB/s，支持ECC。",
+      "aiPerf": "半精度（FP16）：最大算力为280 TFLOPS。",
+      "codec": "视频解码：支持1080p 480 FPS等效解码能力。JPEG解码：支持1080p 12288 FPS等效解码能力，支持分辨率范围32×32至16384×16384。JPEG编码：支持1080p 1024 FPS等效编码能力，支持分辨率范围32×32至8192×8192。",
+      "pcieInterface": "PCIe x16 Gen 5.0。",
+      "power": "功耗范围：300W / 350W。"
+    }
   },
   {
     "id": "atlas-300i-duo",
