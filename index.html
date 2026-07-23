@@ -2957,17 +2957,56 @@ const ASCEND_HARDWARE_DATA = [
       "集群"
     ],
     "detailSpecs": {
-      "npuModule": "支持8个NPU模组。单模组支持7路灵衢互联1.0 + 1路RoCE，服务器内任意两NPU模组间高速总线互联理论带宽达双向784GB/s。",
-      "aiPerf": "单AI处理器：752 TFLOPS @ FP16 / 626 TFLOPS @ FP16，198 TFLOPS @ FP32 / 165 TFLOPS @ FP32。整机：6.016 PFLOPS @ FP16 / 5.008 PFLOPS @ FP16，1.584 PFLOPS @ FP32 / 1.32 PFLOPS @ FP32。此为理论峰值，实际测试可能存在误差，详情请联系技术支持。",
-      "onChipMemory": "整机容量1024 GB。单模组最大128 GB。带宽最大2×1600 GB/s（以实际配置为准）。",
-      "cpu": "4个鲲鹏920处理器，每处理器80核。频率2.9GHz / 3.0GHz / 3.1GHz。缓存：每核L1 64KB（指令+数据）、L2 1.25MB；所有核共享L3 140MB（以实际配置为准）。",
-      "systemMemory": "共64个DDR插槽（每CPU基础板32个），支持RDIMM。配置32根时最大5200MT/s，单条最大64GB。同一节点内内存必须为相同Part No.，严禁混用不同规格。",
-      "network": "灵衢互联：7个交换芯片，1:1无收敛。RoCE网络：NPU模组直出400Gbps，通过CDR芯片，1:1无收敛。",
-      "storage": "支持热插拔硬盘。RAID卡支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持在线迁移、漫游及Web远程管理。",
-      "pcieSlots": "最多5个PCIe 5.0插槽。Riser 1：最多2个全高半长x16；Riser 2：最多2个半高半长x8；Riser 3：最多1个全高全长x16。具体支持型号请查询昇腾计算兼容性列表。",
-      "interfaces": "前面板：含2个串口（灵衢/BMC）、2个管理网口、1个VGA、2个USB 2.0、56个400Gbps灵衢总线接口、8个400Gbps参数面接口。后面板：12个HVDC/AC电源接口。",
-      "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板。灵衢总线管理：交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板。",
-      "cooling": "支持LAAC模块的漏液检测和告警功能。"
+      "npuModule": [
+        {"label": "模组配置", "value": "支持8个NPU模组"},
+        {"label": "互联带宽", "value": "单模组支持7路灵衢互联1.0 + 1路RoCE，服务器内任意两NPU模组间高速总线互联理论带宽达双向784GB/s"}
+      ],
+      "aiPerf": [
+        {"label": "单AI处理器", "value": "752 TFLOPS @ FP16 / 626 TFLOPS @ FP16；198 TFLOPS @ FP32 / 165 TFLOPS @ FP32"},
+        {"label": "整机", "value": "6.016 PFLOPS @ FP16 / 5.008 PFLOPS @ FP16；1.584 PFLOPS @ FP32 / 1.32 PFLOPS @ FP32"},
+        {"label": "说明", "value": "此为理论峰值，实际测试可能存在误差，详情请联系技术支持"}
+      ],
+      "onChipMemory": [
+        {"label": "整机容量", "value": "1024 GB"},
+        {"label": "单模组", "value": "最大128 GB"},
+        {"label": "带宽", "value": "最大2×1600 GB/s（以实际配置为准）"}
+      ],
+      "cpu": [
+        {"label": "型号与数量", "value": "4个鲲鹏920处理器，每处理器80核"},
+        {"label": "频率", "value": "2.9GHz / 3.0GHz / 3.1GHz"},
+        {"label": "缓存", "value": "每核L1 64KB（指令+数据）、L2 1.25MB；所有核共享L3 140MB（以实际配置为准）"}
+      ],
+      "systemMemory": [
+        {"label": "插槽", "value": "共64个DDR插槽（每CPU基础板32个），支持RDIMM"},
+        {"label": "速率与容量", "value": "配置32根时最大5200MT/s，单条最大64GB"},
+        {"label": "规则", "value": "同一节点内内存必须为相同Part No.，严禁混用不同规格"}
+      ],
+      "network": [
+        {"label": "灵衢互联", "value": "7个交换芯片，1:1无收敛"},
+        {"label": "RoCE网络", "value": "NPU模组直出400Gbps，通过CDR芯片，1:1无收敛"}
+      ],
+      "storage": [
+        {"label": "硬盘", "value": "支持热插拔，详细配置请参见对应硬盘指南"},
+        {"label": "RAID卡", "value": "支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持在线迁移、漫游及Web远程管理"}
+      ],
+      "pcieSlots": [
+        {"label": "总数", "value": "最多5个PCIe 5.0插槽"},
+        {"label": "Riser 1", "value": "最多2个全高半长x16"},
+        {"label": "Riser 2", "value": "最多2个半高半长x8"},
+        {"label": "Riser 3", "value": "最多1个全高全长x16"},
+        {"label": "兼容性", "value": "具体支持型号请查询昇腾计算兼容性列表"}
+      ],
+      "interfaces": [
+        {"label": "前面板", "value": "含2个串口（灵衢/BMC）、2个管理网口、1个VGA、2个USB 2.0、56个400Gbps灵衢总线接口、8个400Gbps参数面接口"},
+        {"label": "后面板", "value": "12个HVDC/AC电源接口"}
+      ],
+      "management": [
+        {"label": "iBMC", "value": "支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板"},
+        {"label": "灵衢总线管理", "value": "交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板"}
+      ],
+      "cooling": [
+        {"label": "液冷可靠性", "value": "支持LAAC模块的漏液检测和告警功能"}
+      ]
     }
   },
   {
@@ -3016,7 +3055,20 @@ const ASCEND_HARDWARE_DATA = [
       "超节点",
       "集群推理",
       "高并发"
-    ]
+    ],
+    "detailSpecs": {
+      "npuModule": "支持8个NPU模组。单模组支持7路灵衢互联1.0 + 1路RoCE。服务器内任意两个NPU模组间高速总线互联理论带宽达双向784GB/s。",
+      "aiPerf": "单AI处理器：560 TFLOPS @ FP16，150 TFLOPS @ FP32。整机：4.48 PFLOPS @ FP16，1.20 PFLOPS @ FP32。此为理论峰值算力，实际测试可能存在误差，详情请联系技术支持。",
+      "onChipMemory": "整机容量1024 GB。单模组最大128 GB。带宽最大2×1600 GB/s（以实际配置为准）。",
+      "cpu": "4个鲲鹏920处理器，每处理器80核。频率2.9GHz / 3.0GHz / 3.1GHz。缓存：每核L1 64KB（指令+数据）、L2 1.25MB；所有核共享L3 140MB（以实际配置为准）。",
+      "systemMemory": "共64个DDR插槽（每CPU基础板32个），支持RDIMM。配置32根时最大5200MT/s，单条最大64GB。同一节点内内存必须为相同Part No.，严禁混用不同规格。",
+      "network": "灵衢互联：7个交换芯片，1:1无收敛。RoCE网络：NPU模组直出400Gbps，通过CDR芯片，1:1无收敛。",
+      "storage": "支持热插拔硬盘（SATA SSD / NVMe SSD）。RAID控制卡支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持在线迁移、漫游及Web远程管理。",
+      "pcieSlots": "最多5个PCIe 5.0插槽。Riser 1：最多2个全高半长x16；Riser 2：最多2个半高半长x8；Riser 3：最多1个全高全长x16。具体支持型号请查询昇腾计算兼容性列表。",
+      "interfaces": "前面板：2个串口（灵衢网络近端运维/BMC近端运维）、2个管理网口（灵衢网络管理/BMC管理）、1个VGA接口、2个USB 2.0接口、56个400Gbps灵衢总线接口、8个400Gbps参数面接口。后面板：12个HVDC/AC电源接口。",
+      "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板。灵衢总线管理：交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板。",
+      "cooling": "支持LAAC模块的漏液检测和告警功能。"
+    }
   },
   {
     "id": "atlas-800i-a2-32g-hccs",
