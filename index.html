@@ -3058,19 +3058,28 @@ async function init() {
   }
 
   if (!models) {
-    // 本地数据加载失败时，尝试在线获取（缩短超时）
-    statusEl.textContent = '本地数据加载失败，尝试在线获取...';
-    const [ascendOk, omniOk, sglangOk, gitcodeOk, sactOk] = await Promise.all([
-      fetchAscendData(), fetchOmniData(), fetchSGLangData(),
-      fetchGitCodeData(), fetchAscendSACTData()
-    ]);
-    if (ascendOk || omniOk || sglangOk || gitcodeOk || sactOk) {
-      models = mergeModels();
-      dataSource = 'merged';
-    } else {
-      models = FALLBACK_MODELS;
-      dataSource = 'local';
-    }
+    // 本地数据加载失败，立即使用离线回退数据，不阻塞首屏
+    statusEl.textContent = '⚠️ 本地数据加载失败，使用离线数据（后台尝试在线获取...）';
+    models = FALLBACK_MODELS;
+    dataSource = 'local';
+    // 后台异步尝试在线获取，不阻塞首屏渲染
+    setTimeout(async () => {
+      const [ascendOk, omniOk, sglangOk, gitcodeOk, sactOk] = await Promise.all([
+        fetchAscendData(), fetchOmniData(), fetchSGLangData(),
+        fetchGitCodeData(), fetchAscendSACTData()
+      ]);
+      if (ascendOk || omniOk || sglangOk || gitcodeOk || sactOk) {
+        models = mergeModels();
+        dataSource = 'merged';
+        document.getElementById('modelCount').textContent = models.length;
+        const categories = [...new Set(models.map(m => m.category))];
+        document.getElementById('categoryCount').textContent = categories.length;
+        filterModels();
+        statusEl.textContent = '在线补充 ' + models.length + ' 个';
+      } else {
+        statusEl.textContent = '⚠️ 在线获取失败，使用离线数据';
+      }
+    }, 0);
   }
 
   btn.disabled = false;
