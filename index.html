@@ -3215,6 +3215,52 @@ const ASCEND_HARDWARE_DATA = [
       "powerConsumption": "最大功耗：600 W。",
       "cardInterconnect": "4卡互连：3 × x4 UB端口，双向带宽318 GB/s。2卡互连：4 × x4 UB端口，双向带宽424 GB/s。\n\n高速端口（U Die0）分配：M0~M3：PCIe；M4~M6：4卡互连；M4~M6、M8：2卡互连。"
     }
+  },
+  {
+    "id": "atlas-800t-a2",
+    "name": "Atlas 800T A2 训练服务器",
+    "type": "中心训练硬件",
+    "formFactor": "4U训练服务器",
+    "chip": "Ascend 910",
+    "chipCount": 8,
+    "fp16Perf": "2.504 PFLOPS@FP16 / 3.008 PFLOPS@FP16",
+    "fp32Perf": "0.656 PFLOPS@FP32 / 0.792 PFLOPS@FP32",
+    "memory": "64GB片上内存，带宽1600GB/s",
+    "interconnect": "HCCS full-mesh（392GB/s）+ 200G RoCE",
+    "scenario": "大模型训练 / 微调",
+    "recommended": "DeepSeek系列、Qwen2.5系列、GLM系列、Baichuan2",
+    "features": [
+      "4U训练服务器",
+      "8路昇腾910",
+      "HCCS全互联",
+      "200G RoCE",
+      "鲲鹏920处理器"
+    ],
+    "tags": [
+      "训练",
+      "4U",
+      "HCCS",
+      "高性价比"
+    ],
+    "detailSpecs": {
+      "formDetail": "4U训练服务器。",
+      "npuModule": "支持8路华为自研昇腾910 AI处理器。芯片支持直出200G RoCE网络接口。每一路AI处理器提供7条HCCS互连链路，最大理论带宽为392 GB/s。每个NPU载板由8路AI处理器组成，通过HCCS组成8P Full Mesh互联。",
+      "aiPerf": "单AI处理器（选配其一，以实际采购型号为准）：313 TFLOPS @ FP16 / 376 TFLOPS @ FP16，82 TFLOPS @ FP32 / 99 TFLOPS @ FP32。整机：2.504 PFLOPS @ FP16 / 3.008 PFLOPS @ FP16，0.656 PFLOPS @ FP32 / 0.792 PFLOPS @ FP32。说明：a指稳定提供的峰值稠密算力，此处为理论设计值，实际测试可能存在误差，详情请联系技术支持。",
+      "onChipMemory": "容量64 GB。带宽1600 GB/s。",
+      "network": "接口类型：200GE QSFP接口直出，RoCE协议。",
+      "powerConsumption": "单AI处理器最大功耗：400 W。",
+      "pcieInterface": "每个NPU通过PCIe 4.0 x16与CPU互联。",
+      "cpu": "支持4路鲲鹏920处理器。鲲鹏920 7265：64核，3.0 GHz。鲲鹏920 5250：48核，2.6 GHz。内存控制器：集成，支持8个内存通道。PCIe控制器：集成，支持PCIe 4.0，每处理器提供40个lane。互联总线：2路Hydra总线互连，每路最高30 GT/s。L3 Cache：64 MB。",
+      "systemMemory": "最多32个DDR4内存插槽，支持RDIMM。设计速率最大3200 MT/s。支持ECC、SEC/DED、SDDC、Patrol scrubbing。单条容量16 GB / 32 GB / 64 GB。同一台设备不允许混合使用不同规格的内存，必须为相同Part No.。",
+      "storage": "支持热插拔硬盘（SATA SSD / NVMe SSD）。RAID控制卡支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持RAID级别迁移、磁盘漫游、自诊断、Web远程设置。",
+      "networkCard": "CPU主板最多支持1张灵活IO卡，单卡提供4个10GE/25GE光口，支持PXE。10GE和25GE可通过不同光模块实现速率切换。NPU载板最多支持4张参数面接口卡，单卡提供2个200GE光口（支持光纤或铜缆）。使用200G铜缆时，NPU侧不支持自协商，需对端设备也关闭自协商。每张卡的2个200GE光口均来自不同NPU。",
+      "pcieSlots": "最多3个PCIe 4.0扩展插槽。Riser模组1：1个全高全长+1个全高半长。Riser模组2：1个半高全长。具体支持型号请参见计算产品兼容性查询助手。",
+      "interfaces": "前面板：2个USB 2.0、1个DB15 VGA。后面板：2个USB 3.0、1个DB15 VGA、1个RJ45串口、1个RJ45系统管理端口、4个RJ45板载网口。",
+      "fan": "8个热插拔风扇，支持N+1冗余备份，单转子失效。同一台设备必须配置相同Part No.的风扇模块。",
+      "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，提供1个10/100/1000 Mbps的RJ45管理网口。",
+      "security": "管理员密码。TPM（国内）。安全面板（选配件，带安全锁，防止未授权操作硬盘）。",
+      "gpu": "CPU主板集成显示芯片，32MB显存。最大分辨率：1920×1080 @ 60Hz（需安装对应显卡驱动，否则仅支持操作系统默认分辨率）。"
+    }
   }
 ];
 
@@ -3688,7 +3734,12 @@ function showHardwareDetail(id) {
       { label: '内存规格', icon: '🧠', key: 'memorySpec' },
       { label: 'PCIe接口', icon: '🔌', key: 'pcieInterface' },
       { label: '功耗', icon: '⚡', key: 'powerConsumption' },
-      { label: '卡间互连', icon: '🔗', key: 'cardInterconnect' }
+      { label: '卡间互连', icon: '🔗', key: 'cardInterconnect' },
+      // 训练服务器专用规格
+      { label: '网络接口卡', icon: '🌐', key: 'networkCard' },
+      { label: '风扇', icon: '🌀', key: 'fan' },
+      { label: '安全特性', icon: '🔒', key: 'security' },
+      { label: '显卡', icon: '🖥️', key: 'gpu' }
     ];
     detailSpecsHtml = specItems
       .filter(item => ds[item.key])
