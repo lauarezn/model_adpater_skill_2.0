@@ -2,6 +2,7 @@ node_modules/
 *.js
 !index.html
 !site-config.json
+!js/*.js
 crawl_*.js
 merge_*.js
 package.json
