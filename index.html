@@ -3160,7 +3160,7 @@ const ASCEND_HARDWARE_DATA = [
     "id": "atlas-300i-duo",
     "name": "Atlas 300I Duo 推理卡",
     "type": "中心推理硬件",
-    "formFactor": "单槽位全高全长（10.5英寸）",
+    "formFactor": "单槽位全高全长（10.5英寸）PCIe卡",
     "chip": "昇腾310系列",
     "chipCount": 2,
     "fp16Perf": "—",
@@ -3179,7 +3179,17 @@ const ASCEND_HARDWARE_DATA = [
       "双芯",
       "编解码",
       "虚拟化"
-    ]
+    ],
+    "detailSpecs": {
+      "formDetail": "单槽位全高全长（10.5英寸）PCIe卡。尺寸（长×高×宽）：266.7 mm × 111.15 mm × 18.46 mm。重量：910 g。",
+      "aiProcessor": "2 × 310系列处理器。单卡最大提供280 TOPS INT8算力。16个DaVinci AI Core。16个自研CPU核INT。",
+      "memorySpec": "类型：LPDDR4X。容量：48 GB / 96 GB。总带宽（整卡）：408 GB/s。支持ECC。",
+      "cpuPerf": "16 core × 1.9 GHz。",
+      "codec": "视频解码（H.264/H.265）：256路1080P@30FPS，或32路4K@60FPS。视频编码（H.264/H.265）：48路1080P@30FPS，或6路4K@60FPS。JPEG编解码：解码4K 1024 FPS，编码4K 512 FPS。最大分辨率：8192×8192。",
+      "virtualization": "支持将1路昇腾AI处理器切分为若干路虚拟NPU，每路虚拟NPU可分配4/2/1个AI Core，其他硬件资源（内存、编解码模块）按比例切分。1路310系列处理器最大支持切分为7路虚拟NPU。",
+      "pcieInterface": "x16 Lanes，兼容x8/x4/x2。PCIe Gen 4.0，兼容3.0/2.0。",
+      "powerConsumption": "最大功耗：150 W。"
+    }
   },
   {
     "id": "atlas-350",
@@ -3732,6 +3742,9 @@ function showHardwareDetail(id) {
       { label: '基本形态', icon: '📦', key: 'formDetail' },
       { label: 'AI处理器', icon: '🔲', key: 'aiProcessor' },
       { label: '内存规格', icon: '🧠', key: 'memorySpec' },
+      { label: 'CPU算力', icon: '🖥️', key: 'cpuPerf' },
+      { label: '编解码能力', icon: '🎬', key: 'codec' },
+      { label: '虚拟化实例', icon: '🔲', key: 'virtualization' },
       { label: 'PCIe接口', icon: '🔌', key: 'pcieInterface' },
       { label: '功耗', icon: '⚡', key: 'powerConsumption' },
       { label: '卡间互连', icon: '🔗', key: 'cardInterconnect' },
