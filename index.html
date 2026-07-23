@@ -568,6 +568,41 @@
     .modal dt { font-weight: 500; color: var(--color-text-tertiary); }
     .modal dd { color: var(--color-text); }
 
+    /* Hardware Detail Modal */
+    .hw-detail-modal h2 { margin-bottom: 4px; }
+    .hw-detail-specs {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 10px 16px;
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius);
+    }
+    .hw-detail-specs dt {
+      font-weight: 500;
+      color: var(--color-text-tertiary);
+    }
+    .hw-detail-specs dd {
+      color: var(--color-text);
+    }
+    .hw-detail-section {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius);
+    }
+    .hw-detail-section h4 {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+    .hw-detail-section p {
+      color: var(--color-text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
     /* Tags */
     .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
     .tag {
@@ -3431,6 +3466,63 @@ function closeModal(e) {
   document.getElementById('modalOverlay').classList.remove('active');
 }
 
+// ============ Hardware Detail Modal ============
+function showHardwareDetail(id) {
+  const h = ASCEND_HARDWARE_DATA.find(x => x.id === id);
+  if (!h) return;
+
+  // 基础规格
+  let specsHtml = `
+    <dl class="hw-detail-specs">
+      <dt>产品名称</dt><dd><strong>${h.name}</strong></dd>
+      <dt>产品类型</dt><dd><span class="hw-badge" data-type="${h.type}">${h.type}</span></dd>
+      <dt>芯片</dt><dd>${h.chip}</dd>
+      <dt>芯片数量</dt><dd>${h.chipCount}</dd>
+      <dt>FP16算力</dt><dd>${h.fp16Perf}</dd>
+      <dt>FP32算力</dt><dd>${h.fp32Perf || '-'}</dd>
+      <dt>显存</dt><dd>${h.memory}</dd>
+      <dt>互联方式</dt><dd>${h.interconnect}</dd>
+      <dt>适用场景</dt><dd>${h.scenario}</dd>`;
+  if (h.formFactor) specsHtml += `<dt>形态</dt><dd>${h.formFactor}</dd>`;
+  specsHtml += `</dl>`;
+
+  // 推荐模型
+  const recHtml = h.recommended
+    ? `<div class="hw-detail-section">
+        <h4>🎯 推荐模型</h4>
+        <p>${h.recommended}</p>
+      </div>`
+    : '';
+
+  // 特性标签
+  const featuresHtml = h.features.length > 0
+    ? `<div class="hw-detail-section">
+        <h4>✨ 产品特性</h4>
+        <div class="tags">${h.features.map(f => `<span class="tag">${f}</span>`).join('')}</div>
+      </div>`
+    : '';
+
+  // 标签
+  const tagsHtml = h.tags.length > 0
+    ? `<div class="hw-detail-section">
+        <h4>🏷️ 标签</h4>
+        <div class="tags">${h.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>`
+    : '';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="hw-detail-modal">
+      <h2>${h.name}</h2>
+      <p style="color:var(--color-text-secondary);margin-bottom:20px">${h.chip} · ${h.chipCount}芯片 · ${h.type}</p>
+      ${specsHtml}
+      ${recHtml}
+      ${featuresHtml}
+      ${tagsHtml}
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
 // ============ Hardware ============
 function renderAscendHardware(data) {
   const grid = document.getElementById('ascendHardwareGrid');
@@ -3457,7 +3549,7 @@ function renderAscendHardware(data) {
     if (h.formFactor) specsHtml += `<dt>形态</dt><dd>${h.formFactor}</dd>`;
 
     return `
-    <div class="ascend-hw-card">
+    <div class="ascend-hw-card" onclick="showHardwareDetail('${h.id}')" style="cursor:pointer">
       <h3>${h.name}</h3>
       <div class="hw-subtitle">${h.chip} · ${h.chipCount}芯片 · ${h.fp16Perf}</div>
       <span class="hw-badge" data-type="${h.type}">${h.type}</span>
