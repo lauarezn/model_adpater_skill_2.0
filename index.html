@@ -3044,7 +3044,8 @@ const ASCEND_HARDWARE_DATA = [
       "pcieSlots": "最多5个PCIe 5.0插槽。Riser 1：最多2个全高半长x16；Riser 2：最多2个半高半长x8；Riser 3：最多1个全高全长x16。具体支持型号请查询昇腾计算兼容性列表。",
       "interfaces": "前面板：2个串口（灵衢网络近端运维/BMC近端运维）、2个管理网口（灵衢网络管理/BMC管理）、1个VGA接口、2个USB 2.0接口、8个400Gbps参数面接口。后面板：12个HVDC/AC电源接口。",
       "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板。灵衢总线管理：交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板。",
-      "cooling": "支持LAAC模块的漏液检测和告警功能。"
+      "cooling": "支持LAAC模块的漏液检测和告警功能。",
+      "environment": "尺寸（高×宽×深）：442 mm（H）× 447 mm（W）× 920 mm（D）。920 mm为最大外形深度（含面板），前面板至后面板深度为900 mm。\n\n满配重量：整机净重229 kg。NPU抽屉40 kg，CPU抽屉37 kg，机箱56 kg，IO节点12 kg，灵衢总线板8 kg，电源模组2 kg。\n\n包装运输重量：一体化包材发货包装材料+辅料72 kg。分离发货：机框包装108 kg（机框56kg+包装40kg+辅料12kg），NPU包装115 kg（NPU 80kg+包材35kg），CPU&SW&IO包装121 kg（设备81kg+包材40kg）。以上为标配参考重量，实际配置不同可能存在偏差。\n\n能耗：最大输入功耗14.6 kW。不同配置（含ErP标准配置）的能耗参数不同，详细信息请参见计算产品能耗计算器。"
     }
   },
   {
@@ -3708,7 +3709,8 @@ function showHardwareDetail(id) {
       { label: 'PCIe扩展槽位', icon: '🔌', key: 'pcieSlots' },
       { label: '接口', icon: '🔧', key: 'interfaces' },
       { label: '系统管理', icon: '⚙️', key: 'management' },
-      { label: '液冷可靠性', icon: '❄️', key: 'cooling' }
+      { label: '液冷可靠性', icon: '❄️', key: 'cooling' },
+      { label: '环境规格', icon: '📐', key: 'environment' }
     ];
     detailSpecsHtml = specItems
       .filter(item => ds[item.key])
