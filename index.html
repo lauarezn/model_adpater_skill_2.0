@@ -3244,7 +3244,16 @@ const ASCEND_HARDWARE_DATA = [
       "高性能",
       "大显存",
       "PCIe5.0"
-    ]
+    ],
+    "detailSpecs": {
+      "formDetail": "双宽扩高全长PCIe卡。散热方式：风冷被动散热。尺寸（长×宽×高）：295 mm × 39.04 mm × 137 mm（公称值，实际可能因物料和加工差异而有所浮动）。\n\n重量：整卡3.2 kg（含IO支架，不含卡尾支撑件和互连板）。2卡互连板0.3 kg，4卡互连板0.6 kg，卡尾支撑件0.02 kg。上述重量为标称值，实际可能因物料和加工差异而有所浮动。",
+      "aiProcessor": "1 × 昇腾950PR处理器。",
+      "memorySpec": "112GB版本：容量112 GB，带宽1.4 TB/s，支持ECC。84GB版本：容量84 GB，带宽1.4 TB/s，支持ECC。",
+      "aiPerf": "HF32：212 TFLOPS（Cube 189.2 TFLOPS + Vector 23.7 TFLOPS）。FP32：23 TFLOPS。FP16/BF16：425 TFLOPS（Cube 378.5 TFLOPS + Vector 47.3 TFLOPS）。FP8/HiF8/mxFP8：804 TFLOPS（Cube 756.9 TFLOPS + Vector 47.3 TFLOPS按FP16计）。INT8：804 TOPS（Cube 756.9 TOPS + Vector 47.3 TOPS）。mxFP4：1561 TFLOPS（Cube 1513.9 TFLOPS + Vector 47.3 TFLOPS按FP16计）。\n\n说明：以上为理论设计值，实测数值可能存在约1%的误差，详情请联系技术支持。FP8/HiF8/mxFP8和mxFP4精度的Vector算力均按FP16计算。",
+      "pcieInterface": "PCIe 5.0 x16，双向理论带宽128 GB/s。",
+      "powerConsumption": "最大功耗：600 W。",
+      "cardInterconnect": "4卡互连：3 × x4 UB端口，双向带宽318 GB/s。2卡互连：4 × x4 UB端口，双向带宽424 GB/s。\n\n高速端口（U Die0）分配：M0~M3：PCIe；M4~M6：4卡互连；M4~M6、M8：2卡互连。"
+    }
   }
 ];
 
@@ -3711,7 +3720,14 @@ function showHardwareDetail(id) {
       { label: '接口', icon: '🔧', key: 'interfaces' },
       { label: '系统管理', icon: '⚙️', key: 'management' },
       { label: '液冷可靠性', icon: '❄️', key: 'cooling' },
-      { label: '环境规格', icon: '📐', key: 'environment' }
+      { label: '环境规格', icon: '📐', key: 'environment' },
+      // PCIe卡专用规格
+      { label: '基本形态', icon: '📦', key: 'formDetail' },
+      { label: 'AI处理器', icon: '🔲', key: 'aiProcessor' },
+      { label: '内存规格', icon: '🧠', key: 'memorySpec' },
+      { label: 'PCIe接口', icon: '🔌', key: 'pcieInterface' },
+      { label: '功耗', icon: '⚡', key: 'powerConsumption' },
+      { label: '卡间互连', icon: '🔗', key: 'cardInterconnect' }
     ];
     detailSpecsHtml = specItems
       .filter(item => ds[item.key])
