@@ -3013,23 +3013,39 @@ const ASCEND_HARDWARE_DATA = [
     "id": "atlas-800i-a3",
     "name": "Atlas 800I A3 推理服务器",
     "type": "中心推理硬件",
+    "formFactor": "10U风冷机架式服务器",
     "chip": "昇腾910B",
-    "chipCount": "4-8",
-    "fp16Perf": "1600 TFLOPS",
-    "memory": "64GB × 4-8 (HBM2e)",
-    "interconnect": "HCCS",
+    "chipCount": 8,
+    "fp16Perf": "4.48 PFLOPS（单处理器 560 TFLOPS）",
+    "fp32Perf": "1.20 PFLOPS（单处理器 150 TFLOPS）",
+    "memory": "整机1024GB片上内存，单模组128GB",
+    "interconnect": "RoCE（400Gbps）",
     "scenario": "大模型推理 / 微调",
     "recommended": "Qwen2.5-7B/72B、Baichuan2、Yi-34B",
     "features": [
       "推理优化",
       "高吞吐",
-      "低延迟"
+      "低延迟",
+      "10U风冷"
     ],
     "tags": [
       "推理",
       "微调",
       "高性价比"
-    ]
+    ],
+    "detailSpecs": {
+      "npuModule": "支持8个NPU模组。单模组支持7路灵衢互联1.0 + 1路RoCE。服务器内任意两个NPU模组间高速总线互联理论带宽达双向784GB/s。",
+      "aiPerf": "单AI处理器：560 TFLOPS @ FP16，150 TFLOPS @ FP32。整机：4.48 PFLOPS @ FP16，1.20 PFLOPS @ FP32。此为理论峰值算力，实际测试可能存在误差，详情请联系技术支持。",
+      "onChipMemory": "整机容量1024 GB。单模组最大128 GB。带宽最大2×1600 GB/s（以实际配置为准）。",
+      "cpu": "4个鲲鹏920处理器，每处理器80核。频率2.9GHz / 3.0GHz / 3.1GHz。缓存：每核L1 64KB（指令+数据）、L2 1.25MB；所有核共享L3 140MB（以实际配置为准）。",
+      "systemMemory": "共64个DDR插槽（每CPU基础板32个），支持RDIMM。配置32根时最大5200MT/s，单条最大64GB。同一节点内内存必须为相同Part No.，严禁混用不同规格。",
+      "network": "RoCE网络：NPU模组直出400Gbps，通过CDR芯片，1:1无收敛。",
+      "storage": "支持热插拔硬盘（SATA SSD / NVMe SSD）。RAID控制卡支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持在线迁移、漫游及Web远程管理。",
+      "pcieSlots": "最多5个PCIe 5.0插槽。Riser 1：最多2个全高半长x16；Riser 2：最多2个半高半长x8；Riser 3：最多1个全高全长x16。具体支持型号请查询昇腾计算兼容性列表。",
+      "interfaces": "前面板：2个串口（灵衢网络近端运维/BMC近端运维）、2个管理网口（灵衢网络管理/BMC管理）、1个VGA接口、2个USB 2.0接口、8个400Gbps参数面接口。后面板：12个HVDC/AC电源接口。",
+      "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板。灵衢总线管理：交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板。",
+      "cooling": "支持LAAC模块的漏液检测和告警功能。"
+    }
   },
   {
     "id": "atlas-800i-a3-supernode",
