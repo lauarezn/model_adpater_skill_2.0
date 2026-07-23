@@ -3584,27 +3584,27 @@ function renderTrainModels() {
   grid.innerHTML = pageModels.map(m => {
     const statusClass = m.status === '测试中' ? 'testing' : '';
     const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
-    return \`
+    return `
       <div class="train-model-card">
-        <div class="model-name">\${m.name}</div>
+        <div class="model-name">${m.name}</div>
         <div class="model-meta">
-          <span class="tag tag-framework">\${frameworkLabel}</span>
-          <span class="tag tag-params">\${m.params}</span>
-          <span class="tag tag-cluster">\${m.cluster}</span>
-          <span class="tag tag-precision">\${m.precision}</span>
-          <span class="tag tag-status \${statusClass}">\${m.status}</span>
+          <span class="tag tag-framework">${frameworkLabel}</span>
+          <span class="tag tag-params">${m.params}</span>
+          <span class="tag tag-cluster">${m.cluster}</span>
+          <span class="tag tag-precision">${m.precision}</span>
+          <span class="tag tag-status ${statusClass}">${m.status}</span>
         </div>
-        <div class="model-desc">\${m.desc}</div>
-        <div class="model-task">任务：\${m.task}</div>
-        <div class="model-category">分类：\${m.category}</div>
+        <div class="model-desc">${m.desc}</div>
+        <div class="model-task">任务：${m.task}</div>
+        <div class="model-category">分类：${m.category}</div>
       </div>
-    \`;
+    `;
   }).join('');
 
   // 分页
   let pagHtml = '<div class="page-controls">';
-  pagHtml += \`<button class="page-btn" onclick="trainGoPage(1)" \${trainCurrentPage <= 1 ? 'disabled' : ''}>首页</button>\`;
-  pagHtml += \`<button class="page-btn" onclick="trainGoPage(\${trainCurrentPage - 1})" \${trainCurrentPage <= 1 ? 'disabled' : ''}>上一页</button>\`;
+  pagHtml += `<button class="page-btn" onclick="trainGoPage(1)" ${trainCurrentPage <= 1 ? 'disabled' : ''}>首页</button>`;
+  pagHtml += `<button class="page-btn" onclick="trainGoPage(${trainCurrentPage - 1})" ${trainCurrentPage <= 1 ? 'disabled' : ''}>上一页</button>`;
 
   const maxVisible = 5;
   let pageStart = Math.max(1, trainCurrentPage - Math.floor(maxVisible / 2));
@@ -3612,12 +3612,12 @@ function renderTrainModels() {
   if (pageEnd - pageStart + 1 < maxVisible) pageStart = Math.max(1, pageEnd - maxVisible + 1);
 
   for (let i = pageStart; i <= pageEnd; i++) {
-    pagHtml += \`<button class="page-btn \${i === trainCurrentPage ? 'active' : ''}" onclick="trainGoPage(\${i})">\${i}</button>\`;
+    pagHtml += `<button class="page-btn ${i === trainCurrentPage ? 'active' : ''}" onclick="trainGoPage(${i})">${i}</button>`;
   }
 
-  pagHtml += \`<button class="page-btn" onclick="trainGoPage(\${trainCurrentPage + 1})" \${trainCurrentPage >= totalPages ? 'disabled' : ''}>下一页</button>\`;
-  pagHtml += \`<button class="page-btn" onclick="trainGoPage(\${totalPages})" \${trainCurrentPage >= totalPages ? 'disabled' : ''}>末页</button>\`;
-  pagHtml += \`<span style="margin-left:12px;font-size:0.85rem;color:var(--color-text-secondary)">共 \${total} 个模型</span>\`;
+  pagHtml += `<button class="page-btn" onclick="trainGoPage(${trainCurrentPage + 1})" ${trainCurrentPage >= totalPages ? 'disabled' : ''}>下一页</button>`;
+  pagHtml += `<button class="page-btn" onclick="trainGoPage(${totalPages})" ${trainCurrentPage >= totalPages ? 'disabled' : ''}>末页</button>`;
+  pagHtml += `<span style="margin-left:12px;font-size:0.85rem;color:var(--color-text-secondary)">共 ${total} 个模型</span>`;
   pagHtml += '</div>';
   pagination.innerHTML = pagHtml;
 }
