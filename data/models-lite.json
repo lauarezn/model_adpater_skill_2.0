@@ -18,7 +18,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V4-Flash.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V4-Flash.html",
     "source": "vLLM Ascend"
   },
   {
@@ -40,7 +40,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V4-Pro.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V4-Pro.html",
     "source": "vLLM Ascend"
   },
   {
@@ -62,7 +62,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V3.1.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V3.1.html",
     "source": "vLLM Ascend"
   },
   {
@@ -84,7 +84,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V3.2.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V3.2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -107,7 +107,7 @@
       "LLM",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-R1.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-R1.html",
     "source": "vLLM Ascend"
   },
   {
@@ -129,7 +129,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Dense.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Dense.html",
     "source": "vLLM Ascend"
   },
   {
@@ -152,7 +152,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-30B-A3B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-30B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -176,7 +176,7 @@
       "MoE",
       "代码"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Coder-30B-A3B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Coder-30B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -199,7 +199,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-235B-A22B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-235B-A22B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -221,7 +221,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Next.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Next.html",
     "source": "vLLM Ascend"
   },
   {
@@ -243,7 +243,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM4.x.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM4.x.html",
     "source": "vLLM Ascend"
   },
   {
@@ -265,7 +265,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM5.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM5.html",
     "source": "vLLM Ascend"
   },
   {
@@ -287,7 +287,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM5.2.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM5.2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -309,7 +309,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Gemma4.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Gemma4.html",
     "source": "vLLM Ascend"
   },
   {
@@ -332,7 +332,7 @@
       "LLM",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Kimi-K2-Thinking.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Kimi-K2-Thinking.html",
     "source": "vLLM Ascend"
   },
   {
@@ -355,7 +355,7 @@
       "LLM",
       "OCR"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeekOCR2.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeekOCR2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -377,7 +377,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/MiniMax-M2.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/MiniMax-M2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -400,7 +400,7 @@
       "LLM",
       "数学"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen2.5-Math-RM-72B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen2.5-Math-RM-72B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -929,7 +929,7 @@
       "嵌入/排序",
       "嵌入"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3_embedding.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3_embedding.html",
     "source": "vLLM Ascend"
   },
   {
@@ -953,7 +953,7 @@
       "视觉",
       "嵌入"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-VL-Embedding.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-Embedding.html",
     "source": "vLLM Ascend"
   },
   {
@@ -977,7 +977,7 @@
       "嵌入",
       "排序"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3_reranker.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3_reranker.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1002,7 +1002,7 @@
       "嵌入",
       "排序"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-VL-Reranker.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-Reranker.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1091,7 +1091,7 @@
       "LLM",
       "视觉"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen-VL-Dense.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen-VL-Dense.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1115,7 +1115,7 @@
       "MoE",
       "视觉"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-VL-30B-A3B-Instruct.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-30B-A3B-Instruct.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1137,7 +1137,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.5-397B-A17B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.5-397B-A17B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1159,7 +1159,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.5-27B-Qwen3.6-27B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.5-27B-Qwen3.6-27B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1182,7 +1182,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.6-35B-A3B.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.6-35B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1207,7 +1207,7 @@
       "视觉",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Omni-30B-A3B-Thinking.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Omni-30B-A3B-Thinking.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1229,7 +1229,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai../../tutorials/models/Kimi-K2.5.html",
+    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Kimi-K2.5.html",
     "source": "vLLM Ascend"
   },
   {
