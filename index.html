@@ -2863,7 +2863,20 @@ const ASCEND_HARDWARE_DATA = [
       "超节点",
       "大规模训练",
       "集群"
-    ]
+    ],
+    "detailSpecs": {
+      "npuModule": "支持8个NPU模组。单模组支持7路灵衢互联1.0 + 1路RoCE，服务器内任意两NPU模组间高速总线互联理论带宽达双向784GB/s。",
+      "aiPerf": "单AI处理器：752 TFLOPS @ FP16 / 626 TFLOPS @ FP16，198 TFLOPS @ FP32 / 165 TFLOPS @ FP32。整机：6.016 PFLOPS @ FP16 / 5.008 PFLOPS @ FP16，1.584 PFLOPS @ FP32 / 1.32 PFLOPS @ FP32。此为理论峰值，实际测试可能存在误差，详情请联系技术支持。",
+      "onChipMemory": "整机容量1024 GB。单模组最大128 GB。带宽最大2×1600 GB/s（以实际配置为准）。",
+      "cpu": "4个鲲鹏920处理器，每处理器80核。频率2.9GHz / 3.0GHz / 3.1GHz。缓存：每核L1 64KB（指令+数据）、L2 1.25MB；所有核共享L3 140MB（以实际配置为准）。",
+      "systemMemory": "共64个DDR插槽（每CPU基础板32个），支持RDIMM。配置32根时最大5200MT/s，单条最大64GB。同一节点内内存必须为相同Part No.，严禁混用不同规格。",
+      "network": "灵衢互联：7个交换芯片，1:1无收敛。RoCE网络：NPU模组直出400Gbps，通过CDR芯片，1:1无收敛。",
+      "storage": "支持热插拔硬盘。RAID卡支持多种型号，可设置RAID 0/1/10/5/50/6/60（视硬盘数量而定），支持在线迁移、漫游及Web远程管理。",
+      "pcieSlots": "最多5个PCIe 5.0插槽。Riser 1：最多2个全高半长x16；Riser 2：最多2个半高半长x8；Riser 3：最多1个全高全长x16。具体支持型号请查询昇腾计算兼容性列表。",
+      "interfaces": "前面板：含2个串口（灵衢/BMC）、2个管理网口、1个VGA、2个USB 2.0、56个400Gbps灵衢总线接口、8个400Gbps参数面接口。后面板：12个HVDC/AC电源接口。",
+      "management": "iBMC：支持IPMI、SOL、KVM over IP及虚拟媒体，管理网口（10/100/1000Mbps）汇聚至机柜管理板。灵衢总线管理：交换CPU管理交换芯片，管理网口（10/100/1000Mbps）同样汇聚至机柜管理板。",
+      "cooling": "支持LAAC模块的漏液检测和告警功能。"
+    }
   },
   {
     "id": "atlas-800i-a3",
@@ -3510,6 +3523,33 @@ function showHardwareDetail(id) {
       </div>`
     : '';
 
+  // 扩展规格（当 detailSpecs 存在时展示）
+  let detailSpecsHtml = '';
+  if (h.detailSpecs) {
+    const ds = h.detailSpecs;
+    const specItems = [
+      { label: 'NPU模组与互联', icon: '🔗', key: 'npuModule' },
+      { label: 'AI算力（稠密算力）', icon: '⚡', key: 'aiPerf' },
+      { label: '片上内存', icon: '💾', key: 'onChipMemory' },
+      { label: 'CPU处理器', icon: '🖥️', key: 'cpu' },
+      { label: '内存', icon: '🧠', key: 'systemMemory' },
+      { label: '交换网络', icon: '🌐', key: 'network' },
+      { label: '存储', icon: '📀', key: 'storage' },
+      { label: 'PCIe扩展槽位', icon: '🔌', key: 'pcieSlots' },
+      { label: '接口', icon: '🔧', key: 'interfaces' },
+      { label: '系统管理', icon: '⚙️', key: 'management' },
+      { label: '液冷可靠性', icon: '❄️', key: 'cooling' }
+    ];
+    detailSpecsHtml = specItems
+      .filter(item => ds[item.key])
+      .map(item => `
+        <div class="hw-detail-section">
+          <h4>${item.icon} ${item.label}</h4>
+          <p>${ds[item.key]}</p>
+        </div>
+      `).join('');
+  }
+
   document.getElementById('modalBody').innerHTML = `
     <div class="hw-detail-modal">
       <h2>${h.name}</h2>
@@ -3518,6 +3558,7 @@ function showHardwareDetail(id) {
       ${recHtml}
       ${featuresHtml}
       ${tagsHtml}
+      ${detailSpecsHtml}
     </div>
   `;
   document.getElementById('modalOverlay').classList.add('active');
