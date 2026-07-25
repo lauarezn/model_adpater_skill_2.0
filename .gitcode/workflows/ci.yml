@@ -33,7 +33,7 @@ daily-crawl:
         git add data/
         git diff --cached --stat
         git commit -m "chore: 每日自动爬取更新 $(date +'%Y-%m-%d %H:%M')"
-        git push origin HEAD:main
+        git push origin HEAD:master
       fi
   timeout: 30 minutes
   artifacts:
