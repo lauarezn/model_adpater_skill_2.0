@@ -1,0 +1,42 @@
+# GitCode CI 配置（兼容 GitLab CI 格式）
+# 每天定时爬取昇腾模型数据并自动提交更新
+
+image: python:3.10-slim
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
+
+cache:
+  paths:
+    - .pip-cache/
+
+stages:
+  - crawl
+
+daily-crawl:
+  stage: crawl
+  only:
+    - schedules  # 仅定时触发
+  script:
+    - echo "=== 安装依赖 ==="
+    - pip install -r requirements.txt
+    - echo "=== 开始爬取 ==="
+    - python scripts/crawler.py
+    - echo "=== 检查是否有更新 ==="
+    - |
+      if git diff --quiet -- data/; then
+        echo "数据无变化，跳过提交"
+      else
+        echo "=== 数据有更新，提交并推送 ==="
+        git config user.name "Crawl Bot"
+        git config user.email "crawl-bot@gitcode.com"
+        git add data/
+        git diff --cached --stat
+        git commit -m "chore: 每日自动爬取更新 $(date +'%Y-%m-%d %H:%M')"
+        git push origin HEAD:main
+      fi
+  timeout: 30 minutes
+  artifacts:
+    paths:
+      - data/crawl-status.json
+    expire_in: 7 days
