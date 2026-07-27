@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urljoin, urlparse
 
@@ -385,18 +386,29 @@ def parse_gitcode_ai(html):
     print(f"  GitCode AI: 第1页 {len(first_page_models)} 个模型, 总计 {total} 个, 共 {page_count} 页")
 
     # 翻页获取剩余数据（最多翻 250 页，覆盖 7300+ 模型）
+    # 使用并发请求加速，去掉固定 sleep（仅在失败时指数退避重试）
     max_pages = min(page_count + 1, 250)
     if page_count > 1:
-        for page in range(2, max_pages):
+        def fetch_page(page):
+            """并发获取单页数据"""
             page_url = f'https://ai.gitcode.com/models?ascendNative=true&page={page}'
-            page_html = fetch_url(page_url, timeout=20)
-            if page_html:
-                page_models = extract_models_from_html(page_html)
+            retry_delay = 1
+            for attempt in range(3):
+                page_html = fetch_url(page_url, timeout=20)
+                if page_html:
+                    page_models = extract_models_from_html(page_html)
+                    return page, page_models
+                time.sleep(retry_delay)
+                retry_delay *= 2  # 指数退避
+            return page, []
+
+        with ThreadPoolExecutor(max_workers=15) as executor:
+            futures = {executor.submit(fetch_page, page): page
+                       for page in range(2, max_pages)}
+            for future in as_completed(futures):
+                page, page_models = future.result()
                 models.extend(page_models)
                 print(f"  GitCode AI: 第{page}页 {len(page_models)} 个模型")
-            else:
-                print(f"  GitCode AI: 第{page}页 获取失败")
-            time.sleep(1)
 
     # 转换为标准格式
     parsed_models = []
