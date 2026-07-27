@@ -1,28 +1,6 @@
 {
   "models": [
     {
-      "name": "Lumina-mGPT 2.0",
-      "params": "7B",
-      "task": "微调",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "多模态生成模型"
-    },
-    {
-      "name": "OpenSoraPlan1.5",
-      "params": "8.5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
       "name": "Wan2.2-T2V",
       "params": "5B",
       "task": "预训练",
@@ -89,151 +67,8 @@
       "desc": "视频生成蒸馏模型"
     },
     {
-      "name": "HunyuanVideo-T2V",
-      "params": "13B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "HunyuanVideo-I2V",
-      "params": "13B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
       "name": "HunyuanVideo1.5-T2V",
       "params": "8B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSora 1.0",
-      "params": "5.5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSora 1.2",
-      "params": "5.2B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSora 2.0-T2V",
-      "params": "11B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSoraPlan 1.2",
-      "params": "8.7B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSoraPlan 1.3-T2V",
-      "params": "8.6B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "OpenSoraPlan 1.3-I2V",
-      "params": "8.6B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "WFVAE",
-      "params": "0.18B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频VAE模型"
-    },
-    {
-      "name": "CogVideoX-T2V",
-      "params": "5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "CogVideoX-I2V",
-      "params": "5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "CogVideoX 1.5-T2V",
-      "params": "5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "视频生成模型"
-    },
-    {
-      "name": "CogVideoX 1.5-I2V",
-      "params": "5B",
       "task": "预训练",
       "cluster": "1x8",
       "precision": "BF16",
@@ -252,17 +87,6 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图/视频模型"
-    },
-    {
-      "name": "SDXL",
-      "params": "3.5B",
-      "task": "预训练",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态生成",
-      "desc": "文生图模型"
     },
     {
       "name": "SD3.5",
@@ -322,7 +146,7 @@
     {
       "name": "Qwen-Image",
       "params": "27B",
-      "task": "Lora微调",
+      "task": "LoRA微调",
       "cluster": "1x8",
       "precision": "BF16",
       "framework": "MM",
@@ -333,35 +157,13 @@
     {
       "name": "Qwen-Image-Edit",
       "params": "27B",
-      "task": "Lora微调",
+      "task": "LoRA微调",
       "cluster": "1x8",
       "precision": "BF16",
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型"
-    },
-    {
-      "name": "GLM-4.1V",
-      "params": "9B",
-      "task": "微调",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态理解模型"
-    },
-    {
-      "name": "DeepSeek-OCR",
-      "params": "3B",
-      "task": "微调",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "OCR识别模型"
     },
     {
       "name": "LLaVA 1.5",
@@ -375,54 +177,10 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "InternVL 2.0",
-      "params": "2B",
-      "task": "微调",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态理解模型"
-    },
-    {
-      "name": "InternVL 2.5",
-      "params": "78B",
-      "task": "微调",
-      "cluster": "8x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态理解模型"
-    },
-    {
-      "name": "InternVL 3.0",
-      "params": "8B",
-      "task": "微调",
-      "cluster": "1x8",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态理解模型"
-    },
-    {
       "name": "InternVL 3.5",
       "params": "30B",
       "task": "微调",
       "cluster": "1x8 (A3)",
-      "precision": "BF16",
-      "framework": "MM",
-      "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态理解模型"
-    },
-    {
-      "name": "Qwen2-VL",
-      "params": "2B",
-      "task": "微调",
-      "cluster": "1x8",
       "precision": "BF16",
       "framework": "MM",
       "status": "已支持",
@@ -2190,8 +1948,8 @@
       "desc": "SSM语言模型"
     }
   ],
-  "crawl_time": "2026-07-23 11:06:37",
-  "total": 199,
-  "mm_count": 47,
+  "crawl_time": "2026-07-27 10:24:06",
+  "total": 177,
+  "mm_count": 25,
   "llm_count": 152
 }

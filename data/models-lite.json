@@ -18,7 +18,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V4-Flash.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V4-Flash.html",
     "source": "vLLM Ascend"
   },
   {
@@ -40,7 +40,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V4-Pro.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V4-Pro.html",
     "source": "vLLM Ascend"
   },
   {
@@ -62,7 +62,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V3.1.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V3.1.html",
     "source": "vLLM Ascend"
   },
   {
@@ -84,7 +84,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-V3.2.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-V3.2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -107,7 +107,7 @@
       "LLM",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeek-R1.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeek-R1.html",
     "source": "vLLM Ascend"
   },
   {
@@ -129,7 +129,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Dense.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Dense.html",
     "source": "vLLM Ascend"
   },
   {
@@ -152,7 +152,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-30B-A3B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-30B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -176,7 +176,7 @@
       "MoE",
       "代码"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Coder-30B-A3B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Coder-30B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -199,7 +199,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-235B-A22B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-235B-A22B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -221,7 +221,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Next.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Next.html",
     "source": "vLLM Ascend"
   },
   {
@@ -243,7 +243,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM4.x.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM4.x.html",
     "source": "vLLM Ascend"
   },
   {
@@ -265,7 +265,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM5.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM5.html",
     "source": "vLLM Ascend"
   },
   {
@@ -287,7 +287,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/GLM5.2.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/GLM5.2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -309,7 +309,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Gemma4.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Gemma4.html",
     "source": "vLLM Ascend"
   },
   {
@@ -332,7 +332,7 @@
       "LLM",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Kimi-K2-Thinking.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Kimi-K2-Thinking.html",
     "source": "vLLM Ascend"
   },
   {
@@ -355,7 +355,7 @@
       "LLM",
       "OCR"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/DeepSeekOCR2.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/DeepSeekOCR2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -377,7 +377,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/MiniMax-M2.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/MiniMax-M2.html",
     "source": "vLLM Ascend"
   },
   {
@@ -400,7 +400,7 @@
       "LLM",
       "数学"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen2.5-Math-RM-72B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen2.5-Math-RM-72B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -912,7 +912,7 @@
   {
     "id": "qwen3-embedding",
     "name": "Qwen3-Embedding",
-    "category": "嵌入/排序",
+    "category": "LLM",
     "developer": "阿里云",
     "parameters": "多尺寸",
     "architecture": "Embedding",
@@ -926,16 +926,16 @@
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序",
+      "LLM",
       "嵌入"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3_embedding.html",
+    "docUrl": "",
     "source": "vLLM Ascend"
   },
   {
     "id": "qwen3-vl-embedding",
     "name": "Qwen3-VL-Embedding",
-    "category": "嵌入/排序",
+    "category": "LLM",
     "developer": "阿里云",
     "parameters": "多尺寸",
     "architecture": "Vision-Language",
@@ -949,17 +949,17 @@
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序",
+      "LLM",
       "视觉",
       "嵌入"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-Embedding.html",
+    "docUrl": "",
     "source": "vLLM Ascend"
   },
   {
     "id": "qwen3-reranker",
     "name": "Qwen3-Reranker",
-    "category": "嵌入/排序",
+    "category": "LLM",
     "developer": "阿里云",
     "parameters": "多尺寸",
     "architecture": "Embedding",
@@ -973,17 +973,17 @@
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序",
+      "LLM",
       "嵌入",
       "排序"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3_reranker.html",
+    "docUrl": "",
     "source": "vLLM Ascend"
   },
   {
     "id": "qwen3-vl-reranker",
     "name": "Qwen3-VL-Reranker",
-    "category": "嵌入/排序",
+    "category": "LLM",
     "developer": "阿里云",
     "parameters": "多尺寸",
     "architecture": "Vision-Language",
@@ -997,32 +997,10 @@
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序",
+      "LLM",
       "视觉",
       "嵌入",
       "排序"
-    ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-Reranker.html",
-    "source": "vLLM Ascend"
-  },
-  {
-    "id": "molmo",
-    "name": "Molmo",
-    "category": "嵌入/排序",
-    "developer": "Allen AI",
-    "parameters": "多尺寸",
-    "architecture": "Transformer",
-    "supportLevel": "🔵 实验性",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "需迁移",
-    "cannVersion": "7.0+",
-    "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
-    "tags": [
-      "嵌入/排序"
     ],
     "docUrl": "",
     "source": "vLLM Ascend"
@@ -1030,7 +1008,7 @@
   {
     "id": "xlm-roberta-based",
     "name": "XLM-RoBERTa-based",
-    "category": "嵌入/排序",
+    "category": "LLM",
     "developer": "Google",
     "parameters": "多尺寸",
     "architecture": "Transformer",
@@ -1044,16 +1022,16 @@
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序"
+      "LLM"
     ],
     "docUrl": "",
     "source": "vLLM Ascend"
   },
   {
-    "id": "bert",
-    "name": "Bert",
-    "category": "嵌入/排序",
-    "developer": "Google",
+    "id": "qwen2-5-based",
+    "name": "Qwen2.5-based",
+    "category": "LLM",
+    "developer": "阿里云",
     "parameters": "多尺寸",
     "architecture": "Transformer",
     "supportLevel": "🔵 实验性",
@@ -1062,11 +1040,11 @@
     "recommendedHardware": "Atlas 800T A3",
     "inferencePerf": "良",
     "trainingPerf": "良",
-    "mindsporeSupport": "需迁移",
+    "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
     "notes": "vLLM Ascend 🔵 实验性 · 硬件: A2/A3",
     "tags": [
-      "嵌入/排序"
+      "LLM"
     ],
     "docUrl": "",
     "source": "vLLM Ascend"
@@ -1091,7 +1069,7 @@
       "LLM",
       "视觉"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen-VL-Dense.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen-VL-Dense.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1115,7 +1093,7 @@
       "MoE",
       "视觉"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-VL-30B-A3B-Instruct.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-VL-30B-A3B-Instruct.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1137,7 +1115,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.5-397B-A17B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.5-397B-A17B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1159,7 +1137,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.5-27B-Qwen3.6-27B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.5-27B-Qwen3.6-27B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1182,7 +1160,7 @@
       "LLM",
       "MoE"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3.6-35B-A3B.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3.6-35B-A3B.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1207,7 +1185,7 @@
       "视觉",
       "推理"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Qwen3-Omni-30B-A3B-Thinking.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Qwen3-Omni-30B-A3B-Thinking.html",
     "source": "vLLM Ascend"
   },
   {
@@ -1229,7 +1207,7 @@
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://docs.vllm.ai/projects/ascend/zh-cn/latest/tutorials/models/Kimi-K2.5.html",
+    "docUrl": "https://docs.vllm.ai../../tutorials/models/Kimi-K2.5.html",
     "source": "vLLM Ascend"
   },
   {
@@ -5751,10 +5729,10 @@
     "source": "SGLang Ascend"
   },
   {
-    "id": "boogu-image-0-1",
-    "name": "Boogu-Image-0.1",
-    "category": "多模态",
-    "developer": "华为",
+    "id": "minimax-m2-5-w4a8",
+    "name": "MiniMax-M2.5-w4a8",
+    "category": "LLM",
+    "developer": "MiniMax",
     "parameters": "",
     "architecture": "Transformer",
     "supportLevel": "✅ 已支持",
@@ -5765,17 +5743,16 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Boogu-Image-0.1",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiniMax-M2.5-w4a8",
     "tags": [
-      "多模态",
-      "视觉"
+      "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Boogu-Image-0.1",
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiniMax-M2.5-w4a8",
     "source": "Ascend-SACT"
   },
   {
-    "id": "southwest-oil-gas-work-safety",
-    "name": "Southwest-Oil-Gas-work-safety",
+    "id": "gatmodel",
+    "name": "GATModel",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5788,16 +5765,16 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Southwest-Oil-Gas-work-safety",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/GATModel",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Southwest-Oil-Gas-work-safety",
+    "docUrl": "https://gitcode.com/Ascend-SACT/GATModel",
     "source": "Ascend-SACT"
   },
   {
-    "id": "glm-4-7-flash",
-    "name": "glm-4.7-flash",
+    "id": "lcnnmodel",
+    "name": "LCNNModel",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5810,11 +5787,55 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/glm-4.7-flash",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/LCNNModel",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/glm-4.7-flash",
+    "docUrl": "https://gitcode.com/Ascend-SACT/LCNNModel",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "pnamodel",
+    "name": "PNAModel",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/PNAModel",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/PNAModel",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "pagtnmodel",
+    "name": "PagtnModel",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/PagtnModel",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/PagtnModel",
     "source": "Ascend-SACT"
   },
   {
@@ -5840,8 +5861,8 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "cgcnnmodel",
-    "name": "CGCNNModel",
+    "id": "ascenddrivingturbo",
+    "name": "AscendDrivingTurbo",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5854,16 +5875,16 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/CGCNNModel",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/AscendDrivingTurbo",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/CGCNNModel",
+    "docUrl": "https://gitcode.com/Ascend-SACT/AscendDrivingTurbo",
     "source": "Ascend-SACT"
   },
   {
-    "id": "deepseek-v3-2-w4a8c8",
-    "name": "deepseek-v3.2-w4a8c8",
+    "id": "ontology-agent-framework",
+    "name": "ontology-agent-framework",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5876,18 +5897,18 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/deepseek-v3.2-w4a8c8",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ontology-agent-framework",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/deepseek-v3.2-w4a8c8",
+    "docUrl": "https://gitcode.com/Ascend-SACT/ontology-agent-framework",
     "source": "Ascend-SACT"
   },
   {
-    "id": "mimo-v2-5",
-    "name": "MiMo-V2.5",
+    "id": "qwen3-4b",
+    "name": "Qwen3-4B",
     "category": "LLM",
-    "developer": "小米",
+    "developer": "阿里云",
     "parameters": "",
     "architecture": "Transformer",
     "supportLevel": "✅ 已支持",
@@ -5898,11 +5919,1106 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiMo-V2.5",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-4B",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/MiMo-V2.5",
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-4B",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "dots-ocr",
+    "name": "dots.ocr",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/dots.ocr",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/dots.ocr",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "groundingdino",
+    "name": "GroundingDINO",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/GroundingDINO",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/GroundingDINO",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "timerxl",
+    "name": "TimerXL",
+    "category": "时序",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/TimerXL",
+    "tags": [
+      "时序"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/TimerXL",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "mattergen",
+    "name": "MatterGen",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MatterGen",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MatterGen",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "beats",
+    "name": "BEATs",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/BEATs",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/BEATs",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen2-5-omni-3b-full",
+    "name": "Qwen2.5-Omni-3B-full",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen2.5-Omni-3B-full",
+    "tags": [
+      "LLM",
+      "视觉"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen2.5-Omni-3B-full",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-omni-thinking-x86-vllm",
+    "name": "Qwen3-omni-thinking-X86-vLLM",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-omni-thinking-X86-vLLM",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-omni-thinking-X86-vLLM",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "dnsmos",
+    "name": "DNSMOS",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DNSMOS",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DNSMOS",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-reranker-8b",
+    "name": "Qwen3-Reranker-8B",
+    "category": "嵌入/排序",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Embedding",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-Reranker-8B",
+    "tags": [
+      "嵌入/排序",
+      "嵌入",
+      "排序"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Reranker-8B",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "yolo11s-cls",
+    "name": "YOLO11s-cls",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/YOLO11s-cls",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/YOLO11s-cls",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "ltx-2-npu",
+    "name": "LTX-2_npu",
+    "category": "LLM",
+    "developer": "Lightricks",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/LTX-2_npu",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/LTX-2_npu",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "ltx-2",
+    "name": "LTX-2",
+    "category": "LLM",
+    "developer": "Lightricks",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/LTX-2",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/LTX-2",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "midashenglm-7b",
+    "name": "MiDashengLM-7B",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiDashengLM-7B",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiDashengLM-7B",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen2-5vl7b-mindspeedmm",
+    "name": "Qwen2.5VL7B-MindspeedMM",
+    "category": "多模态",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen2.5VL7B-MindspeedMM",
+    "tags": [
+      "多模态",
+      "视觉"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen2.5VL7B-MindspeedMM",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "canary-1b",
+    "name": "Canary-1B",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Canary-1B",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Canary-1B",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "deepseek-v3-2-w8a8",
+    "name": "DeepSeek-V3.2-w8a8",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V3.2-w8a8",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V3.2-w8a8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-vl-235b-a22b-thinking-vllm-ascend",
+    "name": "Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
+    "category": "多模态",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "MoE",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
+    "tags": [
+      "多模态",
+      "MoE",
+      "视觉",
+      "推理"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "wan2-2-ti2v-5b-wan2-2-t2v-a14b-wan2-2-i2v-a14",
+    "name": "Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
+    "category": "LLM",
+    "developer": "Wan AI",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
+    "tags": [
+      "LLM",
+      "视频"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-next-80b-a3b-instruct",
+    "name": "Qwen3-Next-80B-A3B-Instruct",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "MoE",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-Next-80B-A3B-Instruct",
+    "tags": [
+      "LLM",
+      "MoE"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Next-80B-A3B-Instruct",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "mllm-benchmark-tuning",
+    "name": "MLLM-Benchmark-Tuning",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MLLM-Benchmark-Tuning",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MLLM-Benchmark-Tuning",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "union-agent",
+    "name": "union_agent",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/union_agent",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/union_agent",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-5-35b-a3b-posttrain-verl",
+    "name": "Qwen3.5-35B-A3B-posttrain-verl",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "MoE",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3.5-35B-A3B-posttrain-verl",
+    "tags": [
+      "LLM",
+      "MoE"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.5-35B-A3B-posttrain-verl",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "run-benchmark",
+    "name": "Run_Benchmark",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Run_Benchmark",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Run_Benchmark",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "dino",
+    "name": "DINO",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DINO",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DINO",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "train-qwen3-8b-mindspeed-llm",
+    "name": "train_Qwen3-8B-mindspeed-llm",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/train_Qwen3-8B-mindspeed-llm",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/train_Qwen3-8B-mindspeed-llm",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "wan2-2-5b-ti2v-arm-mindie",
+    "name": "Wan2.2-5B-TI2V-ARM-MindIE",
+    "category": "LLM",
+    "developer": "Wan AI",
+    "parameters": "",
+    "architecture": "Reward Model",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Wan2.2-5B-TI2V-ARM-MindIE",
+    "tags": [
+      "LLM",
+      "视频"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Wan2.2-5B-TI2V-ARM-MindIE",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "deepseek-v3-0324",
+    "name": "DeepSeek-V3-0324",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V3-0324",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V3-0324",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "deepseek-v3",
+    "name": "DeepSeek-v3",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-v3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-v3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "moe-mask-weights",
+    "name": "moe_mask_weights",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/moe_mask_weights",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/moe_mask_weights",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "southwest-oil-gas-work-safety",
+    "name": "Southwest-Oil-Gas-work-safety",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Southwest-Oil-Gas-work-safety",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Southwest-Oil-Gas-work-safety",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "huajiang-bridge-glm",
+    "name": "Huajiang_Bridge_GLM",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Huajiang_Bridge_GLM",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Huajiang_Bridge_GLM",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "ascend-adapt-skills",
+    "name": "ascend-adapt-skills",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ascend-adapt-skills",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/ascend-adapt-skills",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "glm-4-7",
+    "name": "GLM_4.7",
+    "category": "LLM",
+    "developer": "智谱AI",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/GLM_4.7",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/GLM_4.7",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "funasr-vad-sensevoicesmall-campplus",
+    "name": "FunASR_VAD-SenseVoiceSmall-CAMPPlus",
+    "category": "语音",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "语音模型",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/FunASR_VAD-SenseVoiceSmall-CAMPPlus",
+    "tags": [
+      "语音",
+      "音频",
+      "语音合成"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/FunASR_VAD-SenseVoiceSmall-CAMPPlus",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "hunyuanocr",
+    "name": "HunyuanOCR",
+    "category": "多模态",
+    "developer": "腾讯",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/HunyuanOCR",
+    "tags": [
+      "多模态",
+      "OCR"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/HunyuanOCR",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-6-35b-a3b-w8a8",
+    "name": "Qwen3.6-35B-A3B-w8a8",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "MoE",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3.6-35B-A3B-w8a8",
+    "tags": [
+      "LLM",
+      "MoE"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.6-35B-A3B-w8a8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "timer-s1",
+    "name": "Timer-S1",
+    "category": "时序",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Timer-S1",
+    "tags": [
+      "时序"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Timer-S1",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "videobench-performance",
+    "name": "videobench-performance",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/videobench-performance",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/videobench-performance",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "mistral-series",
+    "name": "Mistral-Series",
+    "category": "LLM",
+    "developer": "Mistral AI",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Mistral-Series",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Mistral-Series",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "openpangu-sft-examples",
+    "name": "openPangu-SFT-Examples",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/openPangu-SFT-Examples",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/openPangu-SFT-Examples",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "boogu-image-0-1",
+    "name": "Boogu-Image-0.1",
+    "category": "多模态",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Boogu-Image-0.1",
+    "tags": [
+      "多模态",
+      "视觉"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Boogu-Image-0.1",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "llama-3-2-11b-vision-instruct",
+    "name": "Llama-3.2-11B-Vision-Instruct",
+    "category": "多模态",
+    "developer": "Meta",
+    "parameters": "",
+    "architecture": "Vision-Language",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Llama-3.2-11B-Vision-Instruct",
+    "tags": [
+      "多模态",
+      "视觉"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Llama-3.2-11B-Vision-Instruct",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "bge-reranker-v2-m3",
+    "name": "bge-reranker-v2-m3",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/bge-reranker-v2-m3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/bge-reranker-v2-m3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "bge-m3",
+    "name": "bge-m3",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/bge-m3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/bge-m3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "glm-4-7-flash",
+    "name": "glm-4.7-flash",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/glm-4.7-flash",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/glm-4.7-flash",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "vllm-ascend-inference-generator-skills",
+    "name": "vllm-ascend-inference-generator-skills",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/vllm-ascend-inference-generator-skills",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/vllm-ascend-inference-generator-skills",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "minimax-m3",
+    "name": "MiniMax-M3",
+    "category": "LLM",
+    "developer": "MiniMax",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiniMax-M3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiniMax-M3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "ascend-ops",
+    "name": "Ascend-ops",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Ascend-ops",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Ascend-ops",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "mindyolo",
+    "name": "mindyolo",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/mindyolo",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/mindyolo",
     "source": "Ascend-SACT"
   },
   {
@@ -5930,8 +7046,8 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "union-agent",
-    "name": "union_agent",
+    "id": "efficient-ai-infrastructure",
+    "name": "efficient-ai-infrastructure",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5944,16 +7060,16 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/union_agent",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/efficient-ai-infrastructure",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/union_agent",
+    "docUrl": "https://gitcode.com/Ascend-SACT/efficient-ai-infrastructure",
     "source": "Ascend-SACT"
   },
   {
-    "id": "ascend-ops",
-    "name": "Ascend-ops",
+    "id": "minimol",
+    "name": "MiniMol",
     "category": "LLM",
     "developer": "华为",
     "parameters": "",
@@ -5966,11 +7082,124 @@
     "trainingPerf": "良",
     "mindsporeSupport": "支持",
     "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Ascend-ops",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiniMol",
     "tags": [
       "LLM"
     ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Ascend-ops",
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiniMol",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "worldstereo",
+    "name": "WorldStereo",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/WorldStereo",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/WorldStereo",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "digitalmirror-open-framework",
+    "name": "DigitalMirror-open-framework",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DigitalMirror-open-framework",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DigitalMirror-open-framework",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "duomate",
+    "name": "DuoMate",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DuoMate",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DuoMate",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "fun-cosyvoice3-0-5b-2512",
+    "name": "Fun-CosyVoice3-0.5B-2512",
+    "category": "语音",
+    "developer": "FunAudioLLM",
+    "parameters": "",
+    "architecture": "语音模型",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Fun-CosyVoice3-0.5B-2512",
+    "tags": [
+      "语音",
+      "音频",
+      "语音合成"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Fun-CosyVoice3-0.5B-2512",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "index-tts-vllm",
+    "name": "Index-TTS-vLLM",
+    "category": "语音",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "语音模型",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Index-TTS-vLLM",
+    "tags": [
+      "语音",
+      "语音合成"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Index-TTS-vLLM",
     "source": "Ascend-SACT"
   },
   {
@@ -5996,6 +7225,424 @@
     "source": "Ascend-SACT"
   },
   {
+    "id": "deepseek-v3-2-w8a8c8",
+    "name": "deepseek-v3.2-w8a8c8",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/deepseek-v3.2-w8a8c8",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/deepseek-v3.2-w8a8c8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "deepseek-v4-flash-a2",
+    "name": "DeepSeek-V4-Flash-A2",
+    "category": "LLM",
+    "developer": "深度求索",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V4-Flash-A2",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V4-Flash-A2",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "qwen3-5-verl",
+    "name": "Qwen3.5-verl",
+    "category": "LLM",
+    "developer": "阿里云",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3.5-verl",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.5-verl",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "openclaw-rl-ascend",
+    "name": "OpenClaw-RL-Ascend",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/OpenClaw-RL-Ascend",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/OpenClaw-RL-Ascend",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "chronos-forecasting",
+    "name": "chronos-forecasting",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/chronos-forecasting",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/chronos-forecasting",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "adapt-skill-stack",
+    "name": "adapt-skill-stack",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/adapt-skill-stack",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/adapt-skill-stack",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "sact-skills",
+    "name": "SACT-skills",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/SACT-skills",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/SACT-skills",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "sam3",
+    "name": "SAM3",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/SAM3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/SAM3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "detr",
+    "name": "DETR",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DETR",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/DETR",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "ascend-test",
+    "name": "ascend-test",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ascend-test",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/ascend-test",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "unlimited-ocr-images",
+    "name": "unlimited-ocr-images",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/unlimited-ocr-images",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/unlimited-ocr-images",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "deepseek-v3-2-w4a8c8",
+    "name": "deepseek-v3.2-w4a8c8",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/deepseek-v3.2-w4a8c8",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/deepseek-v3.2-w4a8c8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "suiren",
+    "name": "Suiren",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Suiren",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Suiren",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "hy3",
+    "name": "Hy3",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Hy3",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Hy3",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "minimax-m3-w8a8",
+    "name": "MiniMax-M3-w8a8",
+    "category": "LLM",
+    "developer": "MiniMax",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiniMax-M3-w8a8",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiniMax-M3-w8a8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "intern-s2-preview-verl",
+    "name": "Intern-S2-Preview-verl",
+    "category": "LLM",
+    "developer": "上海AI实验室",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Intern-S2-Preview-verl",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Intern-S2-Preview-verl",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "step-3-7-flash-w8a8",
+    "name": "Step-3.7-Flash-w8a8",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Step-3.7-Flash-w8a8",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Step-3.7-Flash-w8a8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "yolo26",
+    "name": "Yolo26",
+    "category": "LLM",
+    "developer": "华为",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Yolo26",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Yolo26",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "mimo-v2-5",
+    "name": "MiMo-V2.5",
+    "category": "LLM",
+    "developer": "小米",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiMo-V2.5",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/MiMo-V2.5",
+    "source": "Ascend-SACT"
+  },
+  {
     "id": "deepseek-v3-2-w4a8",
     "name": "deepseek-v3.2-w4a8",
     "category": "LLM",
@@ -6015,28 +7662,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/deepseek-v3.2-w4a8",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "duomate",
-    "name": "DuoMate",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DuoMate",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DuoMate",
     "source": "Ascend-SACT"
   },
   {
@@ -6063,50 +7688,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "intern-s2-preview-verl",
-    "name": "Intern-S2-Preview-verl",
-    "category": "LLM",
-    "developer": "上海AI实验室",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Intern-S2-Preview-verl",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Intern-S2-Preview-verl",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "huajiang-bridge-glm",
-    "name": "Huajiang_Bridge_GLM",
-    "category": "LLM",
-    "developer": "智谱AI",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Huajiang_Bridge_GLM",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Huajiang_Bridge_GLM",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "qwen3-6-27b-w8a8-a2",
     "name": "Qwen3.6-27B-w8a8_A2",
     "category": "LLM",
@@ -6126,28 +7707,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.6-27B-w8a8_A2",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "mindyolo",
-    "name": "mindyolo",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/mindyolo",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/mindyolo",
     "source": "Ascend-SACT"
   },
   {
@@ -6196,28 +7755,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "minimax-m3",
-    "name": "MiniMax-M3",
-    "category": "LLM",
-    "developer": "MiniMax",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiniMax-M3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/MiniMax-M3",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "fun-asr-nano-2512",
     "name": "Fun-ASR-Nano-2512",
     "category": "语音",
@@ -6238,28 +7775,6 @@
       "音频"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Fun-ASR-Nano-2512",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "sact-skills",
-    "name": "SACT-skills",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/SACT-skills",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/SACT-skills",
     "source": "Ascend-SACT"
   },
   {
@@ -6285,28 +7800,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "run-benchmark",
-    "name": "Run_Benchmark",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Run_Benchmark",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Run_Benchmark",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "twinkle-npu",
     "name": "Twinkle-npu",
     "category": "LLM",
@@ -6326,28 +7819,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Twinkle-npu",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "unlimited-ocr-images",
-    "name": "unlimited-ocr-images",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/unlimited-ocr-images",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/unlimited-ocr-images",
     "source": "Ascend-SACT"
   },
   {
@@ -6417,28 +7888,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "timer-s1",
-    "name": "Timer-S1",
-    "category": "时序",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Timer-S1",
-    "tags": [
-      "时序"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Timer-S1",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "minimax-m2-5-w8a8-x86",
     "name": "MINIMAX-M2.5-W8A8-X86",
     "category": "LLM",
@@ -6459,28 +7908,6 @@
       "MoE"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/MINIMAX-M2.5-W8A8-X86",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "hy3",
-    "name": "Hy3",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Hy3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Hy3",
     "source": "Ascend-SACT"
   },
   {
@@ -6572,50 +7999,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "ltx-2",
-    "name": "LTX-2",
-    "category": "LLM",
-    "developer": "Lightricks",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/LTX-2",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/LTX-2",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "ascend-adapt-skills",
-    "name": "ascend-adapt-skills",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ascend-adapt-skills",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/ascend-adapt-skills",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "union",
     "name": "union",
     "category": "LLM",
@@ -6660,28 +8043,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "worldstereo",
-    "name": "WorldStereo",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/WorldStereo",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/WorldStereo",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "locateanything-3b",
     "name": "LocateAnything-3B",
     "category": "LLM",
@@ -6701,28 +8062,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/LocateAnything-3B",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "suiren",
-    "name": "Suiren",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Suiren",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Suiren",
     "source": "Ascend-SACT"
   },
   {
@@ -6767,28 +8106,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/DPT",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "ltx-2-npu",
-    "name": "LTX-2_npu",
-    "category": "LLM",
-    "developer": "Lightricks",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/LTX-2_npu",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/LTX-2_npu",
     "source": "Ascend-SACT"
   },
   {
@@ -6880,28 +8197,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "pnamodel",
-    "name": "PNAModel",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/PNAModel",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/PNAModel",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "dtnn",
     "name": "DTNN",
     "category": "LLM",
@@ -6945,28 +8240,6 @@
       "语音合成"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/CosyVoice2-Triton",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "ascend-test",
-    "name": "ascend-test",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ascend-test",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/ascend-test",
     "source": "Ascend-SACT"
   },
   {
@@ -7103,30 +8376,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "fun-cosyvoice3-0-5b-2512",
-    "name": "Fun-CosyVoice3-0.5B-2512",
-    "category": "语音",
-    "developer": "FunAudioLLM",
-    "parameters": "",
-    "architecture": "语音模型",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Fun-CosyVoice3-0.5B-2512",
-    "tags": [
-      "语音",
-      "音频",
-      "语音合成"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Fun-CosyVoice3-0.5B-2512",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "mova-720p",
     "name": "MOVA-720p",
     "category": "LLM",
@@ -7146,28 +8395,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/MOVA-720p",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "ontology-agent-framework",
-    "name": "ontology-agent-framework",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/ontology-agent-framework",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/ontology-agent-framework",
     "source": "Ascend-SACT"
   },
   {
@@ -7503,28 +8730,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "ascenddrivingturbo",
-    "name": "AscendDrivingTurbo",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/AscendDrivingTurbo",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/AscendDrivingTurbo",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "aimnet2",
     "name": "AIMNet2",
     "category": "LLM",
@@ -7569,28 +8774,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "openclaw-rl-ascend",
-    "name": "OpenClaw-RL-Ascend",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/OpenClaw-RL-Ascend",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/OpenClaw-RL-Ascend",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "slime-ascend-for-openclaw-rl",
     "name": "slime-ascend-for-OpenClaw-RL",
     "category": "LLM",
@@ -7632,28 +8815,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/CO-DETR-MMCV-FULL",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "bge-reranker-v2-m3",
-    "name": "bge-reranker-v2-m3",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/bge-reranker-v2-m3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/bge-reranker-v2-m3",
     "source": "Ascend-SACT"
   },
   {
@@ -7790,28 +8951,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "digitalmirror-open-framework",
-    "name": "DigitalMirror-open-framework",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DigitalMirror-open-framework",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DigitalMirror-open-framework",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "mooncake-npu-vibecoding",
     "name": "mooncake-npu-vibecoding",
     "category": "LLM",
@@ -7875,28 +9014,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/GLM-5.2-w4a8-vllm-ascend-x86",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "yolo26",
-    "name": "Yolo26",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Yolo26",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Yolo26",
     "source": "Ascend-SACT"
   },
   {
@@ -8011,28 +9128,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "step-3-7-flash-w8a8",
-    "name": "Step-3.7-Flash-w8a8",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Step-3.7-Flash-w8a8",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Step-3.7-Flash-w8a8",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "tacotron2",
     "name": "tacotron2",
     "category": "LLM",
@@ -8074,51 +9169,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/GLM5-Deployment-Tuning",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "chronos-forecasting",
-    "name": "chronos-forecasting",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/chronos-forecasting",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/chronos-forecasting",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "hunyuanocr",
-    "name": "HunyuanOCR",
-    "category": "多模态",
-    "developer": "腾讯",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/HunyuanOCR",
-    "tags": [
-      "多模态",
-      "OCR"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/HunyuanOCR",
     "source": "Ascend-SACT"
   },
   {
@@ -8187,28 +9237,6 @@
       "语音合成"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/CosyVoice2-OM",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "train-qwen3-8b-mindspeed-llm",
-    "name": "train_Qwen3-8B-mindspeed-llm",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/train_Qwen3-8B-mindspeed-llm",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/train_Qwen3-8B-mindspeed-llm",
     "source": "Ascend-SACT"
   },
   {
@@ -8323,28 +9351,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "adapt-skill-stack",
-    "name": "adapt-skill-stack",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/adapt-skill-stack",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/adapt-skill-stack",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "glm-image-optimization",
     "name": "GLM-IMAGE-Optimization",
     "category": "LLM",
@@ -8455,50 +9461,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "sam3",
-    "name": "SAM3",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/SAM3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/SAM3",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "vllm-ascend-inference-generator-skills",
-    "name": "vllm-ascend-inference-generator-skills",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/vllm-ascend-inference-generator-skills",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/vllm-ascend-inference-generator-skills",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "yolov13",
     "name": "Yolov13",
     "category": "LLM",
@@ -8543,28 +9505,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "efficient-ai-infrastructure",
-    "name": "efficient-ai-infrastructure",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/efficient-ai-infrastructure",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/efficient-ai-infrastructure",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "turboquant-npu",
     "name": "turboquant-npu",
     "category": "LLM",
@@ -8606,28 +9546,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/OpenPangu_Inference",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "mattergen",
-    "name": "MatterGen",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MatterGen",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/MatterGen",
     "source": "Ascend-SACT"
   },
   {
@@ -9165,28 +10083,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "openpangu-sft-examples",
-    "name": "openPangu-SFT-Examples",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/openPangu-SFT-Examples",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/openPangu-SFT-Examples",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "kimi-k2-7-code-w4a8",
     "name": "Kimi-K2.7-Code-w4a8",
     "category": "代码",
@@ -9432,6 +10328,28 @@
       "代码"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Coder-480B-A35B-Instruct-w8a8",
+    "source": "Ascend-SACT"
+  },
+  {
+    "id": "bert",
+    "name": "Bert",
+    "category": "LLM",
+    "developer": "Google",
+    "parameters": "",
+    "architecture": "Transformer",
+    "supportLevel": "✅ 已支持",
+    "framework": "PyTorch",
+    "minHardware": "Atlas 800I A3",
+    "recommendedHardware": "Atlas 800T A3",
+    "inferencePerf": "良",
+    "trainingPerf": "良",
+    "mindsporeSupport": "支持",
+    "cannVersion": "7.0+",
+    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Bert",
+    "tags": [
+      "LLM"
+    ],
+    "docUrl": "https://gitcode.com/Ascend-SACT/Bert",
     "source": "Ascend-SACT"
   },
   {
@@ -9771,28 +10689,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "dino",
-    "name": "DINO",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DINO",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DINO",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "wan2-1-flf2v-14b-720p",
     "name": "Wan2.1-FLF2V-14B-720P",
     "category": "LLM",
@@ -9967,28 +10863,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/clip-pytorch",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "dnsmos",
-    "name": "DNSMOS",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DNSMOS",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DNSMOS",
     "source": "Ascend-SACT"
   },
   {
@@ -10303,28 +11177,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/efficient-ai-infrastructure-V2",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "detr",
-    "name": "DETR",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DETR",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DETR",
     "source": "Ascend-SACT"
   },
   {
@@ -10656,50 +11508,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/openPangu-RL-Examples",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "dots-ocr",
-    "name": "dots.ocr",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/dots.ocr",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/dots.ocr",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "deepseek-v3-0324",
-    "name": "DeepSeek-V3-0324",
-    "category": "LLM",
-    "developer": "深度求索",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V3-0324",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V3-0324",
     "source": "Ascend-SACT"
   },
   {
@@ -11442,52 +12250,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "beats",
-    "name": "BEATs",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/BEATs",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/BEATs",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "funasr-vad-sensevoicesmall-campplus",
-    "name": "FunASR_VAD-SenseVoiceSmall-CAMPPlus",
-    "category": "语音",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "语音模型",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/FunASR_VAD-SenseVoiceSmall-CAMPPlus",
-    "tags": [
-      "语音",
-      "音频",
-      "语音合成"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/FunASR_VAD-SenseVoiceSmall-CAMPPlus",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "bart",
     "name": "BART",
     "category": "LLM",
@@ -11908,28 +12670,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/LongCat-Flash-Lite",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "videobench-performance",
-    "name": "videobench-performance",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/videobench-performance",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/videobench-performance",
     "source": "Ascend-SACT"
   },
   {
@@ -12825,29 +13565,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "qwen2-5-omni-3b-full",
-    "name": "Qwen2.5-Omni-3B-full",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Vision-Language",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen2.5-Omni-3B-full",
-    "tags": [
-      "LLM",
-      "视觉"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen2.5-Omni-3B-full",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "repvit",
     "name": "RepVit",
     "category": "LLM",
@@ -13021,28 +13738,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/MolGanModel",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "timerxl",
-    "name": "TimerXL",
-    "category": "时序",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/TimerXL",
-    "tags": [
-      "时序"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/TimerXL",
     "source": "Ascend-SACT"
   },
   {
@@ -13403,28 +14098,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "deepseek-v3-2-w8a8",
-    "name": "DeepSeek-V3.2-w8a8",
-    "category": "LLM",
-    "developer": "深度求索",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V3.2-w8a8",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V3.2-w8a8",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "hunyuanvideo-1-5",
     "name": "HunyuanVideo-1.5",
     "category": "LLM",
@@ -13445,29 +14118,6 @@
       "视频"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/HunyuanVideo-1.5",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "qwen3-next-80b-a3b-instruct",
-    "name": "Qwen3-Next-80B-A3B-Instruct",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "MoE",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-Next-80B-A3B-Instruct",
-    "tags": [
-      "LLM",
-      "MoE"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Next-80B-A3B-Instruct",
     "source": "Ascend-SACT"
   },
   {
@@ -13964,28 +14614,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/NW_CV",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "deepseek-v3",
-    "name": "DeepSeek-v3",
-    "category": "LLM",
-    "developer": "深度求索",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-v3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-v3",
     "source": "Ascend-SACT"
   },
   {
@@ -14713,29 +15341,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "wan2-2-ti2v-5b-wan2-2-t2v-a14b-wan2-2-i2v-a14",
-    "name": "Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
-    "category": "LLM",
-    "developer": "Wan AI",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
-    "tags": [
-      "LLM",
-      "视频"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Wan2.2-TI2V-5B_Wan2.2-T2V-A14B_Wan2.2-I2V-A14",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "step3-235b",
     "name": "Step3-235B",
     "category": "LLM",
@@ -14937,28 +15542,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "bge-m3",
-    "name": "bge-m3",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/bge-m3",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/bge-m3",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "qwen3-5-27b-a2",
     "name": "Qwen3.5-27B-A2",
     "category": "LLM",
@@ -14978,28 +15561,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.5-27B-A2",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "mllm-benchmark-tuning",
-    "name": "MLLM-Benchmark-Tuning",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MLLM-Benchmark-Tuning",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/MLLM-Benchmark-Tuning",
     "source": "Ascend-SACT"
   },
   {
@@ -15558,53 +16119,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "glm-4-7",
-    "name": "GLM_4.7",
-    "category": "LLM",
-    "developer": "智谱AI",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/GLM_4.7",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/GLM_4.7",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "qwen3-vl-235b-a22b-thinking-vllm-ascend",
-    "name": "Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
-    "category": "多模态",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "MoE",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
-    "tags": [
-      "多模态",
-      "MoE",
-      "视觉",
-      "推理"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-VL-235B-A22B-Thinking_vllm-ascend",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "ernie-4-5-vl-28b-a3b-thinking",
     "name": "ERNIE-4.5-VL-28B-A3B-Thinking",
     "category": "多模态",
@@ -15916,28 +16430,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Co-DETR",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "deepseek-v4-flash-a2",
-    "name": "DeepSeek-V4-Flash-A2",
-    "category": "LLM",
-    "developer": "深度求索",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/DeepSeek-V4-Flash-A2",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/DeepSeek-V4-Flash-A2",
     "source": "Ascend-SACT"
   },
   {
@@ -16473,29 +16965,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "qwen3-5-35b-a3b-posttrain-verl",
-    "name": "Qwen3.5-35B-A3B-posttrain-verl",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "MoE",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3.5-35B-A3B-posttrain-verl",
-    "tags": [
-      "LLM",
-      "MoE"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3.5-35B-A3B-posttrain-verl",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "yingmusic-svc-v1-0",
     "name": "YingMusic-SVC-v1.0",
     "category": "LLM",
@@ -16649,29 +17118,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/mojo_auto_tuner",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "index-tts-vllm",
-    "name": "Index-TTS-vLLM",
-    "category": "语音",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "语音模型",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Index-TTS-vLLM",
-    "tags": [
-      "语音",
-      "语音合成"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Index-TTS-vLLM",
     "source": "Ascend-SACT"
   },
   {
@@ -17905,28 +18351,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "canary-1b",
-    "name": "Canary-1B",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Canary-1B",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Canary-1B",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "qwen3-next-80b-a3b-instruct-vllm-ascend",
     "name": "Qwen3-Next-80B-A3B-Instruct_vllm-ascend",
     "category": "LLM",
@@ -18126,28 +18550,6 @@
       "LLM"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Florence",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "qwen3-4b",
-    "name": "Qwen3-4B",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-4B",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-4B",
     "source": "Ascend-SACT"
   },
   {
@@ -18440,28 +18842,6 @@
       "视觉"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-VL-30B-A3B-Instruct-GRPO",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "midashenglm-7b",
-    "name": "MiDashengLM-7B",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/MiDashengLM-7B",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/MiDashengLM-7B",
     "source": "Ascend-SACT"
   },
   {
@@ -18778,30 +19158,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "qwen3-reranker-8b",
-    "name": "Qwen3-Reranker-8B",
-    "category": "嵌入/排序",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Embedding",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-Reranker-8B",
-    "tags": [
-      "嵌入/排序",
-      "嵌入",
-      "排序"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Reranker-8B",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "qwen2-5-vl-omni-7b-mrope-opt",
     "name": "Qwen2.5-VL-Omni-7B-Mrope-Opt",
     "category": "多模态",
@@ -18960,29 +19316,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "wan2-2-5b-ti2v-arm-mindie",
-    "name": "Wan2.2-5B-TI2V-ARM-MindIE",
-    "category": "LLM",
-    "developer": "Wan AI",
-    "parameters": "",
-    "architecture": "Reward Model",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Wan2.2-5B-TI2V-ARM-MindIE",
-    "tags": [
-      "LLM",
-      "视频"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Wan2.2-5B-TI2V-ARM-MindIE",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "gemma-2-9b",
     "name": "Gemma-2-9b",
     "category": "LLM",
@@ -19049,73 +19382,6 @@
     "source": "Ascend-SACT"
   },
   {
-    "id": "yolo11s-cls",
-    "name": "YOLO11s-cls",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/YOLO11s-cls",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/YOLO11s-cls",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "groundingdino",
-    "name": "GroundingDINO",
-    "category": "LLM",
-    "developer": "华为",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/GroundingDINO",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/GroundingDINO",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "qwen2-5vl7b-mindspeedmm",
-    "name": "Qwen2.5VL7B-MindspeedMM",
-    "category": "多模态",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Vision-Language",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen2.5VL7B-MindspeedMM",
-    "tags": [
-      "多模态",
-      "视觉"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen2.5VL7B-MindspeedMM",
-    "source": "Ascend-SACT"
-  },
-  {
     "id": "kolors-inpainting-controlnet-2",
     "name": "Kolors-inpainting-controlnet-2",
     "category": "LLM",
@@ -19158,28 +19424,6 @@
       "MoE"
     ],
     "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-Next-80B-A3B-Instruct-inference",
-    "source": "Ascend-SACT"
-  },
-  {
-    "id": "qwen3-omni-thinking-x86-vllm",
-    "name": "Qwen3-omni-thinking-X86-vLLM",
-    "category": "LLM",
-    "developer": "阿里云",
-    "parameters": "",
-    "architecture": "Transformer",
-    "supportLevel": "✅ 已支持",
-    "framework": "PyTorch",
-    "minHardware": "Atlas 800I A3",
-    "recommendedHardware": "Atlas 800T A3",
-    "inferencePerf": "良",
-    "trainingPerf": "良",
-    "mindsporeSupport": "支持",
-    "cannVersion": "7.0+",
-    "notes": "Ascend-SACT · https://gitcode.com/Ascend-SACT/Qwen3-omni-thinking-X86-vLLM",
-    "tags": [
-      "LLM"
-    ],
-    "docUrl": "https://gitcode.com/Ascend-SACT/Qwen3-omni-thinking-X86-vLLM",
     "source": "Ascend-SACT"
   },
   {
