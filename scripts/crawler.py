@@ -297,11 +297,16 @@ def parse_sglang_ascend(html):
 
 
 def parse_gitcode_ai(html):
-    """解析 GitCode AI 昇腾原生模型页面（支持翻页）"""
+    """解析 GitCode AI 昇腾原生模型页面（支持翻页）
+
+    新版页面使用 React Query 脱水数据，数据格式为：
+    {"page_num":1,"page_size":30,"total":"7300","page_count":244,
+     "content":[{"id":"...","name":"...","namespace":"...",...},...]}
+    """
     models = []
 
     def extract_models_from_html(html_text):
-        """从 HTML 中提取 Next.js 脱水数据中的模型"""
+        """从 HTML 中提取 React Query 脱水数据中的模型"""
         result = []
         push_matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html_text))
 
@@ -309,37 +314,80 @@ def parse_gitcode_ai(html):
             decoded = match.group(1)
             decoded = decoded.replace('\\n', '\n').replace('\\t', '\t').replace('\\\\', '\\').replace('\\"', '"')
 
-            if '"content":[' not in decoded:
+            if 'dehydratedAt' not in decoded:
                 continue
 
-            content_match = re.search(r'"content":\[(.*?)\]', decoded)
-            if not content_match:
+            # 找到 "data":{...} 并提取完整 JSON 对象
+            idx = decoded.find('"data":')
+            if idx < 0:
                 continue
 
-            content_str = content_match.group(1)
-            try:
-                content_data = json.loads('[' + content_str + ']')
-                result.extend(content_data)
-            except json.JSONDecodeError:
-                continue
+            data_start = idx + len('"data":')
+            brace_count = 0
+            start = -1
+            for j, ch in enumerate(decoded[data_start:]):
+                if ch == '{':
+                    if start == -1:
+                        start = data_start + j
+                    brace_count += 1
+                elif ch == '}':
+                    brace_count -= 1
+                    if brace_count == 0 and start >= 0:
+                        data_str = decoded[start:data_start + j + 1]
+                        try:
+                            data = json.loads(data_str)
+                            content = data.get('content', [])
+                            result.extend(content)
+                        except json.JSONDecodeError:
+                            continue
+                        break
 
         return result
+
+    def extract_meta(html_text):
+        """从 HTML 中提取 total 和 page_count"""
+        push_matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html_text))
+        for match in push_matches:
+            decoded = match.group(1)
+            decoded = decoded.replace('\\n', '\n').replace('\\t', '\t').replace('\\\\', '\\').replace('\\"', '"')
+            if 'dehydratedAt' not in decoded:
+                continue
+            idx = decoded.find('"data":')
+            if idx < 0:
+                continue
+            data_start = idx + len('"data":')
+            brace_count = 0
+            start = -1
+            for j, ch in enumerate(decoded[data_start:]):
+                if ch == '{':
+                    if start == -1:
+                        start = data_start + j
+                    brace_count += 1
+                elif ch == '}':
+                    brace_count -= 1
+                    if brace_count == 0 and start >= 0:
+                        data_str = decoded[start:data_start + j + 1]
+                        try:
+                            data = json.loads(data_str)
+                            return int(data.get('total', 0)), int(data.get('page_count', 1))
+                        except json.JSONDecodeError:
+                            return 0, 1
+                        break
+        return 0, 1
 
     # 提取第一页数据
     first_page_models = extract_models_from_html(html)
     models.extend(first_page_models)
 
     # 提取 total 和 page_count
-    total_match = re.search(r'"total":"?(\d+)"?', html)
-    page_count_match = re.search(r'"page_count":(\d+)', html)
-    total = int(total_match.group(1)) if total_match else 0
-    page_count = int(page_count_match.group(1)) if page_count_match else 1
+    total, page_count = extract_meta(html)
 
     print(f"  GitCode AI: 第1页 {len(first_page_models)} 个模型, 总计 {total} 个, 共 {page_count} 页")
 
-    # 翻页获取剩余数据
+    # 翻页获取剩余数据（最多翻 250 页，覆盖 7300+ 模型）
+    max_pages = min(page_count + 1, 250)
     if page_count > 1:
-        for page in range(2, min(page_count + 1, 50)):
+        for page in range(2, max_pages):
             page_url = f'https://ai.gitcode.com/models?ascendNative=true&page={page}'
             page_html = fetch_url(page_url, timeout=20)
             if page_html:
