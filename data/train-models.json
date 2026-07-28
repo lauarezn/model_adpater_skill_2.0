@@ -1,7 +1,7 @@
 {
   "models": [
     {
-      "name": "Wan2.2-T2V",
+      "name": "Wan2.2-T2V-5B",
       "params": "5B",
       "task": "预训练",
       "cluster": "1x4 (A3)",
@@ -12,7 +12,18 @@
       "desc": "文生视频模型"
     },
     {
-      "name": "Wan2.2-TI2V",
+      "name": "Wan2.2-T2V-A14B",
+      "params": "A14B",
+      "task": "预训练",
+      "cluster": "1x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "文生视频模型"
+    },
+    {
+      "name": "Wan2.2-TI2V-5B",
       "params": "5B",
       "task": "预训练",
       "cluster": "1x4 (A3)",
@@ -23,7 +34,7 @@
       "desc": "图文生视频模型"
     },
     {
-      "name": "Wan2.2-I2V",
+      "name": "Wan2.2-I2V-A14B",
       "params": "A14B",
       "task": "预训练",
       "cluster": "1x8 (A3)",
@@ -34,7 +45,7 @@
       "desc": "图生视频模型"
     },
     {
-      "name": "Wan2.1-T2V",
+      "name": "Wan2.1-T2V-1.3B",
       "params": "1.3B",
       "task": "预训练",
       "cluster": "1x8",
@@ -45,7 +56,40 @@
       "desc": "文生视频模型"
     },
     {
-      "name": "Wan2.1-I2V",
+      "name": "Wan2.1-T2V-1.3B",
+      "params": "1.3B",
+      "task": "LoRA微调",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "文生视频模型"
+    },
+    {
+      "name": "Wan2.1-T2V-14B",
+      "params": "14B",
+      "task": "预训练",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "文生视频模型"
+    },
+    {
+      "name": "Wan2.1-T2V-14B",
+      "params": "14B",
+      "task": "LoRA微调",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "文生视频模型"
+    },
+    {
+      "name": "Wan2.1-I2V-1.3B",
       "params": "1.3B",
       "task": "预训练",
       "cluster": "1x8",
@@ -56,7 +100,29 @@
       "desc": "图生视频模型"
     },
     {
-      "name": "Self-Forcing",
+      "name": "Wan2.1-I2V-14B",
+      "params": "14B",
+      "task": "预训练",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "图生视频模型"
+    },
+    {
+      "name": "Wan2.1-I2V-14B",
+      "params": "14B",
+      "task": "LoRA微调",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "图生视频模型"
+    },
+    {
+      "name": "Self-Forcing-1.3B",
       "params": "1.3B",
       "task": "DMD蒸馏",
       "cluster": "1x8",
@@ -67,7 +133,7 @@
       "desc": "视频生成蒸馏模型"
     },
     {
-      "name": "HunyuanVideo1.5-T2V",
+      "name": "HunyuanVideo1.5-T2V-8B",
       "params": "8B",
       "task": "预训练",
       "cluster": "1x8",
@@ -78,7 +144,7 @@
       "desc": "视频生成模型"
     },
     {
-      "name": "Qihoo-T2X",
+      "name": "Qihoo-T2X-1.1B",
       "params": "1.1B",
       "task": "推理",
       "cluster": "1x1",
@@ -89,7 +155,7 @@
       "desc": "文生图/视频模型"
     },
     {
-      "name": "SD3.5",
+      "name": "SD3.5-8.1B",
       "params": "8.1B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -100,7 +166,18 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Flux",
+      "name": "SD3.5-8.1B",
+      "params": "8.1B",
+      "task": "LoRA微调",
+      "cluster": "1x8",
+      "precision": "FP16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态生成",
+      "desc": "文生图模型"
+    },
+    {
+      "name": "Flux-12B",
       "params": "12B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -111,7 +188,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Flux2-T2I",
+      "name": "Flux2-T2I-32B",
       "params": "32B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -122,7 +199,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Flux2-I2I",
+      "name": "Flux2-I2I-32B",
       "params": "32B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -133,7 +210,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Flux-Kontext",
+      "name": "Flux-Kontext-12B",
       "params": "12B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -144,7 +221,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Qwen-Image",
+      "name": "Qwen-Image-27B",
       "params": "27B",
       "task": "LoRA微调",
       "cluster": "1x8",
@@ -155,7 +232,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "Qwen-Image-Edit",
+      "name": "Qwen-Image-Edit-27B",
       "params": "27B",
       "task": "LoRA微调",
       "cluster": "1x8",
@@ -166,7 +243,7 @@
       "desc": "文生图模型"
     },
     {
-      "name": "LLaVA 1.5",
+      "name": "LLaVA 1.5-7B",
       "params": "7B",
       "task": "全参微调",
       "cluster": "1x8",
@@ -177,7 +254,7 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "InternVL 3.5",
+      "name": "InternVL 3.5-30B",
       "params": "30B",
       "task": "微调",
       "cluster": "1x8 (A3)",
@@ -188,7 +265,7 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "Qwen2.5-VL",
+      "name": "Qwen2.5-VL-3B",
       "params": "3B",
       "task": "微调",
       "cluster": "1x8",
@@ -199,7 +276,40 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "Qwen3-VL",
+      "name": "Qwen2.5-VL-7B",
+      "params": "7B",
+      "task": "微调",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen2.5-VL-32B",
+      "params": "32B",
+      "task": "微调",
+      "cluster": "2x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen2.5-VL-72B",
+      "params": "72B",
+      "task": "微调",
+      "cluster": "4x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen3-VL-8B",
       "params": "8B",
       "task": "微调",
       "cluster": "1x8",
@@ -210,7 +320,29 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "Qwen3.5",
+      "name": "Qwen3-VL-30B",
+      "params": "30B",
+      "task": "微调",
+      "cluster": "1x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen3-VL-235B",
+      "params": "235B",
+      "task": "微调",
+      "cluster": "16x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen3.5-27B",
       "params": "27B",
       "task": "微调",
       "cluster": "1x8 (A3)",
@@ -221,7 +353,29 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "Qwen2.5-Omni",
+      "name": "Qwen3.5-35B",
+      "params": "35B",
+      "task": "微调",
+      "cluster": "1x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen3.5-397B",
+      "params": "397B",
+      "task": "微调",
+      "cluster": "16x8 (A3)",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态理解模型"
+    },
+    {
+      "name": "Qwen2.5-Omni-7B",
       "params": "7B",
       "task": "微调",
       "cluster": "1x8",
@@ -232,7 +386,7 @@
       "desc": "全模态理解模型"
     },
     {
-      "name": "Qwen3-Omni",
+      "name": "Qwen3-Omni-30B",
       "params": "30B",
       "task": "微调",
       "cluster": "2x4 (A3)",
@@ -243,7 +397,7 @@
       "desc": "全模态理解模型"
     },
     {
-      "name": "Magistral-Small-2509",
+      "name": "Magistral-Small-2509-24B",
       "params": "24B",
       "task": "微调",
       "cluster": "1x8",
@@ -254,26 +408,26 @@
       "desc": "多模态理解模型"
     },
     {
-      "name": "语音识别",
-      "params": "Whisper",
-      "task": "1.5B",
-      "cluster": "预训练",
-      "precision": "1x8",
+      "name": "Whisper-1.5B",
+      "params": "1.5B",
+      "task": "预训练",
+      "cluster": "1x8",
+      "precision": "BF16",
       "framework": "MM",
       "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态模型"
+      "category": "语音识别",
+      "desc": "语音识别模型"
     },
     {
-      "name": "语音生成",
-      "params": "CosyVoice3",
-      "task": "0.5B",
-      "cluster": "预训练",
-      "precision": "1x8",
+      "name": "CosyVoice3-0.5B",
+      "params": "0.5B",
+      "task": "预训练",
+      "cluster": "1x8",
+      "precision": "BF16",
       "framework": "MM",
       "status": "已支持",
-      "category": "多模态理解",
-      "desc": "多模态模型"
+      "category": "语音生成",
+      "desc": "语音生成模型"
     },
     {
       "name": "模型",
@@ -1948,8 +2102,8 @@
       "desc": "SSM语言模型"
     }
   ],
-  "crawl_time": "2026-07-28 15:53:39",
-  "total": 177,
-  "mm_count": 25,
+  "crawl_time": "2026-07-28 17:02:57",
+  "total": 191,
+  "mm_count": 39,
   "llm_count": 152
 }

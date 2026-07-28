@@ -569,7 +569,14 @@ def parse_ascend_sact(html):
 
 
 def parse_mindspeed_mm(html):
-    """解析 MindSpeed-MM 支持模型列表（从 HTML 表格解析）"""
+    """解析 MindSpeed-MM 支持模型列表（从 HTML 表格解析）
+
+    表格结构：
+    | 模型任务 | 模型 | 参数量 | 任务 | 集群 | 精度格式 |
+
+    注意：同一模型有多个参数量时，模型名跨行（第二行没有模型名）
+    命名方式：模型-参数量（如 Wan2.2-T2V-5B）
+    """
     models = []
     soup = BeautifulSoup(html, 'html.parser')
     tables = soup.find_all('table')
@@ -581,28 +588,68 @@ def parse_mindspeed_mm(html):
 
         headers = [th.get_text(strip=True) for th in rows[0].find_all(['th', 'td'])]
         current_category = '多模态生成'
+        last_model_name = None  # 用于跨行追踪
 
         for row in rows[1:]:
             cells = row.find_all(['td', 'th'])
             cell_texts = [c.get_text(strip=True) for c in cells]
 
+            # 分类行（只有1个单元格）
             if len(cells) == 1:
                 cat = cell_texts[0]
                 if cat in ['多模态生成', '多模态理解', '语音识别', '语音生成']:
                     current_category = cat
+                last_model_name = None
                 continue
 
-            if len(cells) < 5:
+            # 判断是否有模型名（6列：模型任务+模型+参数量+任务+集群+精度格式）
+            # 或 5列：模型+参数量+任务+集群+精度格式（分类行已合并）
+            # 或 4列：只有参数量+任务+集群+精度格式（跨行，无模型名）
+
+            has_model_name = False
+            model_name = None
+            params = ''
+            task = ''
+            cluster = ''
+            precision = 'BF16'
+
+            if len(cell_texts) >= 6:
+                # 完整行：模型任务 | 模型 | 参数量 | 任务 | 集群 | 精度格式
+                cat_check = cell_texts[0]
+                if cat_check in ['多模态生成', '多模态理解', '语音识别', '语音生成']:
+                    current_category = cat_check
+                model_name = cell_texts[1]
+                params = cell_texts[2]
+                task = cell_texts[3]
+                cluster = cell_texts[4]
+                precision = cell_texts[5]
+                has_model_name = bool(model_name and not model_name.startswith('---'))
+            elif len(cell_texts) == 5:
+                # 5列：模型 | 参数量 | 任务 | 集群 | 精度格式
+                model_name = cell_texts[0]
+                params = cell_texts[1]
+                task = cell_texts[2]
+                cluster = cell_texts[3]
+                precision = cell_texts[4]
+                has_model_name = bool(model_name and not model_name.startswith('---'))
+            elif len(cell_texts) == 4:
+                # 4列：参数量 | 任务 | 集群 | 精度格式（跨行，无模型名）
+                params = cell_texts[0]
+                task = cell_texts[1]
+                cluster = cell_texts[2]
+                precision = cell_texts[3]
+                model_name = last_model_name  # 使用上一行的模型名
+                has_model_name = bool(model_name)
+            else:
                 continue
 
-            model_name = cell_texts[0]
-            params = cell_texts[1] if len(cell_texts) > 1 else ''
-            task = cell_texts[2] if len(cell_texts) > 2 else ''
-            cluster = cell_texts[3] if len(cell_texts) > 3 else ''
-            precision = cell_texts[4] if len(cell_texts) > 4 else 'BF16'
-
-            if not model_name or model_name.startswith('---'):
+            if has_model_name:
+                last_model_name = model_name
+            elif not model_name:
                 continue
+
+            # 命名方式：模型-参数量
+            full_name = f"{model_name}-{params}" if params else model_name
 
             desc_map = {
                 'Lumina-mGPT': '多模态生成模型',
@@ -648,7 +695,7 @@ def parse_mindspeed_mm(html):
                     break
 
             models.append({
-                'name': model_name,
+                'name': full_name,
                 'params': params,
                 'task': task,
                 'cluster': cluster,
