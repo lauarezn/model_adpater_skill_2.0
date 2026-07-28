@@ -710,7 +710,15 @@ def parse_mindspeed_mm(html):
 
 
 def parse_mindspeed_llm(html):
-    """解析 MindSpeed-LLM 支持模型列表（从 HTML 表格解析）"""
+    """解析 MindSpeed-LLM 支持模型列表（从 HTML 表格解析）
+
+    表格结构（稠密/稀疏/状态空间模型）：
+    | 模型 | 下载链接 | 脚本位置 | 序列长度 | 训练后端 | 集群规模 | 支持版本 | 贡献方 | 认证 |
+
+    注意：同一模型有多个参数量时，模型名跨行（第二行没有模型名）
+    命名方式：模型-参数量（如 Aquila-7B、LLaMA3-8B）
+    附脚本链接：指向 MindSpeed-LLM 仓库中的训练脚本路径
+    """
     models = []
     soup = BeautifulSoup(html, 'html.parser')
     tables = soup.find_all('table')
@@ -732,31 +740,125 @@ def parse_mindspeed_llm(html):
             continue
 
         headers = [th.get_text(strip=True) for th in rows[0].find_all(['th', 'td'])]
+        last_model_name = None  # 用于跨行追踪
+        last_script_path = ''   # 用于跨行继承脚本位置
+        last_script_url = ''    # 用于跨行继承脚本链接
 
         for row in rows[1:]:
             cells = row.find_all(['td', 'th'])
             if len(cells) < 2:
                 continue
 
-            model_name = cells[0].get_text(strip=True) if len(cells) > 0 else ''
-            if not model_name or model_name.startswith('---'):
+            cell_texts = [c.get_text(strip=True) for c in cells]
+
+            # 判断是否有模型名（9列：完整行；7列：跨行，无模型名和下载链接）
+            has_model_name = False
+            model_name = None
+            params = ''
+            script_path = ''
+            script_url = ''
+            download_url = ''
+            seq_len = ''
+            backend = ''
+            cluster = ''
+            version = ''
+            contributor = ''
+            status = '已支持'
+
+            if len(cell_texts) >= 9:
+                # 完整行：模型 | 下载链接 | 脚本位置 | 序列长度 | 训练后端 | 集群规模 | 支持版本 | 贡献方 | 认证
+                model_name = cell_texts[0]
+                params = cell_texts[1]
+                script_path = cell_texts[2]
+                seq_len = cell_texts[3]
+                backend = cell_texts[4]
+                cluster = cell_texts[5]
+                version = cell_texts[6]
+                contributor = cell_texts[7]
+                cert = cell_texts[8] if len(cell_texts) > 8 else ''
+                has_model_name = bool(model_name and not model_name.startswith('---'))
+
+                # 提取下载链接 URL
+                dl_link = cells[1].find('a') if len(cells) > 1 else None
+                if dl_link:
+                    download_url = dl_link.get('href', '')
+
+                # 提取脚本链接 URL
+                script_link = cells[2].find('a') if len(cells) > 2 else None
+                if script_link:
+                    script_url = script_link.get('href', '')
+
+                # 认证状态
+                if 'Test' in cert or '测试' in cert:
+                    status = '测试中'
+            elif len(cell_texts) == 8:
+                # 8列：模型 | 下载链接 | 脚本位置 | 序列长度 | 训练后端 | 集群规模 | 支持版本 | 认证
+                # 或 模型 | 下载链接 | 脚本位置 | 序列长度 | 训练后端 | 集群规模 | 贡献方 | 认证
+                model_name = cell_texts[0]
+                params = cell_texts[1]
+                script_path = cell_texts[2]
+                seq_len = cell_texts[3]
+                backend = cell_texts[4]
+                cluster = cell_texts[5]
+                # 第6列可能是版本或贡献方
+                version_or_contrib = cell_texts[6]
+                cert = cell_texts[7]
+                has_model_name = bool(model_name and not model_name.startswith('---'))
+
+                # 尝试判断第6列是版本还是贡献方
+                if any(kw in version_or_contrib for kw in ['Ascend', 'OpenMind', 'China Mobile']):
+                    contributor = version_or_contrib
+                else:
+                    version = version_or_contrib
+
+                # 提取下载链接 URL
+                dl_link = cells[1].find('a') if len(cells) > 1 else None
+                if dl_link:
+                    download_url = dl_link.get('href', '')
+
+                # 提取脚本链接 URL
+                script_link = cells[2].find('a') if len(cells) > 2 else None
+                if script_link:
+                    script_url = script_link.get('href', '')
+
+                if 'Test' in cert or '测试' in cert:
+                    status = '测试中'
+            elif len(cell_texts) == 7:
+                # 7列：跨行，无模型名和脚本位置（col0/col2 有 rowspan）
+                # 参数量 | 序列长度 | 训练后端 | 集群规模 | 支持版本 | 贡献方 | 认证
+                params = cell_texts[0]
+                seq_len = cell_texts[1]
+                backend = cell_texts[2]
+                cluster = cell_texts[3]
+                version = cell_texts[4]
+                contributor = cell_texts[5]
+                cert = cell_texts[6] if len(cell_texts) > 6 else ''
+                model_name = last_model_name  # 使用上一行的模型名
+                has_model_name = bool(model_name)
+
+                # 提取下载链接 URL（参数量列可能包含下载链接）
+                dl_link = cells[0].find('a') if len(cells) > 0 else None
+                if dl_link:
+                    download_url = dl_link.get('href', '')
+
+                # 脚本位置继承上一行的（col2 有 rowspan）
+                script_path = last_script_path if last_script_path else ''
+                script_url = last_script_url if last_script_url else ''
+
+                if 'Test' in cert or '测试' in cert:
+                    status = '测试中'
+            else:
                 continue
 
-            params = cells[1].get_text(strip=True) if len(cells) > 1 else ''
+            if has_model_name:
+                last_model_name = model_name
+                last_script_path = script_path
+                last_script_url = script_url
+            elif not model_name:
+                continue
 
-            cluster = ''
-            for i, h in enumerate(headers):
-                if '集群' in h and i < len(cells):
-                    cluster = cells[i].get_text(strip=True)
-                    break
-
-            status = '已支持'
-            for i, h in enumerate(headers):
-                if '认证' in h and i < len(cells):
-                    cert = cells[i].get_text(strip=True)
-                    if 'Test' in cert or '测试' in cert:
-                        status = '测试中'
-                    break
+            # 命名方式：模型-参数量
+            full_name = f"{model_name}-{params}" if params else model_name
 
             desc_map = {
                 'Aquila': '语言模型', 'Baichuan': '语言模型', 'Bloom': '多语言语言模型',
@@ -787,7 +889,7 @@ def parse_mindspeed_llm(html):
                     break
 
             models.append({
-                'name': model_name,
+                'name': full_name,
                 'params': params,
                 'task': '预训练/微调',
                 'cluster': cluster,
@@ -795,7 +897,14 @@ def parse_mindspeed_llm(html):
                 'framework': 'LLM',
                 'status': status,
                 'category': current_category,
-                'desc': desc
+                'desc': desc,
+                'script_path': script_path,
+                'script_url': script_url,
+                'download_url': download_url,
+                'seq_len': seq_len,
+                'backend': backend,
+                'version': version,
+                'contributor': contributor
             })
 
     return models
