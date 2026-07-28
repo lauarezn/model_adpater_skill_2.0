@@ -9,7 +9,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.2-T2V-A14B",
@@ -20,7 +21,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.2-TI2V-5B",
@@ -31,7 +33,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "图文生视频模型"
+      "desc": "图文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.2-I2V-A14B",
@@ -42,7 +45,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "图生视频模型"
+      "desc": "图生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-T2V-1.3B",
@@ -53,7 +57,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-T2V-1.3B",
@@ -64,7 +69,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-T2V-14B",
@@ -75,7 +81,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-T2V-14B",
@@ -86,7 +93,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生视频模型"
+      "desc": "文生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-I2V-1.3B",
@@ -97,7 +105,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "图生视频模型"
+      "desc": "图生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-I2V-14B",
@@ -108,7 +117,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "图生视频模型"
+      "desc": "图生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Wan2.1-I2V-14B",
@@ -119,7 +129,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "图生视频模型"
+      "desc": "图生视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Self-Forcing-1.3B",
@@ -130,7 +141,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "视频生成蒸馏模型"
+      "desc": "视频生成蒸馏模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "HunyuanVideo1.5-T2V-8B",
@@ -141,7 +153,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "视频生成模型"
+      "desc": "视频生成模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qihoo-T2X-1.1B",
@@ -152,7 +165,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图/视频模型"
+      "desc": "文生图/视频模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "SD3.5-8.1B",
@@ -163,7 +177,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "SD3.5-8.1B",
@@ -174,7 +189,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Flux-12B",
@@ -185,7 +201,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Flux2-T2I-32B",
@@ -196,7 +213,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Flux2-I2I-32B",
@@ -207,7 +225,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Flux-Kontext-12B",
@@ -218,7 +237,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen-Image-27B",
@@ -229,7 +249,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen-Image-Edit-27B",
@@ -240,7 +261,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态生成",
-      "desc": "文生图模型"
+      "desc": "文生图模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "LLaVA 1.5-7B",
@@ -251,7 +273,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "InternVL 3.5-30B",
@@ -262,7 +285,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen2.5-VL-3B",
@@ -273,7 +297,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen2.5-VL-7B",
@@ -284,7 +309,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen2.5-VL-32B",
@@ -295,7 +321,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen2.5-VL-72B",
@@ -306,7 +333,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3-VL-8B",
@@ -317,7 +345,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3-VL-30B",
@@ -328,7 +357,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3-VL-235B",
@@ -339,7 +369,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3.5-27B",
@@ -350,7 +381,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3.5-35B",
@@ -361,7 +393,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3.5-397B",
@@ -372,7 +405,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen2.5-Omni-7B",
@@ -383,7 +417,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "全模态理解模型"
+      "desc": "全模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Qwen3-Omni-30B",
@@ -394,7 +429,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "全模态理解模型"
+      "desc": "全模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Magistral-Small-2509-24B",
@@ -405,7 +441,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "多模态理解",
-      "desc": "多模态理解模型"
+      "desc": "多模态理解模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Whisper-1.5B",
@@ -416,7 +453,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "语音识别",
-      "desc": "语音识别模型"
+      "desc": "语音识别模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "CosyVoice3-0.5B",
@@ -427,7 +465,8 @@
       "framework": "MM",
       "status": "已支持",
       "category": "语音生成",
-      "desc": "语音生成模型"
+      "desc": "语音生成模型",
+      "source": "MindSpeed-MM"
     },
     {
       "name": "Aquila-7B",
@@ -445,7 +484,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Aquila2-7B",
@@ -463,7 +503,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Aquila2-34B",
@@ -481,7 +522,8 @@
       "seq_len": "4k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Baichuan-7B",
@@ -499,7 +541,8 @@
       "seq_len": "4k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Baichuan-13B",
@@ -517,7 +560,8 @@
       "seq_len": "4k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Baichuan2-7B",
@@ -535,7 +579,8 @@
       "seq_len": "4k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Baichuan2-13B",
@@ -553,7 +598,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Bloom-7B1",
@@ -571,7 +617,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Bloom-176B",
@@ -589,7 +636,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "ChatGLM3-6B",
@@ -607,7 +655,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GLM4-9B",
@@ -625,7 +674,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "CodeLlama-34B",
@@ -643,7 +693,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM-7B",
@@ -661,7 +712,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM-65B",
@@ -679,7 +731,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM2-20B",
@@ -697,7 +750,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM2.5-1.8B",
@@ -715,7 +769,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM2.5-7B",
@@ -733,7 +788,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM2.5-20B",
@@ -751,7 +807,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "InternLM3-8B",
@@ -769,7 +826,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA-7B",
@@ -787,7 +845,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA-13B",
@@ -805,7 +864,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA-33B",
@@ -823,7 +883,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA-65B",
@@ -841,7 +902,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA2-7B",
@@ -859,7 +921,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA2-13B",
@@ -877,7 +940,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA2-34B",
@@ -895,7 +959,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA2-70B",
@@ -913,7 +978,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3-8B",
@@ -931,7 +997,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3-70B",
@@ -949,7 +1016,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.1-8B",
@@ -967,7 +1035,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.1-50B",
@@ -985,7 +1054,8 @@
       "seq_len": "128k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.1-70B",
@@ -1003,7 +1073,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.1-200B",
@@ -1021,7 +1092,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.1-405B",
@@ -1039,7 +1111,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.2-1B",
@@ -1057,7 +1130,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.2-3B",
@@ -1075,7 +1149,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LLaMA3.3-70B-Instruct",
@@ -1093,7 +1168,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen-7B",
@@ -1111,7 +1187,8 @@
       "seq_len": "8k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen-14B",
@@ -1129,7 +1206,8 @@
       "seq_len": "2k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen-72B",
@@ -1147,7 +1225,8 @@
       "seq_len": "8k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen1.5-0.5B",
@@ -1165,7 +1244,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen1.5-CodeQwen1.5",
@@ -1183,7 +1263,8 @@
       "seq_len": "7B",
       "backend": "8k",
       "version": "1x8",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2-0.5B",
@@ -1201,7 +1282,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-0.5B",
@@ -1219,7 +1301,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-1.5B",
@@ -1237,7 +1320,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-3B",
@@ -1255,7 +1339,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-7B",
@@ -1273,7 +1358,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-14B",
@@ -1291,7 +1377,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-32B",
@@ -1309,7 +1396,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-72B",
@@ -1327,7 +1415,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-0.6B",
@@ -1345,7 +1434,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-1.7B",
@@ -1363,7 +1453,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-4B",
@@ -1381,7 +1472,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-8B",
@@ -1399,7 +1491,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-14B",
@@ -1417,7 +1510,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-32B",
@@ -1435,7 +1529,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "32B-qwen3",
@@ -1453,7 +1548,8 @@
       "seq_len": "FSDP2",
       "backend": "1x16",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "QwQ-32B",
@@ -1471,7 +1567,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2.5-Math-1.5B",
@@ -1489,7 +1586,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "CodeQwen2.5-7B",
@@ -1507,7 +1605,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【China Mobile Cloud】"
+      "contributor": "【China Mobile Cloud】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Yi-9B",
@@ -1525,7 +1624,8 @@
       "seq_len": "4k",
       "backend": "Legacy",
       "version": "2.0.0",
-      "contributor": "【OpenMind】"
+      "contributor": "【OpenMind】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Yi-34B",
@@ -1543,7 +1643,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Yi1.5-6B",
@@ -1561,7 +1662,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mistral-7B",
@@ -1579,7 +1681,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Gemma-2B",
@@ -1597,7 +1700,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Gemma2-9B",
@@ -1615,7 +1719,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Gemma2-27B",
@@ -1633,7 +1738,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "MiniCPM-2B",
@@ -1651,7 +1757,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "MiniCPM3-4B",
@@ -1669,7 +1776,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Phi3.5-mini-instruct",
@@ -1687,7 +1795,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-Math-7B",
@@ -1705,7 +1814,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-R1-Distill-Qwen-1.5B",
@@ -1723,7 +1833,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-R1-Distill-LLaMA-8B",
@@ -1741,7 +1852,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Seed-OSS-36B",
@@ -1759,7 +1871,8 @@
       "seq_len": "2k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Magistral-24B",
@@ -1777,7 +1890,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "PLM-1.8B",
@@ -1795,7 +1909,8 @@
       "seq_len": "2k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-30B-A3B",
@@ -1813,7 +1928,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-qwen3_moe",
@@ -1831,7 +1947,8 @@
       "seq_len": "4k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "235B-A22B-qwen3_moe",
@@ -1849,7 +1966,8 @@
       "seq_len": "Mcore",
       "backend": "16x16",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "235B-A22B-qwen3_moe",
@@ -1867,7 +1985,8 @@
       "seq_len": "4k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-Next-80B-A3B",
@@ -1885,7 +2004,8 @@
       "seq_len": "16k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-Next-qwen3_next",
@@ -1903,7 +2023,8 @@
       "seq_len": "16k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen3-Coder-Next-80B-A3B",
@@ -1921,7 +2042,8 @@
       "seq_len": "16k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Qwen2-57B-A14B",
@@ -1939,7 +2061,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Grok-1-40B",
@@ -1957,7 +2080,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mixtral-8x7B",
@@ -1975,7 +2099,8 @@
       "seq_len": "32k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V2-236B",
@@ -1993,7 +2118,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V2-coder-236B",
@@ -2011,7 +2137,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V2-Lite-16B",
@@ -2029,7 +2156,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V2.5-236B",
@@ -2047,7 +2175,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V3-671B",
@@ -2065,7 +2194,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V3.2-671B",
@@ -2083,7 +2213,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "DeepSeek-V4-Flash-284B",
@@ -2101,7 +2232,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "MiniCPM-8x2B",
@@ -2119,7 +2251,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "2.2.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Ling-mini-2.0-16B",
@@ -2137,7 +2270,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Ring-1T",
@@ -2155,7 +2289,8 @@
       "seq_len": "Mcore",
       "backend": "32x8",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Phi3.5-MoE-instruct",
@@ -2173,7 +2308,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Hunyuan-389B",
@@ -2191,7 +2327,8 @@
       "seq_len": "8k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GPT4-MoE-175B",
@@ -2209,7 +2346,8 @@
       "seq_len": "128k",
       "backend": "Mcore",
       "version": "2.3.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GLM4.5-Air-MoE-106B",
@@ -2227,7 +2365,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GLM5-MoE-744B",
@@ -2245,7 +2384,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GLM5.2-MoE-744B",
@@ -2263,7 +2403,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Step3.5-Flash-MoE-196B",
@@ -2281,7 +2422,8 @@
       "seq_len": "4k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "LongCat-MoE-560B",
@@ -2299,7 +2441,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "GPT-OSS-MoE-20B",
@@ -2317,7 +2460,8 @@
       "seq_len": "4k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "MiniMax-M2.7-MoE-229B",
@@ -2335,7 +2479,8 @@
       "seq_len": "4k",
       "backend": "FSDP2",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mamba2-2.7B",
@@ -2353,7 +2498,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mamba2-8B",
@@ -2371,7 +2517,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mamba2Hybrid-8B",
@@ -2389,7 +2536,8 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "26.0.0",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     },
     {
       "name": "Mamba3-/",
@@ -2407,10 +2555,11 @@
       "seq_len": "4k",
       "backend": "Mcore",
       "version": "",
-      "contributor": "【Ascend】"
+      "contributor": "【Ascend】",
+      "source": "MindSpeed-LLM"
     }
   ],
-  "crawl_time": "2026-07-28 18:04:38",
+  "crawl_time": "2026-07-28 18:16:04",
   "total": 149,
   "mm_count": 39,
   "llm_count": 110

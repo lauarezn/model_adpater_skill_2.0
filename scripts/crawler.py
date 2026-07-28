@@ -703,7 +703,8 @@ def parse_mindspeed_mm(html):
                 'framework': 'MM',
                 'status': '已支持',
                 'category': current_category,
-                'desc': desc
+                'desc': desc,
+                'source': 'MindSpeed-MM'
             })
 
     return models
@@ -904,7 +905,8 @@ def parse_mindspeed_llm(html):
                 'seq_len': seq_len,
                 'backend': backend,
                 'version': version,
-                'contributor': contributor
+                'contributor': contributor,
+                'source': 'MindSpeed-LLM'
             })
 
     return models
