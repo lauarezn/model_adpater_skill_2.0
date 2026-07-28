@@ -839,19 +839,28 @@ def _detect_tags(name, category, architecture):
     return tags
 
 
-def merge_models(all_source_models):
-    """合并多个来源的模型，去重"""
+def merge_models(all_source_models, no_dedup_sources=None):
+    """合并多个来源的模型，去重（可指定某些来源不做去重）"""
+    if no_dedup_sources is None:
+        no_dedup_sources = set()
+
     merged = []
     seen = set()
 
     for models in all_source_models:
         for m in models:
-            key = m.get('name', '').lower().replace(' ', '').replace('/', '').replace('-', '')
-            if not key:
-                continue
-            if key not in seen:
-                seen.add(key)
+            source = m.get('source', '')
+            if source in no_dedup_sources:
+                # 指定来源不做去重，全部保留
                 merged.append(m)
+            else:
+                # 其他来源按名称去重
+                key = m.get('name', '').lower().replace(' ', '').replace('/', '').replace('-', '')
+                if not key:
+                    continue
+                if key not in seen:
+                    seen.add(key)
+                    merged.append(m)
 
     return merged
 
@@ -951,7 +960,7 @@ def crawl_all():
         results['gitcode_ai'],
         results['ascend_sact'],
     ]
-    merged_models = merge_models(all_model_sources)
+    merged_models = merge_models(all_model_sources, no_dedup_sources={'GitCode AI'})
     print(f"模型清单合并后: {len(merged_models)} 个模型")
 
     # 保存模型清单数据
