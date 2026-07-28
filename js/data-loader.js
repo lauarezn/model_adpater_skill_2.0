@@ -1,5 +1,5 @@
 
-// ============ vLLM Data Fetchers ============
+// ============ 数据源配置（保留供参考，实际由服务端每日 06:00 定时爬取同步）============
 const VLLM_ASCEND_URL = 'https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html';
 const VLLM_ASCEND_BASE = 'https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/';
 const VLLM_OMNI_URL = 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/';
@@ -9,7 +9,7 @@ const SGLANG_ASCEND_BASE = 'https://docs.sglang.io/docs/hardware-platforms/ascen
 const GITCODE_AI_URL = 'https://ai.gitcode.com/models?ascendNative=true';
 const ASCEND_SACT_URL = 'https://gitcode.com/org/Ascend-SACT/repos';
 
-// Multiple CORS proxy fallbacks
+// CORS 代理列表（保留供参考，浏览器端远程爬取已不再使用）
 const CORS_PROXIES = [
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
