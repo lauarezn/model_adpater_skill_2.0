@@ -10,7 +10,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers"
     },
     {
       "name": "Wan2.2-T2V-A14B",
@@ -22,7 +24,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B-Diffusers"
     },
     {
       "name": "Wan2.2-TI2V-5B",
@@ -34,7 +38,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "图文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers"
     },
     {
       "name": "Wan2.2-I2V-A14B",
@@ -46,7 +52,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "图生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.2-I2V-A14B-Diffusers"
     },
     {
       "name": "Wan2.1-T2V-1.3B",
@@ -58,7 +66,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B-Diffusers"
     },
     {
       "name": "Wan2.1-T2V-1.3B",
@@ -70,7 +80,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B-Diffusers"
     },
     {
       "name": "Wan2.1-T2V-14B",
@@ -82,7 +94,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-T2V-14B-Diffusers"
     },
     {
       "name": "Wan2.1-T2V-14B",
@@ -94,7 +108,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-T2V-14B-Diffusers"
     },
     {
       "name": "Wan2.1-I2V-1.3B",
@@ -106,7 +122,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "图生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": ""
     },
     {
       "name": "Wan2.1-I2V-14B",
@@ -118,7 +136,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "图生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P-Diffusers"
     },
     {
       "name": "Wan2.1-I2V-14B",
@@ -130,7 +150,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "图生视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1",
+      "download_url": "https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P-Diffusers"
     },
     {
       "name": "Self-Forcing-1.3B",
@@ -142,7 +164,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "视频生成蒸馏模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/self_forcing",
+      "download_url": "https://huggingface.co/gdhe17/Self-Forcing"
     },
     {
       "name": "HunyuanVideo1.5-T2V-8B",
@@ -154,7 +178,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "视频生成模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/hunyuanvideo_1.5",
+      "download_url": "https://huggingface.co/tencent/HunyuanVideo1.5-T2V"
     },
     {
       "name": "Qihoo-T2X-1.1B",
@@ -166,7 +192,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图/视频模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/26.0.0/examples/qihoo_t2x",
+      "download_url": "https://huggingface.co/qihoo360/Qihoo-T2X"
     },
     {
       "name": "SD3.5-8.1B",
@@ -178,7 +206,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/sd3",
+      "download_url": "https://github.com/huggingface/diffusers/tree/5f724735437d91ed05304da478f3b2022fe3f6fb"
     },
     {
       "name": "SD3.5-8.1B",
@@ -190,7 +220,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/sd3",
+      "download_url": "https://github.com/huggingface/diffusers/tree/94643fac8a27345f695500085d78cc8fa01f5fa9"
     },
     {
       "name": "Flux-12B",
@@ -202,7 +234,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/flux",
+      "download_url": "https://github.com/huggingface/diffusers/blob/main/examples/dreambooth"
     },
     {
       "name": "Flux2-T2I-32B",
@@ -214,7 +248,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/flux2",
+      "download_url": "https://github.com/huggingface/diffusers/blob/main/examples/dreambooth"
     },
     {
       "name": "Flux2-I2I-32B",
@@ -226,7 +262,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/flux2",
+      "download_url": "https://github.com/huggingface/diffusers/blob/main/examples/dreambooth"
     },
     {
       "name": "Flux-Kontext-12B",
@@ -238,7 +276,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/flux-kontext",
+      "download_url": "https://github.com/huggingface/diffusers/blob/main/examples/dreambooth"
     },
     {
       "name": "Qwen-Image-27B",
@@ -250,7 +290,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffusers/qwen_image",
+      "download_url": "https://github.com/huggingface/diffusers/blob/main/examples/dreambooth"
     },
     {
       "name": "Qwen-Image-Edit-27B",
@@ -262,7 +304,9 @@
       "status": "已支持",
       "category": "多模态生成",
       "desc": "文生图模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/diffsynth/qwen_image_edit",
+      "download_url": "https://github.com/modelscope/Diffsynth-Studio/tree/main/examples/qwen_image"
     },
     {
       "name": "LLaVA 1.5-7B",
@@ -274,7 +318,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/2.2.0/examples/llava1.5",
+      "download_url": "https://github.com/haotian-liu/LLaVA"
     },
     {
       "name": "InternVL 3.5-30B",
@@ -286,7 +332,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/internvl3.5",
+      "download_url": "https://huggingface.co/OpenGVLab/InternVL3_5-30B-A3B-Instruct"
     },
     {
       "name": "Qwen2.5-VL-3B",
@@ -298,7 +346,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5vl",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct"
     },
     {
       "name": "Qwen2.5-VL-7B",
@@ -310,7 +360,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5vl",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct"
     },
     {
       "name": "Qwen2.5-VL-32B",
@@ -322,7 +374,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5vl",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-32B-Instruct"
     },
     {
       "name": "Qwen2.5-VL-72B",
@@ -334,7 +388,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5vl",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-72B-Instruct"
     },
     {
       "name": "Qwen3-VL-8B",
@@ -346,7 +402,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3vl",
+      "download_url": "https://huggingface.co/collections/Qwen/qwen3-vl-68d2a7c1b8a8afce4ebd2dbe"
     },
     {
       "name": "Qwen3-VL-30B",
@@ -358,7 +416,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3vl",
+      "download_url": "https://huggingface.co/collections/Qwen/qwen3-vl-68d2a7c1b8a8afce4ebd2dbe"
     },
     {
       "name": "Qwen3-VL-235B",
@@ -370,7 +430,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3vl",
+      "download_url": "https://huggingface.co/collections/Qwen/qwen3-vl-68d2a7c1b8a8afce4ebd2dbe"
     },
     {
       "name": "Qwen3.5-27B",
@@ -382,7 +444,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3_5",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-27B"
     },
     {
       "name": "Qwen3.5-35B",
@@ -394,7 +458,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3_5",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
     },
     {
       "name": "Qwen3.5-397B",
@@ -406,7 +472,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3_5",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"
     },
     {
       "name": "Qwen2.5-Omni-7B",
@@ -418,7 +486,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "全模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5omni",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-Omni-7B"
     },
     {
       "name": "Qwen3-Omni-30B",
@@ -430,7 +500,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "全模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/qwen3omni",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Instruct"
     },
     {
       "name": "Magistral-Small-2509-24B",
@@ -442,7 +514,9 @@
       "status": "已支持",
       "category": "多模态理解",
       "desc": "多模态理解模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/magistral-2509",
+      "download_url": "https://huggingface.co/mistralai/Magistral-Small-2509"
     },
     {
       "name": "Whisper-1.5B",
@@ -454,7 +528,9 @@
       "status": "已支持",
       "category": "语音识别",
       "desc": "语音识别模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/26.0.0/examples/whisper",
+      "download_url": "https://github.com/openai/whisper"
     },
     {
       "name": "CosyVoice3-0.5B",
@@ -466,7 +542,9 @@
       "status": "已支持",
       "category": "语音生成",
       "desc": "语音生成模型",
-      "source": "MindSpeed-MM"
+      "source": "MindSpeed-MM",
+      "model_url": "https://gitcode.com/Ascend/MindSpeed-MM/tree/master/examples/cosyvoice3",
+      "download_url": "https://huggingface.co/FunAudioLLM/Fun-CosyVoice3-0.5B-2512"
     },
     {
       "name": "Aquila-7B",
@@ -2557,10 +2635,827 @@
       "version": "",
       "contributor": "【Ascend】",
       "source": "MindSpeed-LLM"
+    },
+    {
+      "name": "Qwen2.5-7B-Instruct",
+      "params": "7B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_7b_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-VL-3B-Instruct",
+      "params": "3B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_vl_3b_fsdp2_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-VL-7B-Instruct",
+      "params": "7B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen2_5_vl_7b_fsdp.sh"
+    },
+    {
+      "name": "Qwen2.5-VL-7B-Instruct",
+      "params": "7B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen2_5_vl_7b_fsdp.sh"
+    },
+    {
+      "name": "Qwen2.5-VL-7B-Instruct",
+      "params": "7B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_vl_7b_fsdp2_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-32B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen2_5_32b_fsdp.sh"
+    },
+    {
+      "name": "Qwen2.5-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-32B",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_32b_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-32B",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_32b_fsdp2_4k_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-32B",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_32b_fsdp2_20k_npu.sh"
+    },
+    {
+      "name": "Qwen2.5-VL-32B-Instruct",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-VL-32B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen2.5_vl_32b_fsdp2_npu.sh"
+    },
+    {
+      "name": "Qwen3-4B",
+      "params": "4B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-4B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_4b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "PPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/ppo_trainer/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "SAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/sapo_trainer/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GSPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/gspo_trainer/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "MindSpeed_LLM",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_32b_mindspeed.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO(One_Step_Off_Policy)",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/verl/experimental/one_step_off_policy/shell/grpo_qwen3_8b_gsm8k_fsdp2_8_8_npu.sh"
+    },
+    {
+      "name": "Qwen3-8B-Base",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B-Base",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_8b_base_npu.sh"
+    },
+    {
+      "name": "Qwen3-14B-Base",
+      "params": "14B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-14B-Base",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_14b_base_npu.sh"
+    },
+    {
+      "name": "Qwen3-30B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_30b_fsdp_6k_npu.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B-Base",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Base",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_moe_30b_base_fsdp_npu.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "Megatron",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_30b_a3b_megatron.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "MindSpeed_LLM",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_30b_a3b_mindspeed.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_moe_30b_megatron_npu.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO (fully_async)",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/verl/experimental/fully_async_policy/shell/dapo_30b_a3b_math_fsdp_npu.sh"
+    },
+    {
+      "name": "Qwen3-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-32B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_32b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-32B",
+      "params": "32B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "MindSpeed_LLM",
+      "rollout": "sglang",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-32B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_32b_mindspeed.sh"
+    },
+    {
+      "name": "Qwen3-235B-A22B",
+      "params": "235B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-235B-A22B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_235b_a22b_megatron.sh"
+    },
+    {
+      "name": "Qwen3-235B-A22B",
+      "params": "235B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO (fully_async)",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-235B-A22B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/verl/experimental/fully_async_policy/shell/grpo_qwen3_235b_megatron_npu.sh"
+    },
+    {
+      "name": "Qwen3-235B-A22B-Instruct",
+      "params": "235B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/ascend_extras/grpo_trainer/run_qwen3_235b_256k_megatron.sh"
+    },
+    {
+      "name": "Qwen3-VL-8B-Instruct",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_vl_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-VL-8B-Instruct",
+      "params": "8B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO (fully_async)",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/verl/experimental/fully_async_policy/shell/geo3k_qwen3vl_8b_fsdp2_16_16_npu.sh"
+    },
+    {
+      "name": "Qwen3-VL-30B-A3B-Instruct",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_vl_30b_a3b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3-VL-30B-A3B-Instruct",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/dapo/run_dapo_qwen3_vl_30b_fsdp2_npu.sh"
+    },
+    {
+      "name": "Qwen3-VL-30B-A3B-Instruct",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO (fully_async)",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/verl/experimental/fully_async_policy/shell/geo3k_qwen3vl_30b_megatron_6_2_npu_async.sh"
+    },
+    {
+      "name": "Qwen3.5-27B",
+      "params": "27B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_5_27b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3.5-27B",
+      "params": "27B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP(MindSpeed-MM)",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+      "script_url": "https://github.com/verl-project/verl-ascend-recipe/blob/main/grpo_mindspeed_mm/run_qwen3_5-27b_npu.sh"
+    },
+    {
+      "name": "Qwen3.5-35B-A3B",
+      "params": "35B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_5_35b_fsdp.sh"
+    },
+    {
+      "name": "Qwen3.5-35B-A3B",
+      "params": "35B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2(MindSpeed-MM)",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+      "script_url": "https://github.com/verl-project/verl-ascend-recipe/blob/main/grpo_mindspeed_mm/run_qwen3_5-35b_npu.sh"
+    },
+    {
+      "name": "Qwen3.5-122B-A10B",
+      "params": "122B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_5_122b_a10b_megatron.sh"
+    },
+    {
+      "name": "Qwen3-Next-80B-A3B-Instruct",
+      "params": "80B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 900 A2 PODc, Atlas 200T A2 Box16, Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "FSDP2",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_next_80b_a3b_fsdp.sh"
+    },
+    {
+      "name": "DeepSeek-V3-671B",
+      "params": "671B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "DeepSeek V3系列",
+      "source": "verl",
+      "algorithm": "DAPO",
+      "strategy": "Megatron",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3-Base/",
+      "script_url": "https://github.com/verl-project/verl-ascend-recipe/blob/main/dapo/DeepSeek-V3/scripts/run_dapo_deepseekv3_671b_megatron_8k_npu.sh"
+    },
+    {
+      "name": "Qwen3-1.7B",
+      "params": "1.7B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "VeOmni",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-1.7B",
+      "script_url": "https://github.com/verl-project/verl-ascend-recipe/blob/main/verl_ascend_practice/run_qwen3_1_7b_npu.sh"
+    },
+    {
+      "name": "Qwen3-30B-A3B",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "VeOmni",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_30b_veomni.sh"
+    },
+    {
+      "name": "Qwen3-VL-30B-A3B-Instruct",
+      "params": "30B",
+      "task": "强化学习训练",
+      "cluster": "Atlas 800T A3",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "GRPO",
+      "strategy": "VeOmni",
+      "rollout": "vllm",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/grpo_trainer/run_qwen3_vl_30b_moe_veomni.sh"
+    },
+    {
+      "name": "Qwen3-8B",
+      "params": "8B",
+      "task": "微调训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问3系列",
+      "source": "verl",
+      "algorithm": "SFT-PEFT",
+      "strategy": "FSDP",
+      "rollout": "",
+      "download_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "script_url": "https://github.com/verl-project/verl/blob/main/examples/sft/gsm8k/run_qwen3_8b_fsdp.sh"
+    },
+    {
+      "name": "Qwen2.5-7B-Instruct",
+      "params": "7B",
+      "task": "微调训练",
+      "cluster": "Atlas 900 A2 PODc",
+      "precision": "BF16",
+      "framework": "verl",
+      "status": "已支持",
+      "category": "强化学习训练",
+      "desc": "通义千问2.5系列",
+      "source": "verl",
+      "algorithm": "ReTool-SFT",
+      "strategy": "FSDP",
+      "rollout": "",
+      "download_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+      "script_url": "https://github.com/verl-project/verl-recipe/blob/main/retool/run_qwen2_7b_sft_npu.sh"
     }
   ],
-  "crawl_time": "2026-07-29 05:56:03",
-  "total": 149,
+  "crawl_time": "2026-07-30 05:56:05",
+  "total": 197,
   "mm_count": 39,
-  "llm_count": 110
+  "llm_count": 110,
+  "verl_count": 48
 }
