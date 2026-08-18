@@ -841,8 +841,8 @@ ADMIN_HTML = """
             '<td><span class="badge ' + statusClass + '">' + m.supportLevel + '</span></td>' +
             '<td><span class="badge badge-info">' + m.source + '</span></td>' +
             '<td style="font-size:0.75rem">' + m.minHardware + '</td>' +
-            '<td><button class="btn btn-primary btn-sm" onclick="editModel(\'' + m.id + '\')">✏️</button> ' +
-            '<button class="btn btn-danger btn-sm" onclick="deleteModel(\'' + m.id + '\')">🗑️</button></td></tr>';
+            '<td><button class="btn btn-primary btn-sm" data-id="' + m.id + '" onclick="editModel(this.dataset.id)">✏️</button> ' +
+            '<button class="btn btn-danger btn-sm" data-id="' + m.id + '" onclick="deleteModel(this.dataset.id)">🗑️</button></td></tr>';
         });
         document.getElementById('modelTableBody').innerHTML = html;
         var pagHtml = '<button class="btn btn-sm" style="background:var(--bg-hover);color:var(--text)" onclick="changePage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>上一页</button>' +
