@@ -1118,7 +1118,7 @@ def crawl_all():
         results['gitcode_ai'],
         results['ascend_sact'],
     ]
-    merged_models = merge_models(all_model_sources, no_dedup_sources={'GitCode AI'})
+    merged_models = merge_models(all_model_sources, no_dedup_sources=set())
     print(f"模型清单合并后: {len(merged_models)} 个模型")
 
     # 保存模型清单数据
