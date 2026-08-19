@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - 昇腾大模型适配清单管理</title>
+  <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>⚙️ Admin Panel</h2>
+    <nav>
+      <a class="active" onclick="switchTab('dashboard')">📊 仪表盘</a>
+      <a onclick="switchTab('models')">📋 模型管理</a>
+      <a onclick="switchTab('crawler')">🕷️ 爬虫控制</a>
+      <a onclick="switchTab('backup')">💾 数据备份</a>
+      <a onclick="switchTab('sources')">📡 数据来源</a>
+    </nav>
+    <div style="padding: 20px; border-top: 1px solid var(--border); margin-top: 20px;">
+      <a href="/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem;">← 返回首页</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <h1>Admin 管理后台</h1>
+        <div class="subtitle">昇腾服务器大模型适配清单 · 数据管理系统</div>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="refreshStats()">🔄 刷新数据</button>
+      </div>
+    </div>
+
+    <!-- 仪表盘 -->
+    <div class="section active" id="section-dashboard">
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="value" id="statModels">-</div>
+          <div class="label">模型总数</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statDetail">-</div>
+          <div class="label">详细模型</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statTrain">-</div>
+          <div class="label">训练模型</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statHardware">-</div>
+          <div class="label">硬件型号</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statDataSize">-</div>
+          <div class="label">数据大小</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 分类分布</h3>
+        <div id="categoryChart"><span class="empty-state">加载中...</span></div>
+      </div>
+
+      <div class="card">
+        <h3>📡 数据来源分布</h3>
+        <div id="sourceChart"><span class="empty-state">加载中...</span></div>
+      </div>
+    </div>
+
+    <!-- 模型管理 -->
+    <div class="section" id="section-models">
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="modelSearch" placeholder="🔍 搜索模型名称、ID、开发者..." oninput="debouncedSearch()">
+          <select id="sourceFilter" onchange="searchModels()">
+            <option value="">全部来源</option>
+          </select>
+          <select id="categoryFilter2" onchange="searchModels()">
+            <option value="">全部分类</option>
+          </select>
+          <button class="btn btn-danger btn-sm" onclick="batchDelete()">🗑️ 批量删除</button>
+          <button class="btn btn-primary btn-sm" onclick="exportSelected()">📥 导出选中</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th class="checkbox-col"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+                <th>模型名称</th>
+                <th>开发者</th>
+                <th>分类</th>
+                <th>状态</th>
+                <th>来源</th>
+                <th>硬件</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="modelTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="modelPagination"></div>
+      </div>
+    </div>
+
+    <!-- 爬虫控制 -->
+    <div class="section" id="section-crawler">
+      <div class="card">
+        <h3>🕷️ 爬虫状态</h3>
+        <div class="crawler-status" id="crawlerStatus">
+          <span class="status-dot idle"></span>
+          <span id="crawlerStatusText">就绪</span>
+        </div>
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <button class="btn btn-success" id="runCrawlerBtn" onclick="runCrawler()">▶️ 运行爬虫</button>
+          <button class="btn btn-primary" onclick="refreshCrawlerStatus()">🔄 刷新状态</button>
+        </div>
+        <div class="progress-box" id="crawlerProgress">暂无爬虫日志</div>
+      </div>
+
+      <div class="card">
+        <h3>📋 爬取配置</h3>
+        <table>
+          <thead>
+            <tr><th>数据源</th><th>URL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>vLLM Ascend</td><td style="font-size:0.75rem;word-break:break-all">https://docs.vllm.ai/projects/ascend/zh-cn/latest/user_guide/support_matrix/supported_models.html</td></tr>
+            <tr><td>vLLM Omni</td><td style="font-size:0.75rem;word-break:break-all">https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/</td></tr>
+            <tr><td>SGLang Ascend</td><td style="font-size:0.75rem;word-break:break-all">https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models</td></tr>
+            <tr><td>GitCode AI</td><td style="font-size:0.75rem;word-break:break-all">https://ai.gitcode.com/models?ascendNative=true</td></tr>
+            <tr><td>Ascend-SACT</td><td style="font-size:0.75rem;word-break:break-all">https://gitcode.com/org/Ascend-SACT/repos</td></tr>
+            <tr><td>MindSpeed-MM</td><td style="font-size:0.75rem;word-break:break-all">https://gitcode.com/Ascend/MindSpeed-MM/blob/master/docs/zh/pytorch/supported_models.md</td></tr>
+            <tr><td>MindSpeed-LLM</td><td style="font-size:0.75rem;word-break:break-all">https://gitcode.com/Ascend/MindSpeed-LLM/blob/master/docs/zh/pytorch/models/supported_models.md</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 数据备份 -->
+    <div class="section" id="section-backup">
+      <div class="card">
+        <h3>💾 数据备份</h3>
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <button class="btn btn-primary" onclick="createBackup()">📦 创建备份</button>
+          <button class="btn btn-warning" onclick="listBackups()">🔄 刷新列表</button>
+        </div>
+        <div id="backupResult"></div>
+        <div class="backup-list" id="backupList">
+          <div class="empty-state">暂无备份数据</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据来源 -->
+    <div class="section" id="section-sources">
+      <div class="card">
+        <h3>📡 数据来源统计</h3>
+        <div id="sourceStats"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑模型弹窗 -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <h2>✏️ 编辑模型</h2>
+      <div id="editForm"></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="saveModel()">💾 保存</button>
+        <button class="btn" style="background:var(--bg-hover);color:var(--text)" onclick="closeEditModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin/js/admin.js"></script>
+</body>
+</html>
