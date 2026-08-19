@@ -163,3 +163,6 @@ async function refreshData() {
   loadHardwareData();
   await initTrainModels();
 }
+
+// ============ 页面加载时自动初始化 ============
+init();

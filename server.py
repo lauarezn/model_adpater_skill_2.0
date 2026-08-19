@@ -1139,18 +1139,23 @@ ADMIN_HTML = """
         const status = await res.json();
         const el = document.getElementById('crawlerStatus');
         const textEl = document.getElementById('crawlerStatusText');
+        if (!el || !textEl) return;
+        const dot = el.querySelector('.status-dot');
         if (status.running) {
           el.className = 'crawler-status running';
-          el.querySelector('.status-dot').className = 'status-dot running';
+          if (dot) dot.className = 'status-dot running';
           textEl.textContent = '爬虫运行中...';
-          document.getElementById('runCrawlerBtn').disabled = true;
+          const btn = document.getElementById('runCrawlerBtn');
+          if (btn) btn.disabled = true;
         } else {
           el.className = 'crawler-status idle';
-          el.querySelector('.status-dot').className = 'status-dot idle';
+          if (dot) dot.className = 'status-dot idle';
           textEl.textContent = status.last_status === 'failed' ? '上次运行失败' : (status.last_run ? '上次运行: ' + status.last_run + ' · 状态: ' + status.last_status : '就绪');
-          document.getElementById('runCrawlerBtn').disabled = false;
+          const btn = document.getElementById('runCrawlerBtn');
+          if (btn) btn.disabled = false;
         }
-        if (status.progress) document.getElementById('crawlerProgress').textContent = status.progress;
+        const progressEl = document.getElementById('crawlerProgress');
+        if (status.progress && progressEl) progressEl.textContent = status.progress;
       } catch(e) { showToast('获取爬虫状态失败', 'error'); }
     }
 
