@@ -177,12 +177,12 @@
     "id": "atlas-350",
     "name": "Atlas 350 加速卡",
     "type": "中心推理硬件",
-    "formFactor": "双宽扩高全长PCIe卡",
+    "formFactor": "扩高×全长×双宽（OH FL DW）PCIe标卡",
     "chip": "昇腾950PR",
     "chipCount": 1,
-    "fp16Perf": "425 TFLOPS",
-    "fp32Perf": "23 TFLOPS",
-    "memory": "112GB，带宽1.4TB/s，支持ECC",
+    "fp16Perf": "425 TFLOPS @FP16/BF16",
+    "fp32Perf": "-",
+    "memory": "112GB HBM，带宽1.4TB/s，支持ECC",
     "interconnect": "PCIe 5.0 x16，双向128GBps",
     "scenario": "大模型推理 / 训练 / 高性能计算",
     "recommended": "DeepSeek系列、Qwen2.5系列、GLM系列",
@@ -190,14 +190,25 @@
       "昇腾950PR处理器",
       "PCIe 5.0 x16",
       "112GB大显存",
-      "卡间互连"
+      "卡间互连",
+      "被动散热"
     ],
     "tags": [
       "加速卡",
       "高性能",
       "大显存",
-      "PCIe5.0"
-    ]
+      "PCIe5.0",
+      "昇腾950PR"
+    ],
+    "detailSpecs": {
+      "aiPerf": "1561 TFLOPS @mxFP4\n804 TFLOPS @mxFP8/HiF8/mxFP6\n804 TOPS @INT8\n425 TFLOPS @FP16/BF16",
+      "memorySpec": "112 GB HBM，带宽1.4TB/s\n支持ECC",
+      "pcieInterface": "PCIe 5.0 x16，双向128GBps",
+      "cardInterconnect": "通过专属灵衢连接器实现多卡互联\n4卡全互连：3 × x4 UB端口/卡，双向318GB/s\n2卡互连：4 × x4 UB端口/卡，双向424GB/s",
+      "powerConsumption": "≤600W",
+      "cooling": "被动散热",
+      "environment": "295mm（长）× 39.04mm（宽）× 137mm（高）\n重量：3.0kg\n工作环境温度：5℃～35℃（41℉～95℉）"
+    }
   },
   {
     "id": "atlas-850e-supernode",
