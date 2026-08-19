@@ -319,5 +319,46 @@
       "cooling": "最大输入功耗14.6kW\n6个热插拔3.0 kW电源模块，支持5+1冗余\n供电：220VAC、336HVDC/240HVDC\n每个抽屉集成5个热拔插风扇模组，支持4+1冗余",
       "environment": "442mm(H) × 447mm(W) × 920mm(D)\n工作环境温度：5℃～35℃（41℉～95℉）"
     }
+  },
+  {
+    "id": "atlas-800i-a3-server-dual",
+    "name": "Atlas 800I A3 Server 双机直连",
+    "type": "中心推理硬件",
+    "formFactor": "10U 机架服务器",
+    "chip": "昇腾910C",
+    "chipCount": 8,
+    "fp16Perf": "-",
+    "fp32Perf": "-",
+    "memory": "整机最大1TB片上内存",
+    "interconnect": "单机D2D互联带宽 双向784GB/s",
+    "scenario": "大模型推理 / 训练 / 双机直连部署",
+    "recommended": "DeepSeek系列、Qwen系列、GLM系列",
+    "features": [
+      "10U标准机架",
+      "昇腾910C",
+      "鲲鹏920处理器",
+      "双机直连",
+      "风冷散热",
+      "5+1冗余电源"
+    ],
+    "tags": [
+      "推理",
+      "训练",
+      "双机直连",
+      "昇腾910C",
+      "鲲鹏920"
+    ],
+    "detailSpecs": {
+      "npuModule": "8 × 昇腾910C",
+      "cpu": "4 × 鲲鹏920",
+      "onChipMemory": "支持整机最大1TB片上内存",
+      "systemMemory": "32个DDR内存插槽，最高5200 MT/s\n单根内存条容量支持64 GB",
+      "network": "8 × 400GE QSFP接口直出，RoCE协议\n56 × 400GE QSFP接口直出，总线协议",
+      "storage": "最大支持2 × 2.5 SATA + 8 × 2.5 NVMe",
+      "pcieSlots": "最多支持5个PCIe 5.0扩展插槽",
+      "interfaces": "单机D2D互联带宽 双向784GB/s",
+      "cooling": "最大输入功耗14.6kW\n6个热插拔3.0 kW电源模块，支持5+1冗余\n供电：220VAC、336HVDC/240HVDC\n每个抽屉集成5个热拔插风扇模组，支持4+1冗余",
+      "environment": "442mm(H) × 447mm(W) × 920mm(D)\n工作环境温度：5℃～35℃（41℉～95℉）"
+    }
   }
 ]
