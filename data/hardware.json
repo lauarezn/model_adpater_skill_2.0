@@ -25,32 +25,6 @@
     ]
   },
   {
-    "id": "atlas-800i-a3-supernode",
-    "name": "Atlas 800I A3 超节点服务器",
-    "type": "中心推理硬件",
-    "formFactor": "10U风冷推理服务器",
-    "chip": "昇腾910B",
-    "chipCount": 8,
-    "fp16Perf": "4.48 PFLOPS（单处理器 560 TFLOPS）",
-    "fp32Perf": "1.20 PFLOPS（单处理器 150 TFLOPS）",
-    "memory": "整机1024GB片上内存，单模组128GB",
-    "interconnect": "灵衢互联1.0 + RoCE（400Gbps）",
-    "scenario": "大模型集群推理 / 在线服务",
-    "recommended": "DeepSeek-R1、Qwen2.5系列、GLM系列",
-    "features": [
-      "集群推理",
-      "高并发",
-      "弹性扩展",
-      "灵衢互联1.0",
-      "10U风冷"
-    ],
-    "tags": [
-      "超节点",
-      "集群推理",
-      "高并发"
-    ]
-  },
-  {
     "id": "atlas-800i-a2-32g-hccs",
     "name": "Atlas 800I A2 推理服务器（32GB HCCS款）",
     "type": "中心推理硬件",
