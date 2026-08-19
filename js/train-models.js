@@ -153,6 +153,8 @@ function renderTrainModels() {
   grid.innerHTML = pageModels.map(m => {
     const statusClass = m.status === '测试中' ? 'testing' : '';
     const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
+    const docUrl = m.model_url || m.script_url || '';
+    const hasDoc = docUrl.length > 0;
     return `
       <div class="train-model-card" onclick="showTrainModelDetail('${m.id}')" style="cursor:pointer">
         <div class="model-name">${m.name}</div>
@@ -166,6 +168,7 @@ function renderTrainModels() {
         <div class="model-desc">${m.desc}</div>
         <div class="model-task">任务：${m.task}</div>
         <div class="model-category">分类：${m.category}</div>
+        ${hasDoc ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--color-border)"><a href="${docUrl}" target="_blank" class="doc-link" onclick="event.stopPropagation()">📄 查看部署指南 →</a></div>` : ''}
       </div>
     `;
   }).join('');
@@ -204,6 +207,8 @@ function showTrainModelDetail(id) {
 
   const statusClass = m.status === '测试中' ? 'testing' : '';
   const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
+  const docUrl = m.model_url || m.script_url || '';
+  const hasDoc = docUrl.length > 0;
 
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name}</h2>
@@ -217,7 +222,13 @@ function showTrainModelDetail(id) {
       <dt>描述</dt><dd>${m.desc}</dd>
       <dt>任务类型</dt><dd>${m.task}</dd>
       <dt>分类</dt><dd>${m.category}</dd>
+      ${hasDoc ? `<dt>📄 部署指南</dt><dd><a href="${docUrl}" target="_blank" style="color:var(--color-primary)">${docUrl}</a></dd>` : ''}
     </dl>
+    ${hasDoc ? `<div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border-radius:8px">
+      <a href="${docUrl}" target="_blank" style="color:var(--color-primary);font-weight:600;text-decoration:none;font-size:1rem">
+        📖 查看 ${m.name} 部署指南 →
+      </a>
+    </div>` : ''}
   `;
   document.getElementById('modalOverlay').classList.add('active');
 }

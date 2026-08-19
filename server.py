@@ -136,12 +136,17 @@ def api_models():
     start = (page - 1) * page_size
     end = start + page_size
 
+    all_sources = sorted(list(set(m.get('source', '未知') for m in load_json(DATA_DIR / 'models-lite.json') or [])))
+    all_categories = sorted(list(set(m.get('category', '其他') for m in load_json(DATA_DIR / 'models-lite.json') or [])))
+
     return jsonify({
         'total': total,
         'page': page,
         'page_size': page_size,
         'total_pages': max(1, (total + page_size - 1) // page_size),
-        'models': models[start:end]
+        'models': models[start:end],
+        'sources': all_sources,
+        'categories': all_categories
     })
 
 
@@ -834,7 +839,7 @@ ADMIN_HTML = """
     <div class="section" id="section-models">
       <div class="card">
         <div class="search-bar">
-          <input type="text" id="modelSearch" placeholder="🔍 搜索模型名称、ID、开发者..." oninput="searchModels()">
+          <input type="text" id="modelSearch" placeholder="🔍 搜索模型名称、ID、开发者..." oninput="debouncedSearch()">
           <select id="sourceFilter" onchange="searchModels()">
             <option value="">全部来源</option>
           </select>
@@ -982,6 +987,9 @@ ADMIN_HTML = """
       }
     }
 
+    let searchTimer = null;
+    let filtersInitialized = false;
+
     async function searchModels() {
       const search = document.getElementById('modelSearch').value;
       const source = document.getElementById('sourceFilter').value;
@@ -989,6 +997,20 @@ ADMIN_HTML = """
       try {
         const res = await fetch('/admin/api/models?search=' + encodeURIComponent(search) + '&source=' + source + '&category=' + category + '&page=' + currentPage + '&page_size=50');
         const data = await res.json();
+
+        // 首次加载时填充筛选器下拉框
+        if (!filtersInitialized && data.sources) {
+          const sf = document.getElementById('sourceFilter');
+          sf.innerHTML = '<option value="">全部来源</option>' + data.sources.map(function(s) {
+            return '<option value="' + s + '">' + s + '</option>';
+          }).join('');
+          const cf = document.getElementById('categoryFilter2');
+          cf.innerHTML = '<option value="">全部分类</option>' + data.categories.map(function(c) {
+            return '<option value="' + c + '">' + c + '</option>';
+          }).join('');
+          filtersInitialized = true;
+        }
+
         var html = '';
         data.models.forEach(function(m) {
           var statusClass = m.supportLevel === '✅ 已支持' ? 'badge-success' : m.supportLevel === '🔵 实验性' ? 'badge-warning' : 'badge-danger';
@@ -1011,6 +1033,15 @@ ADMIN_HTML = """
       } catch(e) {
         showToast('加载模型列表失败', 'error');
       }
+    }
+
+    // 搜索防抖：用户停止输入 300ms 后再请求
+    function debouncedSearch() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function() {
+        currentPage = 1;
+        searchModels();
+      }, 300);
     }
 
     function changePage(page) { currentPage = page; searchModels(); }
