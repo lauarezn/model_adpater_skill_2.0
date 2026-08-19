@@ -34,6 +34,9 @@ function renderAscendHardware(data) {
           ${h.features.map(f => `<span class="tag">${f}</span>`).join('')}
         </div>
       </div>
+      <div class="hw-card-footer">
+        <span class="hw-detail-trigger">📋 点击查看详细规格</span>
+      </div>
     </div>`;
   }).join('');
 }
@@ -43,7 +46,7 @@ function filterAscendHardware() {
   const type = document.getElementById('hwTypeFilter').value;
   const chip = document.getElementById('hwChipFilter').value;
 
-  let filtered = ASCEND_HARDWARE_DATA.filter(h => {
+  let filtered = window.ASCEND_HARDWARE_DATA.filter(h => {
     if (search && !h.name.toLowerCase().includes(search) && !h.type.toLowerCase().includes(search) && !h.chip.toLowerCase().includes(search) && !h.scenario.toLowerCase().includes(search)) return false;
     if (type !== 'all' && h.type !== type) return false;
     if (chip !== 'all' && !h.chip.includes(chip)) return false;
@@ -52,7 +55,7 @@ function filterAscendHardware() {
   renderAscendHardware(filtered);
 }
 
-// 训练模型数据改为从本地文件异步加载
+// 训练模型数据改为通过 Admin API 加载（前后端分离）
 let trainModelsData = [];
 
 
@@ -61,9 +64,9 @@ let trainCurrentPage = 1;
 let trainFilteredModels = [];
 
 async function initTrainModels() {
-  // 从本地文件异步加载训练模型数据
+  // 通过 Admin API 加载训练模型数据
   try {
-    const resp = await fetch('data/train-models.json');
+    const resp = await fetch('/admin/api/homepage/train-models?page=1&page_size=1000');
     if (resp.ok) {
       const data = await resp.json();
       trainModelsData = data.models || [];
@@ -81,6 +84,7 @@ async function initTrainModels() {
   // 填充分类筛选
   const cats = [...new Set(trainModelsData.map(m => m.category))];
   const catSelect = document.getElementById('trainCategoryFilter');
+  catSelect.innerHTML = '<option value="all">全部分类</option>';
   cats.forEach(c => {
     const opt = document.createElement('option');
     opt.value = c;
@@ -150,7 +154,7 @@ function renderTrainModels() {
     const statusClass = m.status === '测试中' ? 'testing' : '';
     const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
     return `
-      <div class="train-model-card">
+      <div class="train-model-card" onclick="showTrainModelDetail('${m.id}')" style="cursor:pointer">
         <div class="model-name">${m.name}</div>
         <div class="model-meta">
           <span class="tag tag-framework">${frameworkLabel}</span>
@@ -191,5 +195,30 @@ function trainGoPage(page) {
   trainCurrentPage = page;
   renderTrainModels();
   document.getElementById('section-train-models').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============ Train Model Detail Modal ============
+function showTrainModelDetail(id) {
+  let m = trainModelsData.find(x => x.id === id);
+  if (!m) return;
+
+  const statusClass = m.status === '测试中' ? 'testing' : '';
+  const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
+
+  document.getElementById('modalBody').innerHTML = `
+    <h2>${m.name}</h2>
+    <p style="color:var(--color-text-secondary);margin-bottom:20px">${frameworkLabel} · ${m.category}</p>
+    <dl>
+      <dt>框架</dt><dd>${frameworkLabel}</dd>
+      <dt>参数量</dt><dd>${m.params}</dd>
+      <dt>集群配置</dt><dd>${m.cluster}</dd>
+      <dt>精度</dt><dd>${m.precision}</dd>
+      <dt>状态</dt><dd><span class="tag tag-status ${statusClass}">${m.status}</span></dd>
+      <dt>描述</dt><dd>${m.desc}</dd>
+      <dt>任务类型</dt><dd>${m.task}</dd>
+      <dt>分类</dt><dd>${m.category}</dd>
+    </dl>
+  `;
+  document.getElementById('modalOverlay').classList.add('active');
 }
 

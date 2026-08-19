@@ -7,3 +7,6 @@ crawl_*.js
 merge_*.js
 package.json
 package-lock.json
+
+# JiuwenSwarm runtime file operation logs
+.agent_history/

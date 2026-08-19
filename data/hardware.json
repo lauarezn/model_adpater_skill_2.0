@@ -220,5 +220,86 @@
       "大显存",
       "PCIe5.0"
     ]
+  },
+  {
+    "id": "atlas-850e-supernode",
+    "name": "Atlas 850E 超节点服务器",
+    "type": "中心训练硬件",
+    "formFactor": "14U",
+    "chip": "鲲鹏950 + 昇腾950DT",
+    "chipCount": "2 CPU + 8 NPU",
+    "fp16Perf": "919 TFLOPS@mxFP8 / NPU",
+    "fp32Perf": "-",
+    "memory": "8 × 96GB 片上内存，带宽最大4.0TB/s",
+    "interconnect": "框内：8卡Fullmesh全互联，784GB/s；出框：任意2个NPU模组间848GB/s",
+    "scenario": "超大模型训练 / 超节点集群训练",
+    "recommended": "万亿参数MoE模型、DeepSeek系列、大规模分布式训练",
+    "features": [
+      "14U超节点形态",
+      "鲲鹏950 + 昇腾950DT",
+      "8卡Fullmesh全互联",
+      "跨框光互连",
+      "5+1冗余电源"
+    ],
+    "tags": [
+      "超节点",
+      "大规模训练",
+      "昇腾950DT",
+      "鲲鹏950",
+      "Fullmesh"
+    ],
+    "detailSpecs": {
+      "npuModule": "8 × 昇腾950DT NPU模组",
+      "aiPerf": "每NPU：919 TFLOPS@mxFP8 / 1.78 PFLOPS@mxFP4\n每NPU（备选）：804 TFLOPS@mxFP8 / 1.56 PFLOPS@mxFP4",
+      "onChipMemory": "支持8 × 96GB 片上内存，带宽最大4.0TB/s",
+      "cpu": "2 × 鲲鹏950",
+      "systemMemory": "支持24个DDR插槽，支持RDIMM，最高7200MT/s",
+      "network": "UBoE配置：NPU直出，2× 212.5Gbps (单向) UBoE 每/NPU\nRoCE配置：425Gbps (单向) RoCE 每/NPU",
+      "storage": "2 × SATA 480GB\n最大 8 × NVME 3.84TB/7.98TB",
+      "pcieSlots": "最多支持5个PCIe 5.0扩展插槽",
+      "interfaces": "跨框光互连（以最终光模块支持的Serders为准）",
+      "cooling": "最大输入功耗~15.6kW\n6个热插拔3.0 kW电源模块，支持5+1冗余",
+      "environment": "618.8mm(H) × 447mm(W) × 920mm(D)"
+    }
+  },
+  {
+    "id": "atlas-650e-supernode",
+    "name": "Atlas 650E 超节点服务器",
+    "type": "中心训练硬件",
+    "formFactor": "14U",
+    "chip": "鲲鹏950 + 昇腾950DT",
+    "chipCount": "2 CPU + 8 NPU",
+    "fp16Perf": "425 TFLOPS@FP16/BF16 / NPU",
+    "fp32Perf": "-",
+    "memory": "8 × 96GB HBM，带宽4.0TB/s",
+    "interconnect": "单机：8 × 784GB/s (双向)；双机：16 × 1.68TB/s (双向)",
+    "scenario": "超大模型训练 / 超节点集群训练",
+    "recommended": "万亿参数MoE模型、DeepSeek系列、大规模分布式训练",
+    "features": [
+      "14U超节点形态",
+      "鲲鹏950 + 昇腾950DT",
+      "NPU灵衢互联",
+      "双机场景扩展",
+      "5+1冗余电源"
+    ],
+    "tags": [
+      "超节点",
+      "大规模训练",
+      "昇腾950DT",
+      "鲲鹏950",
+      "灵衢互联"
+    ],
+    "detailSpecs": {
+      "npuModule": "8 × 昇腾950DT NPU模组",
+      "aiPerf": "每NPU：425 TFLOPS@FP16/BF16\n804 TFLOPS@mxFP8/FP8/HiF8\n1.56 PFLOPS@mxFP4",
+      "onChipMemory": "支持8 × 96GB HBM，带宽4.0TB/s",
+      "cpu": "2 × 鲲鹏950",
+      "systemMemory": "支持24个DDR插槽，支持RDIMM，最高6400MT/s",
+      "network": "UBoE接口：NPU直出，每NPU 400Gbps (单向)\n或 RoCE接口：每NPU 400Gbps (单向)",
+      "storage": "8 × 2.5寸NVMe + 2 × 2.5寸SATA",
+      "pcieSlots": "最多支持5个PCIe 5.0扩展插槽",
+      "cooling": "最大输入功耗~14.5kW\n6个热插拔3.0 kW电源模块，支持5+1冗余",
+      "environment": "618.8mm(H) × 447mm(W) × 920mm(D)"
+    }
   }
 ]

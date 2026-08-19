@@ -69,6 +69,7 @@ let filteredModels = [];
 function filterModels() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const category = document.getElementById('categoryFilter').value;
+  const tag = document.getElementById('tagFilter').value;
   const support = document.getElementById('supportFilter').value;
   const hardware = document.getElementById('hardwareFilter').value;
   const sort = document.getElementById('sortFilter').value;
@@ -76,6 +77,7 @@ function filterModels() {
   filteredModels = models.filter(m => {
     if (search && !m.name.toLowerCase().includes(search) && !m.developer.toLowerCase().includes(search) && !m.tags.some(t => t.toLowerCase().includes(search))) return false;
     if (category !== 'all' && m.category !== category) return false;
+    if (tag !== 'all' && !m.tags.includes(tag)) return false;
     if (support !== 'all') {
       if (support === '✅ 已支持' && m.supportLevel !== '✅ 已支持') return false;
       if (support === '🔵 实验性' && m.supportLevel !== '🔵 实验性') return false;
@@ -211,5 +213,17 @@ function showModelDetail(id) {
 function closeModal(e) {
   if (e && e.target !== document.getElementById('modalOverlay')) return;
   document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
 }
+
+// ESC 键关闭弹窗
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay && overlay.classList.contains('active')) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+});
 

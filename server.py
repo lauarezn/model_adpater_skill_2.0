@@ -22,7 +22,6 @@ DATA_DIR = BASE_DIR / 'data'
 SCRIPTS_DIR = BASE_DIR / 'scripts'
 
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path='')
-app.config['SECRET_KEY'] = os.urandom(24).hex()
 
 # 爬虫运行状态
 crawler_status = {
@@ -92,8 +91,8 @@ def index():
 
 @app.route('/<path:path>')
 def static_files(path):
-    # 排除 admin 路由
-    if path.startswith('admin'):
+    # 排除 admin 路由（让 Flask 匹配更具体的 admin 路由）
+    if path.startswith('admin/'):
         return admin_index()
     file_path = BASE_DIR / path
     if file_path.exists() and file_path.is_file():
@@ -294,6 +293,158 @@ def api_data_backups():
                 'modified': datetime.fromtimestamp(f.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
             })
     return jsonify({'backups': backups})
+
+
+# ============ 首页 API 端点（前后端分离）============
+
+@app.route('/admin/api/homepage/stats')
+def api_homepage_stats():
+    """首页头部统计数据"""
+    models = load_json(DATA_DIR / 'models-lite.json') or []
+    hardware = load_json(DATA_DIR / 'hardware.json') or []
+    categories = list(set(m.get('category', '其他') for m in models))
+    return jsonify({
+        'modelCount': len(models),
+        'hardwareCount': len(hardware),
+        'categoryCount': len(categories),
+        'dataDate': datetime.now().strftime('%Y-%m-%d %H:%M')
+    })
+
+
+@app.route('/admin/api/homepage/models')
+def api_homepage_models():
+    """首页模型清单数据（支持搜索/筛选/分页）"""
+    models = load_json(DATA_DIR / 'models-lite.json') or []
+    search = request.args.get('search', '').lower()
+    category = request.args.get('category', '')
+    tag = request.args.get('tag', '')
+    support = request.args.get('support', '')
+    hardware = request.args.get('hardware', '')
+    sort = request.args.get('sort', 'default')
+    page = int(request.args.get('page', 1))
+    page_size = int(request.args.get('page_size', 50))
+
+    filtered = models
+    if search:
+        filtered = [m for m in filtered if search in m.get('name', '').lower()
+                    or search in m.get('developer', '').lower()
+                    or any(search in t.lower() for t in m.get('tags', []))]
+    if category and category != 'all':
+        filtered = [m for m in filtered if m.get('category') == category]
+    if tag and tag != 'all':
+        filtered = [m for m in filtered if tag in m.get('tags', [])]
+    if support and support != 'all':
+        filtered = [m for m in filtered if m.get('supportLevel') == support]
+    if hardware and hardware != 'all':
+        filtered = [m for m in filtered if hardware in m.get('minHardware', '') or hardware in m.get('recommendedHardware', '')]
+
+    # 排序
+    if sort == 'popular':
+        filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
+    elif sort == 'newest':
+        filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
+    elif sort == 'updated':
+        filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
+    else:
+        filtered.sort(key=lambda m: m.get('name', ''))
+
+    total = len(filtered)
+    start = (page - 1) * page_size
+    end = start + page_size
+
+    all_tags = sorted(list(set(
+        t for m in models for t in m.get('tags', [])
+    )))
+    return jsonify({
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+        'total_pages': max(1, (total + page_size - 1) // page_size),
+        'models': filtered[start:end],
+        'categories': sorted(list(set(m.get('category', '其他') for m in models))),
+        'tags': all_tags,
+        'hardwareOptions': sorted(list(set(
+            m.get('minHardware', '') for m in models if m.get('minHardware')
+        ) | set(
+            m.get('recommendedHardware', '') for m in models if m.get('recommendedHardware')
+        )))
+    })
+
+
+@app.route('/admin/api/homepage/models/<model_id>')
+def api_homepage_model_detail(model_id):
+    """首页模型详情"""
+    models = load_json(DATA_DIR / 'models-lite.json') or []
+    detail = load_json(DATA_DIR / 'models-detail.json') or []
+    m = next((x for x in models if x.get('id') == model_id), None)
+    d = next((x for x in detail if x.get('id') == model_id), None)
+    if not m:
+        return jsonify({'error': '模型不存在'}), 404
+    return jsonify({'model': m, 'detail': d})
+
+
+@app.route('/admin/api/homepage/hardware')
+def api_homepage_hardware():
+    """首页硬件数据"""
+    hardware = load_json(DATA_DIR / 'hardware.json') or []
+    search = request.args.get('search', '').lower()
+    hw_type = request.args.get('type', '')
+    chip = request.args.get('chip', '')
+
+    filtered = hardware
+    if search:
+        filtered = [h for h in filtered if search in h.get('name', '').lower()
+                    or search in h.get('type', '').lower()
+                    or search in h.get('chip', '').lower()
+                    or search in h.get('scenario', '').lower()]
+    if hw_type and hw_type != 'all':
+        filtered = [h for h in filtered if h.get('type') == hw_type]
+    if chip and chip != 'all':
+        filtered = [h for h in filtered if chip in h.get('chip', '')]
+
+    chips = sorted(list(set(h.get('chip', '') for h in hardware if h.get('chip'))))
+    return jsonify({
+        'hardware': filtered,
+        'chips': chips
+    })
+
+
+@app.route('/admin/api/homepage/train-models')
+def api_homepage_train_models():
+    """首页训练模型数据"""
+    train = load_json(DATA_DIR / 'train-models.json') or {}
+    train_models = train.get('models', [])
+    search = request.args.get('search', '').lower()
+    framework = request.args.get('framework', '')
+    category = request.args.get('category', '')
+    status = request.args.get('status', '')
+    page = int(request.args.get('page', 1))
+    page_size = int(request.args.get('page_size', 30))
+
+    filtered = train_models
+    if search:
+        filtered = [m for m in filtered if search in m.get('name', '').lower()
+                    or search in m.get('framework', '').lower()]
+    if framework and framework != 'all':
+        filtered = [m for m in filtered if m.get('framework') == framework]
+    if category and category != 'all':
+        filtered = [m for m in filtered if m.get('category') == category]
+    if status and status != 'all':
+        filtered = [m for m in filtered if m.get('status') == status]
+
+    total = len(filtered)
+    start = (page - 1) * page_size
+    end = start + page_size
+
+    categories = sorted(list(set(m.get('category', '') for m in train_models if m.get('category'))))
+    return jsonify({
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+        'total_pages': max(1, (total + page_size - 1) // page_size),
+        'models': filtered[start:end],
+        'categories': categories
+    })
 
 
 @app.route('/admin/api/sources')
@@ -639,35 +790,43 @@ ADMIN_HTML = """
     <div class="section active" id="section-dashboard">
       <div class="stats-grid" id="statsGrid">
         <div class="stat-card">
-          <div class="value" id="statModels">-</div>
+          <div class="value" id="statModels">{{ stats.total_models }}</div>
           <div class="label">模型总数</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="statDetail">-</div>
+          <div class="value" id="statDetail">{{ stats.total_detail }}</div>
           <div class="label">详细模型</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="statTrain">-</div>
+          <div class="value" id="statTrain">{{ stats.total_train }}</div>
           <div class="label">训练模型</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="statHardware">-</div>
+          <div class="value" id="statHardware">{{ stats.total_hardware }}</div>
           <div class="label">硬件型号</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="statDataSize">-</div>
+          <div class="value" id="statDataSize">{{ stats.data_size_mb }} MB</div>
           <div class="label">数据大小</div>
         </div>
       </div>
 
       <div class="card">
         <h3>📊 分类分布</h3>
-        <div id="categoryChart"></div>
+        <div id="categoryChart">
+          {% for cat, count in stats.categories.items() %}
+          <span class="badge badge-info" style="margin:4px;font-size:0.85rem">{{ cat }}: {{ count }}</span>
+          {% endfor %}
+        </div>
       </div>
 
       <div class="card">
         <h3>📡 数据来源分布</h3>
-        <div id="sourceChart"></div>
+        <div id="sourceChart">
+          {% for src, count in stats.sources.items() %}
+          <span class="badge badge-success" style="margin:4px;font-size:0.85rem">{{ src }}: {{ count }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
 
@@ -1034,6 +1193,7 @@ ADMIN_HTML = """
 
     refreshStats();
     refreshCrawlerStatus();
+    searchModels();
     setInterval(refreshCrawlerStatus, 10000);
   </script>
 </body>
