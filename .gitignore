@@ -8,5 +8,9 @@ merge_*.js
 package.json
 package-lock.json
 
+# Python compiled cache
+__pycache__/
+*.pyc
+
 # JiuwenSwarm runtime file operation logs
 .agent_history/

@@ -152,7 +152,7 @@ function renderTrainModels() {
 
   grid.innerHTML = pageModels.map(m => {
     const statusClass = m.status === '测试中' ? 'testing' : '';
-    const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
+    const frameworkLabel = getFrameworkLabel(m.framework);
     const docUrl = m.model_url || m.script_url || '';
     const hasDoc = docUrl.length > 0;
     return `
@@ -200,13 +200,24 @@ function trainGoPage(page) {
   document.getElementById('section-train-models').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// ============ Framework Label Helper ============
+function getFrameworkLabel(framework) {
+  const labels = {
+    'MM': 'MindSpeed-MM',
+    'LLM': 'MindSpeed-LLM',
+    'verl': 'verl',
+    'vLLM': 'vLLM'
+  };
+  return labels[framework] || framework;
+}
+
 // ============ Train Model Detail Modal ============
 function showTrainModelDetail(id) {
   let m = trainModelsData.find(x => x.id === id);
   if (!m) return;
 
   const statusClass = m.status === '测试中' ? 'testing' : '';
-  const frameworkLabel = m.framework === 'MM' ? 'MindSpeed-MM' : 'MindSpeed-LLM';
+  const frameworkLabel = getFrameworkLabel(m.framework);
   const docUrl = m.model_url || m.script_url || '';
   const hasDoc = docUrl.length > 0;
 

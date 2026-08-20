@@ -75,7 +75,7 @@ async function init() {
 
     // 第三步：后台加载训练模型数据（不阻塞首屏）
     requestAnimationFrame(() => {
-      fetch('/admin/api/homepage/train-models?page=1&page_size=30').then(resp => {
+      fetch('/admin/api/homepage/train-models?page=1&page_size=1000').then(resp => {
         if (resp.ok) return resp.json();
       }).then(trainData => {
         if (trainData) {

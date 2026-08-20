@@ -4,31 +4,45 @@
     "name": "Atlas 800T A3 超节点服务器",
     "type": "中心训练硬件",
     "formFactor": "10U风冷训练服务器",
-    "chip": "昇腾910B",
+    "chip": "Ascend910C",
     "chipCount": 8,
     "fp16Perf": "6.016 PFLOPS@FP16 / 5.008 PFLOPS@FP16",
     "fp32Perf": "1.584 PFLOPS@FP32 / 1.32 PFLOPS@FP32",
-    "memory": "整机1024GB片上内存，单模组128GB",
-    "interconnect": "灵衢互联1.0 + RoCE（400Gbps）",
+    "memory": "整机1024GB片上内存，单模组128GB，带宽最大2×1600GB/s",
+    "interconnect": "灵衢互联1.0（7路/NPU，双向784GB/s）+ RoCE（400Gbps）",
     "scenario": "超大模型训练 / 集群训练",
     "recommended": "DeepSeek-V3/R1、BLOOM-176B、万亿参数MoE模型",
     "features": [
       "超节点架构",
       "10U风冷训练",
       "灵衢互联1.0",
-      "大规模并行训练"
+      "大规模并行训练",
+      "Ascend910C"
     ],
     "tags": [
       "超节点",
       "大规模训练",
-      "集群"
-    ]
+      "集群",
+      "Ascend910C"
+    ],
+    "detailSpecs": {
+      "npuModule": "8个NPU模组，单AI模组支持7路灵衢互联1.0+1路RoCE",
+      "aiPerf": "单AI处理器：\n● 752TFLOPS@FP16/626TFLOPS@FP16\n● 198TFLOPS@FP32/165TFLOPS@FP32\n\n整机（8颗）：\n● 6.016PFLOPS@FP16/5.008PFLOPS@FP16\n● 1.584PFLOPS@FP32/1.32PFLOPS@FP32",
+      "onChipMemory": "整机片上内存1024GB，单模组最大支持128GB\n带宽速率最大为2×1600GB/s",
+      "cpu": "4个鲲鹏920处理器\n● 处理器支持80核\n● 每个处理器支持2.9GHz/3.0GHz/3.1GHz\n● 每个处理器核集成L1：64KB Instruction Cache 和 64KB Data Cache，L2：1.25MB Cache\n● 所有处理器核共享L3：140MB Cache",
+      "systemMemory": "● 64个DDR内存插槽，每个CPU基础板均提供32个内存插槽\n● 支持RDIMM\n● 配置32根内存时，最大传输速率为5200MT/s\n● 单根内存条容量支持64GB",
+      "network": "● 7个交换芯片用于连接灵衢互联1.0网络，1:1无收敛\n● NPU模组直出400Gbps通过CDR芯片用于RoCE网络，1:1无收敛",
+      "pcieSlots": "最多支持5个PCIe 5.0扩展插槽\n● Riser模组1：最多2个全高半长的PCIe5.0 x16标准物理槽位\n● Riser模组2：最多2个半高半长的PCIe5.0 x8标准物理槽位\n● Riser模组3：最多1个全高全长的PCIe5.0 x16标准物理槽位",
+      "interfaces": "前面板：\n– 1个灵衢网络近端运维串口\n– 1个BMC近端运维串口\n– 1个灵衢网络管理网口\n– 1个BMC管理网口\n– 1个VGA接口\n– 2个USB 2.0接口\n– 56个400Gbps的灵衢总线接口\n– 8个400Gbps的参数面接口\n\n后面板：\n– 12个HVDC/AC电源接口",
+      "cooling": "最大输入功耗：\n● 当AI算力为752TFLOPS@FP16时，最大输入功耗为16.2kW\n● 当AI算力为626TFLOPS@FP16时，最大输入功耗为15.4kW",
+      "environment": "442mm(H)×447mm(W)×920mm(D)\n整机净重：229kg\nNPU抽屉40kg，CPU抽屉37kg，机箱56kg，IO节点12kg，灵衢总线板8kg，电源模组2kg"
+    }
   },
   {
     "id": "atlas-800i-a2-32g-hccs",
     "name": "Atlas 800I A2 推理服务器（32GB HCCS款）",
     "type": "中心推理硬件",
-    "chip": "昇腾",
+    "chip": "Ascend 910B",
     "chipCount": 8,
     "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
     "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
@@ -46,13 +60,25 @@
       "推理",
       "HCCS",
       "高性价比"
-    ]
+    ],
+    "detailSpecs": {
+      "network": "200GE QSFP接口直出，RoCE协议",
+      "codec": "● 支持1080p 480 FPS等效的视频解码能力\n● 支持1080p 12288 FPS等效的JPEG解码能力，支持最大分辨率16384×16384，最小分辨率32×32\n● 支持1080p 1024 FPS等效的JPEG编码能力，支持最大分辨率8192×8192，最小分辨率32×32",
+      "pcieInterface": "每个NPU通过PCIe 4.0 x16与CPU互联，4个CPU与8个NPU之间的双向互联总带宽为512GB/s",
+      "modulePower": "最大功耗为350W",
+      "networkCard": "NPU载板最多支持4张参数面接口卡，单张卡提供2个200GE光口，可支持200G光纤或铜缆\n说明：\n● 支持200G铜缆时，NPU侧不支持自协商，需要对端设备也关闭自协商功能\n● 每张参数面接口卡的2个200GE光口均来自不同NPU",
+      "pcieSlots": "最多支持3个PCIe 4.0扩展插槽\n● Riser模组1：\n  – 支持1个全高全长的PCIe 4.0标准槽位\n  – 支持1个全高半长的PCIe 4.0标准槽位\n● Riser模组2：\n  – 支持1个半高半长的PCIe 4.0标准槽位",
+      "interfaces": "前面板：\n– 2个USB 2.0端口\n– 1个DB15 VGA端口\n\n后面板：\n– 2个USB 3.0端口\n– 1个DB15 VGA端口\n– 1个RJ45串口\n– 1个RJ45系统管理端口\n– 4个RJ45板载网口",
+      "fan": "● 8个风扇支持热插拔\n● 支持单风扇失效，N+1冗余备份\n说明：同一台设备必须配置相同Part No.（即P/N编码）的风扇模块",
+      "environment": "175mm(H)×447mm(W)×790mm(D)\n净重：70kg\n包装材料重量：22.5kg",
+      "cooling": "最大输入功耗：5.2kW"
+    }
   },
   {
     "id": "atlas-800i-a2-32g-pcie",
     "name": "Atlas 800I A2 推理服务器（32GB PCIe款）",
     "type": "中心推理硬件",
-    "chip": "昇腾",
+    "chip": "Ascend 910B",
     "chipCount": 8,
     "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
     "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
@@ -70,13 +96,25 @@
       "推理",
       "PCIe",
       "高性价比"
-    ]
+    ],
+    "detailSpecs": {
+      "network": "200GE QSFP接口直出，RoCE协议",
+      "codec": "● 支持1080p 480 FPS等效的视频解码能力\n● 支持1080p 12288 FPS等效的JPEG解码能力，支持最大分辨率16384×16384，最小分辨率32×32\n● 支持1080p 1024 FPS等效的JPEG编码能力，支持最大分辨率8192×8192，最小分辨率32×32",
+      "pcieInterface": "每个NPU通过PCIe 4.0 x16与CPU互联，4个CPU与8个NPU之间的双向互联总带宽为512GB/s",
+      "modulePower": "最大功耗为350W",
+      "networkCard": "NPU载板最多支持4张参数面接口卡，单张卡提供2个200GE光口，可支持200G光纤或铜缆\n说明：\n● 支持200G铜缆时，NPU侧不支持自协商，需要对端设备也关闭自协商功能\n● 每张参数面接口卡的2个200GE光口均来自不同NPU",
+      "pcieSlots": "最多支持3个PCIe 4.0扩展插槽\n● Riser模组1：\n  – 支持1个全高全长的PCIe 4.0标准槽位\n  – 支持1个全高半长的PCIe 4.0标准槽位\n● Riser模组2：\n  – 支持1个半高半长的PCIe 4.0标准槽位",
+      "interfaces": "前面板：\n– 2个USB 2.0端口\n– 1个DB15 VGA端口\n\n后面板：\n– 2个USB 3.0端口\n– 1个DB15 VGA端口\n– 1个RJ45串口\n– 1个RJ45系统管理端口\n– 4个RJ45板载网口",
+      "fan": "● 8个风扇支持热插拔\n● 支持单风扇失效，N+1冗余备份\n说明：同一台设备必须配置相同Part No.（即P/N编码）的风扇模块",
+      "environment": "175mm(H)×447mm(W)×790mm(D)\n净重：70kg\n包装材料重量：22.5kg",
+      "cooling": "最大输入功耗：5.2kW"
+    }
   },
   {
     "id": "atlas-800i-a2-64g-hccs",
     "name": "Atlas 800I A2 推理服务器（64GB HCCS款）",
     "type": "中心推理硬件",
-    "chip": "昇腾",
+    "chip": "Ascend 910B",
     "chipCount": 8,
     "fp16Perf": "2.24 PFLOPS（单处理器 280 TFLOPS）",
     "fp32Perf": "0.60 PFLOPS（单处理器 75 TFLOPS）",
@@ -95,7 +133,19 @@
       "推理",
       "HCCS",
       "大显存"
-    ]
+    ],
+    "detailSpecs": {
+      "network": "200GE QSFP接口直出，RoCE协议",
+      "codec": "● 支持1080p 480 FPS等效的视频解码能力\n● 支持1080p 12288 FPS等效的JPEG解码能力，支持最大分辨率16384×16384，最小分辨率32×32\n● 支持1080p 1024 FPS等效的JPEG编码能力，支持最大分辨率8192×8192，最小分辨率32×32",
+      "pcieInterface": "每个NPU通过PCIe 4.0 x16与CPU互联，4个CPU与8个NPU之间的双向互联总带宽为512GB/s",
+      "modulePower": "最大功耗为350W",
+      "networkCard": "NPU载板最多支持4张参数面接口卡，单张卡提供2个200GE光口，可支持200G光纤或铜缆\n说明：\n● 支持200G铜缆时，NPU侧不支持自协商，需要对端设备也关闭自协商功能\n● 每张参数面接口卡的2个200GE光口均来自不同NPU",
+      "pcieSlots": "最多支持3个PCIe 4.0扩展插槽\n● Riser模组1：\n  – 支持1个全高全长的PCIe 4.0标准槽位\n  – 支持1个全高半长的PCIe 4.0标准槽位\n● Riser模组2：\n  – 支持1个半高半长的PCIe 4.0标准槽位",
+      "interfaces": "前面板：\n– 2个USB 2.0端口\n– 1个DB15 VGA端口\n\n后面板：\n– 2个USB 3.0端口\n– 1个DB15 VGA端口\n– 1个RJ45串口\n– 1个RJ45系统管理端口\n– 4个RJ45板载网口",
+      "fan": "● 8个风扇支持热插拔\n● 支持单风扇失效，N+1冗余备份\n说明：同一台设备必须配置相同Part No.（即P/N编码）的风扇模块",
+      "environment": "175mm(H)×447mm(W)×790mm(D)\n净重：70kg\n包装材料重量：22.5kg",
+      "cooling": "最大输入功耗：5.2kW"
+    }
   },
   {
     "id": "atlas-300i-a2",

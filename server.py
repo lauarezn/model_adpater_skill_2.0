@@ -8,9 +8,9 @@
 import os
 import sys
 import json
+import shutil
 import subprocess
 import threading
-import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -36,6 +36,7 @@ crawler_status = {
 # ============ 辅助函数 ============
 
 def load_json(filepath):
+    """加载 JSON 文件，文件不存在或解析失败时返回 None"""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             return json.load(f)
@@ -44,11 +45,22 @@ def load_json(filepath):
 
 
 def save_json(filepath, data):
+    """保存 JSON 文件"""
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def get_data_size_mb():
+    """计算 data 目录下所有文件的总大小（MB）"""
+    total_bytes = sum(
+        os.path.getsize(DATA_DIR / f) for f in os.listdir(DATA_DIR)
+        if os.path.isfile(DATA_DIR / f)
+    )
+    return round(total_bytes / 1024 / 1024, 2)
+
+
 def get_data_stats():
+    """获取数据统计信息"""
     models = load_json(DATA_DIR / 'models-lite.json') or []
     detail = load_json(DATA_DIR / 'models-detail.json') or []
     train = load_json(DATA_DIR / 'train-models.json') or {}
@@ -65,11 +77,6 @@ def get_data_stats():
         src = m.get('source', '未知')
         sources[src] = sources.get(src, 0) + 1
 
-    data_size = sum(
-        os.path.getsize(DATA_DIR / f) for f in os.listdir(DATA_DIR)
-        if os.path.isfile(DATA_DIR / f)
-    ) / 1024 / 1024
-
     return {
         'total_models': len(models),
         'total_detail': len(detail),
@@ -78,8 +85,42 @@ def get_data_stats():
         'categories': categories,
         'sources': sources,
         'crawl_status': status,
-        'data_size_mb': round(data_size, 2)
+        'data_size_mb': get_data_size_mb()
     }
+
+
+def filter_models(models, search='', source='', category=''):
+    """通用模型筛选函数"""
+    if search:
+        search = search.lower()
+        models = [m for m in models if search in m.get('name', '').lower()
+                  or search in m.get('developer', '').lower()
+                  or search in m.get('id', '').lower()]
+    if source:
+        models = [m for m in models if m.get('source') == source]
+    if category:
+        models = [m for m in models if m.get('category') == category]
+    return models
+
+
+def paginate(items, page, page_size):
+    """通用分页函数"""
+    total = len(items)
+    start = (page - 1) * page_size
+    end = start + page_size
+    return items[start:end], total, max(1, (total + page_size - 1) // page_size)
+
+
+def get_all_sources():
+    """获取所有数据来源"""
+    models = load_json(DATA_DIR / 'models-lite.json') or []
+    return sorted(list(set(m.get('source', '未知') for m in models)))
+
+
+def get_all_categories():
+    """获取所有分类"""
+    models = load_json(DATA_DIR / 'models-lite.json') or []
+    return sorted(list(set(m.get('category', '其他') for m in models)))
 
 
 # ============ 静态文件路由 ============
@@ -115,36 +156,23 @@ def api_stats():
 @app.route('/admin/api/models')
 def api_models():
     models = load_json(DATA_DIR / 'models-lite.json') or []
-    search = request.args.get('search', '').lower()
+    search = request.args.get('search', '')
     source = request.args.get('source', '')
     category = request.args.get('category', '')
     page = int(request.args.get('page', 1))
     page_size = int(request.args.get('page_size', 50))
 
-    if search:
-        models = [m for m in models if search in m.get('name', '').lower()
-                  or search in m.get('developer', '').lower()
-                  or search in m.get('id', '').lower()]
-    if source:
-        models = [m for m in models if m.get('source') == source]
-    if category:
-        models = [m for m in models if m.get('category') == category]
-
-    total = len(models)
-    start = (page - 1) * page_size
-    end = start + page_size
-
-    all_sources = sorted(list(set(m.get('source', '未知') for m in load_json(DATA_DIR / 'models-lite.json') or [])))
-    all_categories = sorted(list(set(m.get('category', '其他') for m in load_json(DATA_DIR / 'models-lite.json') or [])))
+    filtered = filter_models(models, search, source, category)
+    page_items, total, total_pages = paginate(filtered, page, page_size)
 
     return jsonify({
         'total': total,
         'page': page,
         'page_size': page_size,
-        'total_pages': max(1, (total + page_size - 1) // page_size),
-        'models': models[start:end],
-        'sources': all_sources,
-        'categories': all_categories
+        'total_pages': total_pages,
+        'models': page_items,
+        'sources': get_all_sources(),
+        'categories': get_all_categories()
     })
 
 
@@ -342,18 +370,12 @@ def api_homepage_models():
         filtered = [m for m in filtered if hardware in m.get('minHardware', '') or hardware in m.get('recommendedHardware', '')]
 
     # 排序
-    if sort == 'popular':
-        filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
-    elif sort == 'newest':
-        filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
-    elif sort == 'updated':
+    if sort in ('popular', 'newest', 'updated'):
         filtered.sort(key=lambda m: -(int(m.get('id', '0')) if m.get('id', '0').isdigit() else 0))
     else:
         filtered.sort(key=lambda m: m.get('name', ''))
 
-    total = len(filtered)
-    start = (page - 1) * page_size
-    end = start + page_size
+    page_items, total, total_pages = paginate(filtered, page, page_size)
 
     all_tags = sorted(list(set(
         t for m in models for t in m.get('tags', [])
@@ -362,9 +384,9 @@ def api_homepage_models():
         'total': total,
         'page': page,
         'page_size': page_size,
-        'total_pages': max(1, (total + page_size - 1) // page_size),
-        'models': filtered[start:end],
-        'categories': sorted(list(set(m.get('category', '其他') for m in models))),
+        'total_pages': total_pages,
+        'models': page_items,
+        'categories': get_all_categories(),
         'tags': all_tags,
         'hardwareOptions': sorted(list(set(
             m.get('minHardware', '') for m in models if m.get('minHardware')
@@ -412,6 +434,65 @@ def api_homepage_hardware():
     })
 
 
+# 训练模型部署链接映射（模型名 → 部署指南 URL）
+TRAIN_MODEL_URLS = {
+    # Wan2.2 系列
+    'Wan2.2-T2V-5B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2/README.md',
+    'Wan2.2-T2V-A14B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2/README.md',
+    'Wan2.2-TI2V-5B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2/README.md',
+    'Wan2.2-I2V-A14B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.2/README.md',
+    # Wan2.1 系列
+    'Wan2.1-T2V-1.3B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1/README.md',
+    'Wan2.1-T2V-14B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1/README.md',
+    'Wan2.1-I2V-1.3B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1/README.md',
+    'Wan2.1-I2V-14B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/wan2.1/README.md',
+    # 其他多模态生成
+    'Self-Forcing-1.3B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/self-forcing/README.md',
+    'HunyuanVideo1.5-T2V-8B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/hunyuanvideo_1.5/README.md',
+    'Qihoo-T2X-1.1B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qihoo_t2x/README.md',
+    'SD3.5-8.1B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/diffusers/sd3.5/README.md',
+    'Flux-12B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/diffusers/flux/README.md',
+    'Flux2-T2I-32B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/diffusers/flux2/README.md',
+    'Flux2-I2I-32B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/diffusers/flux2/README.md',
+    'Flux-Kontext-12B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/diffusers/flux_kontext/README.md',
+    'Qwen-Image-27B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen_image/README.md',
+    'Qwen-Image-Edit-27B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen_image/README.md',
+    # 多模态理解
+    'LLaVA 1.5-7B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/llava1.5/README.md',
+    'InternVL 3.5-30B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/internvl3.5/README.md',
+    'Qwen2.5-VL-3B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5_vl/README.md',
+    'Qwen2.5-VL-7B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5_vl/README.md',
+    'Qwen2.5-VL-32B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5_vl/README.md',
+    'Qwen2.5-VL-72B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5_vl/README.md',
+    'Qwen3-VL-8B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3vl/README.md',
+    'Qwen3-VL-30B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3vl/README.md',
+    'Qwen3-VL-235B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3vl/README.md',
+    'Qwen3.5-27B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3_5/README.md',
+    'Qwen3.5-35B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3_5/README.md',
+    'Qwen3.5-397B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3_5/README.md',
+    'Qwen2.5-Omni-7B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen2.5_omni/README.md',
+    'Qwen3-Omni-30B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/qwen3omni/README.md',
+    'Magistral-Small-2509-24B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/magistral-2509/README.md',
+    # 语音
+    'Whisper-1.5B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/whisper/README.md',
+    'CosyVoice3-0.5B': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/examples/cosyvoice3/README.md',
+}
+
+
+def enrich_train_model(m):
+    """为训练模型补充部署链接等额外信息"""
+    m = dict(m)  # 不修改原始数据
+    # 优先使用精确匹配，否则根据 source 生成通用链接
+    name = m.get('name', '')
+    if name in TRAIN_MODEL_URLS:
+        m['model_url'] = TRAIN_MODEL_URLS[name]
+    elif m.get('source') == 'MindSpeed-MM':
+        m['model_url'] = 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/docs/zh/pytorch/supported_models.md'
+    elif m.get('source') == 'MindSpeed-LLM':
+        m['model_url'] = 'https://gitcode.com/Ascend/MindSpeed-LLM/blob/master/docs/zh/pytorch/models/supported_models.md'
+    return m
+
+
 @app.route('/admin/api/homepage/train-models')
 def api_homepage_train_models():
     """首页训练模型数据"""
@@ -435,39 +516,74 @@ def api_homepage_train_models():
     if status and status != 'all':
         filtered = [m for m in filtered if m.get('status') == status]
 
-    total = len(filtered)
-    start = (page - 1) * page_size
-    end = start + page_size
+    page_items, total, total_pages = paginate(filtered, page, page_size)
+
+    # 为每个模型补充部署链接
+    page_items = [enrich_train_model(m) for m in page_items]
 
     categories = sorted(list(set(m.get('category', '') for m in train_models if m.get('category'))))
     return jsonify({
         'total': total,
         'page': page,
         'page_size': page_size,
-        'total_pages': max(1, (total + page_size - 1) // page_size),
-        'models': filtered[start:end],
+        'total_pages': total_pages,
+        'models': page_items,
         'categories': categories
     })
+
+
+# 预定义数据源列表（含 URL）
+PREDEFINED_SOURCES = [
+    {'name': 'vLLM Ascend', 'url': 'https://docs.vllm.ai/projects/ascend/en/latest/user_guide/support_matrix/supported_models.html'},
+    {'name': 'vLLM Omni', 'url': 'https://docs.vllm.ai/projects/vllm-omni/en/latest/models/supported_models/'},
+    {'name': 'SGLang Ascend', 'url': 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models'},
+    {'name': 'GitCode AI', 'url': 'https://ai.gitcode.com/models?ascendNative=true'},
+    {'name': 'Ascend-SACT', 'url': 'https://gitcode.com/org/Ascend-SACT/repos'},
+    {'name': 'MindSpeed-LLM', 'url': 'https://gitcode.com/Ascend/MindSpeed-LLM/blob/master/docs/zh/pytorch/models/supported_models.md'},
+    {'name': 'MindSpeed-MM', 'url': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/docs/zh/pytorch/supported_models.md'},
+]
 
 
 @app.route('/admin/api/sources')
 def api_sources():
     models = load_json(DATA_DIR / 'models-lite.json') or []
-    sources = {}
+    train = load_json(DATA_DIR / 'train-models.json') or {}
+    train_models = train.get('models', [])
+
+    # 统计各来源的模型数据（含推理模型和训练模型）
+    stats = {}
     for m in models:
         src = m.get('source', '未知')
-        if src not in sources:
-            sources[src] = {'count': 0, 'supported': 0, 'experimental': 0}
-        sources[src]['count'] += 1
+        if src not in stats:
+            stats[src] = {'count': 0, 'supported': 0, 'experimental': 0}
+        stats[src]['count'] += 1
         if m.get('supportLevel') == '✅ 已支持':
-            sources[src]['supported'] += 1
+            stats[src]['supported'] += 1
         elif m.get('supportLevel') == '🔵 实验性':
-            sources[src]['experimental'] += 1
-    return jsonify(sources)
+            stats[src]['experimental'] += 1
 
+    for m in train_models:
+        src = m.get('source', '未知')
+        if src not in stats:
+            stats[src] = {'count': 0, 'supported': 0, 'experimental': 0}
+        stats[src]['count'] += 1
+        if m.get('status') == '已支持':
+            stats[src]['supported'] += 1
 
-# ============ Admin 前端页面 ============
-# Admin 前端已分离为独立文件: admin/index.html, admin/css/admin.css, admin/js/admin.js
+    # 合并预定义数据源（确保所有数据源都展示，包括暂无模型数据的）
+    result = {}
+    for src in PREDEFINED_SOURCES:
+        name = src['name']
+        s = stats.get(name, {'count': 0, 'supported': 0, 'experimental': 0})
+        s['url'] = src['url']
+        result[name] = s
+
+    # 补充不在预定义列表中的其他来源
+    for name, s in stats.items():
+        if name not in result:
+            result[name] = s
+
+    return jsonify(result)
 
 
 # ============ 首页静态文件路由（放在 Admin 路由之后）============
