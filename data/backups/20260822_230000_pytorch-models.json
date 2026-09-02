@@ -1,0 +1,2802 @@
+[
+  {
+    "name": "ESPnet2_for_PyTorch",
+    "folder": "ESPnet2_for_PyTorch",
+    "description": "ESPnet2 语音处理",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "ESPnet_Dynamic_for_PyTorch",
+    "folder": "ESPnet_Dynamic_for_PyTorch",
+    "description": "ESPnet 动态语音处理",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "ESPnet_for_PyTorch",
+    "folder": "ESPnet_for_PyTorch",
+    "description": "ESPnet 端到端语音处理",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Stable_Audio_Tools",
+    "folder": "Stable_Audio_Tools",
+    "description": "稳定音频工具",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Vgg_Transformer_for_PyTorch",
+    "folder": "Vgg_Transformer_for_PyTorch",
+    "description": "VGG Transformer 语音",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Wenet_Conformer_for_Pytorch",
+    "folder": "Wenet_Conformer_for_Pytorch",
+    "description": "WeNet Conformer 语音识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "3D_ResNet_ID0421_for_PyTorch",
+    "folder": "3D_ResNet_ID0421_for_PyTorch",
+    "description": "3D_ResNet_ID0421_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Arcface_for_PyTorch",
+    "folder": "Arcface_for_PyTorch",
+    "description": "Arcface_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Beit2_for_PyTorch",
+    "folder": "Beit2_for_PyTorch",
+    "description": "Beit2_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CRNN_for_PyTorch",
+    "folder": "CRNN_for_PyTorch",
+    "description": "CRNN_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DINO_ID3436_for_PyTorch",
+    "folder": "DINO_ID3436_for_PyTorch",
+    "description": "DINO_ID3436_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DeepMar_for_PyTorch",
+    "folder": "DeepMar_for_PyTorch",
+    "description": "DeepMar_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DenseNet161_ID0455_for_PyTorch",
+    "folder": "DenseNet161_ID0455_for_PyTorch",
+    "description": "DenseNet161_ID0455_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DenseNet169_ID0454_for_PyTorch",
+    "folder": "DenseNet169_ID0454_for_PyTorch",
+    "description": "DenseNet169_ID0454_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DenseNet201_ID0453_for_PyTorch",
+    "folder": "DenseNet201_ID0453_for_PyTorch",
+    "description": "DenseNet201_ID0453_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Densenet121_for_PyTorch",
+    "folder": "Densenet121_for_PyTorch",
+    "description": "Densenet121_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet-B1_ID1713_for_PyTorch",
+    "folder": "EfficientNet-B1_ID1713_for_PyTorch",
+    "description": "EfficientNet-B1_ID1713_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet-B2_ID1714_for_PyTorch",
+    "folder": "EfficientNet-B2_ID1714_for_PyTorch",
+    "description": "EfficientNet-B2_ID1714_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet-B3_ID0450_for_PyTorch",
+    "folder": "EfficientNet-B3_ID0450_for_PyTorch",
+    "description": "EfficientNet-B3_ID0450_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet-B4_ID1632_for_PyTorch",
+    "folder": "EfficientNet-B4_ID1632_for_PyTorch",
+    "description": "EfficientNet-B4_ID1632_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet-B5_ID1633_for_PyTorch",
+    "folder": "EfficientNet-B5_ID1633_for_PyTorch",
+    "description": "EfficientNet-B5_ID1633_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNetV2_for_PyTorch",
+    "folder": "EfficientNetV2_for_PyTorch",
+    "description": "EfficientNetV2_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet_for_PyTorch",
+    "folder": "EfficientNet_for_PyTorch",
+    "description": "EfficientNet_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "FaceNet_for_PyTorch",
+    "folder": "FaceNet_for_PyTorch",
+    "description": "FaceNet_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Gluon_ResNet50_v1b_for_PyTorch",
+    "folder": "Gluon_ResNet50_v1b_for_PyTorch",
+    "description": "Gluon_ResNet50_v1b_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Gluon_ResNet50_v1c_for_PyTorch",
+    "folder": "Gluon_ResNet50_v1c_for_PyTorch",
+    "description": "Gluon_ResNet50_v1c_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Gluon_ResNet50_v1d_for_PyTorch",
+    "folder": "Gluon_ResNet50_v1d_for_PyTorch",
+    "description": "Gluon_ResNet50_v1d_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Googlenet_ID0447_for_PyTorch",
+    "folder": "Googlenet_ID0447_for_PyTorch",
+    "description": "Googlenet_ID0447_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MobileNetV1_ID0094_for_PyTorch",
+    "folder": "MobileNetV1_ID0094_for_PyTorch",
+    "description": "MobileNetV1_ID0094_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MobileNetV2_for_PyTorch",
+    "folder": "MobileNetV2_for_PyTorch",
+    "description": "MobileNetV2_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MobileNetV3-Large_ID1784_for_PyTorch",
+    "folder": "MobileNetV3-Large_ID1784_for_PyTorch",
+    "description": "MobileNetV3-Large_ID1784_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ResNet1001_1202_for_PyTorch",
+    "folder": "ResNet1001_1202_for_PyTorch",
+    "description": "ResNet1001_1202_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ResNet50_ID4149_for_PyTorch",
+    "folder": "ResNet50_ID4149_for_PyTorch",
+    "description": "ResNet50_ID4149_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ResNet50_for_PyTorch",
+    "folder": "ResNet50_for_PyTorch",
+    "description": "ResNet50_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet50_Cifar_for_PyTorch",
+    "folder": "Resnet50_Cifar_for_PyTorch",
+    "description": "Resnet50_Cifar_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Shufflenetv2_for_PyTorch",
+    "folder": "Shufflenetv2_for_PyTorch",
+    "description": "Shufflenetv2_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SimMIM_for_PyTorch",
+    "folder": "SimMIM_for_PyTorch",
+    "description": "SimMIM_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Transformer-SSL_ID3434_for_PyTorch",
+    "folder": "Transformer-SSL_ID3434_for_PyTorch",
+    "description": "Transformer-SSL_ID3434_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ABINet_for_PyTorch",
+    "folder": "ABINet_for_PyTorch",
+    "description": "ABINet_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "D-FINE",
+    "folder": "D-FINE",
+    "description": "D-FINE 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DAL_ID2732_for_PyTorch",
+    "folder": "DAL_ID2732_for_PyTorch",
+    "description": "DAL_ID2732_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DB_ID0706_for_PyTorch",
+    "folder": "DB_ID0706_for_PyTorch",
+    "description": "DB_ID0706_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DBpp_ID4145_for_PyTorch",
+    "folder": "DBpp_ID4145_for_PyTorch",
+    "description": "DBpp_ID4145_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Faster_Mask_RCNN_for_PyTorch",
+    "folder": "Faster_Mask_RCNN_for_PyTorch",
+    "description": "Faster_Mask_RCNN_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "GroundingDINO_for_Pytorch",
+    "folder": "GroundingDINO_for_Pytorch",
+    "description": "GroundingDINO_for_Pytorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MaskRCNN_for_Pytorch",
+    "folder": "MaskRCNN_for_Pytorch",
+    "description": "MaskRCNN_for_Pytorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "PSENet_for_PyTorch",
+    "folder": "PSENet_for_PyTorch",
+    "description": "PSENet_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RFCN_ID0418_for_PyTorch",
+    "folder": "RFCN_ID0418_for_PyTorch",
+    "description": "RFCN_ID0418_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RetinaNet_for_PyTorch",
+    "folder": "RetinaNet_for_PyTorch",
+    "description": "RetinaNet_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SCRFD_for_PyTorch",
+    "folder": "SCRFD_for_PyTorch",
+    "description": "SCRFD_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SSD_for_PyTorch",
+    "folder": "SSD_for_PyTorch",
+    "description": "SSD_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YOLOV4_ID0396_for_PyTorch",
+    "folder": "YOLOV4_ID0396_for_PyTorch",
+    "description": "YOLOV4_ID0396_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YOLOV4_eb5f166_for_PyTorch",
+    "folder": "YOLOV4_eb5f166_for_PyTorch",
+    "description": "YOLOV4_eb5f166_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YOLOV9_for_PyTorch",
+    "folder": "YOLOV9_for_PyTorch",
+    "description": "YOLOV9_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YoloV3_ID1790_for_PyTorch",
+    "folder": "YoloV3_ID1790_for_PyTorch",
+    "description": "YoloV3_ID1790_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SiamMask_for_Pytorch",
+    "folder": "SiamMask_for_Pytorch",
+    "description": "SiamMask 目标跟踪",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "HRNet_MMPose_for_PyTorch",
+    "folder": "HRNet_MMPose_for_PyTorch",
+    "description": "HRNet 姿态估计",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "AttU_Net_for_PyTorch",
+    "folder": "AttU_Net_for_PyTorch",
+    "description": "AttU_Net_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Attention_R2U_Net_for_PyTorch",
+    "folder": "Attention_R2U_Net_for_PyTorch",
+    "description": "Attention_R2U_Net_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "BiseNetV1_for_PyTorch",
+    "folder": "BiseNetV1_for_PyTorch",
+    "description": "BiseNetV1_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DeepLabv3+_ID1695_for_PyTorch",
+    "folder": "DeepLabv3+_ID1695_for_PyTorch",
+    "description": "DeepLabv3+_ID1695_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DynamicUNet_for_Pytorch",
+    "folder": "DynamicUNet_for_Pytorch",
+    "description": "DynamicUNet_for_Pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "R2U_Net_for_PyTorch",
+    "folder": "R2U_Net_for_PyTorch",
+    "description": "R2U_Net_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SAM3_for_pytorch",
+    "folder": "SAM3_for_pytorch",
+    "description": "SAM3_for_pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert-CRF_for_PyTorch",
+    "folder": "Bert-CRF_for_PyTorch",
+    "description": "Bert-CRF_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert-Squad_ID0470_for_PyTorch",
+    "folder": "Bert-Squad_ID0470_for_PyTorch",
+    "description": "Bert-Squad_ID0470_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert-text-classification_for_PyTorch",
+    "folder": "Bert-text-classification_for_PyTorch",
+    "description": "Bert-text-classification_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert_Chinese_ID3433_for_PyTorch",
+    "folder": "Bert_Chinese_ID3433_for_PyTorch",
+    "description": "Bert_Chinese_ID3433_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "BiLSTM-CRF_for_PyTorch",
+    "folder": "BiLSTM-CRF_for_PyTorch",
+    "description": "BiLSTM-CRF_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "CPM_Finetune_for_PyTorch",
+    "folder": "CPM_Finetune_for_PyTorch",
+    "description": "CPM_Finetune_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Data2vec_for_PyTorch",
+    "folder": "Data2vec_for_PyTorch",
+    "description": "Data2vec_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Deltalm_for_PyTorch",
+    "folder": "Deltalm_for_PyTorch",
+    "description": "Deltalm_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "FOTS_ID0338_for_PyTorch",
+    "folder": "FOTS_ID0338_for_PyTorch",
+    "description": "FOTS_ID0338_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Fairseq_Transformer_wmt18_for_PyTorch",
+    "folder": "Fairseq_Transformer_wmt18_for_PyTorch",
+    "description": "Fairseq_Transformer_wmt18_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "GPT-2_for_PyTorch",
+    "folder": "GPT-2_for_PyTorch",
+    "description": "GPT-2_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "GRU_for_PyTorch",
+    "folder": "GRU_for_PyTorch",
+    "description": "GRU_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "LSTM_ID0468_for_PyTorch",
+    "folder": "LSTM_ID0468_for_PyTorch",
+    "description": "LSTM_ID0468_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Longformer_for_PyTorch",
+    "folder": "Longformer_for_PyTorch",
+    "description": "Longformer_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "M2M-100_for_PyTorch",
+    "folder": "M2M-100_for_PyTorch",
+    "description": "M2M-100_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "MT5_ID4146_for_PyTorch",
+    "folder": "MT5_ID4146_for_PyTorch",
+    "description": "MT5_ID4146_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "ReFormer_for_PyTorch",
+    "folder": "ReFormer_for_PyTorch",
+    "description": "ReFormer_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Scaling-nmt_for_Pytorch",
+    "folder": "Scaling-nmt_for_Pytorch",
+    "description": "Scaling-nmt_for_Pytorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Transformer_ID0105_for_PyTorch",
+    "folder": "Transformer_ID0105_for_PyTorch",
+    "description": "Transformer_ID0105_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "XLM_ID0740_for_PyTorch",
+    "folder": "XLM_ID0740_for_PyTorch",
+    "description": "XLM_ID0740_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "mBART_ID2372_for_PyTorch",
+    "folder": "mBART_ID2372_for_PyTorch",
+    "description": "mBART_ID2372_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "diffusers",
+    "folder": "diffusers",
+    "description": "diffusers 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "diffusers0.17.0",
+    "folder": "diffusers0.17.0",
+    "description": "diffusers0.17.0 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "diffusers0.18.1",
+    "folder": "diffusers0.18.1",
+    "description": "diffusers0.18.1 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "diffusers0.21.0",
+    "folder": "diffusers0.21.0",
+    "description": "diffusers0.21.0 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "diffusers0.25.0",
+    "folder": "diffusers0.25.0",
+    "description": "diffusers0.25.0 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "kolors",
+    "folder": "kolors",
+    "description": "kolors 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "sd-scripts-xl",
+    "folder": "sd-scripts-xl",
+    "description": "sd-scripts-xl 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "stablediffusion-2.1",
+    "folder": "stablediffusion-2.1",
+    "description": "stablediffusion-2.1 扩散模型",
+    "category": "扩散模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Aquila2",
+    "folder": "Aquila2",
+    "description": "Aquila2 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Baichuan-13B",
+    "folder": "Baichuan-13B",
+    "description": "Baichuan-13B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "ChatGLM-6B",
+    "folder": "ChatGLM-6B",
+    "description": "ChatGLM-6B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "ChatGLM2-6B",
+    "folder": "ChatGLM2-6B",
+    "description": "ChatGLM2-6B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "ChatGLM3-6B",
+    "folder": "ChatGLM3-6B",
+    "description": "ChatGLM3-6B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "CodeGeeX2",
+    "folder": "CodeGeeX2",
+    "description": "CodeGeeX2 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "CodeShell-7B",
+    "folder": "CodeShell-7B",
+    "description": "CodeShell-7B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Deepseek_V3_Torchtitan",
+    "folder": "Deepseek_V3_Torchtitan",
+    "description": "Deepseek_V3_Torchtitan 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "FlagAI",
+    "folder": "FlagAI",
+    "description": "FlagAI 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Flan-t5-xxl",
+    "folder": "Flan-t5-xxl",
+    "description": "Flan-t5-xxl 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "GLM-10B",
+    "folder": "GLM-10B",
+    "description": "GLM-10B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "GPT-NeoX",
+    "folder": "GPT-NeoX",
+    "description": "GPT-NeoX 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "LLaMA-13B",
+    "folder": "LLaMA-13B",
+    "description": "LLaMA-13B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Llama3-Torchtitan",
+    "folder": "Llama3-Torchtitan",
+    "description": "Llama3-Torchtitan 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "OLMo",
+    "folder": "OLMo",
+    "description": "OLMo 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen-7B",
+    "folder": "Qwen-7B",
+    "description": "Qwen-7B 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen1.0",
+    "folder": "Qwen1.0",
+    "description": "Qwen1.0 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen1.5",
+    "folder": "Qwen1.5",
+    "description": "Qwen1.5 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen3-30B-Torchtitan",
+    "folder": "Qwen3-30B-Torchtitan",
+    "description": "Qwen3-30B-Torchtitan 基础模型",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "AltCLIP",
+    "folder": "AltCLIP",
+    "description": "AltCLIP 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "AnimateDiff",
+    "folder": "AnimateDiff",
+    "description": "AnimateDiff 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "CLIP_for_PyTorch",
+    "folder": "CLIP_for_PyTorch",
+    "description": "CLIP_for_PyTorch 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "Chinese-CLIP_for_PyTorch",
+    "folder": "Chinese-CLIP_for_PyTorch",
+    "description": "Chinese-CLIP_for_PyTorch 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "CogVLM",
+    "folder": "CogVLM",
+    "description": "CogVLM 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "CogVLM2",
+    "folder": "CogVLM2",
+    "description": "CogVLM2 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "CogVideo",
+    "folder": "CogVideo",
+    "description": "CogVideo 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "DiT",
+    "folder": "DiT",
+    "description": "DiT 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "HunyuanDiT",
+    "folder": "HunyuanDiT",
+    "description": "HunyuanDiT 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "InternVL1.5",
+    "folder": "InternVL1.5",
+    "description": "InternVL1.5 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "LAVIS",
+    "folder": "LAVIS",
+    "description": "LAVIS 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "LLaVA",
+    "folder": "LLaVA",
+    "description": "LLaVA 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "Magvit2",
+    "folder": "Magvit2",
+    "description": "Magvit2 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "MiniCPM-V",
+    "folder": "MiniCPM-V",
+    "description": "MiniCPM-V 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "MiniGPT-4",
+    "folder": "MiniGPT-4",
+    "description": "MiniGPT-4 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenCLIP_for_PyTorch",
+    "folder": "OpenCLIP_for_PyTorch",
+    "description": "OpenCLIP_for_PyTorch 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenSora-master",
+    "folder": "OpenSora-master",
+    "description": "OpenSora-master 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenSora1.0",
+    "folder": "OpenSora1.0",
+    "description": "OpenSora1.0 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenSora1.1",
+    "folder": "OpenSora1.1",
+    "description": "OpenSora1.1 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenSoraPlan1.0",
+    "folder": "OpenSoraPlan1.0",
+    "description": "OpenSoraPlan1.0 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenSoraPlan1.1",
+    "folder": "OpenSoraPlan1.1",
+    "description": "OpenSoraPlan1.1 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "PIDM",
+    "folder": "PIDM",
+    "description": "PIDM 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "PLLaVA",
+    "folder": "PLLaVA",
+    "description": "PLLaVA 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen-VL",
+    "folder": "Qwen-VL",
+    "description": "Qwen-VL 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "U-ViT",
+    "folder": "U-ViT",
+    "description": "U-ViT 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "VisualGLM",
+    "folder": "VisualGLM",
+    "description": "VisualGLM 多模态模型",
+    "category": "多模态",
+    "source": "built-in"
+  },
+  {
+    "name": "MAPPO_for_PyTorch",
+    "folder": "MAPPO_for_PyTorch",
+    "description": "MAPPO_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenRLHF_v0.5.7_for_PyTorch",
+    "folder": "OpenRLHF_v0.5.7_for_PyTorch",
+    "description": "OpenRLHF_v0.5.7_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenRLHF_v0.6.2_for_PyTorch",
+    "folder": "OpenRLHF_v0.6.2_for_PyTorch",
+    "description": "OpenRLHF_v0.6.2_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "PPO_for_Pytorch",
+    "folder": "PPO_for_Pytorch",
+    "description": "PPO_for_Pytorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "ROLL_for_PyTorch",
+    "folder": "ROLL_for_PyTorch",
+    "description": "ROLL_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "VeRL_for_PyTorch",
+    "folder": "VeRL_for_PyTorch",
+    "description": "VeRL_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "open_r1_for_PyTorch",
+    "folder": "open_r1_for_PyTorch",
+    "description": "open_r1_for_PyTorch 强化学习",
+    "category": "强化学习",
+    "source": "built-in"
+  },
+  {
+    "name": "DCN_for_PyTorch",
+    "folder": "DCN_for_PyTorch",
+    "description": "DCN_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "DLRM_for_PyTorch",
+    "folder": "DLRM_for_PyTorch",
+    "description": "DLRM_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "DeCLIP_for_PyTorch",
+    "folder": "DeCLIP_for_PyTorch",
+    "description": "DeCLIP_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "DeepFM_for_PyTorch",
+    "folder": "DeepFM_for_PyTorch",
+    "description": "DeepFM_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "GLIP_for_PyTorch",
+    "folder": "GLIP_for_PyTorch",
+    "description": "GLIP_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "LayoutXLM_for_PyTorch",
+    "folder": "LayoutXLM_for_PyTorch",
+    "description": "LayoutXLM_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "Mini-RL",
+    "folder": "Mini-RL",
+    "description": "Mini-RL 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenFold_for_PyTorch",
+    "folder": "OpenFold_for_PyTorch",
+    "description": "OpenFold_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "T2vec_for_Pytorch",
+    "folder": "T2vec_for_Pytorch",
+    "description": "T2vec_for_Pytorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "WDL_for_PyTorch",
+    "folder": "WDL_for_PyTorch",
+    "description": "WDL_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "built-in"
+  },
+  {
+    "name": "BEVFormer",
+    "folder": "BEVFormer",
+    "description": "BEVFormer 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "built-in"
+  },
+  {
+    "name": "MatrixVT",
+    "folder": "MatrixVT",
+    "description": "MatrixVT 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "built-in"
+  },
+  {
+    "name": "OpenPCDet",
+    "folder": "OpenPCDet",
+    "description": "OpenPCDet 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "built-in"
+  },
+  {
+    "name": "SurroundOcc",
+    "folder": "SurroundOcc",
+    "description": "SurroundOcc 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "built-in"
+  },
+  {
+    "name": "UniAD",
+    "folder": "UniAD",
+    "description": "UniAD 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "built-in"
+  },
+  {
+    "name": "FastPitch",
+    "folder": "FastPitch",
+    "description": "FastPitch 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Jasper",
+    "folder": "Jasper",
+    "description": "Jasper 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Tacotron2_for_PyTorch",
+    "folder": "Tacotron2_for_PyTorch",
+    "description": "Tacotron2_for_PyTorch 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "WaveGlow",
+    "folder": "WaveGlow",
+    "description": "WaveGlow 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "baseline-rawnet",
+    "folder": "baseline-rawnet",
+    "description": "baseline-rawnet 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "deepspeech",
+    "folder": "deepspeech",
+    "description": "deepspeech 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "speech-transformer",
+    "folder": "speech-transformer",
+    "description": "speech-transformer 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "tdnn",
+    "folder": "tdnn",
+    "description": "tdnn 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "wav2vec2.0",
+    "folder": "wav2vec2.0",
+    "description": "wav2vec2.0 语音模型",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "3d_attention_net",
+    "folder": "3d_attention_net",
+    "description": "3d_attention_net 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlexNet_ID2663_for_PyTorch",
+    "folder": "AlexNet_ID2663_for_PyTorch",
+    "description": "AlexNet_ID2663_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlignedReID",
+    "folder": "AlignedReID",
+    "description": "AlignedReID 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BEiT",
+    "folder": "BEiT",
+    "description": "BEiT 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CSWin-Transformer",
+    "folder": "CSWin-Transformer",
+    "description": "CSWin-Transformer 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Centroids-reid",
+    "folder": "Centroids-reid",
+    "description": "Centroids-reid 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Conformer_Ti",
+    "folder": "Conformer_Ti",
+    "description": "Conformer_Ti 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ConvNeXt",
+    "folder": "ConvNeXt",
+    "description": "ConvNeXt 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DPN-131_for_PyTorch",
+    "folder": "DPN-131_for_PyTorch",
+    "description": "DPN-131_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Deit_Small",
+    "folder": "Deit_Small",
+    "description": "Deit_Small 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DnCNN",
+    "folder": "DnCNN",
+    "description": "DnCNN 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Efficient-3DCNNs_ID1230_for_PyTorch",
+    "folder": "Efficient-3DCNNs_ID1230_for_PyTorch",
+    "description": "Efficient-3DCNNs_ID1230_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B0_for_PyTorch",
+    "folder": "EfficientNet-B0_for_PyTorch",
+    "description": "EfficientNet-B0_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B1",
+    "folder": "EfficientNet-B1",
+    "description": "EfficientNet-B1 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B3",
+    "folder": "EfficientNet-B3",
+    "description": "EfficientNet-B3 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B5_ID1621_for_PyTorch",
+    "folder": "EfficientNet-B5_ID1621_for_PyTorch",
+    "description": "EfficientNet-B5_ID1621_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNetV2-B0_for_PyTorch",
+    "folder": "EfficientNetV2-B0_for_PyTorch",
+    "description": "EfficientNetV2-B0_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Evo-Levit_256_384",
+    "folder": "Evo-Levit_256_384",
+    "description": "Evo-Levit_256_384 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FixRes",
+    "folder": "FixRes",
+    "description": "FixRes 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FocalTransformer",
+    "folder": "FocalTransformer",
+    "description": "FocalTransformer 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GENet_for_Pytorch",
+    "folder": "GENet_for_Pytorch",
+    "description": "GENet_for_Pytorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GaitSet",
+    "folder": "GaitSet",
+    "description": "GaitSet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GhostNet",
+    "folder": "GhostNet",
+    "description": "GhostNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GoogleNet_ID1623_for_PyTorch",
+    "folder": "GoogleNet_ID1623_for_PyTorch",
+    "description": "GoogleNet_ID1623_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HRNet_ID1780_for_PyTorch",
+    "folder": "HRNet_ID1780_for_PyTorch",
+    "description": "HRNet_ID1780_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "InceptionResNetV2_ID1779_for_PyTorch",
+    "folder": "InceptionResNetV2_ID1779_for_PyTorch",
+    "description": "InceptionResNetV2_ID1779_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "InceptionV3_ID1596_for_PyTorch",
+    "folder": "InceptionV3_ID1596_for_PyTorch",
+    "description": "InceptionV3_ID1596_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "InceptionV4_ID1778_for_PyTorch",
+    "folder": "InceptionV4_ID1778_for_PyTorch",
+    "description": "InceptionV4_ID1778_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "LResNet100E-IR",
+    "folder": "LResNet100E-IR",
+    "description": "LResNet100E-IR 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "LVVIT",
+    "folder": "LVVIT",
+    "description": "LVVIT 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MAE_for_PyTorch",
+    "folder": "MAE_for_PyTorch",
+    "description": "MAE_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MGN",
+    "folder": "MGN",
+    "description": "MGN 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MnasNet",
+    "folder": "MnasNet",
+    "description": "MnasNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MobileNet",
+    "folder": "MobileNet",
+    "description": "MobileNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MobileNetV3_large_100_for_PyTorch",
+    "folder": "MobileNetV3_large_100_for_PyTorch",
+    "description": "MobileNetV3_large_100_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Moco-v2",
+    "folder": "Moco-v2",
+    "description": "Moco-v2 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "NASNet-A-Mobile",
+    "folder": "NASNet-A-Mobile",
+    "description": "NASNet-A-Mobile 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "OSNet",
+    "folder": "OSNet",
+    "description": "OSNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PCB",
+    "folder": "PCB",
+    "description": "PCB 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PnasNet5Large",
+    "folder": "PnasNet5Large",
+    "description": "PnasNet5Large 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PointNet",
+    "folder": "PointNet",
+    "description": "PointNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pointnetplus_for_PyTorch",
+    "folder": "Pointnetplus_for_PyTorch",
+    "description": "Pointnetplus_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RegNetX_ID4127_for_PyTorch",
+    "folder": "RegNetX_ID4127_for_PyTorch",
+    "description": "RegNetX_ID4127_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RegNetY_ID4128_for_PyTorch",
+    "folder": "RegNetY_ID4128_for_PyTorch",
+    "description": "RegNetY_ID4128_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ReidStrongBaseline",
+    "folder": "ReidStrongBaseline",
+    "description": "ReidStrongBaseline 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RepVGG",
+    "folder": "RepVGG",
+    "description": "RepVGG 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Res2Net101_v1b",
+    "folder": "Res2Net101_v1b",
+    "description": "Res2Net101_v1b 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNeSt50_for_PyTorch",
+    "folder": "ResNeSt50_for_PyTorch",
+    "description": "ResNeSt50_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNeXt-50-32x4d_ID1624_for_PyTorch",
+    "folder": "ResNeXt-50-32x4d_ID1624_for_PyTorch",
+    "description": "ResNeXt-50-32x4d_ID1624_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNeXt101_32x8d_for_PyTorch",
+    "folder": "ResNeXt101_32x8d_for_PyTorch",
+    "description": "ResNeXt101_32x8d_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet101_ID1595_for_PyTorch",
+    "folder": "ResNet101_ID1595_for_PyTorch",
+    "description": "ResNet101_ID1595_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet152",
+    "folder": "ResNet152",
+    "description": "ResNet152 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet18_ID1593_for_PyTorch",
+    "folder": "ResNet18_ID1593_for_PyTorch",
+    "description": "ResNet18_ID1593_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet34_ID1594_for_PyTorch",
+    "folder": "ResNet34_ID1594_for_PyTorch",
+    "description": "ResNet34_ID1594_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SE-ResNet-50",
+    "folder": "SE-ResNet-50",
+    "description": "SE-ResNet-50 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SE-ResNext-101-32x4d",
+    "folder": "SE-ResNext-101-32x4d",
+    "description": "SE-ResNext-101-32x4d 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SENet154",
+    "folder": "SENet154",
+    "description": "SENet154 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SPACH",
+    "folder": "SPACH",
+    "description": "SPACH 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SPACH_SMLP",
+    "folder": "SPACH_SMLP",
+    "description": "SPACH_SMLP 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SPNASNet_100_for_PyTorch",
+    "folder": "SPNASNet_100_for_PyTorch",
+    "description": "SPNASNet_100_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Se-ResNext-50-32x4d",
+    "folder": "Se-ResNext-50-32x4d",
+    "description": "Se-ResNext-50-32x4d 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ShuffleNetV1_ID1625_for_PyTorch",
+    "folder": "ShuffleNetV1_ID1625_for_PyTorch",
+    "description": "ShuffleNetV1_ID1625_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ShuffleNetV2Plus_ID1626_for_PyTorch",
+    "folder": "ShuffleNetV2Plus_ID1626_for_PyTorch",
+    "description": "ShuffleNetV2Plus_ID1626_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SkresNet50",
+    "folder": "SkresNet50",
+    "description": "SkresNet50 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SqueezeNet1_1",
+    "folder": "SqueezeNet1_1",
+    "description": "SqueezeNet1_1 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Swin-Transformer_for_PyTorch",
+    "folder": "Swin-Transformer_for_PyTorch",
+    "description": "Swin-Transformer_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TNT",
+    "folder": "TNT",
+    "description": "TNT 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TResNet",
+    "folder": "TResNet",
+    "description": "TResNet 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Twins-ALTGVT-S",
+    "folder": "Twins-ALTGVT-S",
+    "description": "Twins-ALTGVT-S 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Twins-PCPVT-S",
+    "folder": "Twins-PCPVT-S",
+    "description": "Twins-PCPVT-S 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VAN-Classification",
+    "folder": "VAN-Classification",
+    "description": "VAN-Classification 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VOLO",
+    "folder": "VOLO",
+    "description": "VOLO 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Vehicle_Re-Identification",
+    "folder": "Vehicle_Re-Identification",
+    "description": "Vehicle_Re-Identification 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Vgg16_ID1630_for_PyTorch",
+    "folder": "Vgg16_ID1630_for_PyTorch",
+    "description": "Vgg16_ID1630_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Vgg19_ID1631_for_PyTorch",
+    "folder": "Vgg19_ID1631_for_PyTorch",
+    "description": "Vgg19_ID1631_for_PyTorch 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Vit_small_patch16_224",
+    "folder": "Vit_small_patch16_224",
+    "description": "Vit_small_patch16_224 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VoVNet39",
+    "folder": "VoVNet39",
+    "description": "VoVNet39 图像分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AdvancedEAST",
+    "folder": "AdvancedEAST",
+    "description": "AdvancedEAST 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CTPN",
+    "folder": "CTPN",
+    "description": "CTPN 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_RCNN",
+    "folder": "Cascade_RCNN",
+    "description": "Cascade_RCNN 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CascadedMaskRCNN",
+    "folder": "CascadedMaskRCNN",
+    "description": "CascadedMaskRCNN 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CenterFace",
+    "folder": "CenterFace",
+    "description": "CenterFace 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CenterNet",
+    "folder": "CenterNet",
+    "description": "CenterNet 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DETR",
+    "folder": "DETR",
+    "description": "DETR 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DSFD",
+    "folder": "DSFD",
+    "description": "DSFD 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FAN",
+    "folder": "FAN",
+    "description": "FAN 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FCOS",
+    "folder": "FCOS",
+    "description": "FCOS 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FOTS",
+    "folder": "FOTS",
+    "description": "FOTS 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FSAF_for_Pytorch",
+    "folder": "FSAF_for_Pytorch",
+    "description": "FSAF_for_Pytorch 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FaceBoxes",
+    "folder": "FaceBoxes",
+    "description": "FaceBoxes 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FairMOT",
+    "folder": "FairMOT",
+    "description": "FairMOT 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GCNet",
+    "folder": "GCNet",
+    "description": "GCNet 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GFocalV2",
+    "folder": "GFocalV2",
+    "description": "GFocalV2 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "M2Det",
+    "folder": "M2Det",
+    "description": "M2Det 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "NasFPN",
+    "folder": "NasFPN",
+    "description": "NasFPN 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pointnetplus",
+    "folder": "Pointnetplus",
+    "description": "Pointnetplus 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pyramidbox",
+    "folder": "Pyramidbox",
+    "description": "Pyramidbox 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RCF",
+    "folder": "RCF",
+    "description": "RCF 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RefineDet",
+    "folder": "RefineDet",
+    "description": "RefineDet 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RetinaMask",
+    "folder": "RetinaMask",
+    "description": "RetinaMask 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RetinaNet",
+    "folder": "RetinaNet",
+    "description": "RetinaNet 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Retinaface",
+    "folder": "Retinaface",
+    "description": "Retinaface 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SOLOv1",
+    "folder": "SOLOv1",
+    "description": "SOLOv1 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SOLOv2",
+    "folder": "SOLOv2",
+    "description": "SOLOv2 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-MobileNetV1",
+    "folder": "SSD-MobileNetV1",
+    "description": "SSD-MobileNetV1 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-MobilenetV2",
+    "folder": "SSD-MobilenetV2",
+    "description": "SSD-MobilenetV2 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-Resnet",
+    "folder": "SSD-Resnet",
+    "description": "SSD-Resnet 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD",
+    "folder": "SSD",
+    "description": "SSD 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SimCLR_for_Pytorch",
+    "folder": "SimCLR_for_Pytorch",
+    "description": "SimCLR_for_Pytorch 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TextSnake",
+    "folder": "TextSnake",
+    "description": "TextSnake 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLACT",
+    "folder": "YOLACT",
+    "description": "YOLACT 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLACT_plus",
+    "folder": "YOLACT_plus",
+    "description": "YOLACT_plus 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOR",
+    "folder": "YOLOR",
+    "description": "YOLOR 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "centernet2",
+    "folder": "centernet2",
+    "description": "centernet2 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "s3fd_for_PyTorch",
+    "folder": "s3fd_for_PyTorch",
+    "description": "s3fd_for_PyTorch 目标检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3D_EDSR_ID3005_for_PyTorch",
+    "folder": "3D_EDSR_ID3005_for_PyTorch",
+    "description": "3D_EDSR_ID3005_for_PyTorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3D_Nested_Unet",
+    "folder": "3D_Nested_Unet",
+    "description": "3D_Nested_Unet 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ADNet",
+    "folder": "ADNet",
+    "description": "ADNet 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BigGAN",
+    "folder": "BigGAN",
+    "description": "BigGAN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CGAN",
+    "folder": "CGAN",
+    "description": "CGAN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CenterMask2",
+    "folder": "CenterMask2",
+    "description": "CenterMask2 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cross-Scale-Non-Local-Attention",
+    "folder": "Cross-Scale-Non-Local-Attention",
+    "description": "Cross-Scale-Non-Local-Attention 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CycleGAN",
+    "folder": "CycleGAN",
+    "description": "CycleGAN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DCGAN",
+    "folder": "DCGAN",
+    "description": "DCGAN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FSRCNN_ID2990_for_PyTorch",
+    "folder": "FSRCNN_ID2990_for_PyTorch",
+    "description": "FSRCNN_ID2990_for_PyTorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FaceSparNet_ID2936_for_PyTorch",
+    "folder": "FaceSparNet_ID2936_for_PyTorch",
+    "description": "FaceSparNet_ID2936_for_PyTorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GAN_Pytorch",
+    "folder": "GAN_Pytorch",
+    "description": "GAN_Pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GPEN",
+    "folder": "GPEN",
+    "description": "GPEN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HiSD_for_PyTorch",
+    "folder": "HiSD_for_PyTorch",
+    "description": "HiSD_for_PyTorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Hilander_ID2774_for_Pytorch",
+    "folder": "Hilander_ID2774_for_Pytorch",
+    "description": "Hilander_ID2774_for_Pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "LPTN_ID2780_for_PyTorch",
+    "folder": "LPTN_ID2780_for_PyTorch",
+    "description": "LPTN_ID2780_for_PyTorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Lifespan_ID2972_for_pytorch",
+    "folder": "Lifespan_ID2972_for_pytorch",
+    "description": "Lifespan_ID2972_for_pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pix2Pix",
+    "folder": "Pix2Pix",
+    "description": "Pix2Pix 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pix2PixHD",
+    "folder": "Pix2PixHD",
+    "description": "Pix2PixHD 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PromptIR",
+    "folder": "PromptIR",
+    "description": "PromptIR 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pytorch-Super-Resolution-Implementations_ID3004_for_Pytorch",
+    "folder": "Pytorch-Super-Resolution-Implementations_ID3004_for_Pytorch",
+    "description": "Pytorch-Super-Resolution-Implementations_ID3004_for_Pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RDN",
+    "folder": "RDN",
+    "description": "RDN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SRFlow",
+    "folder": "SRFlow",
+    "description": "SRFlow 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SRGAN",
+    "folder": "SRGAN",
+    "description": "SRGAN 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Srcnn_x2_for_Pytorch",
+    "folder": "Srcnn_x2_for_Pytorch",
+    "description": "Srcnn_x2_for_Pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Super-Resolution_CNN_ID3003_for_Pytorch",
+    "folder": "Super-Resolution_CNN_ID3003_for_Pytorch",
+    "description": "Super-Resolution_CNN_ID3003_for_Pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SwinIR",
+    "folder": "SwinIR",
+    "description": "SwinIR 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "edsr_x2",
+    "folder": "edsr_x2",
+    "description": "edsr_x2 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "stargan",
+    "folder": "stargan",
+    "description": "stargan 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "stylegan2-ada-pytorch",
+    "folder": "stylegan2-ada-pytorch",
+    "description": "stylegan2-ada-pytorch 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "wdsr",
+    "folder": "wdsr",
+    "description": "wdsr 图像处理模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3Dmppe_RootNet",
+    "folder": "3Dmppe_RootNet",
+    "description": "3Dmppe_RootNet 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlphaPose",
+    "folder": "AlphaPose",
+    "description": "AlphaPose 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DeepPose",
+    "folder": "DeepPose",
+    "description": "DeepPose 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HigherHRNet",
+    "folder": "HigherHRNet",
+    "description": "HigherHRNet 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Hourglass_for_PyTorch",
+    "folder": "Hourglass_for_PyTorch",
+    "description": "Hourglass_for_PyTorch 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Lightweight_OpenPose",
+    "folder": "Lightweight_OpenPose",
+    "description": "Lightweight_OpenPose 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MIPNet",
+    "folder": "MIPNet",
+    "description": "MIPNet 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MSPN",
+    "folder": "MSPN",
+    "description": "MSPN 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ST-GCN",
+    "folder": "ST-GCN",
+    "description": "ST-GCN 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TransPose",
+    "folder": "TransPose",
+    "description": "TransPose 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VoxelPose",
+    "folder": "VoxelPose",
+    "description": "VoxelPose 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3DUNet",
+    "folder": "3DUNet",
+    "description": "3DUNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BiSeNetV1",
+    "folder": "BiSeNetV1",
+    "description": "BiSeNetV1 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DeeplabV3_for_Pytorch",
+    "folder": "DeeplabV3_for_Pytorch",
+    "description": "DeeplabV3_for_Pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ENet",
+    "folder": "ENet",
+    "description": "ENet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ErfNet",
+    "folder": "ErfNet",
+    "description": "ErfNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FCN-res18_for_Pytorch",
+    "folder": "FCN-res18_for_Pytorch",
+    "description": "FCN-res18_for_Pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FCN8s",
+    "folder": "FCN8s",
+    "description": "FCN8s 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FFHQ_ID2978_for_Pytorch",
+    "folder": "FFHQ_ID2978_for_Pytorch",
+    "description": "FFHQ_ID2978_for_Pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FastSCNN",
+    "folder": "FastSCNN",
+    "description": "FastSCNN 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HRNet_SEG_for_Pytorch",
+    "folder": "HRNet_SEG_for_Pytorch",
+    "description": "HRNet_SEG_for_Pytorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HRnet-OCR",
+    "folder": "HRnet-OCR",
+    "description": "HRnet-OCR 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ICNet_ID1781_for_PyTorch",
+    "folder": "ICNet_ID1781_for_PyTorch",
+    "description": "ICNet_ID1781_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "IntraDA",
+    "folder": "IntraDA",
+    "description": "IntraDA 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MMseg-swin",
+    "folder": "MMseg-swin",
+    "description": "MMseg-swin 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MedSAM_for_PyTorch",
+    "folder": "MedSAM_for_PyTorch",
+    "description": "MedSAM_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PSPNet",
+    "folder": "PSPNet",
+    "description": "PSPNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PointRend",
+    "folder": "PointRend",
+    "description": "PointRend 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PraNet",
+    "folder": "PraNet",
+    "description": "PraNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RCAN",
+    "folder": "RCAN",
+    "description": "RCAN 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RefineNet",
+    "folder": "RefineNet",
+    "description": "RefineNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SETR",
+    "folder": "SETR",
+    "description": "SETR 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SeMask",
+    "folder": "SeMask",
+    "description": "SeMask 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "UNet++",
+    "folder": "UNet++",
+    "description": "UNet++ 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "UNet_for_PyTorch",
+    "folder": "UNet_for_PyTorch",
+    "description": "UNet_for_PyTorch 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Ultra-Fast-Lane-Detection",
+    "folder": "Ultra-Fast-Lane-Detection",
+    "description": "Ultra-Fast-Lane-Detection 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VNet",
+    "folder": "VNet",
+    "description": "VNet 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Wseg",
+    "folder": "Wseg",
+    "description": "Wseg 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BMN",
+    "folder": "BMN",
+    "description": "BMN 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BSN",
+    "folder": "BSN",
+    "description": "BSN 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "C3D",
+    "folder": "C3D",
+    "description": "C3D 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DeepRemaster",
+    "folder": "DeepRemaster",
+    "description": "DeepRemaster 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GloRe",
+    "folder": "GloRe",
+    "description": "GloRe 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "I3D",
+    "folder": "I3D",
+    "description": "I3D 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "NonLocal",
+    "folder": "NonLocal",
+    "description": "NonLocal 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "QVI_ID2930_for_PyTorch",
+    "folder": "QVI_ID2930_for_PyTorch",
+    "description": "QVI_ID2930_for_PyTorch 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "R(2+1)D",
+    "folder": "R(2+1)D",
+    "description": "R(2+1)D 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SiamFC",
+    "folder": "SiamFC",
+    "description": "SiamFC 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SiamRPN",
+    "folder": "SiamRPN",
+    "description": "SiamRPN 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SlowFast",
+    "folder": "SlowFast",
+    "description": "SlowFast 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TSM",
+    "folder": "TSM",
+    "description": "TSM 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TSN",
+    "folder": "TSN",
+    "description": "TSN 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VideoPose3D",
+    "folder": "VideoPose3D",
+    "description": "VideoPose3D 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "X3D",
+    "folder": "X3D",
+    "description": "X3D 视频理解",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Awesome-RecSystem_ID2951_for_PyTorch",
+    "folder": "Awesome-RecSystem_ID2951_for_PyTorch",
+    "description": "Awesome-RecSystem_ID2951_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "BERT-NER-Pytorch",
+    "folder": "BERT-NER-Pytorch",
+    "description": "BERT-NER-Pytorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Bertsum_for_PyTorch",
+    "folder": "Bertsum_for_PyTorch",
+    "description": "Bertsum_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Ling_v2_for_LLaMa-factory",
+    "folder": "Ling_v2_for_LLaMa-factory",
+    "description": "Ling_v2_for_LLaMa-factory NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "MAG-Bert_ID2985_for_PyTorch",
+    "folder": "MAG-Bert_ID2985_for_PyTorch",
+    "description": "MAG-Bert_ID2985_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "MarkupLM_ID2781_for_PyTorch",
+    "folder": "MarkupLM_ID2781_for_PyTorch",
+    "description": "MarkupLM_ID2781_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "NCF_ID2943_for_PyTorch",
+    "folder": "NCF_ID2943_for_PyTorch",
+    "description": "NCF_ID2943_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "SpanBERT",
+    "folder": "SpanBERT",
+    "description": "SpanBERT NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Telechat",
+    "folder": "Telechat",
+    "description": "Telechat NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "TextCNN",
+    "folder": "TextCNN",
+    "description": "TextCNN NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "TransformerXL",
+    "folder": "TransformerXL",
+    "description": "TransformerXL NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "albert_ID0335_for_PyTorch",
+    "folder": "albert_ID0335_for_PyTorch",
+    "description": "albert_ID0335_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "multimodal-speech-emotion-recognition_ID2977_for_PyTorch",
+    "folder": "multimodal-speech-emotion-recognition_ID2977_for_PyTorch",
+    "description": "multimodal-speech-emotion-recognition_ID2977_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "roberta_for_PyTorch",
+    "folder": "roberta_for_PyTorch",
+    "description": "roberta_for_PyTorch NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "tinybert",
+    "folder": "tinybert",
+    "description": "tinybert NLP模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "ChatGLM3-6B",
+    "folder": "ChatGLM3-6B",
+    "description": "ChatGLM3-6B 基础模型",
+    "category": "基础模型",
+    "source": "contrib"
+  },
+  {
+    "name": "C51",
+    "folder": "C51",
+    "description": "C51 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "DLRM",
+    "folder": "DLRM",
+    "description": "DLRM 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "DQN",
+    "folder": "DQN",
+    "description": "DQN 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "LightGCN_ID2942_for_PyTorch",
+    "folder": "LightGCN_ID2942_for_PyTorch",
+    "description": "LightGCN_ID2942_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "Low-rank-Multimodal-Fusion_ID2983_for_Pytorch",
+    "folder": "Low-rank-Multimodal-Fusion_ID2983_for_Pytorch",
+    "description": "Low-rank-Multimodal-Fusion_ID2983_for_Pytorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "MMSA_ID2979_for_PyTorch",
+    "folder": "MMSA_ID2979_for_PyTorch",
+    "description": "MMSA_ID2979_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "RotatE",
+    "folder": "RotatE",
+    "description": "RotatE 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "ToyModel_for_PyTorch",
+    "folder": "ToyModel_for_PyTorch",
+    "description": "ToyModel_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "Vaecf_ID2903_for_PyTorch",
+    "folder": "Vaecf_ID2903_for_PyTorch",
+    "description": "Vaecf_ID2903_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "movielens_sequence_ID2897_for_PyTorch",
+    "folder": "movielens_sequence_ID2897_for_PyTorch",
+    "description": "movielens_sequence_ID2897_for_PyTorch 其他模型",
+    "category": "其他",
+    "source": "contrib"
+  },
+  {
+    "name": "BEVDet_for_PyTorch",
+    "folder": "BEVDet_for_PyTorch",
+    "description": "BEVDet_for_PyTorch 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "contrib"
+  },
+  {
+    "name": "BiSeNet_v2",
+    "folder": "BiSeNet_v2",
+    "description": "BiSeNet_v2 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "contrib"
+  },
+  {
+    "name": "PETR",
+    "folder": "PETR",
+    "description": "PETR 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-MobileNetV1",
+    "folder": "SSD-MobileNetV1",
+    "description": "SSD-MobileNetV1 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "contrib"
+  },
+  {
+    "name": "TPVFormer_for_PyTorch",
+    "folder": "TPVFormer_for_PyTorch",
+    "description": "TPVFormer_for_PyTorch 自动驾驶模型",
+    "category": "自动驾驶",
+    "source": "contrib"
+  }
+]

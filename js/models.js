@@ -27,6 +27,9 @@ function renderModels(data) {
     const hasDoc = m.docUrl && m.docUrl.length > 0;
     const sourceClass = m.source === 'vLLM Omni' ? 'source-omni' : m.source === 'SGLang Ascend' ? 'source-sglang' : m.source === 'GitCode AI' ? 'source-gitcode' : 'source-ascend';
     const sourceLabel = m.source === 'vLLM Omni' ? 'Omni' : m.source === 'SGLang Ascend' ? 'SGLang' : m.source === 'GitCode AI' ? 'GitCode' : 'Ascend';
+    // 部署硬件：从模型数据中提取部署硬件信息
+    // 优先使用 minHardware（来自支持矩阵或部署页面解析），否则显示 NA
+    const deployHw = (hasDoc && m.minHardware) ? m.minHardware : 'NA';
 
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
@@ -40,7 +43,6 @@ function renderModels(data) {
         <div class="model-card-meta">
           <span class="meta-tag category">${m.category}</span>
           <span class="meta-tag">${m.architecture}</span>
-          <span class="meta-tag hardware">${m.minHardware}</span>
           <span class="meta-tag ${sourceClass}">${sourceLabel}</span>
         </div>
         <dl class="model-card-details">
@@ -48,8 +50,8 @@ function renderModels(data) {
           <dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
           <dt>框架</dt>
           <dd>${m.framework}</dd>
-          <dt>推荐硬件</dt>
-          <dd>${m.recommendedHardware}</dd>
+          <dt>部署硬件</dt>
+          <dd>${deployHw}</dd>
           <dt>${hasDoc ? '📄 部署文档' : '备注'}</dt>
           <dd>${hasDoc ? `<a href="${m.docUrl}" target="_blank" class="doc-link" onclick="event.stopPropagation()">查看部署指南 →</a>` : m.notes}</dd>
         </dl>
@@ -185,6 +187,9 @@ function showModelDetail(id) {
   const sourceLabel = m.source === 'vLLM Omni' ? 'vLLM Omni' : m.source === 'SGLang Ascend' ? 'SGLang Ascend' : m.source === 'GitCode AI' ? 'GitCode AI' : 'vLLM Ascend';
 
   const sourceColor = m.source === 'vLLM Omni' ? '#7C3AED' : m.source === 'SGLang Ascend' ? '#065F46' : m.source === 'GitCode AI' ? '#92400E' : '#2563EB';
+  // 部署硬件：从模型数据中提取部署硬件信息
+  // 优先使用 minHardware（来自支持矩阵或部署页面解析），否则显示 NA
+  const deployHw = (hasDoc && m.minHardware) ? m.minHardware : 'NA';
 
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
@@ -193,8 +198,7 @@ function showModelDetail(id) {
       <dt>架构</dt><dd>${m.architecture}</dd>
       <dt>适配状态</dt><dd><span class="perf-bar"><span class="perf-dot ${perfClass}"></span> ${m.supportLevel}</span></dd>
       <dt>支持框架</dt><dd>${m.framework}</dd>
-      <dt>最低硬件</dt><dd>${m.minHardware}</dd>
-      <dt>推荐硬件</dt><dd>${m.recommendedHardware}</dd>
+      <dt>部署硬件</dt><dd>${deployHw}</dd>
       <dt>MindSpore支持</dt><dd>${m.mindsporeSupport}</dd>
       <dt>CANN版本</dt><dd>${m.cannVersion}</dd>
       <dt>备注</dt><dd>${m.notes}</dd>

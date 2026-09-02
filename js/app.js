@@ -55,7 +55,7 @@ async function init() {
 
       // 后台异步加载全部模型数据（不阻塞首屏渲染）
       requestAnimationFrame(() => {
-        fetch('/admin/api/homepage/models?page=1&page_size=1000').then(resp => {
+        fetch('/admin/api/homepage/models?page=1&page_size=2000').then(resp => {
           if (resp.ok) return resp.json();
         }).then(data => {
           if (data && data.models) {
@@ -88,6 +88,12 @@ async function init() {
 
       // 加载硬件数据
       loadHardwareData();
+
+      // 加载 ACL 小模型数据
+      loadAclModels();
+
+      // 加载 MindIE 模型数据
+      loadMindieModels();
     });
 
   } catch(e) {
@@ -129,7 +135,7 @@ async function refreshData() {
   statusEl.textContent = '正在重新加载数据...';
 
   try {
-    const resp = await fetch('/admin/api/homepage/models?page=1&page_size=1000');
+    const resp = await fetch('/admin/api/homepage/models?page=1&page_size=2000');
     if (resp.ok) {
       const data = await resp.json();
       models = data.models;
@@ -142,7 +148,7 @@ async function refreshData() {
           data.tags.map(t => `<option value="${t}">${t}</option>`).join('');
       }
 
-      statusEl.textContent = '✅ 已刷新 · 数据由服务端每日 06:00 自动同步 · 共 ' + models.length + ' 个模型';
+      statusEl.textContent = '✅ 已刷新 · 数据由服务端每日 06:00 自动同步 · 共 ' + data.total + ' 个模型';
     } else {
       throw new Error('加载失败');
     }

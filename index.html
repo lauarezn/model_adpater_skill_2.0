@@ -39,6 +39,8 @@
     <button class="nav-btn active" data-section="browse">📋 模型清单</button>
     <button class="nav-btn" data-section="ascend-hardware">🖥️ 昇腾硬件</button>
     <button class="nav-btn" data-section="train-models">📚 训练模型清单</button>
+    <button class="nav-btn" data-section="acl-models">🔬 小模型清单</button>
+    <button class="nav-btn" data-section="mindie-models">🧩 MindIE 模型</button>
   </div>
 </nav>
 
@@ -115,6 +117,95 @@
     </div>
   </div>
 
+  <!-- ACL PyTorch Small Models Section -->
+  <div class="section" id="section-acl-models">
+    <div class="section-header">
+      <h2>🔬 小模型清单</h2>
+      <p style="color:var(--color-text-secondary);margin-top:8px">基于 <a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/blob/master/ACL_PyTorch/ModeList.md" target="_blank" style="color:var(--color-primary)">ACL_PyTorch</a> 和 <a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master/PyTorch" target="_blank" style="color:var(--color-primary)">PyTorch</a> 目录，展示昇腾平台支持的推理和训练小模型</p>
+    </div>
+    <div class="acl-controls">
+      <input type="text" class="search-input" id="aclSearchInput" placeholder="🔍 搜索模型名称、文件夹、简介..." oninput="filterAclModels()">
+      <select class="filter-select" id="aclCategoryFilter" onchange="filterAclModels()">
+        <option value="all">全部分类</option>
+      </select>
+      <select class="filter-select" id="aclSourceFilter" onchange="filterAclModels()">
+        <option value="all">全部来源</option>
+        <option value="built-in">内置</option>
+        <option value="contrib">社区</option>
+      </select>
+      <select class="filter-select" id="aclDataDirFilter" onchange="filterAclModels()">
+        <option value="all">全部目录</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;padding:16px;background:#EFF6FF;border-radius:8px;border:1px solid #DBEAFE">
+      <p style="font-size:0.9rem;color:#1E40AF">
+        📡 数据来源：<a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/blob/master/ACL_PyTorch/ModeList.md" target="_blank" style="color:#2563EB;font-weight:500">ACL_PyTorch</a>（推理 · <strong id="aclAclCount">0</strong> 个） + <a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master/PyTorch" target="_blank" style="color:#2563EB;font-weight:500">PyTorch</a>（训练 · <strong id="aclPtCount">0</strong> 个）
+        · 共收录 <strong id="aclModelCount">0</strong> 个小模型
+      </p>
+    </div>
+    <div id="aclModelGridContainer">
+      <div class="loading" id="aclLoadingIndicator">
+        <div class="spinner"></div>
+        <p>正在加载小模型数据...</p>
+      </div>
+    </div>
+    <div class="acl-model-grid" id="aclModelGrid" style="display:none"></div>
+    <div class="empty-state" id="aclEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>没有找到匹配的模型，试试其他关键词</p>
+    </div>
+    <div class="pagination" id="aclPagination" style="display:none">
+      <button class="pagination-btn" id="aclPagePrev" onclick="goToAclPage(aclCurrentPage - 1)" disabled>‹</button>
+      <div id="aclPageNumbers"></div>
+      <button class="pagination-btn" id="aclPageNext" onclick="goToAclPage(aclCurrentPage + 1)" disabled>›</button>
+      <span class="pagination-info" id="aclPageInfo"></span>
+    </div>
+  </div>
+
+  <!-- MindIE Models Section -->
+  <div class="section" id="section-mindie-models">
+    <div class="section-header">
+      <h2>🧩 MindIE 模型</h2>
+      <p style="color:var(--color-text-secondary);margin-top:8px">基于 <a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master/MindIE" target="_blank" style="color:var(--color-primary)">MindIE</a> 目录，展示昇腾 MindIE 推理引擎支持的模型</p>
+    </div>
+    <div class="acl-controls">
+      <input type="text" class="search-input" id="mindieSearchInput" placeholder="🔍 搜索模型名称、文件夹、简介..." oninput="filterMindieModels()">
+      <select class="filter-select" id="mindieCategoryFilter" onchange="filterMindieModels()">
+        <option value="all">全部分类</option>
+      </select>
+      <select class="filter-select" id="mindieSourceFilter" onchange="filterMindieModels()">
+        <option value="all">全部来源</option>
+        <option value="built-in">内置</option>
+      </select>
+      <select class="filter-select" id="mindieDataDirFilter" onchange="filterMindieModels()">
+        <option value="all">全部目录</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;padding:16px;background:#EFF6FF;border-radius:8px;border:1px solid #DBEAFE">
+      <p style="font-size:0.9rem;color:#1E40AF">
+        📡 数据来源：<a href="https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master/MindIE" target="_blank" style="color:#2563EB;font-weight:500">MindIE</a>
+        · 共收录 <strong id="mindieModelCount">0</strong> 个模型
+      </p>
+    </div>
+    <div id="mindieModelGridContainer">
+      <div class="loading" id="mindieLoadingIndicator">
+        <div class="spinner"></div>
+        <p>正在加载 MindIE 模型数据...</p>
+      </div>
+    </div>
+    <div class="acl-model-grid" id="mindieModelGrid" style="display:none"></div>
+    <div class="empty-state" id="mindieEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>没有找到匹配的模型，试试其他关键词</p>
+    </div>
+    <div class="pagination" id="mindiePagination" style="display:none">
+      <button class="pagination-btn" id="mindiePagePrev" onclick="goToMindiePage(mindieCurrentPage - 1)" disabled>‹</button>
+      <div id="mindiePageNumbers"></div>
+      <button class="pagination-btn" id="mindiePageNext" onclick="goToMindiePage(mindieCurrentPage + 1)" disabled>›</button>
+      <span class="pagination-info" id="mindiePageInfo"></span>
+    </div>
+  </div>
+
   <!-- Train Models Section -->
   <div class="section" id="section-train-models">
     <div class="section-header">
@@ -165,6 +256,8 @@
 <script src="js/hardware.js"></script>
 <script src="js/models.js"></script>
 <script src="js/train-models.js"></script>
+<script src="js/acl-models.js"></script>
+<script src="js/mindie-models.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

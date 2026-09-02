@@ -1,0 +1,1940 @@
+{
+  "total_model_families": 70,
+  "total_variants": 143,
+  "categories": {
+    "稠密模型": {
+      "count": 107,
+      "description": "传统的深度学习模型结构，神经元之间密集连接"
+    },
+    "稀疏模型": {
+      "count": 32,
+      "description": "稀疏连接结构，如混合专家模型(MoE)"
+    },
+    "状态空间模型": {
+      "count": 4,
+      "description": "基于状态空间表示的序列模型(SSM)"
+    }
+  },
+  "models": [
+    {
+      "name": "Aquila",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "aquila",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Aquila2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "aquila2",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "34B",
+          "script_location": "aquila2",
+          "sequence_length": "4k",
+          "training_backend": "Legacy",
+          "cluster_scale": "2x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Baichuan",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "baichuan",
+          "sequence_length": "4k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "13B",
+          "script_location": "baichuan",
+          "sequence_length": "4k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Baichuan2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "baichuan2",
+          "sequence_length": "4k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "13B",
+          "script_location": "baichuan2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Bloom",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B1",
+          "script_location": "bloom",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "176B",
+          "script_location": "bloom",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "2x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "ChatGLM3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "6B",
+          "script_location": "chatglm3",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "6B",
+          "script_location": "chatglm3",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "6B",
+          "script_location": "chatglm3",
+          "sequence_length": "64k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "GLM4",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "9B",
+          "script_location": "glm4",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "9B",
+          "script_location": "glm4",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "CodeLlama",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "34B",
+          "script_location": "codellama",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "InternLM",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "intern",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "65B",
+          "script_location": "intern",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "4x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "InternLM2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "20B",
+          "script_location": "internlm2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "20B",
+          "script_location": "internlm2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "InternLM2.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "1.8B",
+          "script_location": "internlm25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "internlm25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "20B",
+          "script_location": "internlm25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "InternLM3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "8B",
+          "script_location": "internlm3",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "llama",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "13B",
+          "script_location": "llama",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "33B",
+          "script_location": "llama",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "4x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "65B",
+          "script_location": "llama",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "4x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "llama2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "13B",
+          "script_location": "llama2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "34B",
+          "script_location": "llama2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "llama2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "llama2",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "8B",
+          "script_location": "llama3",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "llama3",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA3.1",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "8B",
+          "script_location": "llama31",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "8B",
+          "script_location": "llama31",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "50B",
+          "script_location": "llama31",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "llama31",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "llama31",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "24x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "200B",
+          "script_location": "llama31",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "405B",
+          "script_location": "llama31",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "405B",
+          "script_location": "llama31",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "36x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA3.2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "1B",
+          "script_location": "llama32",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "3B",
+          "script_location": "llama32",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "LLaMA3.3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "70B-Instruct",
+          "script_location": "llama33",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "qwen",
+          "sequence_length": "8k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "14B",
+          "script_location": "qwen",
+          "sequence_length": "2k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen",
+          "sequence_length": "8k",
+          "training_backend": "Legacy",
+          "cluster_scale": "16x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen1.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "0.5B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "1.8B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "4B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "14B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "32B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "110B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "CodeQwen1.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "qwen15",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "0.5B",
+          "script_location": "qwen2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "0.5B",
+          "script_location": "qwen2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "1.5B",
+          "script_location": "qwen2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "1.5B",
+          "script_location": "qwen2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "qwen2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "qwen2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "16x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen2.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "0.5B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "1.5B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "3B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "14B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "32B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen25",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "16x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "0.6B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "1.7B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "4B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "8B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "14B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "32B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "32B",
+          "script_location": "qwen3",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "1x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "QwQ",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "32B",
+          "script_location": "qwq",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen2.5-Math",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "1.5B",
+          "script_location": "qwen25_math",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "qwen25_math",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "72B",
+          "script_location": "qwen25_math",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "CodeQwen2.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "qwen25_coder",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【China Mobile Cloud】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Yi",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "9B",
+          "script_location": "yi",
+          "sequence_length": "4k",
+          "training_backend": "Legacy",
+          "cluster_scale": "1x4",
+          "supported_version": "2.0.0",
+          "contributor": "【OpenMind】",
+          "certification": "【Test】"
+        },
+        {
+          "size": "34B",
+          "script_location": "yi",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Yi1.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "6B",
+          "script_location": "yi15",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "9B",
+          "script_location": "yi15",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "34B",
+          "script_location": "yi15",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Mistral",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "mistral",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Gemma",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "2B",
+          "script_location": "gemma",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "gemma",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Gemma2",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "9B",
+          "script_location": "gemma2",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "27B",
+          "script_location": "gemma2",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "MiniCPM",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "2B",
+          "script_location": "minicpm",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "MiniCPM3",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "4B",
+          "script_location": "minicpm3",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Phi3.5",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "mini-instruct",
+          "script_location": "phi35",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-Math",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "7B",
+          "script_location": "deepseek_math",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-R1-Distill-Qwen",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "1.5B",
+          "script_location": "deepseek_r1_distill_qwen",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "7B",
+          "script_location": "deepseek_r1_distill_qwen",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "14B",
+          "script_location": "deepseek_r1_distill_qwen",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "32B",
+          "script_location": "deepseek_r1_distill_qwen",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-R1-Distill-LLaMA",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "8B",
+          "script_location": "deepseek_r1_distill_llama",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "70B",
+          "script_location": "deepseek_r1_distill_llama",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Seed-OSS",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "36B",
+          "script_location": "seed_oss",
+          "sequence_length": "2k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Magistral",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "24B",
+          "script_location": "magistral",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "PLM",
+      "source": "MindSpeed-LLM",
+      "category": "稠密模型",
+      "variants": [
+        {
+          "size": "1.8B",
+          "script_location": "plm",
+          "sequence_length": "2k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen3 (MoE)",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "30B-A3B",
+          "script_location": "qwen3_moe",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "30B-A3B",
+          "script_location": "qwen3_moe",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "1x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        },
+        {
+          "size": "235B-A22B",
+          "script_location": "qwen3_moe",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "16x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "235B-A22B",
+          "script_location": "qwen3_moe",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "16x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen3-Next",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "80B-A3B",
+          "script_location": "qwen3_next",
+          "sequence_length": "16k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "80B-A3B",
+          "script_location": "qwen3_next",
+          "sequence_length": "16k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "4x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen3-Coder-Next",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "80B-A3B",
+          "script_location": "qwen3_coder_next",
+          "sequence_length": "16k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Qwen2 (MoE)",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "57B-A14B",
+          "script_location": "qwen2_moe",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Grok-1",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "40B",
+          "script_location": "grok-1",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "4x8",
+          "supported_version": "2.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "Mixtral",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "8x7B",
+          "script_location": "mixtral",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "8x22B",
+          "script_location": "mixtral",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        },
+        {
+          "size": "8x22B",
+          "script_location": "mixtral",
+          "sequence_length": "64k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V2",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "236B",
+          "script_location": "deepseek2",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "20x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V2-coder",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "236B",
+          "script_location": "deepseek2_coder",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "20x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V2-Lite",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "16B",
+          "script_location": "deepseek2_lite",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V2.5",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "236B",
+          "script_location": "deepseek25",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "20x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V3",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "671B",
+          "script_location": "deepseek3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "64x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V3.2",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "671B",
+          "script_location": "deepseek3.2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "32x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "DeepSeek-V4-Flash",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "284B",
+          "script_location": "deepseekv4-flash",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "MiniCPM (MoE)",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "8x2B",
+          "script_location": "minicpm",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "2.2.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Ling-mini-2.0",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "16B",
+          "script_location": "ling_v2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Ring",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "1T",
+          "script_location": "ling_v2",
+          "sequence_length": "32k",
+          "training_backend": "Mcore",
+          "cluster_scale": "32x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Phi3.5 (MoE)",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-instruct",
+          "script_location": "phi35",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "2x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Hunyuan",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "389B",
+          "script_location": "hunyuanLarge",
+          "sequence_length": "8k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "GPT4",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-175B",
+          "script_location": "gpt4",
+          "sequence_length": "128k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "2.3.0",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "GLM4.5-Air",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-106B",
+          "script_location": "glm45-air",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "GLM5",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-744B",
+          "script_location": "glm5",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "32x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Pass】"
+        }
+      ]
+    },
+    {
+      "name": "GLM5.2",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-744B",
+          "script_location": "glm52",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "32x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Step3.5-Flash",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-196B",
+          "script_location": "step35",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "12x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "LongCat",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-560B",
+          "script_location": "longcat",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "8x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "GPT-OSS",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-20B",
+          "script_location": "gpt_oss",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "1x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "MiniMax-M2.7",
+      "source": "MindSpeed-LLM",
+      "category": "稀疏模型",
+      "variants": [
+        {
+          "size": "MoE-229B",
+          "script_location": "minimax_m27",
+          "sequence_length": "4k",
+          "training_backend": "FSDP2",
+          "cluster_scale": "8x16",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Mamba2",
+      "source": "MindSpeed-LLM",
+      "category": "状态空间模型",
+      "variants": [
+        {
+          "size": "2.7B",
+          "script_location": "mamba2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        },
+        {
+          "size": "8B",
+          "script_location": "mamba2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Mamba2Hybrid",
+      "source": "MindSpeed-LLM",
+      "category": "状态空间模型",
+      "variants": [
+        {
+          "size": "8B",
+          "script_location": "mamba2",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "26.0.0",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    },
+    {
+      "name": "Mamba3",
+      "source": "MindSpeed-LLM",
+      "category": "状态空间模型",
+      "variants": [
+        {
+          "size": "/",
+          "script_location": "mamba3",
+          "sequence_length": "4k",
+          "training_backend": "Mcore",
+          "cluster_scale": "1x8",
+          "supported_version": "(current master)",
+          "contributor": "【Ascend】",
+          "certification": "【Test】"
+        }
+      ]
+    }
+  ]
+}

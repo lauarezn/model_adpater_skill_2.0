@@ -281,7 +281,8 @@ def api_data_backup():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     backup_info = []
     for f in ['models.json', 'models-lite.json', 'models-detail.json',
-              'train-models.json', 'hardware.json', 'crawl-status.json']:
+              'train-models.json', 'hardware.json', 'crawl-status.json',
+              'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json']:
         src = DATA_DIR / f
         if src.exists():
             dst = backup_dir / f'{timestamp}_{f}'
@@ -482,6 +483,11 @@ TRAIN_MODEL_URLS = {
 def enrich_train_model(m):
     """为训练模型补充部署链接等额外信息"""
     m = dict(m)  # 不修改原始数据
+    # 补充稳定 id（训练模型原始数据不含 id，前端详情弹窗依赖 id 定位）
+    if not m.get('id'):
+        import re as _re
+        _id = _re.sub(r'[^a-z0-9]', '-', m.get('name', '').lower()).strip('-')
+        m['id'] = _re.sub(r'-+', '-', _id)
     # 优先使用精确匹配，否则根据 source 生成通用链接
     name = m.get('name', '')
     if name in TRAIN_MODEL_URLS:
@@ -586,6 +592,237 @@ def api_sources():
     return jsonify(result)
 
 
+# 小模型部署链接映射（基于 GitCode ModelZoo-PyTorch 仓库路径）
+ACL_MODEL_BASE_URL = 'https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master'
+
+# ACL_PyTorch 分类 → 子目录映射（built-in）
+ACL_BUILTIN_CATEGORY_DIRS = {
+    '语音': 'audio',
+    '计算机视觉': 'cv',
+    '嵌入': 'embedding',
+    '具身智能': 'embodied_ai',
+    '基础模型': 'foundation_models',
+    'NLP': 'nlp',
+    'OCR': 'ocr',
+}
+
+# ACL_PyTorch 分类 → 子目录映射（contrib）
+ACL_CONTRIB_CATEGORY_DIRS = {
+    '语音': 'audio',
+    '计算机视觉': 'cv',
+    '知识图谱': 'knowledge',
+    'NLP': 'nlp',
+    '强化学习': 'rl',
+}
+
+# PyTorch 分类 → 子目录映射（built-in）
+PYTORCH_BUILTIN_CATEGORY_DIRS = {
+    '语音': 'audio',
+    '计算机视觉': 'cv',
+    '自动驾驶': 'autonoumous_driving',
+    '扩散模型': 'diffusion',
+    '基础模型': 'foundation',
+    'NLP': 'nlp',
+    '多模态': 'multimodal',
+    '强化学习': 'rl',
+}
+
+# PyTorch 分类 → 子目录映射（contrib）
+PYTORCH_CONTRIB_CATEGORY_DIRS = {
+    '语音': 'audio',
+    '计算机视觉': 'cv',
+    '自动驾驶': 'autonoumous_driving',
+    '扩散模型': 'diffusion',
+    '基础模型': 'foundation',
+    'NLP': 'nlp',
+    '多模态': 'multimodal',
+    '强化学习': 'rl',
+}
+
+
+def enrich_acl_model(m):
+    """为小模型补充部署链接"""
+    m = dict(m)  # 不修改原始数据
+    data_dir = m.get('data_dir', '')
+    folder = m.get('folder', '')
+    source = m.get('source', '')
+    category = m.get('category', '')
+
+    if data_dir == 'ACL_PyTorch' and folder:
+        # ACL_PyTorch: {source}/{category_en}/{folder}/README.md
+        sub_dir_map = ACL_BUILTIN_CATEGORY_DIRS if source == 'built-in' else ACL_CONTRIB_CATEGORY_DIRS
+        sub_dir = sub_dir_map.get(category, '')
+        if sub_dir:
+            m['model_url'] = f'{ACL_MODEL_BASE_URL}/{data_dir}/{source}/{sub_dir}/{folder}/README.md'
+        else:
+            m['model_url'] = f'{ACL_MODEL_BASE_URL}/{data_dir}/ModeList.md'
+    elif data_dir == 'PyTorch' and folder:
+        # PyTorch: {source}/{category_en}/{folder}/README.md
+        sub_dir_map = PYTORCH_BUILTIN_CATEGORY_DIRS if source == 'built-in' else PYTORCH_CONTRIB_CATEGORY_DIRS
+        sub_dir = sub_dir_map.get(category, '')
+        if sub_dir:
+            m['model_url'] = f'{ACL_MODEL_BASE_URL}/{data_dir}/{source}/{sub_dir}/{folder}/README.md'
+        else:
+            m['model_url'] = f'{ACL_MODEL_BASE_URL}/{data_dir}'
+    return m
+
+
+@app.route('/admin/api/acl-models')
+def api_acl_models():
+    """小模型数据（合并 ACL_PyTorch + PyTorch 两个目录）"""
+    acl_models = load_json(DATA_DIR / 'acl-pytorch-models.json') or []
+    pytorch_models = load_json(DATA_DIR / 'pytorch-models.json') or []
+
+    # 为每个模型标记数据源目录
+    for m in acl_models:
+        m['data_dir'] = 'ACL_PyTorch'
+    for m in pytorch_models:
+        m['data_dir'] = 'PyTorch'
+
+    models = acl_models + pytorch_models
+
+    search = request.args.get('search', '').lower()
+    category = request.args.get('category', '')
+    source = request.args.get('source', '')
+    data_dir = request.args.get('data_dir', '')
+    page = int(request.args.get('page', 1))
+    page_size = int(request.args.get('page_size', 50))
+
+    filtered = models
+    if search:
+        filtered = [m for m in filtered if search in m.get('name', '').lower()
+                    or search in m.get('folder', '').lower()
+                    or search in m.get('description', '').lower()]
+    if category and category != 'all':
+        filtered = [m for m in filtered if m.get('category') == category]
+    if source and source != 'all':
+        filtered = [m for m in filtered if m.get('source') == source]
+    if data_dir and data_dir != 'all':
+        filtered = [m for m in filtered if m.get('data_dir') == data_dir]
+
+    page_items, total, total_pages = paginate(filtered, page, page_size)
+
+    # 为每个模型补充部署链接
+    page_items = [enrich_acl_model(m) for m in page_items]
+
+    categories = sorted(list(set(m.get('category', '') for m in models if m.get('category'))))
+    sources = sorted(list(set(m.get('source', '') for m in models if m.get('source'))))
+    data_dirs = sorted(list(set(m.get('data_dir', '') for m in models if m.get('data_dir'))))
+
+    return jsonify({
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+        'total_pages': total_pages,
+        'models': page_items,
+        'categories': categories,
+        'sources': sources,
+        'data_dirs': data_dirs,
+        'acl_total': len(acl_models),
+        'pytorch_total': len(pytorch_models)
+    })
+
+
+def enrich_mindie_model(m):
+    """为 MindIE 模型补充部署链接"""
+    m = dict(m)  # 不修改原始数据
+    data_dir = m.get('data_dir', '')
+    folder = m.get('folder', '')
+    if data_dir and folder:
+        m['model_url'] = f'{ACL_MODEL_BASE_URL}/{data_dir}/{folder}/README.md'
+    return m
+
+
+@app.route('/admin/api/mindie-models')
+def api_mindie_models():
+    """MindIE 模型数据"""
+    mindie_models = load_json(DATA_DIR / 'mindie-models.json') or []
+
+    search = request.args.get('search', '').lower()
+    category = request.args.get('category', '')
+    source = request.args.get('source', '')
+    data_dir = request.args.get('data_dir', '')
+    page = int(request.args.get('page', 1))
+    page_size = int(request.args.get('page_size', 50))
+
+    filtered = mindie_models
+    if search:
+        filtered = [m for m in filtered if search in m.get('name', '').lower()
+                    or search in m.get('folder', '').lower()
+                    or search in m.get('description', '').lower()]
+    if category and category != 'all':
+        filtered = [m for m in filtered if m.get('category') == category]
+    if source and source != 'all':
+        filtered = [m for m in filtered if m.get('source') == source]
+    if data_dir and data_dir != 'all':
+        filtered = [m for m in filtered if m.get('data_dir') == data_dir]
+
+    page_items, total, total_pages = paginate(filtered, page, page_size)
+
+    # 为每个 MindIE 模型补充部署链接
+    page_items = [enrich_mindie_model(m) for m in page_items]
+
+    categories = sorted(list(set(m.get('category', '') for m in mindie_models if m.get('category'))))
+    sources = sorted(list(set(m.get('source', '') for m in mindie_models if m.get('source'))))
+    data_dirs = sorted(list(set(m.get('data_dir', '') for m in mindie_models if m.get('data_dir'))))
+
+    # 按目录统计
+    dir_stats = {}
+    for m in mindie_models:
+        d = m.get('data_dir', '未知')
+        dir_stats[d] = dir_stats.get(d, 0) + 1
+
+    return jsonify({
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+        'total_pages': total_pages,
+        'models': page_items,
+        'categories': categories,
+        'sources': sources,
+        'data_dirs': data_dirs,
+        'dir_stats': dir_stats
+    })
+
+
+# ============ 定时备份任务 ============
+
+def scheduled_backup():
+    """每天晚上 23:00 自动备份数据"""
+    backup_dir = DATA_DIR / 'backups'
+    backup_dir.mkdir(exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    backup_files = ['models.json', 'models-lite.json', 'models-detail.json',
+                    'train-models.json', 'hardware.json', 'crawl-status.json',
+                    'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json']
+    backed_up = []
+    for f in backup_files:
+        src = DATA_DIR / f
+        if src.exists():
+            dst = backup_dir / f'{timestamp}_{f}'
+            shutil.copy2(src, dst)
+            backed_up.append(f)
+    print(f"[{timestamp}] ⏰ 定时备份完成: {len(backed_up)} 个文件 ({', '.join(backed_up)})")
+
+
+def run_daily_backup():
+    """定时线程：每天 23:00 执行备份"""
+    while True:
+        now = datetime.now()
+        # 计算到下一次 23:00 的秒数
+        target = now.replace(hour=23, minute=0, second=0, microsecond=0)
+        if now >= target:
+            # 如果已经过了今天的 23:00，则计算到明天
+            from datetime import timedelta
+            target = target + timedelta(days=1)
+        wait_seconds = (target - now).total_seconds()
+        threading.Event().wait(wait_seconds)
+        try:
+            scheduled_backup()
+        except Exception as e:
+            print(f"[{datetime.now().strftime('%Y%m%d_%H%M%S')}] ⏰ 定时备份失败: {e}")
+
+
 # ============ 首页静态文件路由（放在 Admin 路由之后）============
 
 @app.route('/<path:path>')
@@ -601,6 +838,11 @@ def static_files(path):
 
 # ============ 启动 ============
 if __name__ == '__main__':
+    # 启动定时备份线程（每天 23:00 自动备份）
+    backup_thread = threading.Thread(target=run_daily_backup, daemon=True)
+    backup_thread.start()
+    print("⏰ 定时备份已启动（每天 23:00 自动备份）")
+
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
     print(f"🚀 服务启动于 http://localhost:{port}")
     print(f"   📋 首页: http://localhost:{port}/")

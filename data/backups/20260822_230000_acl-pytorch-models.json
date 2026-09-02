@@ -1,0 +1,3236 @@
+[
+  {
+    "name": "AASIST-L",
+    "folder": "AASIST-L_for_Pytorch",
+    "description": "音频反欺骗/说话人验证",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Canary-1B",
+    "folder": "Canary-1B",
+    "description": "NVIDIA NeMo 多语种 ASR",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Conformer",
+    "folder": "Conformer_for_Pytorch",
+    "description": "Conformer 语音识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Conformer (POC)",
+    "folder": "Conformer_for_Pytorch_poc",
+    "description": "Conformer POC 验证",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "CosyVoice",
+    "folder": "CosyVoice",
+    "description": "多语言语音合成",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "CosyVoice2",
+    "folder": "CosyVoice2",
+    "description": "CosyVoice 第二代",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "CosyVoice3",
+    "folder": "CosyVoice3",
+    "description": "CosyVoice 第三代",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "DiariZen",
+    "folder": "DiariZen",
+    "description": "说话人日志（speaker diarization）",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "EspNet",
+    "folder": "EspNet_for_Pytoch",
+    "description": "ESPnet 端到端语音处理",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "FastSpeech2",
+    "folder": "FastSpeech2_for_PyTorch",
+    "description": "FastSpeech2 TTS",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Fun-ASR-Nano-2512",
+    "folder": "Fun-ASR-Nano-2512",
+    "description": "FunASR Nano 语音识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "HiFiGAN",
+    "folder": "HiFiGAN_for_PyTorch",
+    "description": "HiFiGAN 声码器",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Index-TTS-vLLM-v1",
+    "folder": "Index-TTS-vLLM-v1",
+    "description": "IndexTTS vLLM v1",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Index-TTS-vLLM-v2",
+    "folder": "Index-TTS-vLLM-v2",
+    "description": "IndexTTS vLLM v2",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "IndexTTS-vLLM-v1.5",
+    "folder": "IndexTTS-vLLM",
+    "description": "IndexTTS vLLM",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "LSTM",
+    "folder": "LSTM",
+    "description": "LSTM 语音识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "MMAudio",
+    "folder": "MMAudio",
+    "description": "多模态音频生成",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Paraformer",
+    "folder": "Paraformer",
+    "description": "Paraformer 非自回归 ASR",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "RawNet2",
+    "folder": "RawNet2_for_Pytorch",
+    "description": "RawNet2 说话人验证",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "SenseVoice",
+    "folder": "SenseVoice",
+    "description": "端到端语音理解",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Step_audio2_mini",
+    "folder": "Step_audio2_mini",
+    "description": "端到端语音对话",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Tacotron2 (Dyn)",
+    "folder": "Tacotron2_dyn_for_Pytorch",
+    "description": "Tacotron2 动态shape",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Tacotron2",
+    "folder": "Tacotron2_for_Pytorch",
+    "description": "Tacotron2 TTS",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "TDNN",
+    "folder": "TDNN_for_Pytorch",
+    "description": "TDNN 声纹识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Wenet2",
+    "folder": "Wenet2_for_Pytorch",
+    "description": "WeNet2 端到端 ASR",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "whisper",
+    "folder": "whisper",
+    "description": "Whisper 语音识别",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "YingMusic-SVC",
+    "folder": "YingMusic-SVC_for_Pytorch",
+    "description": "零样本歌声转换（SVC）",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Zipformer",
+    "folder": "Zipformer",
+    "description": "Zipformer 非流式 ASR",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "Zipformer (Streaming)",
+    "folder": "Zipformer_streaming",
+    "description": "Zipformer 流式 ASR",
+    "category": "语音",
+    "source": "built-in"
+  },
+  {
+    "name": "3DUnet",
+    "folder": "3DUnet_for_PyTorch",
+    "description": "3D 医学图像分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ArcFace",
+    "folder": "ArcFace_for_PyTorch",
+    "description": "人脸识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Buffalo_l",
+    "folder": "Buffalo_l",
+    "description": "InsightFace 人脸识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CascadeRCNN-DCN",
+    "folder": "CascadeRCNN-DCN",
+    "description": "级联 RCNN + DCN",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CascadeRCNN-DCN-101",
+    "folder": "CascadeRCNN-DCN-101_for_Pytorch",
+    "description": "级联 RCNN DCN101",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CenterNet",
+    "folder": "CenterNet_for_Pytorch",
+    "description": "CenterNet 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CRAFT",
+    "folder": "CRAFT_for_Pytorch",
+    "description": "CRAFT 文字检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CRNN (BuiltIn)",
+    "folder": "CRNN_BuiltIn_for_Pytorch",
+    "description": "CRNN 文字识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CRNN (Dynamic)",
+    "folder": "CRNN_Dynamic_for_PyTorch",
+    "description": "CRNN 动态 shape",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "CRNN (Meijieru)",
+    "folder": "CRNN_meijieru_for_Pytorch",
+    "description": "CRNN meijieru 版本",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "D-FINE",
+    "folder": "D-FINE",
+    "description": "D-FINE 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DBNet (MobileNetV3)",
+    "folder": "DBNet_MobileNetV3",
+    "description": "DBNet 文字检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DBNet (POC)",
+    "folder": "DBNet_MobileNetV3_for_POC",
+    "description": "DBNet POC",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DB (Dynamic)",
+    "folder": "DB_Dynamic_for_PyTorch",
+    "description": "DBNet 动态 shape",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "deepctr",
+    "folder": "deepctr",
+    "description": "点击率预估",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Deepmar",
+    "folder": "Deepmar_for_Pytorch",
+    "description": "DeepMAR 行人属性识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Deepsort",
+    "folder": "Deepsort_for_Pytorch",
+    "description": "DeepSort 多目标跟踪",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Densenet121",
+    "folder": "Densenet121_Pytorch_Infer",
+    "description": "DenseNet121 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DeOldify",
+    "folder": "DeOldify",
+    "description": "图像着色",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DG-Net",
+    "folder": "DG-Net",
+    "description": "行人重识别生成",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "DPN131",
+    "folder": "DPN131_for_Pytorch",
+    "description": "DPN131 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EDSR (Dynamic)",
+    "folder": "EDSR_Dynamic_for_PyTorch",
+    "description": "EDSR 动态超分",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNetV2",
+    "folder": "EfficientNetV2_for_Pytorch",
+    "description": "EfficientNetV2",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNetV2 (POC)",
+    "folder": "EfficientNetV2_for_Pytorch_poc",
+    "description": "EfficientNetV2 POC",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet (b7)",
+    "folder": "EfficientNet_b7_for_Pytorch",
+    "description": "EfficientNet b7",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "EfficientNet",
+    "folder": "EfficientNet_for_Pytorch",
+    "description": "EfficientNet",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "F3Net",
+    "folder": "F3Net",
+    "description": "F3Net 显著性目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "FCENet",
+    "folder": "FCENet_for_PyTorch",
+    "description": "FCENet 任意形状文字检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "FLAVR",
+    "folder": "FLAVR_for_PyTorch",
+    "description": "FLAVR 视频插帧",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Flownet2",
+    "folder": "Flownet2_for_Pytorch",
+    "description": "FlowNet2 光流估计",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "FocalFormer3D",
+    "folder": "FocalFormer3D_for_Pytorch",
+    "description": "FocalFormer3D 3D 检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "GLIP",
+    "folder": "GLIP",
+    "description": "GLIP 开放词汇检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "GLIP_STATIC",
+    "folder": "GLIP_STATIC",
+    "description": "GLIP 静态图",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "GoogleNet",
+    "folder": "GoogleNet_for_Pytorch",
+    "description": "GoogLeNet 图像分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "GroundingDINO",
+    "folder": "GroundingDINO",
+    "description": "Grounding DINO",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "HRNet (mmlab)",
+    "folder": "HRNet_mmlab_for_pytorch",
+    "description": "HRNet 关键点",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "I3D",
+    "folder": "I3D_for_Pytorch",
+    "description": "I3D 视频分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "I3D (nonlocal)",
+    "folder": "I3D_nonlocal",
+    "description": "I3D + Non-local",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "InceptionV3",
+    "folder": "InceptionV3_for_Pytorch",
+    "description": "InceptionV3",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "InceptionV4",
+    "folder": "InceptionV4_for_Pytorch",
+    "description": "InceptionV4",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "InternImage (Detection)",
+    "folder": "InternImage_detection_for_Pytorch",
+    "description": "InternImage 检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "InternImage (Segmentation)",
+    "folder": "InternImage_segmentation_for_Pytorch",
+    "description": "InternImage 分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "LPRNet",
+    "folder": "LPRNet_for_PyTorch",
+    "description": "LPRNet 车牌识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MGN",
+    "folder": "MGN_for_Pytorch",
+    "description": "MGN 行人重识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MobileNetV2",
+    "folder": "MobileNetV2_for_Pytorch",
+    "description": "MobileNetV2",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MobileNetV3",
+    "folder": "MobileNetV3_for_Pytorch",
+    "description": "MobileNetV3",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "MuseTalk",
+    "folder": "MuseTalk",
+    "description": "MuseTalk 数字人口型生成",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Pelee",
+    "folder": "Pelee_for_Pytorch",
+    "description": "Pelee 目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "PSENet",
+    "folder": "PSENet_for_Pytorch",
+    "description": "PSENet 文字检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "PSENet_ResNet (PP)",
+    "folder": "PSENet_ResNet_for_PP",
+    "description": "PSENet PP 版",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "R(2+1)D",
+    "folder": "R(2+1)D_for_Pytorch",
+    "description": "R(2+1)D 视频分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RAFT_Stereo",
+    "folder": "RAFT_Stereo_for_Pytorch",
+    "description": "RAFT Stereo 深度估计",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RIFE",
+    "folder": "RIFE_for_Pytorch",
+    "description": "RIFE 视频插帧",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Res2Net_v1b_101",
+    "folder": "Res2Net_v1b_101_for_PyTorch",
+    "description": "Res2Net",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet101",
+    "folder": "Resnet101_Pytorch_Infer",
+    "description": "ResNet101",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet18",
+    "folder": "Resnet18_for_PyTorch",
+    "description": "ResNet18",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet34",
+    "folder": "Resnet34_for_Pytorch",
+    "description": "ResNet34",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet50 (mlperf)",
+    "folder": "Resnet50_mlperf",
+    "description": "ResNet50 MLPerf",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "resnet50 (mmlab)",
+    "folder": "resnet50_mmlab_for_pytorch",
+    "description": "ResNet50 mmcls",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "resnet50 (mmlab POC)",
+    "folder": "resnet50_mmlab_for_pytorch_for_POC",
+    "description": "ResNet50 mmcls POC",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet50",
+    "folder": "Resnet50_Pytorch_Infer",
+    "description": "ResNet50 推理",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Resnet50 (POC)",
+    "folder": "Resnet50_Pytorch_Infer_poc",
+    "description": "ResNet50 POC",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ResNeXt50",
+    "folder": "ResNeXt50_for_Pytorch",
+    "description": "ResNeXt50",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Retinanet",
+    "folder": "Retinanet_for_Pytorch",
+    "description": "RetinaNet",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Retinanet (Resnet18)",
+    "folder": "Retinanet_Resnet18",
+    "description": "RetinaNet ResNet18",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RF-DETR",
+    "folder": "RF-DETR",
+    "description": "RF-DETR 实时检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "RT-DETRv2",
+    "folder": "RT-DETRv2",
+    "description": "RT-DETRv2 实时检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SAM",
+    "folder": "SAM",
+    "description": "Segment Anything",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SAM2",
+    "folder": "SAM2",
+    "description": "SAM2",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SAM3",
+    "folder": "SAM3",
+    "description": "SAM3",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SCNet",
+    "folder": "SCNet",
+    "description": "SCNet",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SE-SSD",
+    "folder": "SE-SSD_for_PyTorch",
+    "description": "SE-SSD 点云检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SE_ResNet50",
+    "folder": "SE_ResNet50_Pytorch_Infer",
+    "description": "SE-ResNet50",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SFA3D",
+    "folder": "SFA3D_for_Pytorch",
+    "description": "SFA3D 单目 3D 检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Shufflenetv2",
+    "folder": "Shufflenetv2_for_Pytorch",
+    "description": "ShuffleNetV2",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SSD (Resnet34 POC)",
+    "folder": "SSD_resnet34_for_POC",
+    "description": "SSD ResNet34 POC",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "STGCN",
+    "folder": "STGCN_for_Pytorch",
+    "description": "ST-GCN 骨架动作识别",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SuperGlue_with_SuperPoint",
+    "folder": "SuperGlue_with_SuperPoint_for_Pytorch",
+    "description": "SuperGlue + SuperPoint",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "SwinTransformer",
+    "folder": "SwinTransformer_for_Pytorch",
+    "description": "Swin Transformer",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "T2vec",
+    "folder": "T2vec_for_Pytorch",
+    "description": "T2vec 轨迹表征",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "TSM (sthv2)",
+    "folder": "TSM_sthv2_for_Pytorch",
+    "description": "TSM 视频分类",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Twins-SVT-L",
+    "folder": "Twins-SVT-L",
+    "description": "Twins-SVT",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "U2-Net",
+    "folder": "U2-Net_for_PyTorch",
+    "description": "U2-Net 显著性检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "VGG16_SSD",
+    "folder": "VGG16_SSD_for_PyTorch",
+    "description": "VGG16 SSD",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ViTDet",
+    "folder": "ViTDet_for_Pytorch",
+    "description": "ViTDet 检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Wide_ResNet50_2",
+    "folder": "Wide_ResNet50_2_for_Pytorch",
+    "description": "Wide-ResNet50",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YolactEdge",
+    "folder": "YolactEdge_for_PyTorch",
+    "description": "YOLACT-Edge 实例分割",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YoloF",
+    "folder": "YoloF_for_Pytorch",
+    "description": "YOLOF",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Yolov4",
+    "folder": "Yolov4_for_Pytorch",
+    "description": "YOLOv4",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YoloXs",
+    "folder": "YoloXs_for_Pytorch",
+    "description": "YOLOX-s",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "YoloX_Tiny",
+    "folder": "YoloX_Tiny_for_Pytorch",
+    "description": "YOLOX-tiny",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "LoFTR",
+    "folder": "LoFTR",
+    "description": "LoFTR目标检测",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "LocateAnything-3B",
+    "folder": "LocateAnything-3B",
+    "description": "LocateAnything-3B 视觉定位",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "Dinov3",
+    "folder": "Dinov3",
+    "description": "Dinov3特征提取",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "ICAA",
+    "folder": "ICAA",
+    "description": "色彩评估",
+    "category": "计算机视觉",
+    "source": "built-in"
+  },
+  {
+    "name": "bge-m3",
+    "folder": "bge-m3",
+    "description": "BGE M3 多语种嵌入",
+    "category": "嵌入",
+    "source": "built-in"
+  },
+  {
+    "name": "bge-reranker-v2-m3",
+    "folder": "bge-reranker-v2-m3",
+    "description": "BGE 重排序",
+    "category": "嵌入",
+    "source": "built-in"
+  },
+  {
+    "name": "jina-embeddings-v2-base-code",
+    "folder": "jina-embeddings-v2-base-code",
+    "description": "Jina 代码嵌入",
+    "category": "嵌入",
+    "source": "built-in"
+  },
+  {
+    "name": "jina-embeddings-v2-base-zh",
+    "folder": "jina-embeddings-v2-base-zh",
+    "description": "Jina 中文嵌入",
+    "category": "嵌入",
+    "source": "built-in"
+  },
+  {
+    "name": "3DDiffusion",
+    "folder": "3DDiffusion",
+    "description": "3D点云的机器人视觉模仿学习",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "GenPosePlus",
+    "folder": "GenPosePlus",
+    "description": "GenPose+ 6D 抓取位姿估计",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "GraspNet",
+    "folder": "GraspNet",
+    "description": "GraspNet 抓取检测",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "GR00T_1d6",
+    "folder": "GR00T_1d6",
+    "description": "NVIDIA Isaac GR00T n1.6 基础模型",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "GR00T_1d7",
+    "folder": "GR00T_1d7",
+    "description": "NVIDIA Isaac GR00T n1.7 基础模型",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "pi0",
+    "folder": "vla/pi0",
+    "description": "π0 视觉-语言-动作模型",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "pi05",
+    "folder": "vla/pi05_openpi",
+    "description": "π0.5 视觉-语言-动作模型",
+    "category": "具身智能",
+    "source": "built-in"
+  },
+  {
+    "name": "blip",
+    "folder": "blip",
+    "description": "BLIP 图文多模态",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "blip_vqa",
+    "folder": "blip_vqa",
+    "description": "BLIP 视觉问答",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Chinese_CLIP",
+    "folder": "Chinese_CLIP",
+    "description": "中文 CLIP",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "ControlNet",
+    "folder": "ControlNet_for_PyTorch",
+    "description": "ControlNet 条件生成",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "DiT",
+    "folder": "DiT",
+    "description": "DiT 扩散 Transformer",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "SigLIP2",
+    "folder": "SigLIP2",
+    "description": "SigLIP2 图文表征",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "TabPFN",
+    "folder": "TabPFN_for_Pytorch",
+    "description": "表格数据基础模型分类推理",
+    "category": "基础模型",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert_Base_Cased_SST2",
+    "folder": "Bert_Base_Cased_SST2",
+    "description": "BERT 文本分类",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert_Base_Chinese",
+    "folder": "Bert_Base_Chinese_for_Pytorch",
+    "description": "中文 BERT",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert_Base_Uncased",
+    "folder": "Bert_Base_Uncased_for_Pytorch",
+    "description": "英文 BERT",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Bert_Uncased_Huggingface",
+    "folder": "Bert_Uncased_Huggingface",
+    "description": "HuggingFace BERT",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "BiLSTM_CRF",
+    "folder": "BiLSTM_CRF_PyTorch",
+    "description": "BiLSTM-CRF 序列标注",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "ChemBerta",
+    "folder": "ChemBerta_for_Pytorch",
+    "description": "ChemBerta 分子性质预测模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "chronos-2",
+    "folder": "chronos-2",
+    "description": "Chronos-2 时序预测",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "CNN_Transformer",
+    "folder": "CNN_Transformer_for_Pytorch",
+    "description": "CNN + Transformer",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Ernie3",
+    "folder": "Ernie3_for_Pytorch",
+    "description": "ERNIE3 预训练",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "GPT2",
+    "folder": "GPT2_for_Pytorch",
+    "description": "GPT-2",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "MiniCPM",
+    "folder": "MiniCPM_for_Pytorch",
+    "description": "MiniCPM",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Pet",
+    "folder": "Pet_for_Pytorch",
+    "description": "PET 文本分类",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "ProtBert",
+    "folder": "ProtBert_for_Pytorch",
+    "description": "ProtBERT 蛋白语言模型",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Qwen2",
+    "folder": "Qwen2_for_Pytorch",
+    "description": "Qwen2",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "textcnn",
+    "folder": "textcnn",
+    "description": "TextCNN",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "TransformerXL",
+    "folder": "TransformerXL_for_Pytorch",
+    "description": "Transformer-XL",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "Uie",
+    "folder": "Uie_for_Pytorch",
+    "description": "UIE 通用信息抽取",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "VilBert",
+    "folder": "VilBert_for_Pytorch",
+    "description": "ViLBERT 多模态",
+    "category": "NLP",
+    "source": "built-in"
+  },
+  {
+    "name": "CRNN (Sierkinhane)",
+    "folder": "CRNN/CRNN_Sierkinhane_for_Pytorch",
+    "description": "CRNN 文字识别",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "DBNET",
+    "folder": "DBNET",
+    "description": "DBNet 文字检测",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "MinerU",
+    "folder": "MinerU",
+    "description": "MinerU 文档解析",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PaddleOCR-VL",
+    "folder": "PaddleOCR-VL",
+    "description": "PaddleOCR-VL 多语种",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PaddleOCR-VL-1.5",
+    "folder": "PaddleOCR-VL-1.5",
+    "description": "PaddleOCR-VL 1.5",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PP-DocLayoutV2",
+    "folder": "PP-DocLayoutV2",
+    "description": "文档版面分析",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PP-DocLayoutV3",
+    "folder": "PP-DocLayoutV3",
+    "description": "文档版面分析 V3",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PP-OCRv4_server_seal_det",
+    "folder": "PP-OCRv4_server_seal_det",
+    "description": "印章文字检测",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "PPOCRv5",
+    "folder": "PPOCRv5",
+    "description": "PaddleOCR v5",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "UVDoc",
+    "folder": "UVDoc",
+    "description": "UVDoc 文档矫正",
+    "category": "OCR",
+    "source": "built-in"
+  },
+  {
+    "name": "data2vec",
+    "folder": "data2vec",
+    "description": "data2vec 自监督语音",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Deepspeech2",
+    "folder": "Deepspeech2",
+    "description": "DeepSpeech2",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Ecapa_Tdnn",
+    "folder": "Ecapa_Tdnn",
+    "description": "ECAPA-TDNN 声纹",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "FastPitch",
+    "folder": "FastPitch",
+    "description": "FastPitch TTS",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "jasper",
+    "folder": "jasper",
+    "description": "Jasper ASR",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "LSTM",
+    "folder": "LSTM",
+    "description": "LSTM 语音识别",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "rawnet2",
+    "folder": "rawnet2",
+    "description": "RawNet2",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "SenseVoice",
+    "folder": "SenseVoice",
+    "description": "端到端语音理解",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Speech-Transformer",
+    "folder": "Speech-Transformer",
+    "description": "语音 Transformer",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Tacotron2",
+    "folder": "Tacotron2",
+    "description": "Tacotron2 TTS",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "tdnn",
+    "folder": "tdnn",
+    "description": "TDNN 声纹",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "wav2lip_ID100400",
+    "folder": "wav2lip_ID100400",
+    "description": "Wav2Lip 唇形同步",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "wav2vec2",
+    "folder": "wav2vec2",
+    "description": "wav2vec 2.0",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "WaveGlow",
+    "folder": "WaveGlow",
+    "description": "WaveGlow 声码器",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "Waveglow-backup",
+    "folder": "Waveglow-backup",
+    "description": "WaveGlow 备份",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "WeNet",
+    "folder": "WeNet",
+    "description": "WeNet 端到端 ASR",
+    "category": "语音",
+    "source": "contrib"
+  },
+  {
+    "name": "3d_attention_net",
+    "folder": "3d_attention_net",
+    "description": "3D 注意力网络",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3d_resnets",
+    "folder": "3d_resnets",
+    "description": "3D ResNet 视频分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlexNet",
+    "folder": "AlexNet",
+    "description": "AlexNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "baseline_dino_resnet50",
+    "folder": "baseline_dino_resnet50",
+    "description": "DINO ResNet50 基线",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Beit",
+    "folder": "Beit",
+    "description": "BEiT 视觉 Transformer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Big-transfer",
+    "folder": "Big-transfer",
+    "description": "BiT 大迁移学习",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BMN",
+    "folder": "BMN",
+    "description": "BMN 时序动作提案",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "C3D",
+    "folder": "C3D",
+    "description": "C3D 视频分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_ppocr_mobile_v2.0_cls",
+    "folder": "ch_ppocr_mobile_v2.0_cls",
+    "description": "PP-OCRv2 方向分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Conformer-base",
+    "folder": "Conformer-base",
+    "description": "Conformer 视觉",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Conformer_Ti",
+    "folder": "Conformer_Ti",
+    "description": "Conformer Ti",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "convmixer_1536_20",
+    "folder": "convmixer_1536_20",
+    "description": "ConvMixer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ConvNext",
+    "folder": "ConvNext_for_Pytorch",
+    "description": "ConvNeXt",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CSPResneXt50",
+    "folder": "CSPResneXt50",
+    "description": "CSP-ResNeXt50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CSWin-Transformer",
+    "folder": "CSWin-Transformer",
+    "description": "CSWin Transformer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Deit_Small",
+    "folder": "Deit_Small",
+    "description": "DeiT-Small",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DPN131",
+    "folder": "DPN131",
+    "description": "DPN131",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Efficient-3DCNNs",
+    "folder": "Efficient-3DCNNs",
+    "description": "Efficient 3D CNN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B1",
+    "folder": "EfficientNet-B1",
+    "description": "EfficientNet B1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B3",
+    "folder": "EfficientNet-B3",
+    "description": "EfficientNet B3",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientNet-B5",
+    "folder": "EfficientNet-B5",
+    "description": "EfficientNet B5",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FixRes",
+    "folder": "FixRes",
+    "description": "FixRes",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FocalTransformer",
+    "folder": "FocalTransformer",
+    "description": "Focal Transformer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GaitSet",
+    "folder": "GaitSet",
+    "description": "GaitSet 步态识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GENet",
+    "folder": "GENet",
+    "description": "GENet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GhostNet1.0x",
+    "folder": "GhostNet1.0x",
+    "description": "GhostNet 1.0x",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GloRe",
+    "folder": "GloRe",
+    "description": "GloRe 全局推理",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GoogleNet",
+    "folder": "GoogleNet",
+    "description": "GoogLeNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HRNet-Image-Classification",
+    "folder": "HRNet-Image-Classification",
+    "description": "HRNet 分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "InceptionResnetV2",
+    "folder": "InceptionResnetV2",
+    "description": "Inception-ResNetV2",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Inception_V4",
+    "folder": "Inception_V4",
+    "description": "InceptionV4",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "LResNet100E-IR",
+    "folder": "LResNet100E-IR",
+    "description": "LResNet100E-IR 人脸",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "LV-Vit",
+    "folder": "LV-Vit",
+    "description": "LV-ViT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MAE",
+    "folder": "MAE",
+    "description": "MAE 掩码自编码",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MaskRcnn",
+    "folder": "MaskRcnn",
+    "description": "Mask RCNN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Mnasnet1_0",
+    "folder": "Mnasnet1_0",
+    "description": "MnasNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MobileNet-v1",
+    "folder": "MobileNet-v1",
+    "description": "MobileNetV1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MobileNetV3_large_100",
+    "folder": "MobileNetV3_large_100",
+    "description": "MobileNetV3 Large",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Moco-v2",
+    "folder": "Moco-v2",
+    "description": "MoCo v2",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "OSNet",
+    "folder": "OSNet",
+    "description": "OSNet 行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PAMTRI",
+    "folder": "PAMTRI",
+    "description": "PAMTRI 车辆重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "pnasnet5large",
+    "folder": "pnasnet5large",
+    "description": "PNASNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PointNet",
+    "folder": "PointNet",
+    "description": "PointNet 点云",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PointNetCNN",
+    "folder": "PointNetCNN",
+    "description": "PointNet++",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pointnetplus",
+    "folder": "Pointnetplus",
+    "description": "PointNet++",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "R(2+1)D",
+    "folder": "R(2+1)D",
+    "description": "R(2+1)D",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RARE_MobileNetV3",
+    "folder": "RARE_MobileNetV3",
+    "description": "RARE 识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RegNetX-1.6GF",
+    "folder": "RegNetX-1.6GF",
+    "description": "RegNetX",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RegNetY-1.6GF",
+    "folder": "RegNetY-1.6GF",
+    "description": "RegNetY",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ReID",
+    "folder": "ReID_for_Pytorch",
+    "description": "行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RepVGG",
+    "folder": "RepVGG",
+    "description": "RepVGG",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Res2Net101_v1b",
+    "folder": "Res2Net101_v1b",
+    "description": "Res2Net101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNeSt50",
+    "folder": "ResNeSt50",
+    "description": "ResNeSt",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet101",
+    "folder": "ResNet101",
+    "description": "ResNet101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet152",
+    "folder": "ResNet152",
+    "description": "ResNet152",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet18",
+    "folder": "ResNet18",
+    "description": "ResNet18",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNet34",
+    "folder": "ResNet34",
+    "description": "ResNet34",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Resnetvd",
+    "folder": "Resnetvd",
+    "description": "ResNet-vd",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNext101_32x8d",
+    "folder": "ResNext101_32x8d",
+    "description": "ResNeXt101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ResNeXt50",
+    "folder": "ResNeXt50",
+    "description": "ResNeXt50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Se-Resnext101",
+    "folder": "Se-Resnext101",
+    "description": "SE-ResNeXt101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SE-ResNeXt50_32x4d",
+    "folder": "SE-ResNeXt50_32x4d",
+    "description": "SE-ResNeXt50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SENet",
+    "folder": "SENet",
+    "description": "SE-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ShiftViT",
+    "folder": "ShiftViT",
+    "description": "ShiftViT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Shufflenetv1",
+    "folder": "Shufflenetv1",
+    "description": "ShuffleNetV1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Shufflenetv2+",
+    "folder": "Shufflenetv2+",
+    "description": "ShuffleNetV2+",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SimCLR_inference",
+    "folder": "SimCLR_inference",
+    "description": "SimCLR 推理",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Sknet50",
+    "folder": "Sknet50",
+    "description": "SK-Net50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "sMLP",
+    "folder": "sMLP",
+    "description": "sMLP",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SPACH",
+    "folder": "SPACH",
+    "description": "SPACH",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "spnasnet_100",
+    "folder": "spnasnet_100",
+    "description": "SP-NASNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Squeezenet1_1",
+    "folder": "Squeezenet1_1",
+    "description": "SqueezeNet 1.1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Starnet_Resnet34",
+    "folder": "Starnet_Resnet34",
+    "description": "StarNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Swin-Transformer_tiny",
+    "folder": "Swin-Transformer_tiny",
+    "description": "Swin-Tiny",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "T2T-ViT",
+    "folder": "T2T-ViT",
+    "description": "T2T-ViT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TimeSformer",
+    "folder": "TimeSformer",
+    "description": "TimeSformer 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TNT",
+    "folder": "TNT",
+    "description": "TNT Transformer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TResNet",
+    "folder": "TResNet",
+    "description": "TResNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Twins-PCPVT-S",
+    "folder": "Twins-PCPVT-S",
+    "description": "Twins-PCPVT-S",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VAN",
+    "folder": "VAN",
+    "description": "VAN 视觉注意力",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VGG16",
+    "folder": "VGG16",
+    "description": "VGG16",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VGG19",
+    "folder": "VGG19",
+    "description": "VGG19",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Video-Swin-Transformer",
+    "folder": "Video-Swin-Transformer",
+    "description": "Video Swin",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ViT",
+    "folder": "ViT",
+    "description": "ViT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "vit-small",
+    "folder": "vit-small",
+    "description": "ViT-Small",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "volo",
+    "folder": "volo",
+    "description": "VOLO",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "vovnet39",
+    "folder": "vovnet39",
+    "description": "VoVNet-39",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Wide_ResNet101_2",
+    "folder": "Wide_ResNet101_2",
+    "description": "Wide-ResNet101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Wide_ResNet50_2",
+    "folder": "Wide_ResNet50_2_for_Pytorch",
+    "description": "Wide-ResNet50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "xception",
+    "folder": "xception",
+    "description": "Xception",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "xcit",
+    "folder": "xcit",
+    "description": "XCiT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3DUnet",
+    "folder": "3DUnet",
+    "description": "3D U-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AdvancedEAST",
+    "folder": "AdvancedEAST",
+    "description": "Advanced EAST",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlphaPose",
+    "folder": "AlphaPose",
+    "description": "AlphaPose 姿态",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BSN",
+    "folder": "BSN",
+    "description": "BSN 时序动作提案",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade-RCNN-Resnet101-FPN-DCN",
+    "folder": "Cascade-RCNN-Resnet101-FPN-DCN",
+    "description": "Cascade RCNN DCN101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade-RCNN-Resnet50-FPN",
+    "folder": "Cascade-RCNN-Resnet50-FPN",
+    "description": "Cascade RCNN R50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_Mask_Rcnn_SwinS",
+    "folder": "Cascade_Mask_Rcnn_SwinS",
+    "description": "Cascade Mask RCNN Swin-S",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_RCNN_R101",
+    "folder": "Cascade_RCNN_R101",
+    "description": "Cascade RCNN R101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_RCNN_R101_FPN",
+    "folder": "Cascade_RCNN_R101_FPN",
+    "description": "Cascade RCNN R101 FPN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CenterFace",
+    "folder": "CenterFace",
+    "description": "CenterFace 人脸",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CenterNet",
+    "folder": "CenterNet",
+    "description": "CenterNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_PP-OCRv2_det",
+    "folder": "ch_PP-OCRv2_det",
+    "description": "PP-OCRv2 中文检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_PP-OCRv3_det",
+    "folder": "ch_PP-OCRv3_det",
+    "description": "PP-OCRv3 中文检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_ppocr_server_v2.0_det",
+    "folder": "ch_ppocr_server_v2.0_det",
+    "description": "PP-OCRv2 server 检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CTPN",
+    "folder": "CTPN",
+    "description": "CTPN 文字检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Deepspeech",
+    "folder": "Deepspeech",
+    "description": "Deepspeech",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Detr",
+    "folder": "Detr",
+    "description": "DETR 端到端检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DSFD",
+    "folder": "DSFD",
+    "description": "DSFD 人脸检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EAST (MobileNetV3)",
+    "folder": "EAST_MobileNetV3",
+    "description": "EAST MobileNetV3",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EAST (ResNet50_vd)",
+    "folder": "EAST_ResNet50_vd",
+    "description": "EAST ResNet50_vd",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientDetD0",
+    "folder": "EfficientDetD0",
+    "description": "EfficientDet D0",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EfficientDetD7",
+    "folder": "EfficientDetD7",
+    "description": "EfficientDet D7",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "en_PP-OCRv3_det",
+    "folder": "en_PP-OCRv3_det",
+    "description": "PP-OCRv3 英文检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FairMOT",
+    "folder": "FairMOT",
+    "description": "FairMOT 多目标跟踪",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Faster_R-CNN_DCN_Res101",
+    "folder": "Faster_R-CNN_DCN_Res101",
+    "description": "Faster RCNN DCN101",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Faster_R-CNN_DCN_Res50",
+    "folder": "Faster_R-CNN_DCN_Res50",
+    "description": "Faster RCNN DCN50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Faster_R-CNN_ResNet50",
+    "folder": "Faster_R-CNN_ResNet50",
+    "description": "Faster RCNN R50",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FCENet",
+    "folder": "FCENet",
+    "description": "FCENet 文字检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Fcos",
+    "folder": "Fcos",
+    "description": "FCOS",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FOTS",
+    "folder": "FOTS",
+    "description": "FOTS 文字检测+识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Fsaf",
+    "folder": "Fsaf",
+    "description": "FSAF",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GFocalV2",
+    "folder": "GFocalV2",
+    "description": "GFocal v2",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "M2Det",
+    "folder": "M2Det",
+    "description": "M2Det",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Mask_Rcnn_SwinS",
+    "folder": "Mask_Rcnn_SwinS",
+    "description": "Mask RCNN Swin-S",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ml_PP-OCRv3_det",
+    "folder": "ml_PP-OCRv3_det",
+    "description": "PP-OCRv3 多语种检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Nasnetlarge",
+    "folder": "Nasnetlarge",
+    "description": "NASNet-Large",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "NAS_FPN",
+    "folder": "NAS_FPN",
+    "description": "NAS-FPN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "OpenPose",
+    "folder": "OpenPose",
+    "description": "OpenPose 人体姿态",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PSENet_ResNet50_vd",
+    "folder": "PSENet_ResNet50_vd",
+    "description": "PSENet ResNet50_vd",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PSE (MobileNetV3)",
+    "folder": "PSE_MobileNetV3",
+    "description": "PSE MobileNetV3",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "pyramidbox",
+    "folder": "pyramidbox",
+    "description": "PyramidBox 人脸",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RCF",
+    "folder": "RCF",
+    "description": "RCF 边缘检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RefineDet",
+    "folder": "RefineDet",
+    "description": "RefineDet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RetinaMask",
+    "folder": "RetinaMask",
+    "description": "RetinaMask",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Retinanet",
+    "folder": "Retinanet",
+    "description": "RetinaNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RFCN",
+    "folder": "RFCN",
+    "description": "R-FCN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD",
+    "folder": "SSD",
+    "description": "SSD",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-MobileNetV1",
+    "folder": "SSD-MobileNetV1",
+    "description": "SSD MobileNetV1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-MobileNetV2",
+    "folder": "SSD-MobileNetV2",
+    "description": "SSD MobileNetV2",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSD-Resnet34",
+    "folder": "SSD-Resnet34",
+    "description": "SSD ResNet34",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SSDResNet34",
+    "folder": "SSDResNet34",
+    "description": "SSD ResNet34 备份",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TextSnake",
+    "folder": "TextSnake",
+    "description": "TextSnake 文字检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TOOD",
+    "folder": "TOOD",
+    "description": "TOOD 任务对齐",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOF",
+    "folder": "YOLOF",
+    "description": "YOLOF",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "yolor",
+    "folder": "yolor",
+    "description": "YOLOR",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOV3",
+    "folder": "YOLOV3",
+    "description": "YOLOv3",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOV7",
+    "folder": "YOLOV7",
+    "description": "YOLOv7",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOX",
+    "folder": "YOLOX",
+    "description": "YOLOX",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLOX-mmdetection",
+    "folder": "YOLOX-mmdetection",
+    "description": "YOLOX mmdet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "AlignedReID",
+    "folder": "AlignedReID",
+    "description": "AlignedReID 行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "centroids-reid",
+    "folder": "centroids-reid",
+    "description": "centroids 行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FaceBoxes",
+    "folder": "FaceBoxes",
+    "description": "FaceBoxes 人脸检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FaceNet",
+    "folder": "FaceNet",
+    "description": "FaceNet 人脸识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ReId-MGN",
+    "folder": "ReId-MGN-master",
+    "description": "MGN 行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "reid_PCB_baseline",
+    "folder": "reid_PCB_baseline",
+    "description": "PCB 行人重识别",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Retinaface",
+    "folder": "Retinaface",
+    "description": "RetinaFace 人脸检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BigGAN",
+    "folder": "BigGAN",
+    "description": "BigGAN 大规模 GAN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CGAN",
+    "folder": "CGAN",
+    "description": "Conditional GAN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "CycleGAN",
+    "folder": "CycleGAN",
+    "description": "CycleGAN 风格迁移",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DCGAN",
+    "folder": "DCGAN",
+    "description": "Deep Convolutional GAN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GAN",
+    "folder": "GAN",
+    "description": "基础 GAN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pix2Pix",
+    "folder": "Pix2Pix",
+    "description": "Pix2Pix 图像翻译",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Pix2pixHD",
+    "folder": "Pix2pixHD",
+    "description": "Pix2PixHD 高清翻译",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "StarGAN",
+    "folder": "StarGAN",
+    "description": "StarGAN 多域翻译",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "StyleGAN2-ADA",
+    "folder": "StyleGAN2-ADA",
+    "description": "StyleGAN2-ADA",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cross-Scale-Non-Local-Attention",
+    "folder": "Cross-Scale-Non-Local-Attention",
+    "description": "跨尺度非局部注意力",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DnCNN",
+    "folder": "DnCNN",
+    "description": "DnCNN 图像去噪",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SRFlow",
+    "folder": "SRFlow",
+    "description": "SRFlow 超分流模型",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "wdsr",
+    "folder": "wdsr",
+    "description": "WDSR 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "superpoint",
+    "folder": "superpoint",
+    "description": "SuperPoint 特征点",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "BLIP",
+    "folder": "BLIP",
+    "description": "BLIP 图文检索",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3DMPPE-ROOTNET",
+    "folder": "3DMPPE-ROOTNET",
+    "description": "3D 人体姿态",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DEKR",
+    "folder": "DEKR",
+    "description": "DEKR 关键点",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HigherHRNet",
+    "folder": "HigherHRNet",
+    "description": "HigherHRNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "HRNet",
+    "folder": "HRNet",
+    "description": "HRNet 关键点",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "MSPN",
+    "folder": "MSPN",
+    "description": "MSPN 姿态估计",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PoseC3D",
+    "folder": "PoseC3D",
+    "description": "PoseC3D 动作",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TransPose",
+    "folder": "TransPose",
+    "description": "TransPose 姿态",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "UniFormer",
+    "folder": "UniFormer",
+    "description": "UniFormer 姿态",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VideoPose3D",
+    "folder": "VideoPose3D",
+    "description": "VideoPose3D",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ADNet",
+    "folder": "ADNet",
+    "description": "ADNet 去噪",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SRGAN",
+    "folder": "SRGAN",
+    "description": "SRGAN 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3D_HRNet",
+    "folder": "3D_HRNet",
+    "description": "3D HRNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "3D_Nested_Unet",
+    "folder": "3D_Nested_Unet",
+    "description": "3D Nested U-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_Mask_RCNN",
+    "folder": "Cascade_Mask_RCNN",
+    "description": "Cascade Mask RCNN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_Mask_RCNN_UniFormer",
+    "folder": "Cascade_Mask_RCNN_UniFormer",
+    "description": "Cascade Mask RCNN + UniFormer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Cascade_RCNN",
+    "folder": "Cascade_RCNN",
+    "description": "Cascade RCNN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DeeplabV3",
+    "folder": "DeeplabV3",
+    "description": "DeepLabV3",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DeeplabV3+",
+    "folder": "DeeplabV3+",
+    "description": "DeepLabV3+",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "DPT",
+    "folder": "DPT",
+    "description": "DPT 视觉 Transformer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ENet",
+    "folder": "ENet",
+    "description": "ENet 实时分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ErfNet",
+    "folder": "ErfNet",
+    "description": "ERFNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FastSCNN",
+    "folder": "FastSCNN",
+    "description": "Fast-SCNN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FCN-8s",
+    "folder": "FCN-8s",
+    "description": "FCN-8s",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GCNet",
+    "folder": "GCNet",
+    "description": "GCNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "ICNet",
+    "folder": "ICNet",
+    "description": "ICNet 实时分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "IntraDA",
+    "folder": "IntraDA",
+    "description": "IntraDA 域适应",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Maskrcnn-mmdet",
+    "folder": "Maskrcnn-mmdet",
+    "description": "Mask RCNN mmdet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Nested_UNet",
+    "folder": "Nested_UNet",
+    "description": "Nested U-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "OCRNet",
+    "folder": "OCRNet",
+    "description": "OCRNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PointRend",
+    "folder": "PointRend",
+    "description": "PointRend 实例分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PraNet",
+    "folder": "PraNet",
+    "description": "PraNet 息肉分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "PSPNet",
+    "folder": "PSPNet",
+    "description": "PSPNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RefineNet",
+    "folder": "RefineNet",
+    "description": "RefineNet",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Segformer",
+    "folder": "Segformer",
+    "description": "SegFormer",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "segment-anything-2",
+    "folder": "segment-anything-2",
+    "description": "SAM2 实例分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Segmenter",
+    "folder": "Segmenter",
+    "description": "Segmenter",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SeMask",
+    "folder": "SeMask",
+    "description": "SeMask",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SETR",
+    "folder": "SETR",
+    "description": "SETR",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SiamMask",
+    "folder": "SiamMask",
+    "description": "SiamMask 目标跟踪分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SOLOV1",
+    "folder": "SOLOV1",
+    "description": "SOLO v1",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SOLOV2",
+    "folder": "SOLOV2",
+    "description": "SOLO v2",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "STDC",
+    "folder": "STDC",
+    "description": "STDC 分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Swin-Transformer-Semantic-Segmentation",
+    "folder": "Swin-Transformer-Semantic-Segmentation",
+    "description": "Swin 语义分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "swin100",
+    "folder": "swin100",
+    "description": "Swin 100",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "swin_97",
+    "folder": "swin_97",
+    "description": "Swin 97",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "swin_98",
+    "folder": "swin_98",
+    "description": "Swin 98",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "swin_99",
+    "folder": "swin_99",
+    "description": "Swin 99",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Transformer-SSL",
+    "folder": "Transformer-SSL",
+    "description": "Transformer-SSL",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Ultra-Fast-Lane-Detection",
+    "folder": "Ultra-Fast-Lane-Detection",
+    "description": "车道线检测",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "UNet",
+    "folder": "UNet",
+    "description": "U-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "VNet",
+    "folder": "VNet",
+    "description": "V-Net",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Wseg",
+    "folder": "Wseg",
+    "description": "Wseg 弱监督分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLACT",
+    "folder": "YOLACT",
+    "description": "YOLACT 实例分割",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "YOLACT_plus",
+    "folder": "YOLACT_plus",
+    "description": "YOLACT+",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "EDSR",
+    "folder": "EDSR",
+    "description": "EDSR 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RCAN",
+    "folder": "RCAN",
+    "description": "RCAN 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RDN",
+    "folder": "RDN",
+    "description": "RDN 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Real-ESRGAN",
+    "folder": "Real-ESRGAN",
+    "description": "Real-ESRGAN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SRCNN",
+    "folder": "SRCNN",
+    "description": "SRCNN 超分",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "Deepsort",
+    "folder": "Deepsort_for_Pytorch",
+    "description": "DeepSort",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FairMOT",
+    "folder": "FairMOT",
+    "description": "FairMOT",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "GMA",
+    "folder": "GMA",
+    "description": "GMA 光流",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SiamFC",
+    "folder": "SiamFC",
+    "description": "SiamFC",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SiamRPN",
+    "folder": "SiamRPN",
+    "description": "SiamRPN",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "FOMM",
+    "folder": "FOMM",
+    "description": "FOMM 动作驱动",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "I3D",
+    "folder": "I3D",
+    "description": "I3D 视频分类",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "I3D_Nonlocal",
+    "folder": "I3D_Nonlocal",
+    "description": "I3D + Non-local",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "NonLocal",
+    "folder": "NonLocal",
+    "description": "Non-local 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "SlowFast",
+    "folder": "SlowFast",
+    "description": "SlowFast 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TSM",
+    "folder": "TSM",
+    "description": "TSM 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "TSN",
+    "folder": "TSN",
+    "description": "TSN 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "X3D",
+    "folder": "X3D",
+    "description": "X3D 视频",
+    "category": "计算机视觉",
+    "source": "contrib"
+  },
+  {
+    "name": "RotatE",
+    "folder": "RotatE",
+    "description": "RotatE 知识图谱",
+    "category": "知识图谱",
+    "source": "contrib"
+  },
+  {
+    "name": "ACE",
+    "folder": "ACE",
+    "description": "ACE 文本分类",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "albert",
+    "folder": "albert",
+    "description": "ALBERT",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "BertSum",
+    "folder": "BertSum",
+    "description": "BertSum 摘要",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "bert_large_NER",
+    "folder": "bert_large_NER",
+    "description": "BERT 大模型 NER",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_PP-OCRv2_rec",
+    "folder": "ch_PP-OCRv2_rec",
+    "description": "PP-OCRv2 中文识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_PP-OCRv3_rec",
+    "folder": "ch_PP-OCRv3_rec",
+    "description": "PP-OCRv3 中文识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "ch_ppocr_server_v2.0_rec",
+    "folder": "ch_ppocr_server_v2.0_rec",
+    "description": "PP-OCRv2 server 识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "CNN_Transformer",
+    "folder": "CNN_Transformer_for_Pytorch",
+    "description": "CNN + Transformer",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "deberta",
+    "folder": "deberta",
+    "description": "DeBERTa",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "ELMo",
+    "folder": "ELMo",
+    "description": "ELMo 词向量",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "en_PP-OCRv3_rec",
+    "folder": "en_PP-OCRv3_rec",
+    "description": "PP-OCRv3 英文识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "GNMT",
+    "folder": "GNMT",
+    "description": "GNMT 机器翻译",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "hubert",
+    "folder": "hubert",
+    "description": "HuBERT 语音预训练",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "m2m_100",
+    "folder": "m2m_100",
+    "description": "M2M-100 多语翻译",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "RARE_Resnet34_vd",
+    "folder": "RARE_Resnet34_vd",
+    "description": "RARE 识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "roberta",
+    "folder": "roberta",
+    "description": "RoBERTa",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Rosetta_MobileNetV3",
+    "folder": "Rosetta_MobileNetV3",
+    "description": "Rosetta 识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Rosetta_Resnet34_vd",
+    "folder": "Rosetta_Resnet34_vd",
+    "description": "Rosetta 识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "SAST",
+    "folder": "SAST",
+    "description": "SAST 文字检测",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "SATRN",
+    "folder": "SATRN",
+    "description": "SATRN 文字识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "SDMGR",
+    "folder": "SDMGR",
+    "description": "SDMGR 版面分析",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "SpanBERT",
+    "folder": "SpanBERT",
+    "description": "SpanBERT",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "StarNet_MobileNetV3",
+    "folder": "StarNet_MobileNetV3",
+    "description": "StarNet 识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "TextCNN",
+    "folder": "TextCNN",
+    "description": "TextCNN 文本分类",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "tinybert",
+    "folder": "tinybert",
+    "description": "TinyBERT",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Transformer",
+    "folder": "Transformer",
+    "description": "基础 Transformer",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "TransformerXL",
+    "folder": "TransformerXL_for_Pytorch",
+    "description": "Transformer-XL",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "Transformerxl_large",
+    "folder": "Transformerxl_large",
+    "description": "Transformer-XL 大模型",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "TrOCR",
+    "folder": "TrOCR",
+    "description": "TrOCR 文字识别",
+    "category": "NLP",
+    "source": "contrib"
+  },
+  {
+    "name": "c51",
+    "folder": "c51",
+    "description": "C51 分布式 RL",
+    "category": "强化学习",
+    "source": "contrib"
+  },
+  {
+    "name": "DQN",
+    "folder": "DQN",
+    "description": "DQN 深度强化学习",
+    "category": "强化学习",
+    "source": "contrib"
+  }
+]

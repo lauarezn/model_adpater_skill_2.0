@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap');
+    text { font-family: 'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', sans-serif; }
+  </style>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fb923c"/>
+    </marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#0f172a"/>
+  <rect width="1200" height="900" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="600" y="40" fill="white" font-size="20" font-weight="700" text-anchor="middle">Unified Cache Manager (UCM) 架构总览</text>
+  <text x="600" y="62" fill="#94a3b8" font-size="11" text-anchor="middle">持久化 LLM KVCache · 多检索机制替代冗余计算 · 存算分离 PD 分离</text>
+
+  <!-- ==================== 第1层：应用集成层 ==================== -->
+  <rect x="30" y="85" width="1140" height="100" rx="12" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="45" y="105" fill="#fbbf24" font-size="11" font-weight="600">应用集成层</text>
+
+  <!-- vLLM -->
+  <rect x="60" y="115" width="180" height="55" rx="6" fill="#0f172a"/>
+  <rect x="60" y="115" width="180" height="55" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="150" y="140" fill="white" font-size="12" font-weight="600" text-anchor="middle">vLLM 集成</text>
+  <text x="150" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">Quickstart-vLLM / Ascend</text>
+
+  <!-- SGLang -->
+  <rect x="290" y="115" width="180" height="55" rx="6" fill="#0f172a"/>
+  <rect x="290" y="115" width="180" height="55" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="380" y="140" fill="white" font-size="12" font-weight="600" text-anchor="middle">SGLang 集成</text>
+  <text x="380" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">Quickstart-SGLang</text>
+
+  <!-- KV Cache Size Calculator -->
+  <rect x="520" y="115" width="200" height="55" rx="6" fill="#0f172a"/>
+  <rect x="520" y="115" width="200" height="55" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="620" y="140" fill="white" font-size="12" font-weight="600" text-anchor="middle">KV Cache 大小计算器</text>
+  <text x="620" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">容量规划工具</text>
+
+  <!-- 故障排查 -->
+  <rect x="770" y="115" width="180" height="55" rx="6" fill="#0f172a"/>
+  <rect x="770" y="115" width="180" height="55" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="860" y="140" fill="white" font-size="12" font-weight="600" text-anchor="middle">故障排查</text>
+  <text x="860" y="156" fill="#94a3b8" font-size="9" text-anchor="middle">Troubleshooting</text>
+
+  <!-- 箭头：应用层 → 核心引擎 -->
+  <line x1="600" y1="185" x2="600" y2="215" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ==================== 第2层：UCM 核心引擎 ==================== -->
+  <rect x="30" y="220" width="1140" height="280" rx="12" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="45" y="240" fill="#34d399" font-size="11" font-weight="600">UCM 核心引擎</text>
+
+  <!-- 2.1 Prefix Cache -->
+  <rect x="60" y="255" width="340" height="105" rx="6" fill="#0f172a"/>
+  <rect x="60" y="255" width="340" height="105" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="230" y="278" fill="white" font-size="12" font-weight="600" text-anchor="middle">Prefix Cache（前缀缓存）</text>
+  <text x="230" y="296" fill="#94a3b8" font-size="9" text-anchor="middle">缓存公共前缀的 KV 状态，避免重复计算</text>
+  <text x="230" y="314" fill="#94a3b8" font-size="9" text-anchor="middle">适用于多轮对话、系统提示词复用场景</text>
+  <text x="230" y="332" fill="#94a3b8" font-size="9" text-anchor="middle">显著降低首 Token 延迟</text>
+
+  <!-- 2.2 Sparse Attention -->
+  <rect x="430" y="255" width="340" height="105" rx="6" fill="#0f172a"/>
+  <rect x="430" y="255" width="340" height="105" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="600" y="278" fill="white" font-size="12" font-weight="600" text-anchor="middle">Sparse Attention（稀疏注意力）</text>
+  <text x="600" y="296" fill="#94a3b8" font-size="9" text-anchor="middle">免训练的稀疏注意力检索方法</text>
+  <text x="600" y="314" fill="#94a3b8" font-size="9" text-anchor="middle">超长序列推理时性能更高</text>
+  <text x="600" y="332" fill="#94a3b8" font-size="9" text-anchor="middle">跨多上下文 KV Cache 检索</text>
+
+  <!-- 2.3 PD Disaggregation -->
+  <rect x="800" y="255" width="340" height="105" rx="6" fill="#0f172a"/>
+  <rect x="800" y="255" width="340" height="105" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="970" y="278" fill="white" font-size="12" font-weight="600" text-anchor="middle">PD Disaggregation（PD 分离）</text>
+  <text x="970" y="296" fill="#94a3b8" font-size="9" text-anchor="middle">存算分离架构</text>
+  <text x="970" y="314" fill="#94a3b8" font-size="9" text-anchor="middle">灵活管理异构计算资源</text>
+  <text x="970" y="332" fill="#94a3b8" font-size="9" text-anchor="middle">Prefill / Decode 分离部署</text>
+
+  <!-- 三个核心模块之间的双向箭头 -->
+  <line x1="400" y1="307" x2="430" y2="307" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="770" y1="307" x2="800" y2="307" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- 2.4 Rectified RoPE -->
+  <rect x="60" y="380" width="340" height="55" rx="6" fill="#0f172a"/>
+  <rect x="60" y="380" width="340" height="55" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="230" y="405" fill="white" font-size="12" font-weight="600" text-anchor="middle">Rectified RoPE</text>
+  <text x="230" y="421" fill="#94a3b8" font-size="9" text-anchor="middle">修正旋转位置编码，提升长序列外推能力</text>
+
+  <!-- 2.5 UCM Trace Mode -->
+  <rect x="430" y="380" width="340" height="55" rx="6" fill="#0f172a"/>
+  <rect x="430" y="380" width="340" height="55" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="600" y="405" fill="white" font-size="12" font-weight="600" text-anchor="middle">UCM Trace Mode</text>
+  <text x="600" y="421" fill="#94a3b8" font-size="9" text-anchor="middle">追踪模式，用于调试和性能分析</text>
+
+  <!-- 2.6 Metrics Observability -->
+  <rect x="800" y="380" width="340" height="55" rx="6" fill="#0f172a"/>
+  <rect x="800" y="380" width="340" height="55" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="970" y="405" fill="white" font-size="12" font-weight="600" text-anchor="middle">UCM Metrics Observability</text>
+  <text x="970" y="421" fill="#94a3b8" font-size="9" text-anchor="middle">指标观测与监控</text>
+
+  <!-- 箭头：核心引擎 → 存储层 -->
+  <line x1="600" y1="500" x2="600" y2="530" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ==================== 第3层：存储与基础设施 ==================== -->
+  <rect x="30" y="535" width="1140" height="130" rx="12" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="45" y="555" fill="#fbbf24" font-size="11" font-weight="600">存储与基础设施</text>
+
+  <!-- UCM Store -->
+  <rect x="60" y="570" width="250" height="80" rx="6" fill="#0f172a"/>
+  <rect x="60" y="570" width="250" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="185" y="598" fill="white" font-size="12" font-weight="600" text-anchor="middle">UCM Store</text>
+  <text x="185" y="616" fill="#94a3b8" font-size="9" text-anchor="middle">KV Cache 持久化存储</text>
+  <text x="185" y="632" fill="#94a3b8" font-size="9" text-anchor="middle">支持扩展自定义存储后端</text>
+
+  <!-- 异构计算资源 -->
+  <rect x="360" y="570" width="250" height="80" rx="6" fill="#0f172a"/>
+  <rect x="360" y="570" width="250" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="485" y="598" fill="white" font-size="12" font-weight="600" text-anchor="middle">异构计算资源管理</text>
+  <text x="485" y="616" fill="#94a3b8" font-size="9" text-anchor="middle">GPU / NPU / CPU 混合调度</text>
+  <text x="485" y="632" fill="#94a3b8" font-size="9" text-anchor="middle">存算分离架构支撑</text>
+
+  <!-- 模型支持 -->
+  <rect x="660" y="570" width="250" height="80" rx="6" fill="#0f172a"/>
+  <rect x="660" y="570" width="250" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="785" y="598" fill="white" font-size="12" font-weight="600" text-anchor="middle">模型支持矩阵</text>
+  <text x="785" y="616" fill="#94a3b8" font-size="9" text-anchor="middle">Feature &amp; Model Support</text>
+  <text x="785" y="632" fill="#94a3b8" font-size="9" text-anchor="middle">最佳实践指南</text>
+
+  <!-- 箭头：存储层 → 性能 -->
+  <line x1="600" y1="665" x2="600" y2="695" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ==================== 第4层：性能表现 ==================== -->
+  <rect x="30" y="700" width="1140" height="80" rx="12" fill="none" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="45" y="720" fill="#fb7185" font-size="11" font-weight="600">性能表现</text>
+
+  <rect x="60" y="735" width="340" height="35" rx="6" fill="#0f172a"/>
+  <rect x="60" y="735" width="340" height="35" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="230" y="757" fill="white" font-size="11" font-weight="600" text-anchor="middle">推理延迟降低 3-10 倍（多轮对话 / 长上下文推理）</text>
+
+  <rect x="430" y="735" width="340" height="35" rx="6" fill="#0f172a"/>
+  <rect x="430" y="735" width="340" height="35" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="600" y="757" fill="white" font-size="11" font-weight="600" text-anchor="middle">冗余计算消除 · 首 Token 延迟优化</text>
+
+  <rect x="800" y="735" width="340" height="35" rx="6" fill="#0f172a"/>
+  <rect x="800" y="735" width="340" height="35" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="970" y="757" fill="white" font-size="11" font-weight="600" text-anchor="middle">异构资源灵活调度 · 超长序列支持</text>
+
+  <!-- ==================== 图例 ==================== -->
+  <rect x="30" y="810" width="1140" height="75" rx="8" fill="none" stroke="#334155" stroke-width="1"/>
+  <text x="45" y="832" fill="#94a3b8" font-size="10" font-weight="600">图例</text>
+
+  <rect x="45" y="842" width="14" height="14" rx="3" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1"/>
+  <text x="65" y="854" fill="#94a3b8" font-size="9">应用集成</text>
+
+  <rect x="155" y="842" width="14" height="14" rx="3" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1"/>
+  <text x="175" y="854" fill="#94a3b8" font-size="9">核心引擎</text>
+
+  <rect x="265" y="842" width="14" height="14" rx="3" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="285" y="854" fill="#94a3b8" font-size="9">辅助模块</text>
+
+  <rect x="375" y="842" width="14" height="14" rx="3" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="395" y="854" fill="#94a3b8" font-size="9">基础设施</text>
+
+  <rect x="485" y="842" width="14" height="14" rx="3" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1"/>
+  <text x="505" y="854" fill="#94a3b8" font-size="9">性能指标</text>
+
+  <line x1="600" y1="849" x2="630" y2="849" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="640" y="854" fill="#94a3b8" font-size="9">数据流</text>
+
+  <text x="45" y="875" fill="#64748b" font-size="8">相关论文：HATA · ReTaKe · AdaReTaKe · Dynamic Early Exit · Sparse Attention across Multiple-context KV Cache</text>
+</svg>

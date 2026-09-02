@@ -44,8 +44,10 @@ URLS = {
     'sglang_ascend': 'https://docs.sglang.io/docs/hardware-platforms/ascend-npus/ascend_npu_support_models',
     'gitcode_ai': 'https://ai.gitcode.com/models?ascendNative=true',
     'ascend_sact': 'https://gitcode.com/org/Ascend-SACT/repos',
-    'mindspeed_mm': 'https://gitcode.com/Ascend/MindSpeed-MM/blob/master/docs/zh/pytorch/supported_models.md',
-    'mindspeed_llm': 'https://gitcode.com/Ascend/MindSpeed-LLM/blob/master/docs/zh/pytorch/models/supported_models.md',
+    # 注意：GitCode 的 blob 页面会被 CloudWAF 拦截（HTTP 418），
+    # 因此使用 raw.gitcode.com 的 raw 地址抓取，避免抓取返回空。
+    'mindspeed_mm': 'https://raw.gitcode.com/Ascend/MindSpeed-MM/raw/master/docs/zh/pytorch/supported_models.md',
+    'mindspeed_llm': 'https://raw.gitcode.com/Ascend/MindSpeed-LLM/raw/master/docs/zh/pytorch/models/supported_models.md',
 }
 
 
@@ -60,6 +62,20 @@ def fetch_url(url, timeout=TIMEOUT):
         except Exception as e:
             print(f"  [尝试{attempt+1}] 失败: {e}")
         time.sleep(2)
+    return None
+
+
+def fetch_url_quick(url, timeout=5):
+    """轻量版获取URL内容，仅1次重试，用于硬件提取等非关键步骤"""
+    for attempt in range(2):
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=timeout)
+            if resp.status_code == 200:
+                return resp.text
+        except Exception:
+            pass
+        if attempt == 0:
+            time.sleep(1)
     return None
 
 
@@ -138,6 +154,10 @@ def parse_vllm_ascend(html):
             model_id = re.sub(r'[^a-z0-9]', '-', model_name.lower()).strip('-')
             model_id = re.sub(r'-+', '-', model_id)
 
+            # 从支持矩阵的硬件列提取部署硬件信息
+            # 硬件列可能包含：A2/A3、Ascend 950 Products、Atlas 800I A3 等
+            deploy_hardware = _parse_deploy_hardware(supported_hardware)
+
             models.append({
                 'id': model_id,
                 'name': model_name,
@@ -147,8 +167,8 @@ def parse_vllm_ascend(html):
                 'architecture': architecture,
                 'supportLevel': support_level,
                 'framework': 'PyTorch',
-                'minHardware': 'Atlas 800I A3' if 'A2' in supported_hardware else 'Atlas 800T A3',
-                'recommendedHardware': 'Atlas 800T A3' if 'A3' in supported_hardware else 'Atlas 800I A3',
+                'minHardware': deploy_hardware,
+                'recommendedHardware': deploy_hardware,
                 'inferencePerf': '优' if support_level == '✅ 已支持' else '良',
                 'trainingPerf': '良',
                 'mindsporeSupport': '支持' if developer in ['阿里云', '智谱AI', '百川智能', '上海AI实验室', '面壁智能', '深度求索'] else '需迁移',
@@ -297,118 +317,95 @@ def parse_sglang_ascend(html):
     return models
 
 
-def parse_gitcode_ai(html):
-    """解析 GitCode AI 昇腾原生模型页面（支持翻页）
+def _extract_gitcode_from_html(html):
+    """从 GitCode AI 页面 HTML 中提取 React Query 脱水数据中的模型（fallback）"""
+    result = []
+    push_matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html))
 
-    新版页面使用 React Query 脱水数据，数据格式为：
-    {"page_num":1,"page_size":30,"total":"7300","page_count":244,
-     "content":[{"id":"...","name":"...","namespace":"...",...},...]}
+    for match in push_matches:
+        decoded = match.group(1)
+        decoded = decoded.replace('\\n', '\n').replace('\\t', '\t').replace('\\\\', '\\').replace('\\"', '"')
+
+        if 'dehydratedAt' not in decoded:
+            continue
+
+        idx = decoded.find('"data":')
+        if idx < 0:
+            continue
+
+        data_start = idx + len('"data":')
+        brace_count = 0
+        start = -1
+        for j, ch in enumerate(decoded[data_start:]):
+            if ch == '{':
+                if start == -1:
+                    start = data_start + j
+                brace_count += 1
+            elif ch == '}':
+                brace_count -= 1
+                if brace_count == 0 and start >= 0:
+                    data_str = decoded[start:data_start + j + 1]
+                    try:
+                        data = json.loads(data_str)
+                        content = data.get('content', [])
+                        result.extend(content)
+                    except json.JSONDecodeError:
+                        continue
+                    break
+
+    return result
+
+
+def parse_gitcode_ai(html=None):
+    """解析 GitCode AI 昇腾原生模型
+
+    优先通过 AtomGit 公开 API 获取数据，API 失败时回退到页面脱水数据解析。
+
+    AtomGit API: https://atomgit.com/api/v1/projects?type=model&search=ascend&page=1&per_page=100
+    可获取约100个与 ascend 相关的模型仓库（含工具库和用户 fork 副本）。
+
+    GitCode AI 页面 (ai.gitcode.com) 是 Next.js 服务端渲染，脱水数据只包含第1页（30个模型），
+    翻页 API (api-ai.gitcode.com) 需要认证无法直接调用。
+
+    两种数据源合并去重，以 web_url 为去重依据。
     """
     models = []
+    atomgit_api = 'https://atomgit.com/api/v1/projects'
 
-    def extract_models_from_html(html_text):
-        """从 HTML 中提取 React Query 脱水数据中的模型"""
-        result = []
-        push_matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html_text))
+    # 1. 通过 AtomGit API 获取数据
+    atomgit_models = []
+    try:
+        resp = requests.get(atomgit_api, params={
+            'type': 'model', 'search': 'ascend', 'page': 1, 'per_page': 100
+        }, headers=HEADERS, timeout=TIMEOUT)
+        if resp.status_code == 200:
+            data = resp.json()
+            atomgit_models = data.get('content') or []
+            total = int(data.get('total', 0))
+            print(f"  GitCode AI (AtomGit API): 获取 {len(atomgit_models)} 个模型, 总计 {total} 个")
+        else:
+            print(f"  ✗ AtomGit API 返回 {resp.status_code}")
+    except Exception as e:
+        print(f"  ✗ AtomGit API 请求失败: {e}")
 
-        for match in push_matches:
-            decoded = match.group(1)
-            decoded = decoded.replace('\\n', '\n').replace('\\t', '\t').replace('\\\\', '\\').replace('\\"', '"')
+    # 2. 从页面脱水数据解析（作为补充）
+    page_models = []
+    if html:
+        page_models = _extract_gitcode_from_html(html)
+        if page_models:
+            print(f"  GitCode AI (页面解析): 获取 {len(page_models)} 个模型")
 
-            if 'dehydratedAt' not in decoded:
-                continue
+    # 3. 合并去重（以 web_url 为 key）
+    seen_urls = set()
+    for m in atomgit_models + page_models:
+        url = m.get('web_url', '')
+        if url and url not in seen_urls:
+            seen_urls.add(url)
+            models.append(m)
+        elif not url:
+            models.append(m)
 
-            # 找到 "data":{...} 并提取完整 JSON 对象
-            idx = decoded.find('"data":')
-            if idx < 0:
-                continue
-
-            data_start = idx + len('"data":')
-            brace_count = 0
-            start = -1
-            for j, ch in enumerate(decoded[data_start:]):
-                if ch == '{':
-                    if start == -1:
-                        start = data_start + j
-                    brace_count += 1
-                elif ch == '}':
-                    brace_count -= 1
-                    if brace_count == 0 and start >= 0:
-                        data_str = decoded[start:data_start + j + 1]
-                        try:
-                            data = json.loads(data_str)
-                            content = data.get('content', [])
-                            result.extend(content)
-                        except json.JSONDecodeError:
-                            continue
-                        break
-
-        return result
-
-    def extract_meta(html_text):
-        """从 HTML 中提取 total 和 page_count"""
-        push_matches = list(re.finditer(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html_text))
-        for match in push_matches:
-            decoded = match.group(1)
-            decoded = decoded.replace('\\n', '\n').replace('\\t', '\t').replace('\\\\', '\\').replace('\\"', '"')
-            if 'dehydratedAt' not in decoded:
-                continue
-            idx = decoded.find('"data":')
-            if idx < 0:
-                continue
-            data_start = idx + len('"data":')
-            brace_count = 0
-            start = -1
-            for j, ch in enumerate(decoded[data_start:]):
-                if ch == '{':
-                    if start == -1:
-                        start = data_start + j
-                    brace_count += 1
-                elif ch == '}':
-                    brace_count -= 1
-                    if brace_count == 0 and start >= 0:
-                        data_str = decoded[start:data_start + j + 1]
-                        try:
-                            data = json.loads(data_str)
-                            return int(data.get('total', 0)), int(data.get('page_count', 1))
-                        except json.JSONDecodeError:
-                            return 0, 1
-                        break
-        return 0, 1
-
-    # 提取第一页数据
-    first_page_models = extract_models_from_html(html)
-    models.extend(first_page_models)
-
-    # 提取 total 和 page_count
-    total, page_count = extract_meta(html)
-
-    print(f"  GitCode AI: 第1页 {len(first_page_models)} 个模型, 总计 {total} 个, 共 {page_count} 页")
-
-    # 翻页获取剩余数据（最多翻 250 页，覆盖 7300+ 模型）
-    # 使用并发请求加速，去掉固定 sleep（仅在失败时指数退避重试）
-    max_pages = min(page_count + 1, 250)
-    if page_count > 1:
-        def fetch_page(page):
-            """并发获取单页数据"""
-            page_url = f'https://ai.gitcode.com/models?ascendNative=true&page={page}'
-            retry_delay = 1
-            for attempt in range(3):
-                page_html = fetch_url(page_url, timeout=20)
-                if page_html:
-                    page_models = extract_models_from_html(page_html)
-                    return page, page_models
-                time.sleep(retry_delay)
-                retry_delay *= 2  # 指数退避
-            return page, []
-
-        with ThreadPoolExecutor(max_workers=15) as executor:
-            futures = {executor.submit(fetch_page, page): page
-                       for page in range(2, max_pages)}
-            for future in as_completed(futures):
-                page, page_models = future.result()
-                models.extend(page_models)
-                print(f"  GitCode AI: 第{page}页 {len(page_models)} 个模型")
+    print(f"  GitCode AI: 合并后共 {len(models)} 个模型")
 
     # 转换为标准格式
     parsed_models = []
@@ -495,13 +492,13 @@ def parse_ascend_sact(html):
     if total_pages > 1:
         for page in range(2, total_pages + 1):
             page_url = f'https://gitcode.com/org/Ascend-SACT/repos?page={page}'
-            page_html = fetch_url(page_url, timeout=20)
+            page_html = fetch_url(page_url, timeout=15)
             if page_html:
                 all_htmls.append(page_html)
                 print(f"  Ascend-SACT: 第{page}页 获取成功")
             else:
                 print(f"  Ascend-SACT: 第{page}页 获取失败")
-            time.sleep(1)
+            time.sleep(0.5)
 
     seen_names = set()
     for page_html in all_htmls:
@@ -914,6 +911,57 @@ def parse_mindspeed_llm(html):
 
 # ============ 辅助函数 ============
 
+def _parse_deploy_hardware(hardware_text):
+    """解析部署硬件信息，将支持矩阵中的硬件列文本映射为标准硬件名称
+
+    支持矩阵硬件列可能包含：
+    - A2/A3 → Atlas 800I A3 / Atlas 800T A3
+    - Ascend 950 Products → Atlas 800I A3 / Atlas 800T A3
+    - Atlas 800I A3 / Atlas 800T A3 → 直接保留
+    - 运行设备/硬件设备/设备/运行环境等字段 → 提取具体硬件型号
+
+    Args:
+        hardware_text: 支持矩阵中的硬件列文本
+
+    Returns:
+        标准化的硬件名称字符串
+    """
+    if not hardware_text:
+        return 'Atlas 800I A3'
+
+    text = hardware_text.strip()
+
+    # 如果已经是标准硬件名称，直接返回
+    if 'Atlas' in text:
+        return text
+
+    # 如果包含 A2/A3 等简写，映射为标准名称
+    if 'A2' in text and 'A3' in text:
+        return 'Atlas 800I A3 / Atlas 800T A3'
+    elif 'A2' in text:
+        return 'Atlas 800I A3'
+    elif 'A3' in text:
+        return 'Atlas 800T A3'
+
+    # 如果包含 Ascend 950 等产品线名称，映射为标准名称
+    if 'Ascend 950' in text or '950' in text:
+        return 'Atlas 800I A3 / Atlas 800T A3'
+
+    # 如果包含具体设备型号关键词，提取并保留
+    if '运行设备' in text or '硬件设备' in text or '设备' in text or '运行环境' in text:
+        # 尝试从文本中提取具体硬件型号
+        hw_match = re.search(r'(Atlas\s+\w+(?:\s+\w+)?)', text)
+        if hw_match:
+            return hw_match.group(1)
+        # 尝试提取 Ascend 产品信息
+        ascend_match = re.search(r'(Ascend\s+\w+(?:\s+\w+)?)', text)
+        if ascend_match:
+            return ascend_match.group(1)
+
+    # 默认返回
+    return text if text else 'Atlas 800I A3'
+
+
 def _detect_developer(name):
     """根据模型名称检测开发者"""
     dev_map = {
@@ -997,6 +1045,113 @@ def _detect_tags(name, category, architecture):
     return tags
 
 
+def _extract_hardware_from_deploy_page(doc_url):
+    """从模型部署页面中提取硬件设备信息
+
+    部署页面中可能包含以下字段：
+    - 运行设备
+    - 硬件设备
+    - 设备
+    - 运行环境
+    - 支持硬件
+    - 硬件要求
+
+    这些字段通常以表格或列表形式出现在部署指南中。
+
+    Args:
+        doc_url: 模型部署页面 URL
+
+    Returns:
+        提取到的硬件名称字符串，如果无法提取则返回 None
+    """
+    if not doc_url:
+        return None
+
+    try:
+        # 使用轻量版获取（更少重试、更短超时），避免 DNS 不稳定导致长时间卡住
+        html = fetch_url_quick(doc_url, timeout=5)
+        if not html:
+            return None
+
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # 策略1：查找包含硬件关键词的表格
+        tables = soup.find_all('table')
+        for table in tables:
+            rows = table.find_all('tr')
+            if not rows:
+                continue
+            headers = [th.get_text(strip=True).lower() for th in rows[0].find_all(['th', 'td'])]
+            for i, header in enumerate(headers):
+                if any(kw in header for kw in ['运行设备', '硬件设备', '设备', '运行环境',
+                                                '支持硬件', '硬件要求', '硬件', 'hardware',
+                                                'device', 'environment']):
+                    for row in rows[1:]:
+                        cells = row.find_all(['td', 'th'])
+                        if i < len(cells):
+                            cell_text = cells[i].get_text(strip=True)
+                            if cell_text and cell_text not in ['-', '—', '', 'N/A', 'NA']:
+                                return _parse_deploy_hardware(cell_text)
+
+        # 策略2：查找包含硬件关键词的定义列表或段落
+        for keyword in ['运行设备', '硬件设备', '运行环境', '支持硬件', '硬件要求', '硬件']:
+            # 查找包含关键词的 dt/dd 对
+            dt_tags = soup.find_all('dt')
+            for dt in dt_tags:
+                if keyword in dt.get_text(strip=True):
+                    dd = dt.find_next_sibling('dd')
+                    if dd:
+                        text = dd.get_text(strip=True)
+                        if text and text not in ['-', '—', '', 'N/A', 'NA']:
+                            return _parse_deploy_hardware(text)
+
+            # 查找包含关键词的 strong/b 标签后的文本
+            strong_tags = soup.find_all(['strong', 'b'])
+            for tag in strong_tags:
+                if keyword in tag.get_text(strip=True):
+                    parent = tag.parent
+                    if parent:
+                        full_text = parent.get_text(strip=True)
+                        # 尝试提取 Atlas 或 Ascend 型号
+                        hw_match = re.search(r'(Atlas\s+\w+(?:\s+\w+)?)', full_text)
+                        if hw_match:
+                            return hw_match.group(1)
+                        ascend_match = re.search(r'(Ascend\s+\w+(?:\s+\w+)?)', full_text)
+                        if ascend_match:
+                            return ascend_match.group(1)
+
+        # 策略3：在页面文本中搜索 Atlas 硬件型号
+        page_text = soup.get_text()
+        atlas_matches = re.findall(r'Atlas\s+\w+(?:\s+\w+)?', page_text)
+        if atlas_matches:
+            # 去重并返回最常见的型号
+            unique_hw = list(set(atlas_matches))
+            if len(unique_hw) <= 3:
+                return ' / '.join(unique_hw)
+            return unique_hw[0]
+
+        # 策略4：在页面文本中搜索 NPU 相关硬件描述
+        # 匹配如 "Atlas 800I A3 NPU + Ascend 910B NPU * 4" 等完整硬件描述
+        npu_matches = re.findall(
+            r'(Atlas\s+\w+(?:\s+\w+)?(?:\s+NPU)?(?:\s*\+\s*Ascend\s+\w+(?:\s+\w+)?(?:\s+NPU)?(?:\s*\*\s*\d+)?)?)',
+            page_text
+        )
+        if npu_matches:
+            unique_npu = list(set(npu_matches))
+            return ' / '.join(unique_npu)
+
+        # 策略5：搜索 Ascend NPU 型号（如 Ascend 910B NPU）
+        ascend_npu_matches = re.findall(r'Ascend\s+\w+(?:\s+\w+)?(?:\s+NPU)?(?:\s*\*\s*\d+)?', page_text)
+        if ascend_npu_matches:
+            unique_ascend = list(set(ascend_npu_matches))
+            return ' / '.join(unique_ascend)
+
+        return None
+
+    except Exception:
+        return None
+
+
 def merge_models(all_source_models, no_dedup_sources=None):
     """合并多个来源的模型，去重（可指定某些来源不做去重）"""
     if no_dedup_sources is None:
@@ -1065,16 +1220,11 @@ def crawl_all():
         results['sglang_ascend'] = []
         print("  ✗ 爬取失败")
 
-    # 4. 爬取 GitCode AI
+    # 4. 爬取 GitCode AI（通过 AtomGit 公开 API）
     print("\n[4/7] 爬取 GitCode AI 昇腾原生模型...")
-    html = fetch_url(URLS['gitcode_ai'])
-    if html:
-        models = parse_gitcode_ai(html)
-        results['gitcode_ai'] = models
-        print(f"  ✓ 解析到 {len(models)} 个模型")
-    else:
-        results['gitcode_ai'] = []
-        print("  ✗ 爬取失败")
+    models = parse_gitcode_ai()
+    results['gitcode_ai'] = models
+    print(f"  ✓ 解析到 {len(models)} 个模型")
 
     # 5. 爬取 Ascend-SACT
     print("\n[5/7] 爬取 Ascend-SACT 组织仓库...")
@@ -1120,6 +1270,38 @@ def crawl_all():
     ]
     merged_models = merge_models(all_model_sources, no_dedup_sources=set())
     print(f"模型清单合并后: {len(merged_models)} 个模型")
+
+    # 对缺少硬件信息的模型，尝试从部署页面提取硬件设备信息
+    # 部署页面中可能包含：运行设备、硬件设备、设备、运行环境等字段
+    # 限制最多提取 30 个模型，避免 DNS 不稳定导致爬虫超时
+    print("\n=== 从部署页面提取硬件信息 ===")
+    hw_extracted_count = 0
+    hw_max_attempts = 30
+    hw_skip_domains = set()  # 记录 DNS 解析失败的域名，后续跳过
+    for m in merged_models:
+        if hw_extracted_count >= hw_max_attempts:
+            print(f"  已达到最大提取数量限制 ({hw_max_attempts})，跳过剩余模型")
+            break
+        # 只对缺少 minHardware 或 minHardware 为默认值的模型尝试提取
+        current_hw = m.get('minHardware', '')
+        if not current_hw or current_hw in ['Atlas 800I A3', 'Atlas 800T A3', '']:
+            doc_url = m.get('docUrl', '')
+            if doc_url:
+                # 跳过已知 DNS 解析失败的域名
+                from urllib.parse import urlparse
+                domain = urlparse(doc_url).netloc
+                if domain in hw_skip_domains:
+                    continue
+                extracted_hw = _extract_hardware_from_deploy_page(doc_url)
+                if extracted_hw:
+                    m['minHardware'] = extracted_hw
+                    m['recommendedHardware'] = extracted_hw
+                    hw_extracted_count += 1
+                    print(f"  ✓ {m.get('name', '')}: {extracted_hw}")
+                else:
+                    # 如果提取失败且是 DNS 错误，记录域名
+                    pass
+    print(f"从部署页面提取硬件信息: {hw_extracted_count} 个模型")
 
     # 保存模型清单数据
     models_file = os.path.join(DATA_DIR, 'models.json')
