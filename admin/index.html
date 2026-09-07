@@ -15,6 +15,10 @@
       <a onclick="switchTab('acl-models')">🔬 小模型管理</a>
       <a onclick="switchTab('mindie-models')">🧩 MindIE 管理</a>
       <a onclick="switchTab('crawler')">🕷️ 爬虫控制</a>
+      <a onclick="switchTab('benchmarks')">🏆 评测基准管理</a>
+      <a onclick="switchTab('global-models')">🌍 全球AI大模型管理</a>
+      <a onclick="switchTab('model-params')">📐 全球AI模型参数</a>
+      <a onclick="switchTab('hardware-params')">🖥️ 全球硬件参数</a>
       <a onclick="switchTab('backup')">💾 数据备份</a>
       <a onclick="switchTab('sources')">📡 数据来源</a>
     </nav>
@@ -190,7 +194,12 @@
           <button class="btn btn-success" id="runCrawlerBtn" onclick="runCrawler()">▶️ 运行爬虫</button>
           <button class="btn btn-primary" onclick="refreshCrawlerStatus()">🔄 刷新状态</button>
         </div>
-        <div class="progress-box" id="crawlerProgress">暂无爬虫日志</div>
+        <div class="progress-box" id="crawlerProgress" style="max-height:220px;overflow-y:auto;white-space:pre-wrap;font-family:monospace;font-size:0.75rem;">暂无爬虫日志</div>
+      </div>
+
+      <div class="card">
+        <h3>🕘 历史运行记录</h3>
+        <div class="progress-box" id="crawlerHistory" style="max-height:200px;overflow-y:auto;font-size:0.8rem;">暂无历史运行记录</div>
       </div>
 
       <div class="card">
@@ -214,6 +223,146 @@
             <tr><td>MindIE</td><td style="font-size:0.75rem;word-break:break-all">https://gitcode.com/Ascend/ModelZoo-PyTorch/tree/master/MindIE</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- 评测基准管理 -->
+    <div class="section" id="section-benchmarks">
+      <div class="card">
+        <h3>🏆 评测基准管理</h3>
+        <p style="color:var(--text-secondary);margin-bottom:16px">管理大模型评测基准数据（共 <strong id="benchmarkAdminCount">0</strong> 条）</p>
+        <div class="search-bar">
+          <input type="text" id="benchmarkAdminSearch" placeholder="🔍 搜索基准名称、全称、简介、类别..." oninput="debouncedBenchmarkSearch()">
+          <button class="btn btn-primary btn-sm" onclick="searchBenchmarks()">🔍 搜索</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>基准名称</th>
+                <th>类别</th>
+                <th>语言</th>
+                <th>难度</th>
+                <th>题量</th>
+                <th>机构</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="benchmarkAdminTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="benchmarkAdminPagination"></div>
+      </div>
+    </div>
+
+    <!-- 全球AI大模型管理 -->
+    <div class="section" id="section-global-models">
+      <div class="card">
+        <h3>🌍 全球AI大模型管理</h3>
+        <p style="color:var(--text-secondary);margin-bottom:16px">管理全球AI大模型数据（共 <strong id="globalModelAdminCount">0</strong> 条）</p>
+        <div class="search-bar">
+          <input type="text" id="globalModelAdminSearch" placeholder="🔍 搜索模型名称、机构、代码..." oninput="debouncedGlobalModelSearch()">
+          <button class="btn btn-primary btn-sm" onclick="searchGlobalModels()">🔍 搜索</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>模型名称</th>
+                <th>代码</th>
+                <th>机构</th>
+                <th>类型</th>
+                <th>参数规模</th>
+                <th>商业用途</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="globalModelAdminTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="globalModelAdminPagination"></div>
+      </div>
+    </div>
+
+    <!-- 全球AI模型参数管理 -->
+    <div class="section" id="section-model-params">
+      <div class="card">
+        <h3>📐 全球AI模型参数</h3>
+        <p style="color:var(--text-secondary);margin-bottom:16px">
+          数据源：优先从 DataLearner（datalearner.com/ai-models/pretrained-models）提取，全球AI大模型页面作为备选；
+          层数/KV头数/头维度等缺失字段可从 hf-mirror.com 模型配置自动补全。<strong id="modelParamCount">0</strong> 条
+        </p>
+        <div class="search-bar">
+          <input type="text" id="modelParamSearch" placeholder="🔍 搜索模型名称、标识..." oninput="debouncedModelParamSearch()">
+          <select id="modelParamHasFilter" onchange="searchModelParams(1)">
+            <option value="">全部模型</option>
+            <option value="yes">有总参</option>
+            <option value="no">无总参</option>
+          </select>
+          <button class="btn btn-warning btn-sm" onclick="fetchHfAllModelParams()">⬇️ 一键补全</button>
+          <button class="btn btn-success btn-sm" onclick="addModelParam()">➕ 新增</button>
+          <button class="btn btn-primary btn-sm" onclick="searchModelParams(1)">🔄 刷新</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>总参(B)</th>
+              <th>激活(B)</th>
+              <th>层数</th>
+              <th>注意力头数</th>
+              <th>KV头数</th>
+              <th>头维度</th>
+              <th>上下文</th>
+              <th>架构</th>
+              <th>是否MoE</th>
+              <th style="width:130px;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="modelParamTableBody">
+            <tr><td colspan="11" style="text-align:center;color:var(--muted);">加载中...</td></tr>
+          </tbody>
+        </table>
+        <div class="pagination" id="modelParamPagination"></div>
+      </div>
+    </div>
+
+    <!-- 全球硬件参数管理 -->
+    <div class="section" id="section-hardware-params">
+      <div class="card">
+        <h3>🖥️ 全球硬件参数（GPU_LIB 参数库）</h3>
+        <p style="color:var(--text-secondary);margin-bottom:16px">GPU_LIB 参数库（LLM Token 计算器与后台共用数据源 data/gpu_lib.json），可新增/编辑/删除。<strong id="hardwareParamCount">0</strong> 条</p>
+        <div class="search-bar">
+          <input type="text" id="hardwareParamSearch" placeholder="🔍 搜索 GPU 型号、显存类型..." oninput="debouncedHardwareParamSearch()">
+          <select id="hardwareSourceFilter" onchange="searchHardwareParams()">
+            <option value="all">全部来源</option>
+            <option value="original">内置条目</option>
+            <option value="global">全球硬件提取</option>
+          </select>
+          <button class="btn btn-success btn-sm" onclick="addHardwareParam()">➕ 新增 GPU</button>
+          <button class="btn btn-primary btn-sm" onclick="searchHardwareParams()">🔄 刷新</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>GPU型号</th>
+                <th>显存带宽(GB/s)</th>
+                <th>FP16算力(TFLOPS)</th>
+                <th>FP8算力(TFLOPS)</th>
+                <th>显存容量(GB)</th>
+                <th>显存类型</th>
+                <th>互联带宽(GB/s)</th>
+                <th>参考价格(元)</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="hardwareParamTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="hardwareParamPagination"></div>
       </div>
     </div>
 

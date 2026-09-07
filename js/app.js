@@ -89,11 +89,20 @@ async function init() {
       // 加载硬件数据
       loadHardwareData();
 
+      // 加载 NV（NVIDIA）产品数据
+      loadNvHardwareData();
+
       // 加载 ACL 小模型数据
       loadAclModels();
 
       // 加载 MindIE 模型数据
       loadMindieModels();
+
+      // 加载全球AI大模型数据
+      initGlobalModels();
+
+      // 加载大模型评测基准数据
+      initBenchmarks();
     });
 
   } catch(e) {

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大模型评测基准详情</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .detail-page,
+    body.detail-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-header {
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detail-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .detail-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .detail-header h1 .accent { color: var(--color-accent); }
+    .detail-header .back-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .detail-header .back-link:hover { text-decoration: underline; }
+    .detail-content { flex: 1; background: var(--color-bg); padding: 32px 0 60px; }
+    .detail-loading {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; color: var(--color-text-secondary);
+    }
+    .detail-error {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; color: var(--color-error);
+    }
+    .bd-wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+
+    /* 基准概览卡片 */
+    .bd-hero {
+      background: var(--color-card-bg, white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--color-card-shadow);
+      margin-bottom: 28px;
+    }
+    .bd-hero h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+    .bd-hero .bd-fullname { font-size: 0.95rem; color: var(--color-text-secondary); margin-bottom: 12px; }
+    .bd-hero .bd-desc { font-size: 0.95rem; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 18px; }
+    .bd-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    .bd-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      border-top: 1px solid var(--color-border);
+      padding-top: 18px;
+    }
+    .bd-info-item .bd-info-label { font-size: 0.78rem; color: var(--color-text-tertiary); margin-bottom: 4px; }
+    .bd-info-item .bd-info-value { font-size: 0.9rem; font-weight: 600; color: var(--color-text); }
+    .bd-info-item a { color: var(--color-primary); font-weight: 500; }
+
+    /* 难度徽章 */
+    .diff-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .diff-basic { background: #DCFCE7; color: #166534; }
+    .diff-mid { background: #FEF3C7; color: #92400E; }
+    .diff-hard { background: #FEE2E2; color: #B91C1C; }
+
+    /* 榜单表格 */
+    .bd-leaderboard {
+      background: var(--color-card-bg, white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--color-card-shadow);
+    }
+    .bd-leaderboard h3 { font-size: 1.15rem; font-weight: 700; margin: 0 0 4px; color: var(--color-text); }
+    .bd-leaderboard .bd-lb-sub { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 16px; }
+    .bd-table-wrap { overflow-x: auto; }
+    table.bd-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    table.bd-table th, table.bd-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    table.bd-table th { color: var(--color-text-tertiary); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; background: var(--color-bg-secondary); }
+    table.bd-table td { color: var(--color-text); }
+    table.bd-table .rank { font-weight: 700; color: var(--color-primary); }
+    table.bd-table .model-name { font-weight: 600; }
+    table.bd-table .model-org { color: var(--color-text-secondary); font-size: 0.8rem; }
+    table.bd-table .score { font-weight: 700; color: var(--color-text); }
+
+    /* 空状态 / 暗色 */
+    .bd-empty { text-align: center; color: var(--color-text-secondary); padding: 30px 0; }
+    [data-theme="dark"] .bd-hero, [data-theme="dark"] .bd-leaderboard { background: var(--color-bg); }
+  </style>
+</head>
+<body class="detail-page">
+  <header class="detail-header">
+    <div class="container">
+      <h1>📊 大模型评测基准 <span class="accent" id="benchmarkTitle">详情</span></h1>
+      <a href="/#benchmarks" class="back-link">← 返回评测基准</a>
+    </div>
+  </header>
+  <main class="detail-content" id="detailContent">
+    <div class="detail-loading" id="detailLoading">正在加载评测基准详情...</div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code');
+      var name = params.get('name') || '基准详情';
+      document.title = name + ' - 大模型评测基准详情';
+      document.getElementById('benchmarkTitle').textContent = name ? name : '详情';
+
+      var content = document.getElementById('detailContent');
+      var loading = document.getElementById('detailLoading');
+
+      if (!code) {
+        loading.style.display = 'none';
+        content.innerHTML = '<div class="detail-error">缺少基准参数</div>';
+        return;
+      }
+
+      // 难度标签样式
+      function diffClass(d) {
+        var basic = ['基础', 'Intermediate'];
+        var hard = ['高难度', '极高难度', 'Expert', 'Hard', '困难'];
+        if (basic.indexOf(d) !== -1) return 'diff-basic';
+        if (hard.indexOf(d) !== -1) return 'diff-hard';
+        return 'diff-mid';
+      }
+      // 难度中文标签
+      function diffLabel(d) {
+        if (!d) return '未公开';
+        var map = { 'Intermediate': '中等', 'Advanced': '困难', 'Expert': '高难度', 'Hard': '困难' };
+        return map[d] || d;
+      }
+      // 题量格式化
+      function fmtCount(n) {
+        if (n === null || n === undefined || n === '') return '未公开';
+        var v = Number(n);
+        if (isNaN(v)) return n;
+        if (v >= 10000) return (v / 10000).toFixed(1).replace(/\.0$/, '') + '万';
+        if (v >= 1000) return (v / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        return String(v);
+      }
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      fetch('/admin/api/benchmarks/detail/' + encodeURIComponent(code))
+        .then(function (r) {
+          if (!r.ok) return r.json().then(function (e) { throw new Error(e.error || ('HTTP ' + r.status)); });
+          return r.json();
+        })
+        .then(function (d) {
+          var b = d.benchmark;
+          var results = d.results || [];
+          var totalCount = d.totalCount || results.length;
+
+          if (b && b.shortName) {
+            document.title = b.shortName + ' - 大模型评测基准详情';
+            document.getElementById('benchmarkTitle').textContent = b.shortName;
+          }
+
+          var tags = '';
+          if (b.category) tags += '<span class="meta-tag category">' + esc(b.category) + '</span>';
+          if (b.language) tags += '<span class="meta-tag">🌐 ' + esc(b.language) + '</span>';
+          if (b.metrics) tags += '<span class="meta-tag">📊 ' + esc(b.metrics) + '</span>';
+
+          var infoItems = [];
+          function info(label, val) {
+            infoItems.push('<div class="bd-info-item"><div class="bd-info-label">' + label + '</div><div class="bd-info-value">' + (val || '未公开') + '</div></div>');
+          }
+          info('发布机构', esc(b.institution));
+          info('题量', fmtCount(b.problemCount));
+          info('指标', esc(b.metrics));
+          info('语言', esc(b.language));
+          info('发布日期', esc(b.releaseDate));
+          info('浏览量', b.viewCount ? String(b.viewCount) : '未公开');
+          if (b.paperLink) info('论文', '<a href="' + esc(b.paperLink) + '" target="_blank" rel="noopener">查看论文 ↗</a>');
+          if (b.datasetLink) info('数据集', '<a href="' + esc(b.datasetLink) + '" target="_blank" rel="noopener">查看数据集 ↗</a>');
+
+          // 榜单表格
+          var rowsHtml = '';
+          if (results.length === 0) {
+            rowsHtml = '<tr><td colspan="5" class="bd-empty">该基准暂无模型榜单数据</td></tr>';
+          } else {
+            results.forEach(function (row, idx) {
+              var rank = idx + 1;
+              var modelName = row.modelAbbrName || row.modelCode || '未知模型';
+              var org = row.orgName || '';
+              var score = (row.evalResult !== null && row.evalResult !== undefined) ? row.evalResult : '-';
+              var mode = row.modelMode || '';
+              var scoreTxt = typeof score === 'number' ? score : esc(score);
+              rowsHtml += '<tr>' +
+                '<td class="rank">' + rank + '</td>' +
+                '<td><div class="model-name">' + esc(modelName) + '</div></td>' +
+                '<td class="model-org">' + esc(org) + '</td>' +
+                '<td>' + esc(mode) + '</td>' +
+                '<td class="score">' + scoreTxt + '</td>' +
+                '</tr>';
+            });
+          }
+
+          var diff = diffLabel(b.difficultyLevel);
+          var html =
+            '<div class="bd-wrap">' +
+              '<div class="bd-hero">' +
+                '<h2>' + esc(b.shortName || code) + '</h2>' +
+                (b.fullName ? '<div class="bd-fullname">' + esc(b.fullName) + '</div>' : '') +
+                '<div class="bd-desc">' + esc(b.description || '') + '</div>' +
+                '<div class="bd-tags">' + tags +
+                  '<span class="diff-badge ' + diffClass(b.difficultyLevel) + '">难度 ' + esc(diff) + '</span>' +
+                '</div>' +
+                '<div class="bd-info-grid">' + infoItems.join('') + '</div>' +
+              '</div>' +
+              '<div class="bd-leaderboard">' +
+                '<h3>🏆 模型榜单</h3>' +
+                '<div class="bd-lb-sub">共 ' + totalCount + ' 条评测结果 · 数据来源：<a href="' + esc(b.datalearnerUrl || '') + '" target="_blank" rel="noopener" style="color:var(--color-primary)">DataLearner</a></div>' +
+                '<div class="bd-table-wrap"><table class="bd-table">' +
+                  '<thead><tr><th>排名</th><th>模型</th><th>机构</th><th>模式</th><th>得分</th></tr></thead>' +
+                  '<tbody>' + rowsHtml + '</tbody>' +
+                '</table></div>' +
+              '</div>' +
+            '</div>';
+
+          loading.style.display = 'none';
+          content.innerHTML = html;
+        })
+        .catch(function (e) {
+          loading.style.display = 'none';
+          content.innerHTML = '<div class="detail-error">内容加载失败：' + esc(e.message) + '</div>';
+        });
+    })();
+  </script>
+</body>
+</html>

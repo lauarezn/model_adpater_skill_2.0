@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全球AI大模型详情</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    /* 整页背景统一跟随全局主题，不做 header 与内容区的背景区隔 */
+    .detail-page,
+    body.detail-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-header {
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detail-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .detail-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .detail-header h1 .accent { color: var(--color-accent); }
+    .detail-header .back-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .detail-header .back-link:hover { text-decoration: underline; }
+    .detail-content { flex: 1; background: var(--color-bg); }
+    .detail-loading {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; color: var(--color-text-secondary);
+    }
+    .detail-error {
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; color: var(--color-error);
+    }
+    /* 直接渲染的 DataLearner 内容：居中限宽、背景与文字跟随主题 */
+    .detail-content .datalearner-body {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 28px 60px;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-content .datalearner-body h1,
+    .detail-content .datalearner-body h2,
+    .detail-content .datalearner-body h3,
+    .detail-content .datalearner-body h4,
+    .detail-content .datalearner-body strong {
+      color: var(--color-text);
+    }
+    .detail-content .datalearner-body p,
+    .detail-content .datalearner-body li,
+    .detail-content .datalearner-body td,
+    .detail-content .datalearner-body th {
+      color: var(--color-text-secondary);
+    }
+    .detail-content .datalearner-body a { color: var(--color-primary); }
+    .detail-content .datalearner-body table,
+    .detail-content .datalearner-body th,
+    .detail-content .datalearner-body td,
+    .detail-content .datalearner-body code,
+    .detail-content .datalearner-body pre {
+      border-color: var(--color-border);
+      background: var(--color-bg-secondary);
+      color: var(--color-text);
+    }
+    .detail-content .datalearner-body blockquote {
+      background: var(--color-bg-secondary);
+      border-color: var(--color-border);
+      color: var(--color-text-secondary);
+    }
+    /* 让 DataLearner 内部主容器也居中限宽 */
+    .detail-content .datalearner-body .mx-auto.max-w-5xl,
+    .detail-content .datalearner-body [class*="max-w-5xl"] {
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    /* 覆盖 DataLearner 自带的深/浅背景干扰，统一跟随主题背景 */
+    .detail-content .datalearner-body .dark\:bg-transparent,
+    .detail-content .datalearner-body .dark\:bg-slate-900\/40,
+    .detail-content .datalearner-body [class*="dark:"] { background: transparent !important; }
+    .detail-content .datalearner-body [class*="bg-white"] { background: transparent !important; }
+    /* 防止 style.css 的全局 header/footer/nav 深色样式误伤 DataLearner 内容里的同名标签 */
+    .detail-content .datalearner-body header,
+    .detail-content .datalearner-body footer,
+    .detail-content .datalearner-body nav {
+      background: transparent !important;
+      color: inherit !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    /* 暗色主题：DataLearner 内容中的中性浅色区块（白/浅灰）跟随变暗 */
+    [data-theme="dark"] .detail-content .datalearner-body [class*="bg-white"],
+    [data-theme="dark"] .detail-content .datalearner-body [class*="bg-slate-50"],
+    [data-theme="dark"] .detail-content .datalearner-body [class*="bg-slate-100"] {
+      background-color: var(--color-bg-secondary) !important;
+    }
+    /* 标题与段落舒适间距 */
+    .detail-content .datalearner-body h1,
+    .detail-content .datalearner-body h2 { scroll-margin-top: 20px; }
+    .detail-content .datalearner-body { line-height: 1.8; }
+    .detail-content .datalearner-body p { line-height: 1.8; margin-bottom: 16px; }
+    .detail-content .datalearner-body li { line-height: 1.8; margin-bottom: 6px; }
+    .detail-content .datalearner-body h2,
+    .detail-content .datalearner-body h3 { margin-top: 28px; margin-bottom: 12px; }
+
+    /* 让过于紧凑的局部更透气：信息行间距、区块间距、表格 */
+    /* 信息行（标签:值 网格行）：增大行内与行间间距 */
+    .detail-content .datalearner-body [class*="grid-cols-[180px_1fr]"] {
+      gap: 0.9rem 2rem !important;
+      padding-top: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+    }
+    /* 主要区块上下留白 */
+    .detail-content .datalearner-body section {
+      padding-top: 1.75rem !important;
+      padding-bottom: 1.75rem !important;
+    }
+    /* 区块之间的纵向间距 */
+    .detail-content .datalearner-body [class*="space-y"] {
+      row-gap: 1.25rem !important;
+    }
+    /* 表格单元格留白 */
+    .detail-content .datalearner-body table { width: 100%; border-collapse: collapse; }
+    .detail-content .datalearner-body th,
+    .detail-content .datalearner-body td { padding: 12px 16px; }
+    /* 小字号标签略微放大，提升可读性 */
+    .detail-content .datalearner-body [class*="text-[11px]"],
+    .detail-content .datalearner-body [class*="text-xs"] { font-size: 0.8rem !important; }
+  </style>
+</head>
+<body class="detail-page">
+  <header class="detail-header">
+    <div class="container">
+      <h1>🌍 全球AI大模型 <span class="accent" id="modelTitle">详情</span></h1>
+      <a href="/#global-models" class="back-link">← 返回全球AI大模型</a>
+    </div>
+  </header>
+  <main class="detail-content" id="detailContent">
+    <div class="detail-loading" id="detailLoading">正在加载模型详情...</div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code');
+      var name = params.get('name') || '模型详情';
+      document.title = name + ' - 全球AI大模型详情';
+      document.getElementById('modelTitle').textContent = name ? name : '详情';
+
+      if (!code) {
+        document.getElementById('detailContent').innerHTML =
+          '<div class="detail-error">缺少模型参数</div>';
+        return;
+      }
+
+      var content = document.getElementById('detailContent');
+      var loading = document.getElementById('detailLoading');
+
+      // 从返回的完整 HTML 字符串中提取指定 id 的 <section> 完整 outerHTML
+      function extractSection(html, id) {
+        var re = new RegExp('<section[^>]*id="' + id + '"');
+        var sm = html.match(re);
+        if (!sm) return null;
+        var start = sm.index;
+        var end = html.indexOf('</section>', start);
+        if (end === -1) return null;
+        return html.substring(start, end + '</section>'.length);
+      }
+
+      // 为筛选工具栏按钮绑定点击：拦截整页跳转，改为 AJAX 局部刷新"评测结果"区域（不更新 URL）
+      function bindFilterButtons() {
+        var bodyEl = content.querySelector('.datalearner-body');
+        if (!bodyEl) return;
+        var toolbar = bodyEl.querySelector('.benchmark-toolbar');
+        if (!toolbar) return;
+        toolbar.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            var u = new URL(a.getAttribute('href'), window.location.origin);
+            var sp = u.searchParams;
+            var p = [];
+            ['bm_thinking', 'bm_tool', 'bm_mode'].forEach(function (k) {
+              var v = sp.get(k);
+              if (v) p.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+            });
+            var reqUrl = '/admin/api/global-models/detail/' + encodeURIComponent(code)
+                       + (p.length ? '?' + p.join('&') : '');
+            var oldScores = bodyEl.querySelector('[id="benchmark-scores"]');
+            if (!oldScores) { window.location.href = a.getAttribute('href'); return; }
+            fetch(reqUrl)
+              .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+              .then(function (html) {
+                var newScores = extractSection(html, 'benchmark-scores');
+                if (!newScores) throw new Error('未找到评测结果区域');
+                var tmp = document.createElement('div');
+                tmp.innerHTML = newScores;
+                var newEl = tmp.firstElementChild;
+                if (!newEl) throw new Error('评测结果区域解析失败');
+                oldScores.replaceWith(newEl);
+                bindFilterButtons();
+              })
+              .catch(function (err) {
+                console.error('刷新评测结果失败', err);
+                window.location.href = a.getAttribute('href');
+              });
+          });
+        });
+      }
+
+      // 透传测评筛选参数（思考模式 / 思考模式细分 / 工具使用），使代理按对应模式抓取数据
+      var bmParams = [];
+      ['bm_thinking', 'bm_tool', 'bm_mode'].forEach(function (k) {
+        var v = params.get(k);
+        if (v) bmParams.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+      });
+      var qs = bmParams.length ? ('?' + bmParams.join('&')) : '';
+
+      fetch('/admin/api/global-models/detail/' + encodeURIComponent(code) + qs)
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
+        .then(function (html) {
+          // 提取返回文档的 body 内容
+          var bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/);
+          var bodyHtml = bodyMatch ? bodyMatch[1] : html;
+
+          // 注入 DataLearner 样式表，保证内容样式正常
+          var cssLinks = html.match(/<link[^>]+rel=["']stylesheet["'][^>]*>/g) || [];
+          var head = document.head;
+          cssLinks.forEach(function (link) {
+            var l = document.createElement('link');
+            l.rel = 'stylesheet';
+            var hrefMatch = link.match(/href=["']([^"']+)["']/);
+            if (hrefMatch) l.href = hrefMatch[1];
+            head.appendChild(l);
+          });
+
+          loading.style.display = 'none';
+          content.innerHTML = '<div class="datalearner-body">' + bodyHtml + '</div>';
+
+          // 移除 DataLearner 的外围元素：侧边目录、移动端目录按钮、广告等，使内容更干净美观
+          var bodyEl = content.querySelector('.datalearner-body');
+          if (bodyEl) {
+            var removeSel = 'aside, .toc-mobile-toggle, .toc-nav, ins.adsbygoogle, .adsbygoogle, .fixed, .sticky';
+            bodyEl.querySelectorAll(removeSel).forEach(function (el) {
+              el.remove();
+            });
+            // 去掉 DataLearner 最外层的 min-h-screen / dark 背景干扰，改用我们页面的白底
+            var outer = bodyEl.firstElementChild;
+            if (outer) {
+              outer.classList.remove('min-h-screen', 'bg-white');
+              outer.classList.add('dl-outer');
+            }
+          }
+
+          // 若未提供模型名，尝试从内容中提取
+          if (!name || name === '模型详情') {
+            var h1 = content.querySelector('h1');
+            if (h1 && h1.textContent) {
+              document.title = h1.textContent.trim() + ' - 全球AI大模型详情';
+              document.getElementById('modelTitle').textContent = h1.textContent.trim();
+            }
+          }
+
+          // 绑定筛选工具栏按钮的局部刷新交互（切换思考模式/工具使用/细分时只刷新评测结果区域）
+          bindFilterButtons();
+        })
+        .catch(function (e) {
+          loading.style.display = 'none';
+          content.innerHTML = '<div class="detail-error">内容加载失败：' + e.message + '</div>';
+        });
+    })();
+  </script>
+</body>
+</html>

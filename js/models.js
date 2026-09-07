@@ -1,12 +1,97 @@
 // ============ Navigation ============
+function switchSection(section) {
+  var target = document.getElementById('section-' + section);
+  if (!target) return;
+  document.querySelectorAll('.nav-btn, .dropdown-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  // 命中按钮：普通 nav-btn 或下拉子项（dropdown-item）
+  var btn = document.querySelector('.nav-btn[data-section="' + section + '"]') ||
+            document.querySelector('.dropdown-item[data-section="' + section + '"]');
+  if (btn) btn.classList.add('active');
+  // 若命中的是下拉子项，则同时高亮其父级下拉切换按钮
+  if (btn && btn.classList.contains('dropdown-item')) {
+    var dd = btn.closest('.nav-dropdown');
+    if (dd) {
+      var toggle = dd.querySelector('.dropdown-toggle');
+      if (toggle) toggle.classList.add('active');
+    }
+  }
+  target.classList.add('active');
+  closeAllDropdowns();
+}
+
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('section-' + btn.dataset.section).classList.add('active');
+    switchSection(btn.dataset.section);
   });
 });
+
+// 下拉菜单（通用，支持多个 .nav-dropdown）：切换按钮展开/收起
+function positionDropdown(dd) {
+  var toggle = dd.querySelector('.dropdown-toggle');
+  var menu = dd.querySelector('.dropdown-menu');
+  if (!toggle || !menu) return;
+  var rect = toggle.getBoundingClientRect();
+  menu.style.top = rect.bottom + 4 + 'px';
+  menu.style.left = rect.left + 'px';
+  menu.style.minWidth = Math.max(220, rect.width) + 'px';
+}
+function closeAllDropdowns() {
+  document.querySelectorAll('.nav-dropdown').forEach(function (dd) {
+    dd.classList.remove('open');
+    var toggle = dd.querySelector('.dropdown-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  });
+}
+function openDropdown(dd) {
+  closeAllDropdowns();
+  positionDropdown(dd);
+  dd.classList.add('open');
+  var toggle = dd.querySelector('.dropdown-toggle');
+  if (toggle) toggle.setAttribute('aria-expanded', 'true');
+}
+// 每个下拉：点击切换按钮展开/收起
+document.querySelectorAll('.nav-dropdown').forEach(function (dd) {
+  var toggle = dd.querySelector('.dropdown-toggle');
+  if (!toggle) return;
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (dd.classList.contains('open')) {
+      closeAllDropdowns();
+    } else {
+      openDropdown(dd);
+    }
+  });
+});
+// 下拉子项：选中后收起菜单并切换板块
+document.querySelectorAll('.nav-dropdown .dropdown-item').forEach(function (item) {
+  item.addEventListener('click', function (e) {
+    e.stopPropagation();
+    closeAllDropdowns();
+    switchSection(item.dataset.section);
+    // 若子项带有 data-view（如「全球AI大模型」下的模型清单/最热排行），在切换板块后同步切换视图
+    if (item.dataset.view && typeof window.switchGlobalView === 'function') {
+      switchGlobalView(item.dataset.view);
+    }
+  });
+});
+// 点击页面其它区域关闭下拉
+document.addEventListener('click', function () {
+  closeAllDropdowns();
+});
+// 页面滚动/窗口变化时保持下拉菜单跟随定位（不随导航横向滑动）
+window.addEventListener('scroll', function () {
+  document.querySelectorAll('.nav-dropdown.open').forEach(positionDropdown);
+}, true);
+window.addEventListener('resize', function () {
+  document.querySelectorAll('.nav-dropdown.open').forEach(positionDropdown);
+});
+
+// 支持通过 URL hash（如 /#benchmarks）直接定位到指定板块
+(function () {
+  var section = (location.hash || '').replace('#', '');
+  if (section) switchSection(section);
+})();
 
 // ============ Model Cards ============
 function renderModels(data) {
@@ -216,7 +301,9 @@ function showModelDetail(id) {
 
 function closeModal(e) {
   if (e && e.target !== document.getElementById('modalOverlay')) return;
-  document.getElementById('modalOverlay').classList.remove('active');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('active');
+  overlay.classList.remove('global-modal');
   document.body.style.overflow = '';
 }
 
@@ -226,6 +313,7 @@ document.addEventListener('keydown', function(e) {
     const overlay = document.getElementById('modalOverlay');
     if (overlay && overlay.classList.contains('active')) {
       overlay.classList.remove('active');
+      overlay.classList.remove('global-modal');
       document.body.style.overflow = '';
     }
   }

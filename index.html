@@ -14,13 +14,21 @@
 
 <header>
   <div class="container">
-    <h1>🚀 昇腾服务器 <span class="accent">大模型适配清单</span></h1>
-    <p>查询大模型在华为昇腾平台上的适配状态与部署指南</p>
+    <div class="header-top">
+      <div class="header-title">
+        <h1 data-i18n="site.title" data-i18n-html="true">🚀 昇腾服务器 <span class="accent">大模型适配清单</span></h1>
+        <p data-i18n="site.subtitle">查询大模型在华为昇腾平台上的适配状态与部署指南</p>
+      </div>
+      <div class="header-controls">
+        <button class="switch-btn" id="themeToggleBtn" onclick="toggleTheme()" title="切换主题">🌙 暗色</button>
+        <button class="switch-btn" id="langToggleBtn" onclick="toggleLang()" title="切换语言">EN</button>
+      </div>
+    </div>
     <div class="header-stats">
-      <div class="header-stat">📦 已收录 <strong id="modelCount">0</strong> 个模型</div>
-      <div class="header-stat">🖥️ <strong id="hardwareCount">0</strong> 款服务器型号</div>
-      <div class="header-stat">🏷️ <strong id="categoryCount">0</strong> 个类别</div>
-      <div class="header-stat">📅 <span id="dataDate">加载中...</span></div>
+      <div class="header-stat">📦 <span data-i18n="stat.models">已收录 <strong id="modelCount">0</strong> 个模型</span></div>
+      <div class="header-stat">🖥️ <span data-i18n="stat.hardware"><strong id="hardwareCount">0</strong> 款服务器型号</span></div>
+      <div class="header-stat">🏷️ <span data-i18n="stat.categories"><strong id="categoryCount">0</strong> 个类别</span></div>
+      <div class="header-stat">📅 <span id="dataDate" data-i18n="stat.date">加载中...</span></div>
     </div>
   </div>
 </header>
@@ -36,11 +44,34 @@
 
 <nav class="nav-bar">
   <div class="container">
-    <button class="nav-btn active" data-section="browse">📋 模型清单</button>
-    <button class="nav-btn" data-section="ascend-hardware">🖥️ 昇腾硬件</button>
-    <button class="nav-btn" data-section="train-models">📚 训练模型清单</button>
-    <button class="nav-btn" data-section="acl-models">🔬 小模型清单</button>
-    <button class="nav-btn" data-section="mindie-models">🧩 MindIE 模型</button>
+    <div class="nav-dropdown" id="hardwareDropdown">
+      <button class="nav-btn dropdown-toggle" id="hardwareToggle" data-i18n="nav.hardwareGlobal" aria-haspopup="true" aria-expanded="false">🖥️ 全球AI硬件 ▾</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" data-section="ascend-hardware-nv" data-i18n="nav.hardwareNv">🟢 NV产品</button>
+        <button class="dropdown-item" data-section="ascend-hardware" data-i18n="nav.hardwareAscend">🔷 昇腾产品</button>
+        <button class="dropdown-item" data-section="ascend-hardware-muxi" data-i18n="nav.hardwareMuxi">🟣 沐曦产品</button>
+      </div>
+    </div>
+    <div class="nav-dropdown" id="globalDropdown">
+      <button class="nav-btn dropdown-toggle active" id="globalToggle" data-i18n="nav.global" aria-haspopup="true" aria-expanded="false">📋 模型清单 ▾</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item active" data-section="browse" data-i18n="nav.browse">📋 昇腾适配清单</button>
+        <button class="dropdown-item" data-section="mindie-models" data-i18n="nav.mindie">🧩 MindIE 模型</button>
+        <button class="dropdown-item" data-section="train-models" data-i18n="nav.train">📚 昇腾大模型训练清单</button>
+        <button class="dropdown-item" data-section="acl-models" data-i18n="nav.acl">🔬 昇腾小模型清单</button>
+        <button class="dropdown-item" data-section="global-models" data-view="list" data-i18n="nav.globalList">🌍 全球AI大模型</button>
+        <button class="dropdown-item" data-section="global-models" data-view="hot" data-i18n="nav.globalHot">📈 最热排行</button>
+      </div>
+    </div>
+    <button class="nav-btn" data-section="benchmarks" data-i18n="nav.benchmarks">📊 评测基准</button>
+    <a class="nav-btn" href="token_calculator.html" style="text-decoration:none;cursor:pointer">🧮 LLM Token 计算器</a>
+    <div class="nav-dropdown" id="compareDropdown">
+      <button class="nav-btn dropdown-toggle" id="compareToggle" data-i18n="nav.compare" aria-haspopup="true" aria-expanded="false">⚖️ 产品对比 ▾</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" data-section="compare-models" data-i18n="nav.compareModels">🤖 大模型对比</button>
+        <button class="dropdown-item" data-section="compare-hardware" data-i18n="nav.compareHardware">🖥️ 服务器硬件产品对比</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -93,6 +124,10 @@
 
   <!-- Ascend Hardware Section -->
   <div class="section" id="section-ascend-hardware">
+    <div class="section-header">
+      <h2 data-i18n="hardwareAscend.title">🔷 昇腾产品</h2>
+      <p data-i18n="hardwareAscend.subtitle" style="color:var(--color-text-secondary);margin-top:8px">华为昇腾计算产品线 · 服务器硬件与加速卡</p>
+    </div>
     <div class="search-bar">
       <input type="text" class="search-input" id="hwSearchInput" placeholder="🔍 搜索硬件名称、类型、芯片..." oninput="filterAscendHardware()">
       <select class="filter-select" id="hwTypeFilter" onchange="filterAscendHardware()">
@@ -114,6 +149,44 @@
     <div class="empty-state" id="hwEmptyState" style="display:none">
       <div class="icon">🔍</div>
       <p>没有找到匹配的硬件，试试其他关键词</p>
+    </div>
+  </div>
+
+  <!-- NV Products Section (占位) -->
+  <!-- NV Products Section -->
+  <div class="section" id="section-ascend-hardware-nv">
+    <div class="section-header">
+      <h2 data-i18n="hardwareNv.title">🟢 NV产品</h2>
+      <p data-i18n="hardwareNv.subtitle" style="color:var(--color-text-secondary);margin-top:8px">NVIDIA 服务器硬件与加速卡产品</p>
+    </div>
+    <div class="search-bar">
+      <input type="text" class="search-input" id="nvSearchInput" placeholder="🔍 搜索硬件名称、类型、芯片..." oninput="filterNvHardware()">
+      <select class="filter-select" id="nvChipFilter" onchange="filterNvHardware()">
+        <option value="all">全部芯片</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;padding:16px;background:#F0FDF4;border-radius:8px;border:1px solid #D1FAE5">
+      <p style="font-size:0.9rem;color:#065F46">
+        📡 硬件数据来源：<a href="https://www.nvidia.com/en-us/data-center/" target="_blank" style="color:#047857;font-weight:500">NVIDIA 数据中心产品</a>
+        · NVIDIA A100 / H100 / H200 / HGX B200 / HGX B300 / GB200 / GB300 系列
+      </p>
+    </div>
+    <div class="ascend-hardware-grid" id="nvHardwareGrid"></div>
+    <div class="empty-state" id="nvEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p data-i18n="empty.hardware">没有找到匹配的硬件，试试其他关键词</p>
+    </div>
+  </div>
+
+  <!-- Muxi Products Section (占位) -->
+  <div class="section" id="section-ascend-hardware-muxi">
+    <div class="section-header">
+      <h2 data-i18n="hardwareMuxi.title">🟣 沐曦产品</h2>
+      <p data-i18n="hardwareMuxi.subtitle" style="color:var(--color-text-secondary);margin-top:8px">沐曦 GPU 服务器硬件与加速卡产品</p>
+    </div>
+    <div class="empty-state" style="padding:60px 20px">
+      <div class="icon">🚧</div>
+      <p data-i18n="hardwareMuxi.empty">沐曦产品数据正在整理中，敬请期待</p>
     </div>
   </div>
 
@@ -235,6 +308,236 @@
     <div id="trainLoading" class="loading" style="display:none">加载中...</div>
   </div>
 
+  <!-- Global AI Models Section -->
+  <div class="section" id="section-global-models">
+    <div class="section-header">
+      <h2>🌍 全球AI大模型</h2>
+    </div>
+    <div id="globalListView">
+    <div class="global-controls">
+      <input type="text" class="search-input" id="globalSearchInput" placeholder="🔍 搜索模型名称、机构..." oninput="filterGlobalModels()">
+      <select class="filter-select" id="globalTypeFilter" onchange="filterGlobalModels()">
+        <option value="all">全部类型</option>
+      </select>
+      <select class="filter-select" id="globalPublisherFilter" onchange="filterGlobalModels()">
+        <option value="all">全部机构</option>
+      </select>
+      <select class="filter-select" id="globalCommercialFilter" onchange="filterGlobalModels()">
+        <option value="all">全部商业用途</option>
+      </select>
+      <select class="filter-select" id="globalScaleFilter" onchange="filterGlobalModels()">
+        <option value="all">全部规模</option>
+      </select>
+    </div>
+    <div id="globalModelGridContainer">
+      <div class="loading" id="globalLoadingIndicator">
+        <div class="spinner"></div>
+        <p>正在加载全球AI大模型数据...</p>
+      </div>
+    </div>
+    <div class="model-grid" id="globalModelGrid" style="display:none"></div>
+    <div class="empty-state" id="globalEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>没有找到匹配的模型，试试其他关键词</p>
+    </div>
+    <div class="pagination" id="globalPagination" style="display:none">
+      <button class="pagination-btn" id="globalPagePrev" onclick="globalGoPage(globalCurrentPage - 1)" disabled>‹</button>
+      <div id="globalPageNumbers"></div>
+      <button class="pagination-btn" id="globalPageNext" onclick="globalGoPage(globalCurrentPage + 1)" disabled>›</button>
+      <span class="pagination-info" id="globalPageInfo"></span>
+    </div>
+    </div><!-- /globalListView -->
+
+    <!-- 最热模型排行榜视图 -->
+    <div id="hotRankingView" style="display:none">
+      <div class="hot-ranking-controls">
+        <div class="hot-ranking-meta">
+          <span class="hot-ranking-source">数据来源：<a href="https://hf-mirror.com/models" target="_blank" rel="noopener">hf-mirror.com</a></span>
+          <span class="hot-ranking-updated" id="hotRankingUpdated"></span>
+        </div>
+        <div class="hot-ranking-sort">
+          <label for="hotSortSelect">排序：</label>
+          <select class="filter-select" id="hotSortSelect" onchange="loadHotRanking()">
+            <option value="trending">热度优先</option>
+            <option value="downloads">下载量</option>
+            <option value="likes">点赞数</option>
+          </select>
+          <label for="hotLimitSelect" style="margin-left:12px">显示：</label>
+          <select class="filter-select" id="hotLimitSelect" onchange="loadHotRanking()">
+            <option value="10">前 10</option>
+            <option value="20">前 20</option>
+            <option value="30" selected>前 30</option>
+            <option value="50">前 50</option>
+            <option value="100">前 100</option>
+          </select>
+        </div>
+      </div>
+      <div id="hotRankingContainer">
+        <div class="loading" id="hotRankingLoading">
+          <div class="spinner"></div>
+          <p>正在抓取 hf-mirror 最热模型...</p>
+        </div>
+      </div>
+      <div class="empty-state" id="hotRankingEmpty" style="display:none">
+        <div class="icon">⚠️</div>
+        <p id="hotRankingErrorMsg">暂无数据或加载失败</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Benchmarks Section -->
+  <div class="section" id="section-benchmarks">
+    <div class="section-header">
+      <h2>📊 大模型评测基准</h2>
+    </div>
+    <div class="benchmark-controls">
+      <input type="text" class="search-input" id="benchmarkSearchInput" placeholder="🔍 搜索基准名称、简介、类别..." oninput="filterBenchmarks()">
+      <select class="filter-select" id="benchmarkCategoryFilter" onchange="filterBenchmarks()">
+        <option value="all">全部类别</option>
+      </select>
+      <select class="filter-select" id="benchmarkLanguageFilter" onchange="filterBenchmarks()">
+        <option value="all">全部语言</option>
+      </select>
+      <select class="filter-select" id="benchmarkDifficultyFilter" onchange="filterBenchmarks()">
+        <option value="all">全部难度</option>
+      </select>
+      <select class="filter-select" id="benchmarkInstitutionFilter" onchange="filterBenchmarks()">
+        <option value="all">全部机构</option>
+      </select>
+    </div>
+    <div id="benchmarkGridContainer">
+      <div class="loading" id="benchmarkLoadingIndicator">
+        <div class="spinner"></div>
+        <p>正在加载评测基准数据...</p>
+      </div>
+    </div>
+    <div class="benchmark-grid" id="benchmarkGrid" style="display:none"></div>
+    <div class="empty-state" id="benchmarkEmptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>没有找到匹配的基准，试试其他关键词</p>
+    </div>
+    <div class="pagination" id="benchmarkPagination" style="display:none">
+      <button class="pagination-btn" id="benchmarkPagePrev" onclick="benchmarkGoPage(benchmarkCurrentPage - 1)" disabled>‹</button>
+      <div id="benchmarkPageNumbers"></div>
+      <button class="pagination-btn" id="benchmarkPageNext" onclick="benchmarkGoPage(benchmarkCurrentPage + 1)" disabled>›</button>
+      <span class="pagination-info" id="benchmarkPageInfo"></span>
+    </div>
+  </div>
+
+  <!-- ============ 大模型对比 Section ============ -->
+  <div class="section" id="section-compare-models">
+    <div class="section-header">
+      <h2 data-i18n="compareModels.title">🤖 大模型对比</h2>
+      <p data-i18n="compareModels.subtitle">对比多个大模型在不同评测基准（Benchmark）上的表现得分</p>
+    </div>
+    <div class="dl-compare-hero-tip">
+      <span>💡</span>
+      <span data-i18n="compareModels.tip">至少选择 2 个模型，未选评测时会自动填充常见榜单，便于快速生成对比结果。</span>
+    </div>
+    <div class="dl-compare-grid">
+      <!-- 卡片 1：选择模型 -->
+      <div class="dl-compare-card">
+        <div class="dl-card-header dl-card-header--model">
+          <span class="dl-card-num">1</span>
+          <span data-i18n="compareModels.cardModel">选择模型</span>
+          <span class="dl-card-count"><span data-i18n="compareModels.selected">已选</span>: <b id="dlModelCount">0</b></span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-selected" id="dlSelectedModels">
+            <span class="dl-selected-empty" data-i18n="compareModels.noModel">暂未选择模型</span>
+          </div>
+          <div class="dl-search">
+            <input type="text" id="dlModelSearch" placeholder="搜索模型（如 GPT-4o, Qwen）" oninput="filterCompareModels()" autocomplete="off">
+          </div>
+          <ul class="dl-select-list" id="dlModelList"></ul>
+        </div>
+      </div>
+      <!-- 卡片 2：选择评测基准 -->
+      <div class="dl-compare-card">
+        <div class="dl-card-header dl-card-header--bench">
+          <span class="dl-card-num">2</span>
+          <span data-i18n="compareModels.cardBench">选择评测基准</span>
+          <span class="dl-card-count"><span data-i18n="compareModels.selected">已选</span>: <b id="dlBenchCount">0</b></span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-selected" id="dlSelectedBench">
+            <span class="dl-selected-empty" data-i18n="compareModels.noBench">暂未选择评测基准</span>
+          </div>
+          <div class="dl-search">
+            <input type="text" id="dlBenchSearch" placeholder="搜索评测（如 MMLU, GSM8K）" oninput="filterCompareBench()" autocomplete="off">
+          </div>
+          <ul class="dl-select-list" id="dlBenchList"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="dl-compare-actions">
+      <button class="dl-generate-btn" id="dlGenerateBtn" onclick="runModelCompare()">⚡ <span data-i18n="compareModels.generate">生成对比</span></button>
+      <span class="dl-generate-hint" id="dlGenerateHint" data-i18n="compareModels.generateHint">至少选择 2 个模型后再生成对比</span>
+    </div>
+    <div id="compareModelsResult">
+      <div class="loading" id="compareModelsLoading" style="display:none">
+        <div class="spinner"></div>
+        <p data-i18n="compareModels.loading">正在抓取评测榜单并构建对比矩阵...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 服务器硬件产品对比 Section ============ -->
+  <div class="section" id="section-compare-hardware">
+    <div class="section-header">
+      <h2 data-i18n="compareHardware.title">🖥️ 服务器硬件产品对比</h2>
+      <p data-i18n="compareHardware.subtitle">选择多个服务器硬件产品，并排对比关键规格参数</p>
+    </div>
+    <div class="dl-compare-hero-tip">
+      <span>💡</span>
+      <span data-i18n="compareHardware.tip">至少选择 2 个硬件产品后点击「生成对比」，可查看规格逐项并排对比。</span>
+    </div>
+    <div class="dl-compare-grid">
+      <div class="dl-compare-card">
+        <div class="dl-card-header dl-card-header--hw">
+          <span class="dl-card-num">1</span>
+          <span data-i18n="compareHardware.cardAscend">🔷 昇腾设备</span>
+          <span class="dl-card-count"><span data-i18n="compareModels.selected">已选</span>: <b id="dlHwAscendCount">0</b></span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-selected" id="dlSelectedHwAscend">
+            <span class="dl-selected-empty" data-i18n="compareHardware.noAscend">暂未选择昇腾设备</span>
+          </div>
+          <div class="dl-search">
+            <input type="text" id="dlHwAscendSearch" placeholder="🔍 搜索昇腾设备..." oninput="filterCompareHwAscend()" autocomplete="off">
+          </div>
+          <ul class="dl-select-list" id="dlHwAscendList"></ul>
+        </div>
+      </div>
+      <div class="dl-compare-card">
+        <div class="dl-card-header dl-card-header--hw">
+          <span class="dl-card-num">2</span>
+          <span data-i18n="compareHardware.cardNonAscend">🟢 非昇腾设备</span>
+          <span class="dl-card-count"><span data-i18n="compareModels.selected">已选</span>: <b id="dlHwNonAscendCount">0</b></span>
+        </div>
+        <div class="dl-card-body">
+          <div class="dl-selected" id="dlSelectedHwNonAscend">
+            <span class="dl-selected-empty" data-i18n="compareHardware.noNonAscend">暂未选择非昇腾设备</span>
+          </div>
+          <div class="dl-search">
+            <input type="text" id="dlHwNonAscendSearch" placeholder="🔍 搜索非昇腾设备..." oninput="filterCompareHwNonAscend()" autocomplete="off">
+          </div>
+          <ul class="dl-select-list" id="dlHwNonAscendList"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="dl-compare-actions">
+      <button class="dl-generate-btn" id="dlHwGenerateBtn" onclick="runHardwareCompare()">⚡ <span data-i18n="compareHardware.generate">生成对比</span></button>
+      <span class="dl-generate-hint" id="dlHwGenerateHint" data-i18n="compareHardware.generateHint">至少选择 2 个硬件产品后再生成对比</span>
+    </div>
+    <div id="compareHardwareResult">
+      <div class="loading" id="compareHardwareLoading" style="display:none">
+        <div class="spinner"></div>
+        <p data-i18n="compareHardware.loading">正在构建硬件对比...</p>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -254,10 +557,16 @@
 
 <script src="js/data-loader.js"></script>
 <script src="js/hardware.js"></script>
+<script src="js/nv-hardware.js"></script>
 <script src="js/models.js"></script>
 <script src="js/train-models.js"></script>
 <script src="js/acl-models.js"></script>
 <script src="js/mindie-models.js"></script>
+<script src="js/global-models.js"></script>
+<script src="js/hot-models.js"></script>
+<script src="js/benchmarks.js"></script>
+<script src="js/compare.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

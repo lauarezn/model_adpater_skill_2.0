@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大模型评测对比</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .cmp-page, body.cmp-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--color-bg); color: var(--color-text); }
+    .cmp-header { background: var(--color-bg); color: var(--color-text); padding: 20px 0; flex-shrink: 0; border-bottom: 1px solid var(--color-border); }
+    .cmp-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .cmp-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .cmp-header h1 .accent { color: var(--color-accent); }
+    .cmp-header .back-link { color: var(--color-primary); text-decoration: none; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
+    .cmp-header .back-link:hover { text-decoration: underline; }
+    .cmp-content { flex: 1; padding: 28px 0 60px; }
+    .cmp-wrap { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+    .cmp-loading, .cmp-error { display: flex; align-items: center; justify-content: center; padding: 60px 20px; color: var(--color-text-secondary); }
+
+    .cmp-page-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+    .cmp-breadcrumb { font-size: 0.8rem; color: var(--color-text-tertiary); margin-bottom: 20px; }
+    .cmp-breadcrumb a { color: var(--color-primary); text-decoration: none; }
+
+    /* 模型卡片 */
+    .cmp-model-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1.25rem; margin-bottom: 28px; }
+    .cmp-model-card { background: var(--color-card-bg, var(--color-bg)); border: 1px solid var(--color-border); border-radius: 16px; padding: 20px 24px; box-shadow: var(--color-card-shadow); }
+    .cmp-model-card h3 { margin: 0 0 4px; font-size: 1.1rem; font-weight: 700; color: var(--color-text); }
+    .cmp-model-card .cmp-mc-org { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 14px; }
+    .cmp-mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cmp-mc-item .cmp-mc-label { font-size: 0.72rem; color: var(--color-text-tertiary); margin-bottom: 3px; }
+    .cmp-mc-item .cmp-mc-value { font-size: 0.85rem; font-weight: 600; color: var(--color-text); }
+    .cmp-mc-detail { display: inline-block; margin-top: 14px; font-size: 0.85rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+    .cmp-mc-detail:hover { text-decoration: underline; }
+
+    /* 对比结论 */
+    .cmp-conclusion { padding: 18px 22px; background: var(--color-primary-light); border-radius: 14px; margin-bottom: 28px; }
+    .cmp-conclusion-main { font-size: 1.05rem; font-weight: 700; color: var(--color-text); margin-bottom: 12px; }
+    .cmp-conclusion-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+    .cmp-cstat { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 12px; padding: 10px 16px; min-width: 90px; }
+    .cmp-cstat .cmp-cstat-num { font-size: 1.4rem; font-weight: 800; color: var(--color-primary); }
+    .cmp-cstat .cmp-cstat-label { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 2px; }
+    .cmp-conclusion-note { font-size: 0.78rem; color: var(--color-text-secondary); margin-top: 10px; line-height: 1.6; }
+
+    /* 得分表格 */
+    .cmp-score-section, .cmp-spec-section { background: var(--color-card-bg, var(--color-bg)); border: 1px solid var(--color-border); border-radius: 16px; padding: 24px; box-shadow: var(--color-card-shadow); margin-bottom: 28px; }
+    .cmp-section-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+    .cmp-section-sub { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 16px; }
+    table.cmp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    table.cmp-table th, table.cmp-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    table.cmp-table th { color: var(--color-text-tertiary); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; background: var(--color-bg-secondary); white-space: nowrap; }
+    table.cmp-table td { color: var(--color-text); }
+    table.cmp-table .cmp-rownum { font-weight: 700; color: var(--color-primary); }
+    table.cmp-table .cmp-score { font-weight: 700; color: var(--color-text); }
+    table.cmp-table .cmp-na { color: var(--color-text-tertiary); text-align: center; }
+    .cmp-footnote { margin-top: 14px; font-size: 0.78rem; color: var(--color-text-tertiary); }
+
+    [data-theme="dark"] .cmp-model-card, [data-theme="dark"] .cmp-score-section, [data-theme="dark"] .cmp-spec-section { background: var(--color-bg); }
+    [data-theme="dark"] .cmp-cstat { background: var(--color-bg-secondary); }
+    @media (max-width: 768px) { .cmp-mc-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="cmp-page">
+  <header class="cmp-header">
+    <div class="container">
+      <h1>⚖️ 大模型<span class="accent" id="cmpTitle">评测对比</span></h1>
+      <a href="/#compare-models" class="back-link">← 返回模型对比</a>
+    </div>
+  </header>
+  <main class="cmp-content">
+    <div class="cmp-wrap">
+      <div class="cmp-loading" id="cmpLoading">正在加载对比数据...</div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var wrap = document.querySelector('.cmp-wrap');
+      var loading = document.getElementById('cmpLoading');
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function fmtScore(v) {
+        if (v === null || v === undefined || v === '') return '-';
+        var n = Number(v);
+        if (!isNaN(n)) return n;
+        return esc(v);
+      }
+      function isNum(v) { return typeof v === 'number' && !isNaN(v); }
+      function param(name) {
+        return new URLSearchParams(window.location.search).get(name) || '';
+      }
+
+      // ===== 解析参数（参考 DataLearner：modelInputString 用模型数字 ID） =====
+      var modelInput = param('modelInputString');   // 逗号分隔的模型数字 ID（如 871,870）
+      var modelsLegacy = param('models');           // 兼容旧格式：逗号分隔的模型 code
+      var benchParam = param('benchmark');          // 逗号分隔的基准 code（可选）
+      var excludeParallel = param('excludeParallel') === 'true';
+
+      var modelIds = modelInput.split(',').map(function (s) { return parseInt(s.trim(), 10); }).filter(function (n) { return !isNaN(n) && n > 0; });
+      var legacyCodes = modelsLegacy.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      var displayKeys = modelIds.length >= 2 ? modelIds : legacyCodes;   // 统一用 model_id 或 code 作为 key
+
+      var benchCodes = benchParam.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+
+      if (displayKeys.length < 2) {
+        loading.style.display = 'none';
+        wrap.innerHTML = '<div class="cmp-error">缺少对比模型参数（modelInputString），请返回选择至少 2 个模型</div>';
+        return;
+      }
+
+      var allModels = [];
+      var modelMap = {};   // key(model_id 或 code) -> model info
+      var allBench = [];
+      var benchMeta = {};  // code -> benchmark info
+      var detailSpecs = {}; // key -> 模型详情规格项 dict（来自 global-models 详情页）
+
+      function findModelByKey(key) {
+        return allModels.find(function (x) {
+          if (isNum(key)) return x.model_id === key;
+          return x.model_code === key;
+        });
+      }
+
+      // 加载全球模型列表
+      function loadModels() {
+        return fetch('/admin/api/global-models?page=1&page_size=1000')
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            allModels = d.models || [];
+            displayKeys.forEach(function (key) {
+              var m = findModelByKey(key);
+              if (m) modelMap[key] = m;
+              else modelMap[key] = { model_abbr_name: String(key), orgName: '', publish_time: '', parameterSizeDisplay: null, knowledgeCutoffDate: '', model_type: '' };
+            });
+          });
+      }
+      function modelLabel(key) {
+        var m = modelMap[key] || {};
+        return m.model_abbr_name || String(key);
+      }
+      // 从全球AI大模型对应模型详情页获取各模型的具体详细规格（逐项对比数据源）
+      function loadDetailSpecs() {
+        return Promise.all(displayKeys.map(function (key) {
+          var m = modelMap[key] || {};
+          var code = m.model_code;
+          if (!code) { detailSpecs[key] = {}; return Promise.resolve(); }
+          return fetch('/admin/api/global-models/detail-spec/' + encodeURIComponent(code))
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) { detailSpecs[key] = (d && d.specs) || {}; })
+            .catch(function () { detailSpecs[key] = {}; });
+        }));
+      }
+      // 加载评测基准列表
+      function loadBenchMeta() {
+        return fetch('/admin/api/benchmarks?page=1&page_size=2000')
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            allBench = d.benchmarks || [];
+            benchCodes.forEach(function (code) {
+              var b = allBench.find(function (x) { return (x.urlCode || x.benchmarkCode) === code; });
+              if (b) benchMeta[code] = b;
+              else benchMeta[code] = { shortName: code, category: '' };
+            });
+          });
+      }
+      // 抓取基准榜单
+      function fetchBenchmarks() {
+        return Promise.all(benchCodes.map(function (code) {
+          return fetch('/admin/api/benchmarks/detail/' + encodeURIComponent(code))
+            .then(function (r) {
+              if (!r.ok) throw new Error('基准 ' + code + ' 抓取失败');
+              return r.json();
+            })
+            .then(function (d) { return { code: code, rows: d.results || [] }; })
+            .catch(function (e) { return { code: code, rows: [], error: e.message }; });
+        }));
+      }
+      // 模型名匹配
+      function matchScore(row, model) {
+        var rowName = row.modelAbbrName || row.modelCode || '';
+        var mName = model.model_abbr_name || model.model_code || '';
+        if (!mName) return null;
+        if (rowName === mName || rowName.includes(mName) || mName.includes(rowName)) {
+          return { score: row.evalResult, org: row.orgName };
+        }
+        return null;
+      }
+      // 获取某模型在某基准的得分（取榜单中匹配到的最高分）
+      function modelScoreForBench(bd, key) {
+        var m = modelMap[key] || {};
+        var best = null;
+        (bd.rows || []).forEach(function (row) {
+          var mm = matchScore(row, m);
+          if (mm && (best === null || Number(mm.score) > Number(best))) best = mm.score;
+        });
+        return best;
+      }
+
+      // ===== 对比结论统计 =====
+      function computeConclusion(benchData) {
+        var commonCount = 0;          // 所有模型都有得分的基准数
+        var winCount = {};            // key -> 领先基准数
+        var avgScore = {};            // key -> 共同基准平均分
+        displayKeys.forEach(function (k) { winCount[k] = 0; avgScore[k] = 0; });
+        var sumScore = {};
+        displayKeys.forEach(function (k) { sumScore[k] = 0; });
+
+        benchData.forEach(function (bd) {
+          var scores = {};
+          var hasAll = true;
+          displayKeys.forEach(function (k) {
+            var s = modelScoreForBench(bd, k);
+            scores[k] = s;
+            if (s === null || s === undefined || s === '') hasAll = false;
+          });
+          if (!hasAll) return;   // 只统计共同有得分的基准
+          commonCount++;
+          var maxVal = null;
+          var maxKeys = [];
+          displayKeys.forEach(function (k) {
+            var n = Number(scores[k]);
+            if (isNum(n)) {
+              if (maxVal === null || n > maxVal) { maxVal = n; maxKeys = [k]; }
+              else if (n === maxVal) { maxKeys.push(k); }
+            }
+          });
+          maxKeys.forEach(function (k) { winCount[k]++; });
+          displayKeys.forEach(function (k) {
+            var n = Number(scores[k]);
+            if (isNum(n)) sumScore[k] += n;
+          });
+        });
+
+        var avgs = {};
+        displayKeys.forEach(function (k) {
+          avgs[k] = commonCount > 0 ? sumScore[k] / commonCount : null;
+        });
+        return { commonCount: commonCount, winCount: winCount, avgs: avgs };
+      }
+
+      function conclusionHtml(conclusion, names) {
+        if (conclusion.commonCount === 0) {
+          return '<div class="cmp-conclusion"><div class="cmp-conclusion-main">💡 暂无所有模型都参与的评测基准</div>' +
+            '<div class="cmp-conclusion-note">下方仍可查看各自的成绩与规格明细。</div></div>';
+        }
+        // 找出平均分最高与最低的模型
+        var bestKey = displayKeys[0], worstKey = displayKeys[0];
+        displayKeys.forEach(function (k) {
+          if (conclusion.avgs[k] > conclusion.avgs[bestKey]) bestKey = k;
+          if (conclusion.avgs[k] < conclusion.avgs[worstKey]) worstKey = k;
+        });
+        var diff = conclusion.avgs[bestKey] - conclusion.avgs[worstKey];
+        var stats = displayKeys.map(function (k) {
+          return '<div class="cmp-cstat"><div class="cmp-cstat-num">' + conclusion.winCount[k] + '</div>' +
+            '<div class="cmp-cstat-label">' + esc(names[k]) + ' 领先基准数</div></div>';
+        }).join('');
+        var mainText = '在 ' + conclusion.commonCount + ' 项共同评测中，' +
+          esc(names[bestKey]) + ' 平均分最高（' + fmtScore(conclusion.avgs[bestKey]) + '），' +
+          '较 ' + esc(names[worstKey]) + '（' + fmtScore(conclusion.avgs[worstKey]) + '）平均高 ' + fmtScore(diff) + ' 分。';
+        return '<div class="cmp-conclusion">' +
+          '<div class="cmp-conclusion-main">💡 ' + mainText + '</div>' +
+          '<div class="cmp-conclusion-stats">' +
+            '<div class="cmp-cstat"><div class="cmp-cstat-num">' + conclusion.commonCount + '</div><div class="cmp-cstat-label">可比评测</div></div>' +
+            stats +
+          '</div>' +
+          '<div class="cmp-conclusion-note">仅基于所有选中模型共同有成绩的评测汇总；"平均分"为该模型在这些评测上的得分均值。</div>' +
+        '</div>';
+      }
+
+      // ===== 模型卡片 =====
+      function modelCards() {
+        return '<div class="cmp-model-cards">' + displayKeys.map(function (key) {
+          var m = modelMap[key] || {};
+          var params = m.parameterSizeDisplay || (m.totalParamsB ? m.totalParamsB + 'B' : '');
+          return '<div class="cmp-model-card">' +
+            '<h3>' + esc(modelLabel(key)) + '</h3>' +
+            '<div class="cmp-mc-org">By ' + esc(m.orgName || '未知机构') + '</div>' +
+            '<div class="cmp-mc-grid">' +
+              '<div class="cmp-mc-item"><div class="cmp-mc-label">发布时间</div><div class="cmp-mc-value">' + esc(m.publish_time || '未提供') + '</div></div>' +
+              '<div class="cmp-mc-item"><div class="cmp-mc-label">参数量</div><div class="cmp-mc-value">' + esc(params || '未提供') + '</div></div>' +
+              '<div class="cmp-mc-item"><div class="cmp-mc-label">知识截止</div><div class="cmp-mc-value">' + esc(m.knowledgeCutoffDate || '未提供') + '</div></div>' +
+              '<div class="cmp-mc-item"><div class="cmp-mc-label">商业用途</div><div class="cmp-mc-value">' + esc(m.commercial_usage || '未提供') + '</div></div>' +
+            '</div>' +
+            '<a class="cmp-mc-detail" href="model_detail.html?code=' + encodeURIComponent(m.model_code || '') + '&name=' + encodeURIComponent(modelLabel(key)) + '" target="_blank">📄 查看完整详情 →</a>' +
+          '</div>';
+        }).join('') + '</div>';
+      }
+
+      // ===== 评测得分表 =====
+      function scoreTable(benchData) {
+        var thead = '<th>评测基准</th>' + displayKeys.map(function (key) {
+          return '<th>' + esc(modelLabel(key)) + '</th>';
+        }).join('');
+        var rows = benchData.map(function (bd, idx) {
+          var cells = displayKeys.map(function (key) {
+            var v = modelScoreForBench(bd, key);
+            var cls = (v === null || v === undefined || v === '') ? 'cmp-na' : 'cmp-score';
+            return '<td class="' + cls + '">' + fmtScore(v) + '</td>';
+          }).join('');
+          var name = (benchMeta[bd.code] && benchMeta[bd.code].shortName) || bd.code;
+          var cat = (benchMeta[bd.code] && benchMeta[bd.code].category) ? '（' + benchMeta[bd.code].category + '）' : '';
+          return '<tr><td class="cmp-rownum">' + (idx + 1) + '</td><td>' + esc(name + cat) + '</td>' + cells + '</tr>';
+        }).join('');
+        return '<table class="cmp-table"><thead><tr><th></th>' + thead + '</tr></thead><tbody>' + rows + '</tbody></table>';
+      }
+
+      // ===== 规格与许可明细表 =====
+      function specTable() {
+        // 详情页规格项顺序（逐项对比）
+        var order = ['模型参数', '上下文长度', '最大输出长度', '模型类型', '输入/输出模态',
+          '发布时间', '模型文件大小', 'MoE架构', '总参数 / 激活参数', '知识截止',
+          '代码开源状态', '预训练权重开源', '推理能力', '多语言支持'];
+        var thead = '<th>规格项</th>' + displayKeys.map(function (key) {
+          return '<th>' + esc(modelLabel(key)) + '</th>';
+        }).join('');
+        var rows = order.map(function (label) {
+          var cells = displayKeys.map(function (key) {
+            var d = detailSpecs[key] || {};
+            var v = d[label];
+            return '<td>' + (v ? esc(v) : '未提供') + '</td>';
+          }).join('');
+          return '<tr><td class="cmp-rownum">' + esc(label) + '</td>' + cells + '</tr>';
+        }).join('');
+        return '<table class="cmp-table"><thead><tr>' + thead + '</tr></thead><tbody>' + rows + '</tbody></table>';
+      }
+
+      // ===== 主流程 =====
+      Promise.all([loadModels(), loadBenchMeta()])
+        .then(function () {
+          // 先加载各模型详情规格（来自全球AI大模型对应模型详情页），供规格逐项对比
+          return loadDetailSpecs().then(function () {
+            if (benchCodes.length === 0) {
+              benchCodes = ['mmlu', 'mmlu-pro', 'gpqa', 'humaneval'];
+              return loadBenchMeta().then(function () { return fetchBenchmarks(); });
+            }
+            return fetchBenchmarks();
+          });
+        })
+        .then(function (benchData) {
+          loading.style.display = 'none';
+          var names = {};
+          displayKeys.forEach(function (k) { names[k] = modelLabel(k); });
+          var title = displayKeys.map(function (k) { return names[k]; }).join(' vs ');
+          document.title = title + ' 评测对比';
+          document.getElementById('cmpTitle').textContent = title;
+
+          var conclusion = computeConclusion(benchData), hasAnyScore;
+
+          var html =
+            '<div class="cmp-breadcrumb"><a href="/">首页</a> / <a href="/#compare-models">模型对比</a> / 评测对比</div>' +
+            '<h2 class="cmp-page-title">' + esc(title) + ' 评测对比</h2>' +
+            conclusionHtml(conclusion, names) +
+            modelCards() +
+            '<div class="cmp-score-section">' +
+              '<h3 class="cmp-section-title">📊 评测得分对比</h3>' +
+              '<div class="cmp-section-sub">按评测基准逐行列出各模型的得分；同一行内可比，跨行不可比。"-" 表示该模型未参与该基准评测。' + (excludeParallel ? '（已排除并行模式）' : '') + '</div>' +
+              '<div class="bd-table-wrap">' + scoreTable(benchData) + '</div>' +
+              '<div class="cmp-footnote">数据来源：DataLearner 大模型评测基准榜单</div>' +
+            '</div>' +
+            '<div class="cmp-spec-section">' +
+              '<h3 class="cmp-section-title">📋 模型详情规格逐项对比</h3>' +
+              '<div class="cmp-section-sub">以下规格项取自各模型在全球AI大模型页面对应的详情页，逐项并排对比。</div>' +
+              specTable() +
+              '<div class="cmp-footnote">「未提供」表示数据库暂无该字段；点击模型卡片中的「查看完整详情」可查看详情页全部内容。</div>' +
+            '</div>';
+          wrap.innerHTML = html;
+        })
+        .catch(function (e) {
+          loading.style.display = 'none';
+          wrap.innerHTML = '<div class="cmp-error">对比数据加载失败：' + esc(e.message) + '</div>';
+        });
+    })();
+  </script>
+</body>
+</html>

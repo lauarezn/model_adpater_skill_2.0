@@ -3,6 +3,7 @@ node_modules/
 !index.html
 !site-config.json
 !js/*.js
+!admin/js/*.js
 crawl_*.js
 merge_*.js
 package.json
@@ -14,3 +15,6 @@ __pycache__/
 
 # JiuwenSwarm runtime file operation logs
 .agent_history/
+
+# Crawler runtime state (per-process, changes on every run; not a data artifact)
+data/crawler-status.json

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Token 计算器</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .calc-page, body.calc-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-header {
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detail-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .detail-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .detail-header h1 .accent { color: var(--color-accent); }
+    .detail-header .back-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .detail-header .back-link:hover { text-decoration: underline; }
+    .detail-content { flex: 1; background: var(--color-bg); padding: 28px 0 60px; }
+    .calc-wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* 区块卡片 */
+    .calc-block {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--color-card-shadow);
+    }
+    .calc-block h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 18px;
+      color: var(--color-text);
+      border-left: 4px solid var(--color-accent);
+      padding-left: 10px;
+    }
+    .calc-block h3 .sub { font-size: 0.78rem; font-weight: 400; color: var(--color-text-secondary); margin-left: 8px; }
+
+    /* 表单网格 */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px 18px;
+    }
+    .form-item { display: flex; flex-direction: column; gap: 6px; }
+    .form-item label { font-size: 0.82rem; color: var(--color-text-secondary); font-weight: 500; }
+    .form-item label .hint { font-size: 0.72rem; color: var(--color-text-tertiary); font-weight: 400; margin-left: 4px; }
+    .form-item input, .form-item select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 0.9rem;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+    /* 输入颜色图例 */
+    .form-item input.in-orange, .form-item select.in-orange { background: #FFF7E6; border-color: #FBBF24; }
+    .form-item input.in-green, .form-item select.in-green { background: #ECFDF5; border-color: #34D399; }
+    [data-theme="dark"] .form-item input.in-orange, [data-theme="dark"] .form-item select.in-orange { background: #3A2E12; border-color: #B45309; color: #FDE68A; }
+    [data-theme="dark"] .form-item input.in-green, [data-theme="dark"] .form-item select.in-green { background: #0F2E22; border-color: #059669; color: #A7F3D0; }
+
+    /* 结果表格 */
+    .result-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .result-table th, .result-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    .result-table th {
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      background: var(--color-bg-secondary);
+      white-space: nowrap;
+    }
+    .result-table td { color: var(--color-text); }
+    .result-table .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .result-table .metric { font-weight: 600; }
+    .result-table .ok { color: var(--color-success); font-weight: 600; }
+    .result-table .no { color: var(--color-error); font-weight: 600; }
+    .result-table tbody tr:hover { background: var(--color-bg-secondary); }
+
+    .table-scroll { overflow-x: auto; }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      padding: 10px 4px 0;
+    }
+    .legend .dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    .legend .dot.orange { background: #FBBF24; }
+    .legend .dot.green { background: #34D399; }
+    .legend .dot.blue { background: #93C5FD; }
+
+    .calc-note {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-top: 6px;
+    }
+    .calc-note b { color: var(--color-text); }
+    .formula-list { margin: 0; padding-left: 18px; }
+    .formula-list li { margin-bottom: 8px; font-size: 0.85rem; line-height: 1.6; }
+    .formula-list code {
+      background: var(--color-bg-tertiary);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      color: var(--color-primary);
+    }
+    .formula-list .eg { color: var(--color-text-tertiary); font-size: 0.78rem; }
+    .moa-note { color: var(--color-accent-dark); font-size: 0.8rem; margin-top: 4px; }
+    [data-theme="dark"] .moa-note { color: var(--color-accent); }
+
+    /* ===== 可搜索下拉框（Combobox）===== */
+    .combobox { position: relative; width: 100%; }
+    .combobox .cb-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 30px 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 0.9rem;
+      transition: border-color .15s, box-shadow .15s;
+      cursor: text;
+    }
+    .combobox .cb-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+    .combobox .cb-arrow {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--color-text-tertiary);
+      font-size: 0.7rem;
+      user-select: none;
+    }
+    .combobox .cb-list {
+      position: absolute;
+      z-index: 50;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      max-height: 220px;
+      overflow-y: auto;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      box-shadow: var(--color-card-shadow);
+      display: none;
+      margin: 0;
+      padding: 4px;
+      list-style: none;
+    }
+    .combobox .cb-list.open { display: block; }
+    .combobox .cb-item {
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--color-text);
+    }
+    .combobox .cb-item:hover, .combobox .cb-item.active { background: var(--color-bg-secondary); }
+    .combobox .cb-item mark { background: #FDE68A; color: inherit; border-radius: 2px; }
+    [data-theme="dark"] .combobox .cb-item mark { background: #B45309; }
+    .combobox .cb-empty { padding: 8px 10px; color: var(--color-text-tertiary); font-size: 0.85rem; }
+    .combobox .cb-nomatch { color: var(--color-error); font-size: 0.72rem; padding: 4px 2px 0; display: none; }
+    .combobox .cb-nomatch.show { display: block; }
+    /* 输入颜色图例：combobox 内输入框同样套用橙色/绿色底色 */
+    .combobox.in-orange .cb-input { background: #FFF7E6; border-color: #FBBF24; }
+    .combobox.in-green .cb-input { background: #ECFDF5; border-color: #34D399; }
+    [data-theme="dark"] .combobox.in-orange .cb-input { background: #3A2E12; border-color: #B45309; color: #FDE68A; }
+    [data-theme="dark"] .combobox.in-green .cb-input { background: #0F2E22; border-color: #059669; color: #A7F3D0; }
+
+    /* GPU 对比选择器（复用 index 大模型对比的 dl-* 风格） */
+    .gpu-cmp-picker {
+      padding: 16px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      box-shadow: var(--color-card-shadow);
+      max-width: 620px;
+      margin-bottom: 6px;
+    }
+    .gpu-cmp-picker .dl-select-list { max-height: 260px; }
+  </style>
+</head>
+<body class="calc-page">
+  <header class="detail-header">
+    <div class="container">
+      <h1>🧮 <span class="accent">LLM Token 计算器</span></h1>
+      <a class="back-link" href="index.html">← 返回首页</a>
+    </div>
+  </header>
+
+  <div class="detail-content">
+    <div class="calc-wrap">
+
+      <!-- 使用说明 -->
+      <div class="calc-block">
+        <h3>📖 核心原理与使用方法</h3>
+        <div class="calc-note">
+          <p style="margin-top:0"><b>核心原理：</b>Prefill（处理输入）= 算力密集 → 受 GPU TFLOPS 限制；Decode（逐 Token 生成）= 显存带宽密集 → 受 Memory Bandwidth 限制。每生成一个 Token，GPU 需把全部模型权重从显存读一遍。</p>
+          <p style="margin:6px 0"><b>使用方法：</b>① 在下方选择/输入参数 → ② <span style="color:#F59E0B">橙黄底色</span> = 你来选择/输入（共 12 个输入点）；<span style="color:#10B981">浅绿底色</span> = 从参数库自动联动（勿手动修改）；<span style="color:#3B82F6">浅蓝底色</span> = 计算公式结果（自动更新）→ ③ 修改任意输入，所有结果实时联动更新。</p>
+          <p style="margin:6px 0"><b>注意事项：</b>MoE 模型填「激活参数量」；长上下文场景 KV Cache 不可忽略；实际性能受软件栈/驱动/温度影响 ±20~30%。</p>
+        </div>
+      </div>
+
+      <!-- GPU 硬件参数 -->
+      <div class="calc-block">
+        <h3>🖥️ GPU 硬件参数 <span class="sub">选择型号 → 下方自动联动</span></h3>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>GPU 型号 <span class="hint">支持关键字匹配</span></label>
+            <div class="combobox in-orange" id="gpuModelBox">
+              <input type="text" id="gpuModel" class="cb-input" placeholder="输入关键字筛选…" autocomplete="off" spellcheck="false">
+              <span class="cb-arrow">▼</span>
+              <p class="cb-nomatch" id="gpuModelNoMatch">未找到匹配型号，请换关键字</p>
+              <ul class="cb-list" id="gpuModelList"></ul>
+            </div>
+          </div>
+          <div class="form-item">
+            <label>显存带宽 (GB/s) <span class="hint">自动联动</span></label>
+            <input type="number" id="gpuBandwidth" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>FP16 算力 (TFLOPS) <span class="hint">自动联动</span></label>
+            <input type="number" id="gpuFp16" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>FP8 算力 (TFLOPS) <span class="hint">自动联动</span></label>
+            <input type="number" id="gpuFp8" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>显存容量 (GB) <span class="hint">自动联动</span></label>
+            <input type="number" id="gpuVram" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>显存类型 <span class="hint">自动联动</span></label>
+            <input type="text" id="gpuMemType" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>GPU 数量 (张) <span class="hint">手动输入</span></label>
+            <input type="number" id="gpuCount" class="in-orange" value="8" min="1" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>卡间互联带宽 (GB/s) <span class="hint">手动输入</span></label>
+            <input type="number" id="gpuInterconnect" class="in-orange" value="784" min="0" oninput="recalc()">
+          </div>
+        </div>
+      </div>
+
+      <!-- 模型参数 -->
+      <div class="calc-block">
+        <h3>🤖 模型参数 <span class="sub">选择模型 → 下方自动联动</span></h3>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>模型名称 <span class="hint">支持关键字匹配</span></label>
+            <div class="combobox in-orange" id="modelNameBox">
+              <input type="text" id="modelName" class="cb-input" placeholder="输入关键字筛选…" autocomplete="off" spellcheck="false">
+              <span class="cb-arrow">▼</span>
+              <p class="cb-nomatch" id="modelNameNoMatch">未找到匹配模型，请换关键字</p>
+              <ul class="cb-list" id="modelNameList"></ul>
+            </div>
+          </div>
+          <div class="form-item">
+            <label>总参数量 (B) <span class="hint">自动联动</span></label>
+            <input type="number" id="modelTotal" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>激活参数量 (B) <span class="hint">自动联动</span></label>
+            <input type="number" id="modelActive" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>是否为 MoE 模型 <span class="hint">自动联动</span></label>
+            <input type="text" id="modelMoE" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>层数 <span class="hint">自动联动</span></label>
+            <input type="number" id="modelLayers" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>KV 头数 (GQA) <span class="hint">自动联动</span></label>
+            <input type="number" id="modelKvHeads" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>头维度 <span class="hint">自动联动</span></label>
+            <input type="number" id="modelHeadDim" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>模型最大上下文长度 <span class="hint">自动联动</span></label>
+            <input type="number" id="modelCtx" class="in-green" readonly>
+          </div>
+        </div>
+        <p class="moa-note" id="moaNote" style="display:none">ℹ️ MoE 模型使用「激活参数量」计算模型权重体积</p>
+      </div>
+
+      <!-- 量化与推理参数 -->
+      <div class="calc-block">
+        <h3>⚙️ 量化与推理参数 <span class="sub">手动选择/输入</span></h3>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>量化精度</label>
+            <select id="quantPrec" class="in-orange" onchange="recalc()">
+              <option value="FP32">FP32</option>
+              <option value="FP16">FP16</option>
+              <option value="INT8" selected>INT8</option>
+              <option value="INT4">INT4</option>
+              <option value="INT2">INT2</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <label>每参数字节数 <span class="hint">联动精度</span></label>
+            <input type="number" id="bytesPerParam" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>KV Cache 精度</label>
+            <select id="kvPrec" class="in-orange" onchange="recalc()">
+              <option value="FP32">FP32</option>
+              <option value="FP16" selected>FP16</option>
+              <option value="INT8">INT8</option>
+              <option value="INT4">INT4</option>
+            </select>
+          </div>
+          <div class="form-item">
+            <label>KV Cache 每元素字节数 <span class="hint">联动精度</span></label>
+            <input type="number" id="kvBytes" class="in-green" readonly>
+          </div>
+          <div class="form-item">
+            <label>提示长度 (tokens)</label>
+            <input type="number" id="promptLen" class="in-orange" value="512" min="0" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>生成长度 (tokens)</label>
+            <input type="number" id="genLen" class="in-orange" value="128000" min="0" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>批大小 (Batch Size)</label>
+            <input type="number" id="batchSize" class="in-orange" value="1" min="1" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>效率系数 (软件栈)</label>
+            <input type="number" id="efficiency" class="in-orange" value="0.65" min="0" max="1" step="0.01" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>张量并行通信系数</label>
+            <input type="number" id="tpCoef" class="in-orange" value="0.92" min="0" max="1" step="0.01" oninput="recalc()">
+          </div>
+          <div class="form-item">
+            <label>实际上下文长度 seq</label>
+            <input type="number" id="seqLen" class="in-orange" value="8192" min="0" oninput="recalc()">
+          </div>
+        </div>
+        <p class="calc-note" style="margin-top:12px">
+          <b>参考：</b>效率系数 — llama.cpp(无优化)≈0.45~0.55 | vLLM≈0.60~0.75 | TensorRT-LLM≈0.70~0.85；多卡张量并行通信开销额外乘以 0.85~0.95（单卡填 1）。
+        </p>
+      </div>
+
+      <!-- 计算结果 -->
+      <div class="calc-block">
+        <h3>📊 计算结果 <span class="sub">全部自动计算，勿手动修改</span></h3>
+        <div class="table-scroll">
+          <table class="result-table">
+            <thead>
+              <tr><th>指标</th><th>公式说明</th><th>数值</th><th>单位</th><th>判定/备注</th></tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 不同量化精度对比 -->
+      <div class="calc-block">
+        <h3>📋 不同量化精度对比 <span class="sub">当前 GPU + 模型，自动计算</span></h3>
+        <div class="table-scroll">
+          <table class="result-table">
+            <thead>
+              <tr><th>精度</th><th>每参数字节数</th><th>模型权重(GB)</th><th>理论速度(tok/s)</th><th>实际速度(tok/s)</th><th>单卡是否放得下</th></tr>
+            </thead>
+            <tbody id="quantBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 不同 GPU 对比 -->
+      <div class="calc-block">
+        <h3>📋 不同 GPU 对比 <span class="sub">选择要对比的硬件 → 自动计算比对</span></h3>
+        <div class="gpu-cmp-picker">
+          <div class="dl-selected" id="gpuCmpSelected">
+            <span class="dl-selected-empty">暂未选择 GPU</span>
+          </div>
+          <div class="dl-search">
+            <input type="text" id="gpuCmpSearch" placeholder="🔍 搜索 GPU 型号（如 H100, 昇腾）" oninput="filterGpuCmp()" autocomplete="off">
+          </div>
+          <ul class="dl-select-list" id="gpuCmpList"></ul>
+        </div>
+        <div class="table-scroll" style="margin-top:14px">
+          <table class="result-table">
+            <thead>
+              <tr><th>GPU 型号</th><th>显存带宽(GB/s)</th><th>FP16算力(TFLOPS)</th><th>理论速度(tok/s)</th><th>实际速度(tok/s)</th><th>Prefill时间(ms)</th></tr>
+            </thead>
+            <tbody id="gpuCmpBody"></tbody>
+          </table>
+        </div>
+        <p class="calc-note" id="gpuCmpEmpty" style="display:none">请在上方选择至少一个 GPU 型号进行对比。</p>
+      </div>
+
+      <!-- 核心公式速查 -->
+      <div class="calc-block">
+        <h3>📐 核心公式速查</h3>
+        <ul class="formula-list">
+          <li><b>模型权重体积：</b><code>Weight(GB) = 激活参数(B) × 每参数字节数</code> <span class="eg">例: 70×0.5 = 35 GB</span></li>
+          <li><b>理论 Decode 速度：</b><code>Tok/s = 显存带宽(GB/s) ÷ 权重(GB)</code> <span class="eg">例: 1008÷35 = 28.8 tok/s</span></li>
+          <li><b>实际 Decode 速度：</b><code>Tok/s = 理论值 × 效率系数</code> <span class="eg">例: 28.8×0.65 = 18.7 tok/s</span></li>
+          <li><b>KV Cache 体积：</b><code>2×层数×KV头数×头维度×seq×bytes/1e9</code> <span class="eg">例: 2×80×8×128×4096×2/1e9=1.34GB</span></li>
+          <li><b>Prefill 时间：</b><code>T(ms)=2×参数(B)×提示长度÷FP16算力×1000</code> <span class="eg">例: 2×70×512÷165×1000=434ms</span></li>
+          <li><b>多卡 TP 速度：</b><code>(带宽×卡数)÷权重×效率×通信系数</code> <span class="eg">近似线性加速，有通信开销</span></li>
+          <li><b>用户感知吞吐：</b><code>Tok/s = 生成长度÷(Prefill+生成时间)</code> <span class="eg">综合指标，最贴近实际体验</span></li>
+        </ul>
+        <div class="calc-note">
+          <b>精度与字节数：</b>FP32=4B | FP16/BF16=2B | INT8=1B | INT4=0.5B | INT2=0.25B
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><span class="dot orange"></span>橙黄底色 = 你来选择/输入</span>
+        <span><span class="dot green"></span>浅绿底色 = 参数库自动联动（勿改）</span>
+        <span><span class="dot blue"></span>浅蓝底色 = 计算结果</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ============ 数据 ============
+    // GPU 参数库：型号、带宽、FP16、FP8、显存容量、显存类型、互联带宽、参考价格
+    // GPU 参数库（由 data/gpu_lib.json 动态加载，与 Admin 后台共用数据源）
+    var GPU_LIB = [];
+
+    // 从后端动态加载 GPU_LIB（与 Admin 后台共用 data/gpu_lib.json）
+    function loadGpuLib() {
+      return fetch('/admin/api/gpu-lib')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          GPU_LIB = (data.hardware || []).map(function(g) {
+            return {
+              name: g.name,
+              bw: g.bw,
+              fp16: g.fp16,
+              fp8: g.fp8,
+              vram: g.vram,
+              memType: g.memType,
+              ic: g.ic,
+              price: g.price
+            };
+          });
+          return GPU_LIB;
+        })
+        .catch(function() {
+          // 加载失败时退回空列表，避免页面报错
+          GPU_LIB = [];
+        });
+    }
+
+    // 模型参数库：从管理后台「全球AI模型参数库」(data/model-params.json) 动态加载
+    // 字段映射：totalParams→total, activeParams→active, layers→layers, attentionHeads→heads,
+    //           kvHeads→kvHeads, headDim→headDim, context→ctx, architecture→arch, isMoE→moe
+    var MODEL_LIB = [];
+
+    // 从后端动态加载模型参数（与 Admin「全球AI模型参数」共用 data/model-params.json）
+    function loadModelParams() {
+      return fetch('/admin/api/model-params?page_size=1000')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var items = data.models || [];
+          MODEL_LIB = items
+            // 只保留可正常计算的模型（总参、层数、KV头数、头维度齐全）
+            .filter(function (m) { return m && m.totalParams != null && m.layers != null && m.kvHeads != null && m.headDim != null; })
+            .map(function (m) {
+              var isMoE = (m.isMoE === '是' || m.isMoE === 'Yes' || m.isMoE === true);
+              var display = (m.name || m.modelCode || '').trim();
+              return {
+                name: display || m.modelCode,      // 下拉值/匹配标识（友好模型名）
+                modelCode: m.modelCode || display, // 原始标识（备用）
+                total: m.totalParams,
+                active: (m.activeParams != null) ? m.activeParams : m.totalParams,
+                layers: m.layers,
+                heads: m.attentionHeads,
+                kvHeads: m.kvHeads,
+                headDim: m.headDim,
+                ctx: m.context,
+                arch: m.architecture || (isMoE ? 'MoE' : 'Dense'),
+                moe: isMoE ? 'Yes' : 'No'
+              };
+            });
+          return MODEL_LIB;
+        })
+        .catch(function () {
+          // 加载失败时退回空列表，避免页面报错
+          MODEL_LIB = [];
+        });
+    }
+
+    var GPU_CMP = [];
+
+    var QUANT_BYTES = { FP32:4, FP16:2, INT8:1, INT4:0.5, INT2:0.25 };
+    var KV_BYTES = { FP32:4, FP16:2, INT8:1, INT4:0.5 };
+
+    function findGpu(name) { return GPU_LIB.find(g => g.name === name); }
+    function findModel(name) { return MODEL_LIB.find(m => m.name === name); }
+
+    function fmt(n, digits) {
+      if (n === null || n === undefined || isNaN(n)) return '-';
+      if (typeof digits === 'undefined') {
+        digits = (Math.abs(n) >= 1000) ? 2 : 4;
+      }
+      var v = Number(n.toFixed(digits));
+      return v.toLocaleString('en-US');
+    }
+
+    // ============ 可搜索下拉框（Combobox）============
+    // 将普通 select 升级为“可填写关键字匹配下拉框内容”的输入框 + 筛选列表
+    function createCombobox(opts) {
+      var input = opts.input;          // <input> 元素
+      var list = opts.list;            // <ul> 元素
+      var noMatch = opts.noMatch;      // 无匹配提示元素
+      var items = opts.items;          // 字符串数组
+      var onSelect = opts.onSelect;    // 选中时回调(value)
+      var activeIdx = -1;
+      var open = false;
+
+      function render(filter) {
+        var kw = (filter || '').toLowerCase();
+        list.innerHTML = '';
+        var matches = [];
+        items.forEach(function (it) {
+          if (!kw || it.toLowerCase().indexOf(kw) !== -1) matches.push(it);
+        });
+        if (matches.length === 0) {
+          var li = document.createElement('li');
+          li.className = 'cb-empty';
+          li.textContent = '无匹配项';
+          list.appendChild(li);
+          if (noMatch) noMatch.classList.add('show');
+        } else {
+          if (noMatch) noMatch.classList.remove('show');
+          matches.forEach(function (it, idx) {
+            var li = document.createElement('li');
+            li.className = 'cb-item';
+            // 高亮命中关键字
+            if (kw) {
+              var i = it.toLowerCase().indexOf(kw);
+              var hl = it.slice(0, i) + '<mark>' + it.slice(i, i + kw.length) + '</mark>' + it.slice(i + kw.length);
+              li.innerHTML = hl;
+            } else {
+              li.textContent = it;
+            }
+            li.addEventListener('mousedown', function (e) { e.preventDefault(); });
+            li.addEventListener('click', function () { choose(it); });
+            li.addEventListener('mouseenter', function () { setActive(idx); });
+            list.appendChild(li);
+          });
+        }
+        activeIdx = -1;
+      }
+
+      function choose(val) {
+        input.value = val;
+        close();
+        if (onSelect) onSelect(val);
+      }
+
+      function setActive(idx) {
+        var lis = list.querySelectorAll('.cb-item');
+        if (idx < 0) { activeIdx = -1; }
+        else if (idx >= lis.length) { activeIdx = lis.length - 1; }
+        else { activeIdx = idx; }
+        lis.forEach(function (li, i) { li.classList.toggle('active', i === activeIdx); });
+        var cur = lis[activeIdx];
+        if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
+      }
+
+      function openList() {
+        open = true;
+        list.classList.add('open');
+        render(input.value);
+      }
+      function close() {
+        open = false;
+        list.classList.remove('open');
+        activeIdx = -1;
+      }
+
+      input.addEventListener('focus', function () { openList(); });
+      input.addEventListener('input', function () { openList(); });
+      input.addEventListener('click', function () { if (!open) openList(); });
+
+      input.addEventListener('keydown', function (e) {
+        var lis = list.querySelectorAll('.cb-item');
+        if (e.key === 'ArrowDown') { e.preventDefault(); openList(); setActive(activeIdx + 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); openList(); setActive(activeIdx - 1); }
+        else if (e.key === 'Enter') {
+          if (open && lis[activeIdx]) { e.preventDefault(); choose(lis[activeIdx].textContent); }
+          else { close(); if (onSelect) onSelect(input.value); }
+        }
+        else if (e.key === 'Escape') { close(); }
+        else if (e.key === 'Tab') { close(); }
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!input.closest('.combobox').contains(e.target)) close();
+      });
+
+      // 初始渲染
+      render('');
+
+      return { items: items, refresh: function (newItems) { items = newItems; render(input.value); }, close: close };
+    }
+
+    // ============ 初始化下拉框 ============
+    function initSelects() {
+      var gpuNames = GPU_LIB.map(function (g) { return g.name; });
+      var modelNames = MODEL_LIB.map(function (m) { return m.name; });
+
+      window.__gpuCb = createCombobox({
+        input: document.getElementById('gpuModel'),
+        list: document.getElementById('gpuModelList'),
+        noMatch: document.getElementById('gpuModelNoMatch'),
+        items: gpuNames,
+        onSelect: onGpuChange
+      });
+      window.__modelCb = createCombobox({
+        input: document.getElementById('modelName'),
+        list: document.getElementById('modelNameList'),
+        noMatch: document.getElementById('modelNameNoMatch'),
+        items: modelNames,
+        onSelect: onModelChange
+      });
+
+      // 默认选中
+      if (gpuNames.indexOf('华为昇腾910C') !== -1) {
+        document.getElementById('gpuModel').value = '华为昇腾910C';
+      } else if (gpuNames[0]) {
+        document.getElementById('gpuModel').value = gpuNames[0];
+      }
+      if (modelNames.indexOf('DeepSeek-V3') !== -1) {
+        document.getElementById('modelName').value = 'DeepSeek-V3';
+      } else if (modelNames[0]) {
+        document.getElementById('modelName').value = modelNames[0];
+      }
+    }
+
+    // ============ GPU 对比选择器 ============
+    // 参考 index「大模型对比」选择方式：已选区 + 搜索框 + 可点击多选列表
+    var gpuCmpSelected = {};   // name -> true，记录已选 GPU
+    var gpuCmpAll = [];        // 全部 GPU 型号（有序）
+
+    function initGpuCmp() {
+      gpuCmpAll = GPU_LIB.map(function (g) { return g.name; });
+      // 默认选中：优先当前使用的 GPU 型号，再补常用的几款
+      gpuCmpSelected = {};
+      var cur = document.getElementById('gpuModel').value;
+      if (gpuCmpAll.indexOf(cur) !== -1) gpuCmpSelected[cur] = true;
+      var def = ['NVIDIA H100 SXM5','NVIDIA H200 SXM5','NVIDIA B200','AMD MI300X','华为昇腾910B4'];
+      def.forEach(function (n) { if (gpuCmpAll.indexOf(n) !== -1) gpuCmpSelected[n] = true; });
+      if (Object.keys(gpuCmpSelected).length === 0 && gpuCmpAll[0]) gpuCmpSelected[gpuCmpAll[0]] = true;
+      renderGpuCmpList();
+      updateGpuCmpUI();
+      recalc();
+    }
+
+    // 当前搜索关键字
+    function currentGpuCmpSearch() {
+      var el = document.getElementById('gpuCmpSearch');
+      return el ? (el.value || '').trim().toLowerCase() : '';
+    }
+    function filterGpuCmp() { renderGpuCmpList(); }
+
+    // 渲染可点击的多选列表（支持关键字过滤），样式与「大模型对比」一致
+    function renderGpuCmpList() {
+      var listEl = document.getElementById('gpuCmpList');
+      if (!listEl) return;
+      var q = currentGpuCmpSearch();
+      var items = gpuCmpAll;
+      if (q) items = items.filter(function (n) { return n.toLowerCase().indexOf(q) !== -1; });
+      if (items.length === 0) {
+        listEl.innerHTML = '<li class="dl-list-empty">无匹配 GPU</li>';
+        return;
+      }
+      listEl.innerHTML = items.map(function (n) {
+        var g = findGpu(n);
+        var on = !!gpuCmpSelected[n];
+        var sub = g ? (g.bw + ' GB/s · FP16 ' + g.fp16 + ' TFLOPS') : '';
+        return '<li class="dl-list-item' + (on ? ' dl-list-item--selected' : '') + '" onclick="toggleGpuCmp(\'' +
+          ('' + n).replace(/'/g, "\\'") + '\')">' +
+          '<span class="dl-item-main"><span class="dl-item-name">' + n + '</span>' +
+          (sub ? '<span class="dl-item-sub">' + sub + '</span>' : '') + '</span>' +
+          (on ? '<span class="dl-item-check">✓</span>' : '') +
+          '</li>';
+      }).join('');
+    }
+
+    // 点击列表项：添加/移除选中
+    function toggleGpuCmp(name) {
+      if (gpuCmpSelected[name]) {
+        delete gpuCmpSelected[name];
+      } else {
+        gpuCmpSelected[name] = true;
+      }
+      renderGpuCmpList();
+      updateGpuCmpUI();
+    }
+
+    // 移除已选 chip
+    function removeGpuCmp(name) {
+      delete gpuCmpSelected[name];
+      renderGpuCmpList();
+      updateGpuCmpUI();
+    }
+
+    // 更新已选区 UI（chips）
+    function updateGpuCmpUI() {
+      var wrap = document.getElementById('gpuCmpSelected');
+      if (!wrap) return;
+      var sel = gpuCmpAll.filter(function (n) { return !!gpuCmpSelected[n]; });
+      if (sel.length === 0) {
+        wrap.innerHTML = '<span class="dl-selected-empty">暂未选择 GPU</span>';
+      } else {
+        wrap.innerHTML = sel.map(function (n) {
+          return '<span class="dl-chip">' + n +
+            '<button class="dl-chip-x" onclick="removeGpuCmp(\'' + ('' + n).replace(/'/g, "\\'") + '\')">×</button></span>';
+        }).join('');
+      }
+      recalc();
+    }
+
+    // 获取当前选中的 GPU 型号列表（保持 GPU_LIB 顺序）
+    function getSelectedGpuCmp() {
+      return gpuCmpAll.filter(function (n) { return !!gpuCmpSelected[n]; });
+    }
+
+    // ============ GPU 联动 ============
+    function onGpuChange() {
+      var g = findGpu(document.getElementById('gpuModel').value);
+      if (!g) return;
+      document.getElementById('gpuBandwidth').value = g.bw;
+      document.getElementById('gpuFp16').value = g.fp16;
+      document.getElementById('gpuFp8').value = g.fp8;
+      document.getElementById('gpuVram').value = g.vram;
+      document.getElementById('gpuMemType').value = g.memType;
+      if (g.ic > 0) document.getElementById('gpuInterconnect').value = g.ic;
+      recalc();
+    }
+
+    // ============ 模型联动 ============
+    function onModelChange() {
+      var m = findModel(document.getElementById('modelName').value);
+      if (!m) return;
+      document.getElementById('modelTotal').value = m.total;
+      document.getElementById('modelActive').value = m.active;
+      document.getElementById('modelMoE').value = m.moe;
+      document.getElementById('modelLayers').value = m.layers;
+      document.getElementById('modelKvHeads').value = m.kvHeads;
+      document.getElementById('modelHeadDim').value = m.headDim;
+      document.getElementById('modelCtx').value = m.ctx;
+      document.getElementById('moaNote').style.display = (m.moe === 'Yes') ? 'block' : 'none';
+      recalc();
+    }
+
+    // ============ 计算 ============
+    function recalc() {
+      var g = findGpu(document.getElementById('gpuModel').value);
+      var m = findModel(document.getElementById('modelName').value);
+      if (!g || !m) return;
+
+      var bw = Number(document.getElementById('gpuBandwidth').value);
+      var fp16 = Number(document.getElementById('gpuFp16').value);
+      var vram = Number(document.getElementById('gpuVram').value);
+      var gpuCount = Math.max(1, Number(document.getElementById('gpuCount').value) || 1);
+
+      var total = m.total;
+      var active = m.active;
+      var layers = m.layers;
+      var kvHeads = m.kvHeads;
+      var headDim = m.headDim;
+
+      var bytesPerParam = QUANT_BYTES[document.getElementById('quantPrec').value];
+      var kvBytes = KV_BYTES[document.getElementById('kvPrec').value];
+      document.getElementById('bytesPerParam').value = bytesPerParam;
+      document.getElementById('kvBytes').value = kvBytes;
+
+      var promptLen = Number(document.getElementById('promptLen').value) || 0;
+      var genLen = Number(document.getElementById('genLen').value) || 0;
+      var efficiency = Number(document.getElementById('efficiency').value) || 0;
+      var tpCoef = Number(document.getElementById('tpCoef').value) || 0;
+      var seq = Number(document.getElementById('seqLen').value) || 0;
+
+      // 计算
+      var weight = active * bytesPerParam;                       // 模型权重 GB
+      var kv = 2 * layers * kvHeads * headDim * seq * kvBytes / 1e9;  // KV Cache GB
+      var totalVram = weight + kv;
+      var theoDecode = weight > 0 ? bw / weight : 0;             // 理论 Decode
+      var theoKv = (weight + kv) > 0 ? bw / (weight + kv) : 0;   // 考虑 KV 理论
+      var actualDecode = theoKv * efficiency;                    // 实际 Decode 单卡
+      var tpSpeed = weight > 0 ? (bw * gpuCount) / weight * efficiency * tpCoef : 0;  // 多卡 TP
+      var perGpuVram = gpuCount > 0 ? totalVram / gpuCount : 0;
+      var prefillMs = (fp16 > 0 && gpuCount > 0) ? 2 * total * promptLen / (fp16 * gpuCount) * 1000 : 0;
+      var ttft = prefillMs;
+      var genTime = actualDecode > 0 ? genLen / actualDecode : 0;
+      var userThru = (prefillMs / 1000 + genTime) > 0 ? genLen / (prefillMs / 1000 + genTime) : 0;
+      var perToken = 2 * total;
+      var daily = actualDecode * 86400;
+      var perMillion = weight * 1e6;
+
+      var enough = totalVram <= vram;
+
+      // ===== 渲染结果表 =====
+      var rows = [
+        ['模型权重体积 (GB)', '激活参数 × 每参数字节数', fmt(weight), 'GB', ''],
+        ['KV Cache 体积 (GB)', '2×层数×KV头数×头维度×seq×字节/1e9', fmt(kv), 'GB', ''],
+        ['总显存占用 (GB)', '模型权重 + KV Cache', fmt(totalVram), 'GB', ''],
+        ['单卡显存是否足够', '总显存 vs 单卡显存容量', '', '', enough ? '<span class="ok">✅ 足够</span>' : '<span class="no">❌ 不足，需多卡或更低精度</span>'],
+        ['理论 Decode 速度', '显存带宽 ÷ 模型权重', fmt(theoDecode), 'tok/s', ''],
+        ['考虑 KV 的理论速度', '显存带宽 ÷ (权重+KV)', fmt(theoKv), 'tok/s', ''],
+        ['实际 Decode 速度 (单卡)', '考虑KV理论 × 效率系数', fmt(actualDecode), 'tok/s', ''],
+        ['多卡张量并行速度', '(带宽×卡数)÷权重×效率×通信系数', fmt(tpSpeed), 'tok/s', ''],
+        ['多卡每卡显存占用', '总显存 ÷ GPU数量', fmt(perGpuVram), 'GB', ''],
+        ['Prefill 时间 (ms)', '2×总参×提示÷(FP16×卡数)×1000', fmt(prefillMs), 'ms', ''],
+        ['首 Token 延迟 TTFT (ms)', '≈ Prefill 时间', fmt(ttft), 'ms', ''],
+        ['生成总耗时 (秒)', '生成长度 ÷ 实际Decode速度', fmt(genTime), '秒', ''],
+        ['用户感知吞吐 (tok/s)', '生成长度 ÷ (Prefill+生成时间)', fmt(userThru), 'tok/s', ''],
+        ['每 Token 算力消耗', '2 × 总参数量', fmt(perToken), 'GFLOPs', ''],
+        ['每日可生成 Token 数', '实际速度 × 86400秒', fmt(daily), 'tokens/day', ''],
+        ['每百万Token显存读取量', '权重(GB) × 1,000,000', fmt(perMillion), 'GB', '']
+      ];
+      document.getElementById('resultBody').innerHTML = rows.map(r =>
+        '<tr><td class="metric">' + r[0] + '</td><td>' + r[1] + '</td><td class="num">' + r[2] + '</td><td>' + r[3] + '</td><td>' + r[4] + '</td></tr>'
+      ).join('');
+
+      // ===== 量化对比表 =====
+      var qBody = document.getElementById('quantBody');
+      var qRows = ['FP32','FP16','INT8','INT4','INT2'].map(function (p) {
+        var b = QUANT_BYTES[p];
+        var w = active * b;
+        var t = w > 0 ? bw / w : 0;
+        var a = t * efficiency;
+        var ok = w <= vram;
+        return '<tr>' +
+          '<td class="metric">' + p + '</td>' +
+          '<td>' + b + '</td>' +
+          '<td class="num">' + fmt(w) + '</td>' +
+          '<td class="num">' + fmt(t) + '</td>' +
+          '<td class="num">' + fmt(a) + '</td>' +
+          '<td>' + (ok ? '<span class="ok">✅</span>' : '<span class="no">❌</span>') + '</td>' +
+          '</tr>';
+      });
+      qBody.innerHTML = qRows.join('');
+
+      // ===== GPU 对比表（用户多选参与对比的硬件）=====
+      var gBody = document.getElementById('gpuCmpBody');
+      var gEmpty = document.getElementById('gpuCmpEmpty');
+      var gSel = getSelectedGpuCmp();
+      if (gSel.length === 0) {
+        gBody.innerHTML = '';
+        if (gEmpty) gEmpty.style.display = 'block';
+      } else {
+        if (gEmpty) gEmpty.style.display = 'none';
+        var gRows = gSel.map(function (name) {
+          var gg = findGpu(name);
+          if (!gg) return '';
+          var t = weight > 0 ? gg.bw / weight : 0;
+          var a = t * efficiency;
+          var p = (gg.fp16 > 0) ? 2 * total * promptLen / gg.fp16 * 1000 : 0;
+          return '<tr>' +
+            '<td class="metric">' + name + '</td>' +
+            '<td class="num">' + gg.bw + '</td>' +
+            '<td class="num">' + gg.fp16 + '</td>' +
+            '<td class="num">' + fmt(t) + '</td>' +
+            '<td class="num">' + fmt(a) + '</td>' +
+            '<td class="num">' + fmt(p) + '</td>' +
+            '</tr>';
+        });
+        gBody.innerHTML = gRows.join('');
+      }
+    }
+
+    // ============ 启动（并行加载 GPU 参数库 + 模型参数库，再初始化） ============
+    Promise.all([loadGpuLib(), loadModelParams()]).then(function() {
+      initSelects();
+      initGpuCmp();
+      onGpuChange();
+      onModelChange();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服务器硬件产品对比</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .hwp-page, body.hwp-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--color-bg); color: var(--color-text); }
+    .hwp-header { background: var(--color-bg); color: var(--color-text); padding: 20px 0; flex-shrink: 0; border-bottom: 1px solid var(--color-border); }
+    .hwp-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .hwp-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .hwp-header h1 .accent { color: var(--color-accent); }
+    .hwp-header .back-link { color: var(--color-primary); text-decoration: none; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
+    .hwp-header .back-link:hover { text-decoration: underline; }
+    .hwp-content { flex: 1; padding: 28px 0 60px; }
+    .hwp-wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .hwp-loading, .hwp-error { display: flex; align-items: center; justify-content: center; padding: 60px 20px; color: var(--color-text-secondary); }
+    .hwp-page-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 6px; color: var(--color-text); }
+    .hwp-breadcrumb { font-size: 0.8rem; color: var(--color-text-tertiary); margin-bottom: 20px; }
+    .hwp-breadcrumb a { color: var(--color-primary); text-decoration: none; }
+
+    /* 对比总结块（随页面内联，避免依赖缺失的外部样式） */
+    .hw-compare-block { background: var(--color-card-bg, var(--color-bg)); border: 1px solid var(--color-border); border-radius: 16px; padding: 20px 24px; box-shadow: var(--color-card-shadow); margin-bottom: 24px; }
+    .hw-block-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hw-block-head h3 { margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-text); }
+    .compare-result-count { font-size: 0.8rem; color: var(--color-text-tertiary); }
+    .hw-conclusion-body { background: var(--color-primary-light, rgba(0,102,204,0.08)); border-radius: 12px; padding: 16px 18px; }
+    .hw-conclusion-body p { margin: 0 0 10px; font-size: 0.95rem; line-height: 1.75; color: var(--color-text); }
+    .hw-conclusion-body p:last-child { margin-bottom: 0; }
+    .hw-conclusion-tip { font-size: 0.82rem !important; color: var(--color-text-secondary) !important; }
+    [data-theme="dark"] .hw-compare-block { background: var(--color-bg); }
+    [data-theme="dark"] .hw-conclusion-body { background: var(--color-bg-secondary); }
+  </style>
+</head>
+<body class="hwp-page">
+  <header class="hwp-header">
+    <div class="container">
+      <h1>🖥️ 服务器硬件<span class="accent" id="hwpTitle">产品对比</span></h1>
+      <a href="/#section-compare-hardware" class="back-link" id="hwpBackLink">← 返回硬件产品对比</a>
+    </div>
+  </header>
+  <main class="hwp-content">
+    <div class="hwp-wrap">
+      <div class="hwp-loading" id="hwpLoading">正在加载硬件对比数据...</div>
+      <div id="compareHardwareResult"></div>
+    </div>
+  </main>
+
+  <script src="js/compare.js"></script>
+  <script>
+    (function () {
+      var wrap = document.getElementById('compareHardwareResult');
+      var loading = document.getElementById('hwpLoading');
+
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function param(name) {
+        return new URLSearchParams(window.location.search).get(name) || '';
+      }
+
+      // 读取选中硬件 id（逗号分隔）
+      var idsParam = param('ids') || param('hardware');
+      var ids = idsParam.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+
+      // 返回链接带上本次对比的硬件 id：回到首页硬件对比板块时自动预选这些硬件
+      var backLink = document.getElementById('hwpBackLink');
+      if (backLink && ids.length >= 2) {
+        backLink.href = '/?ids=' + encodeURIComponent(ids.join(',')) + '#section-compare-hardware';
+      }
+
+      if (ids.length < 2) {
+        loading.style.display = 'none';
+        wrap.innerHTML = '<div class="hwp-error">缺少对比硬件参数（ids），请返回选择至少 2 个硬件产品</div>';
+        return;
+      }
+
+      // 从昇腾 + 非昇腾（NV）两个接口加载硬件，合并后匹配选中 id
+      Promise.all([
+        fetch('/admin/api/homepage/hardware').then(function (r) { return r.json(); }),
+        fetch('/admin/api/homepage/nv-hardware').then(function (r) { return r.json(); })
+      ])
+        .then(function (results) {
+          var allHw = [];
+          (results[0].hardware || []).forEach(function (h) { allHw.push(h); });
+          (results[1].hardware || []).forEach(function (h) { allHw.push(h); });
+          var selected = allHw.filter(function (h) { return ids.indexOf(h.id) !== -1; });
+          if (selected.length < 2) {
+            loading.style.display = 'none';
+            wrap.innerHTML = '<div class="hwp-error">未找到对应的硬件产品，请返回重新选择</div>';
+            return;
+          }
+          var title = selected.map(function (h) { return h.name; }).join(' vs ');
+          document.title = title + ' 硬件对比';
+          document.getElementById('hwpTitle').textContent = '产品对比';
+          loading.style.display = 'none';
+          // 复用 compare.js 中的渲染函数
+          if (typeof window.renderHardwareCompare === 'function') {
+            window.renderHardwareCompare(selected);
+          } else {
+            renderHardwareCompare(selected);
+          }
+        })
+        .catch(function (e) {
+          loading.style.display = 'none';
+          wrap.innerHTML = '<div class="hwp-error">硬件数据加载失败：' + esc(e.message) + '</div>';
+        });
+    })();
+  </script>
+</body>
+</html>

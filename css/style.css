@@ -18,6 +18,54 @@
   --radius-sm: 8px;
   --transition: all 0.2s ease;
 }
+/* 暗色主题变量覆盖 */
+[data-theme="dark"] {
+  --color-accent: #FBBF24;
+  --color-accent-dark: #F59E0B;
+  --color-success: #34D399;
+  --color-error: #F87171;
+  --color-text: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
+  --color-bg: #0F172A;
+  --color-bg-secondary: #111827;
+  --color-bg-tertiary: #1E293B;
+  --color-border: #334155;
+  --color-primary: #60A5FA;
+  --color-primary-light: #1E3A5F;
+  --color-card-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  --color-card-shadow-hover: 0 10px 25px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] body {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+}
+[data-theme="dark"] .model-card,
+[data-theme="dark"] .train-model-card,
+[data-theme="dark"] .acl-model-card,
+[data-theme="dark"] .global-model-card,
+[data-theme="dark"] .ascend-hw-card,
+[data-theme="dark"] .modal {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+}
+[data-theme="dark"] .nav-bar { background: var(--color-bg); border-color: var(--color-border); }
+[data-theme="dark"] .nav-btn { color: var(--color-text-secondary); }
+[data-theme="dark"] .nav-btn:hover { background: var(--color-bg-tertiary); color: var(--color-text); }
+[data-theme="dark"] .search-input,
+[data-theme="dark"] .filter-select {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+[data-theme="dark"] .pagination-btn {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+[data-theme="dark"] .tag,
+[data-theme="dark"] .meta-tag { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
@@ -71,6 +119,38 @@ header p {
   color: #CBD5E1;
 }
 .header-stat strong { color: white; font-size: 1.1rem; }
+
+/* Header 顶部：标题 + 右上角切换按钮 */
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-title { flex: 1; min-width: 200px; }
+.header-controls {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.switch-btn {
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.switch-btn:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 
 /* Data Source Banner */
 .data-source-banner {
@@ -698,6 +778,22 @@ header p {
   margin: 0;
   white-space: pre-wrap;
 }
+.hw-detail-section .section-body .hw-detail-line {
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin: 0;
+}
+.hw-detail-section .section-body .hw-detail-list {
+  list-style: disc;
+  margin: 4px 0 0;
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+}
+.hw-detail-section .section-body .hw-detail-list li {
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
 .hw-detail-section .section-body .tags {
   margin-top: 0;
 }
@@ -848,4 +944,773 @@ footer {
   font-size: 0.85rem;
   color: var(--color-text-secondary);
   padding: 0 8px;
+}
+
+/* Global AI Models Section */
+.global-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.global-controls .search-input { flex: 1; min-width: 200px; }
+.global-controls .filter-select { min-width: 140px; }
+
+.global-model-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--color-card-shadow);
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+  cursor: pointer;
+}
+.global-model-card:hover {
+  box-shadow: var(--color-card-shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+.global-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.global-card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.global-card-org {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+.global-card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.global-card-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+.global-card-details dt { font-weight: 500; color: var(--color-text-tertiary); }
+.global-card-details dd { color: var(--color-text); }
+
+/* 商业用途徽章 */
+.commercial-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.commercial-free { background: #DCFCE7; color: #166534; }
+.commercial-conditional { background: #DBEAFE; color: #1E40AF; }
+.commercial-paid { background: #FEF3C7; color: #92400E; }
+.commercial-no { background: #FEE2E2; color: #991B1B; }
+.commercial-closed { background: #E2E8F0; color: #475569; }
+
+/* Global 专属标签 */
+.global-model-card .tag-reasoning { background: #EDE9FE; color: #6D28D9; }
+.global-model-card .tag-featured { background: #FEF3C7; color: #B45309; }
+.global-model-card .tag-preview { background: #FFEDD5; color: #C2410C; }
+
+/* Global 模型详情已改为跳转独立页面 model_detail.html，无需弹窗样式 */
+
+/* ============ 大模型评测基准 ============ */
+.benchmark-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.benchmark-controls .search-input { flex: 1; min-width: 220px; }
+.benchmark-controls .filter-select { min-width: 130px; }
+
+.benchmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.benchmark-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--color-card-shadow);
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.benchmark-card:hover {
+  box-shadow: var(--color-card-shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+.benchmark-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.benchmark-card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.benchmark-card-fullname {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+.benchmark-card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.benchmark-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin-bottom: 14px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.benchmark-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+  font-size: 0.8rem;
+}
+.benchmark-card-inst {
+  color: var(--color-text-secondary);
+}
+.benchmark-card-link {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* 难度徽章 */
+.difficulty-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.diff-basic { background: #DCFCE7; color: #166534; }
+.diff-mid { background: #FEF3C7; color: #92400E; }
+.diff-hard { background: #FEE2E2; color: #B91C1C; }
+
+/* 官方标签 */
+.benchmark-card .tag-official { background: #DCFCE7; color: #166534; }
+
+/* 暗色主题 */
+[data-theme="dark"] .benchmark-card {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+}
+[data-theme="dark"] .benchmark-card-name { color: var(--color-text); }
+[data-theme="dark"] .benchmark-card-desc { color: var(--color-text-secondary); }
+
+@media (max-width: 768px) {
+  .benchmark-grid { grid-template-columns: 1fr; }
+}
+
+/* ============ 下拉菜单（产品对比） ============ */
+.nav-dropdown {
+  position: relative;
+  display: flex;
+}
+.nav-dropdown .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dropdown-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 220px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--color-card-shadow-hover);
+  padding: 6px;
+  z-index: 300;
+  display: none;
+  flex-direction: column;
+  margin: 0;
+}
+.nav-dropdown.open .dropdown-menu { display: flex; }
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+.dropdown-item:hover { background: var(--color-bg-tertiary); color: var(--color-primary); }
+.dropdown-item.active { color: var(--color-primary); background: var(--color-primary-light); }
+
+/* ============ 对比页面通用 ============ */
+.compare-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.compare-bench-select { display: flex; flex-direction: column; gap: 10px; }
+.compare-label { font-size: 0.9rem; font-weight: 600; color: var(--color-text); }
+#compareBenchSelect,
+#compareHwSelect {
+  width: 100%;
+  max-width: 640px;
+  min-height: 160px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+#compareBenchSelect option,
+#compareHwSelect option { padding: 6px 10px; }
+#compareBenchSelect option:checked,
+#compareHwSelect option:checked { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+.compare-actions { display: flex; gap: 10px; margin-top: 4px; }
+.compare-tip {
+  padding: 12px 16px;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ============ 对比结果 ============ */
+.compare-result-wrap {
+  background: var(--color-card-bg, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--color-card-shadow);
+}
+.compare-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.compare-result-head h3 { font-size: 1.15rem; font-weight: 700; margin: 0; color: var(--color-text); }
+.compare-result-count { font-size: 0.8rem; color: var(--color-text-secondary); }
+.compare-matrix td.cmp-score { font-weight: 700; color: var(--color-text); }
+.compare-matrix td.cmp-na { color: var(--color-text-tertiary); text-align: center; }
+.compare-matrix .cmp-model-name { font-weight: 600; min-width: 160px; }
+.compare-matrix .cmp-model-org { font-size: 0.78rem; color: var(--color-text-secondary); font-weight: 400; }
+.compare-matrix .cmp-score-col,
+.compare-matrix .cmp-model-col { white-space: nowrap; }
+.compare-hw-table td.cmp-spec-label,
+.compare-hw-table th.cmp-spec-label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  min-width: 110px;
+  background: var(--color-bg-secondary);
+}
+.compare-hw-table td { min-width: 200px; vertical-align: top; line-height: 1.6; }
+.compare-footnote {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ============ 服务器硬件产品对比报告（美化模板） ============ */
+.bd-table-wrap { overflow-x: auto; }
+table.bd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+table.bd-table th,
+table.bd-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+table.bd-table th {
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  background: var(--color-bg-secondary);
+  white-space: nowrap;
+}
+table.bd-table td { color: var(--color-text); }
+table.bd-table tbody tr:hover { background: var(--color-bg-secondary); }
+
+/* 报告各区块 */
+.hw-compare-report .hw-compare-block { margin-bottom: 28px; }
+.hw-compare-report .hw-compare-block:last-of-type { margin-bottom: 0; }
+.hw-compare-report .hw-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.hw-compare-report .hw-block-head h3 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+}
+
+/* 产品概览卡片 */
+.hw-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+}
+.hw-overview-card {
+  background: var(--color-card-bg, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--color-card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.hw-overview-card:hover { box-shadow: var(--color-card-shadow-hover); transform: translateY(-2px); }
+.hwc-head { display: flex; align-items: center; }
+.hwc-head .hwc-type { margin-bottom: 0; }
+.hwc-name { font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--color-text); line-height: 1.4; }
+.hwc-form { font-size: 0.8rem; color: var(--color-text-secondary); }
+.hwc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.hwc-item .hwc-label { font-size: 0.72rem; color: var(--color-text-tertiary); margin-bottom: 3px; }
+.hwc-item .hwc-value { font-size: 0.85rem; font-weight: 600; color: var(--color-text); line-height: 1.5; word-break: break-word; }
+.hwc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+.hwc-tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+}
+
+/* 详细规格文本 */
+.ds-text { white-space: pre-line; line-height: 1.7; }
+
+/* 推荐模型表格 */
+.compare-rec-table td { line-height: 1.7; }
+
+@media (max-width: 768px) {
+  .hw-overview-grid { grid-template-columns: 1fr; }
+  .hwc-grid { grid-template-columns: 1fr 1fr; }
+}
+
+[data-theme="dark"] .hw-overview-card { background: var(--color-bg-secondary); }
+[data-theme="dark"] .compare-result-wrap { background: var(--color-bg); }
+[data-theme="dark"] .dropdown-menu { background: var(--color-bg); }
+[data-theme="dark"] .compare-toolbar { background: var(--color-bg-secondary); }
+
+@media (max-width: 768px) {
+  .compare-result-head { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============ 大模型对比（DataLearner 风格双卡片） ============ */
+.dl-compare-hero-tip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 20px;
+  padding: 0.9rem 1.1rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.dl-compare-hero-tip > span:first-child { font-size: 1rem; }
+
+.dl-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.dl-compare-card {
+  background: var(--color-card-bg, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: var(--color-card-shadow);
+  overflow: hidden;
+}
+.dl-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.dl-card-header--model { background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg) 100%); }
+.dl-card-header--bench { background: linear-gradient(135deg, #ccfbf1 0%, var(--color-bg) 100%); }
+.dl-card-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.dl-card-header--bench .dl-card-num { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
+.dl-card-count {
+  margin-left: auto;
+  padding: 0.25rem 0.75rem;
+  background: #eff6ff;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #3b82f6;
+  white-space: nowrap;
+}
+.dl-card-header--bench .dl-card-count { background: #f0fdfa; color: #14b8a6; }
+
+.dl-card-body { padding: 24px; }
+.dl-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 44px;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+.dl-selected-empty { font-size: 0.875rem; color: var(--color-text-tertiary); }
+.dl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.dl-chip--bench { background: #f0fdfa; color: #0d9488; }
+.dl-chip-x {
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.7;
+}
+.dl-chip-x:hover { opacity: 1; }
+
+.dl-search { position: relative; margin-bottom: 1rem; }
+.dl-search input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  outline: none;
+  transition: var(--transition);
+}
+.dl-search input:focus { border-color: var(--color-primary); background: var(--color-bg); }
+.dl-search::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: var(--color-text-tertiary);
+}
+
+.dl-select-list {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dl-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dl-list-item:hover { border-color: var(--color-primary); }
+.dl-list-item--selected {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+.dl-item-main { flex: 1; min-width: 0; }
+.dl-item-name {
+  display: block;
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl-item-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl-item-check {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+.dl-list-empty {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+}
+
+.dl-compare-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.dl-generate-btn {
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: var(--transition);
+}
+.dl-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4); }
+.dl-generate-btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; color: #f8fafc; }
+.dl-generate-hint { font-size: 0.85rem; color: var(--color-text-tertiary); }
+
+[data-theme="dark"] .dl-compare-card { background: var(--color-bg); }
+[data-theme="dark"] .dl-card-header--model { background: linear-gradient(135deg, #1e3a5f 0%, var(--color-bg) 100%); }
+[data-theme="dark"] .dl-card-header--bench { background: linear-gradient(135deg, #134e4a 0%, var(--color-bg) 100%); }
+[data-theme="dark"] .dl-card-count { background: #1e3a5f; color: #60a5fa; }
+[data-theme="dark"] .dl-card-header--bench .dl-card-count { background: #134e4a; color: #2dd4bf; }
+[data-theme="dark"] .dl-chip { background: #1e3a5f; color: #60a5fa; }
+[data-theme="dark"] .dl-chip--bench { background: #134e4a; color: #2dd4bf; }
+
+@media (max-width: 768px) {
+  .dl-compare-grid { grid-template-columns: 1fr; }
+  .dl-compare-actions { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============ 服务器硬件产品对比（参考模型对比卡片设计） ============ */
+.dl-card-header--hw { background: linear-gradient(135deg, #ede9fe 0%, var(--color-bg) 100%); }
+.dl-card-header--hw .dl-card-num { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+.dl-card-header--hw .dl-card-count { background: #f5f3ff; color: #7c3aed; }
+.dl-chip--hw { background: #f5f3ff; color: #7c3aed; }
+[data-theme="dark"] .dl-card-header--hw { background: linear-gradient(135deg, #2e1065 0%, var(--color-bg) 100%); }
+[data-theme="dark"] .dl-card-header--hw .dl-card-count { background: #2e1065; color: #a78bfa; }
+[data-theme="dark"] .dl-chip--hw { background: #2e1065; color: #a78bfa; }
+
+/* ============ 最热模型排行榜 ============ */
+.hot-ranking-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.hot-ranking-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+.hot-ranking-source a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.hot-ranking-source a:hover {
+  text-decoration: underline;
+}
+.hot-ranking-updated {
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary);
+}
+.hot-ranking-sort {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+.hot-ranking-sort .filter-select {
+  min-width: 110px;
+}
+
+.hot-ranking-table-wrap {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--color-card-shadow);
+}
+.hot-ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.hot-ranking-table thead th {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.hot-ranking-table tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+.hot-ranking-table tbody tr:hover {
+  background: var(--color-bg-secondary);
+}
+.hot-ranking-table .hot-rank {
+  width: 60px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  font-size: 1.05rem;
+}
+.hot-rank-medal {
+  display: block;
+  font-size: 1.1rem;
+  margin-top: 2px;
+}
+.hot-model a {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--color-text);
+}
+.hot-model .hot-dev {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+.hot-model .hot-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  word-break: break-all;
+}
+.hot-model a:hover .hot-name {
+  text-decoration: underline;
+}
+.hot-tag {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+.hot-downloads,
+.hot-likes,
+.hot-trend {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.hot-trend {
+  color: var(--color-text-secondary);
+}
+.hot-ranking-count {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+.hot-ranking-count b {
+  color: var(--color-primary);
+}
+
+@media (max-width: 720px) {
+  .hot-ranking-table-wrap {
+    overflow-x: auto;
+  }
+  .hot-ranking-table {
+    min-width: 640px;
+  }
 }
