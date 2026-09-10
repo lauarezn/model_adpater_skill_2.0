@@ -65,7 +65,7 @@ function showHotError(msg) {
   emptyEl.style.display = 'block';
 }
 
-// 渲染排行榜表格
+// 渲染排行榜卡片
 function renderHotRanking(models, total) {
   var container = document.getElementById('hotRankingContainer');
   var emptyEl = document.getElementById('hotRankingEmpty');
@@ -81,10 +81,21 @@ function renderHotRanking(models, total) {
     return;
   }
 
-  var rows = models.map(function (m) {
+  // 计算各指标最大值，用于进度条比例
+  var maxDownloads = 1, maxLikes = 1, maxTrend = 1;
+  models.forEach(function (m) {
+    var dl = m.downloads != null ? m.downloads : 0;
+    var lk = m.likes != null ? m.likes : 0;
+    var tr = m.trending_score != null ? m.trending_score : 0;
+    if (dl > maxDownloads) maxDownloads = dl;
+    if (lk > maxLikes) maxLikes = lk;
+    if (tr > maxTrend) maxTrend = tr;
+  });
+
+  var cards = models.map(function (m) {
     var rank = m.rank || '-';
     var medal = rank <= 3
-      ? '<span class="hot-rank-medal">' + ['🥇', '🥈', '🥉'][rank - 1] + '</span>'
+      ? '<span class="hot-medal">' + ['🥇', '🥈', '🥉'][rank - 1] + '</span>'
       : '';
     var dev = m.developer || '-';
     var name = m.model_name || m.model_id || '-';
@@ -92,40 +103,52 @@ function renderHotRanking(models, total) {
     var downloads = m.downloads_display || m.downloads || 0;
     var likes = m.likes != null ? m.likes : 0;
     var trend = m.trending_score != null ? m.trending_score : 0;
+    var dlPct = Math.round(((m.downloads != null ? m.downloads : 0) / maxDownloads) * 100);
+    var lkPct = Math.round(((m.likes != null ? m.likes : 0) / maxLikes) * 100);
+    var trPct = Math.round(((m.trending_score != null ? m.trending_score : 0) / maxTrend) * 100);
     var url = m.hf_url || ('https://hf-mirror.com/' + (m.model_id || ''));
 
-    return '<tr>' +
-      '<td class="hot-rank">' + rank + medal + '</td>' +
-      '<td class="hot-model">' +
-        '<a href="' + url + '" target="_blank" rel="noopener" title="' + escapeHtml(m.model_id || '') + '">' +
-          '<span class="hot-dev">' + escapeHtml(dev) + '</span>' +
-          '<span class="hot-name">' + escapeHtml(name) + '</span>' +
-        '</a>' +
-      '</td>' +
-      '<td class="hot-tag">' + escapeHtml(tag) + '</td>' +
-      '<td class="hot-downloads">' + escapeHtml(String(downloads)) + '</td>' +
-      '<td class="hot-likes">' + escapeHtml(String(likes)) + '</td>' +
-      '<td class="hot-trend">' + escapeHtml(String(trend)) + '</td>' +
-      '</tr>';
+    return '<div class="hot-card">' +
+      '<div class="hot-card-rank">' +
+        '<span class="hot-rank-num">' + rank + '</span>' +
+        medal +
+      '</div>' +
+      '<div class="hot-card-body">' +
+        '<div class="hot-card-head">' +
+          '<a class="hot-card-title" href="' + url + '" target="_blank" rel="noopener" title="' + escapeHtml(m.model_id || '') + '">' +
+            '<span class="hot-card-name">' + escapeHtml(name) + '</span>' +
+            '<span class="hot-card-dev">' + escapeHtml(dev) + '</span>' +
+          '</a>' +
+          '<span class="hot-card-tag">' + escapeHtml(tag) + '</span>' +
+        '</div>' +
+        '<div class="hot-card-stats">' +
+          '<div class="hot-stat">' +
+            '<span class="hot-stat-icon">⬇️</span>' +
+            '<span class="hot-stat-label">下载</span>' +
+            '<span class="hot-stat-value">' + escapeHtml(String(downloads)) + '</span>' +
+            '<div class="hot-stat-bar"><div class="hot-stat-bar-fill hot-bar-downloads" style="width:' + dlPct + '%"></div></div>' +
+          '</div>' +
+          '<div class="hot-stat">' +
+            '<span class="hot-stat-icon">👍</span>' +
+            '<span class="hot-stat-label">点赞</span>' +
+            '<span class="hot-stat-value">' + escapeHtml(String(likes)) + '</span>' +
+            '<div class="hot-stat-bar"><div class="hot-stat-bar-fill hot-bar-likes" style="width:' + lkPct + '%"></div></div>' +
+          '</div>' +
+          '<div class="hot-stat">' +
+            '<span class="hot-stat-icon">🔥</span>' +
+            '<span class="hot-stat-label">热度</span>' +
+            '<span class="hot-stat-value">' + escapeHtml(String(trend)) + '</span>' +
+            '<div class="hot-stat-bar"><div class="hot-stat-bar-fill hot-bar-trend" style="width:' + trPct + '%"></div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
 
   container.innerHTML =
-    '<div class="hot-ranking-table-wrap">' +
-      '<table class="hot-ranking-table">' +
-        '<thead>' +
-          '<tr>' +
-            '<th>排名</th>' +
-            '<th>模型（开发商/名称）</th>' +
-            '<th>任务类型</th>' +
-            '<th>下载量</th>' +
-            '<th>点赞</th>' +
-            '<th>热度分</th>' +
-          '</tr>' +
-        '</thead>' +
-        '<tbody>' + rows + '</tbody>' +
-      '</table>' +
-    '</div>' +
-    '<div class="hot-ranking-count">共展示 <b>' + models.length + '</b> 个最热模型</div>';
+    '<div class="hot-card-list">' + cards + '</div>' +
+    '<div class="hot-ranking-count">共展示 <b>' + models.length + '</b> 个最热模型' +
+      (total ? ' / 全部 <b>' + total + '</b>' : '') + '</div>';
 }
 
 // 工具函数：格式化时间（UTC ISO -> 本地）

@@ -16,8 +16,8 @@
   <div class="container">
     <div class="header-top">
       <div class="header-title">
-        <h1 data-i18n="site.title" data-i18n-html="true">🚀 昇腾服务器 <span class="accent">大模型适配清单</span></h1>
-        <p data-i18n="site.subtitle">查询大模型在华为昇腾平台上的适配状态与部署指南</p>
+        <h1 data-i18n="site.title" data-i18n-html="true">🧮 别叫我小趴菜，我<span class="accent">一点都不菜</span></h1>
+        <p data-i18n="site.subtitle">算力不够？Token来凑 · 昇腾硬件 · 大模型适配 · 评测基准 · Token计算器</p>
       </div>
       <div class="header-controls">
         <button class="switch-btn" id="themeToggleBtn" onclick="toggleTheme()" title="切换主题">🌙 暗色</button>
@@ -65,6 +65,9 @@
     </div>
     <button class="nav-btn" data-section="benchmarks" data-i18n="nav.benchmarks">📊 评测基准</button>
     <a class="nav-btn" href="token_calculator.html" style="text-decoration:none;cursor:pointer">🧮 LLM Token 计算器</a>
+    <a class="nav-btn" href="presales_recommend.html" style="text-decoration:none;cursor:pointer">🎯 售前选型推荐</a>
+    <a class="nav-btn" href="performance_query.html" style="text-decoration:none;cursor:pointer">🔍 模型性能查询</a>
+    <a class="nav-btn" href="quote.html" style="text-decoration:none;cursor:pointer">💼 AI使能报价器</a>
     <div class="nav-dropdown" id="compareDropdown">
       <button class="nav-btn dropdown-toggle" id="compareToggle" data-i18n="nav.compare" aria-haspopup="true" aria-expanded="false">⚖️ 产品对比 ▾</button>
       <div class="dropdown-menu">
@@ -352,6 +355,7 @@
     <div id="hotRankingView" style="display:none">
       <div class="hot-ranking-controls">
         <div class="hot-ranking-meta">
+          <span class="hot-ranking-badge">🔴 实时抓取</span>
           <span class="hot-ranking-source">数据来源：<a href="https://hf-mirror.com/models" target="_blank" rel="noopener">hf-mirror.com</a></span>
           <span class="hot-ranking-updated" id="hotRankingUpdated"></span>
         </div>

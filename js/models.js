@@ -71,6 +71,12 @@ document.querySelectorAll('.nav-dropdown .dropdown-item').forEach(function (item
     switchSection(item.dataset.section);
     // 若子项带有 data-view（如「全球AI大模型」下的模型清单/最热排行），在切换板块后同步切换视图
     if (item.dataset.view && typeof window.switchGlobalView === 'function') {
+      // 同一 section 可能对应多个视图项（如 global-models 的「全球AI大模型」list 与「最热排行」hot），
+      // switchSection 只会高亮第一个匹配项，这里需按当前点击的视图项重新高亮，避免高亮与内容不一致
+      document.querySelectorAll('.dropdown-item[data-section="' + item.dataset.section + '"]').forEach(function (x) {
+        x.classList.remove('active');
+      });
+      item.classList.add('active');
       switchGlobalView(item.dataset.view);
     }
   });
@@ -90,6 +96,13 @@ window.addEventListener('resize', function () {
 // 支持通过 URL hash（如 /#benchmarks）直接定位到指定板块
 (function () {
   var section = (location.hash || '').replace('#', '');
+  if (section) switchSection(section);
+})();
+
+// 支持通过 URL 查询参数（?section=xxx）定位到对应板块
+(function () {
+  var qs = new URLSearchParams(location.search);
+  var section = qs.get('section');
   if (section) switchSection(section);
 })();
 

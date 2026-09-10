@@ -14,7 +14,7 @@ import subprocess
 import threading
 import urllib.request
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory, Response
@@ -24,10 +24,48 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / 'data'
 SCRIPTS_DIR = BASE_DIR / 'scripts'
 
-app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path='')
+# 需纳入备份的 JSON 数据文件清单（手动备份与每日定时备份共用，避免两份清单不同步）
+BACKUP_FILES = [
+    'models.json', 'models-lite.json', 'models-detail.json',
+    'train-models.json', 'hardware.json', 'nv-hardware.json', 'crawl-status.json',
+    'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json',
+    'global-models.json', 'benchmarks.json', 'model-params.json',
+    'gpu_lib.json', 'performance.json',
+]
+
+# 注意：不要用 static_url_path='' 把整个项目根目录挂载为静态目录，
+# 否则 Flask 内置静态路由 /<path> 会优先于 static_files 白名单，
+# 导致 server.py 源码、data/*.json 数据/凭据、日志等被匿名直接下载。
+# 静态资源统一由下方 static_files 路由（含扩展名/目录白名单）处理。
+app = Flask(__name__)
 
 # 爬虫运行状态（含实时过程日志，跨进程持久化到 data/crawler-status.json）
 CRAWLER_STATUS_FILE = DATA_DIR / 'crawler-status.json'
+
+# Admin 后台写操作鉴权：设置环境变量 ADMIN_TOKEN 后，所有 /admin/api/* 的
+# POST/PUT/DELETE 请求必须携带匹配的 X-Admin-Token 请求头，否则返回 401。
+# 未配置时保持向后兼容（放行），并在启动时打印安全提示。
+ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', '').strip()
+
+
+@app.before_request
+def _admin_api_auth():
+    """保护 Admin 后台的写操作，防止匿名篡改数据/执行爬虫/恢复备份。
+
+    仅对 /admin/api/* 的写方法校验；GET 等只读接口保持开放（首页数据需公开展示）。
+    配置了 ADMIN_TOKEN 才启用校验，未配置则放行。
+    """
+    if not ADMIN_TOKEN:
+        return None
+    if request.method not in ('POST', 'PUT', 'DELETE', 'PATCH'):
+        return None
+    if not request.path.startswith('/admin/api/'):
+        return None
+    supplied = request.headers.get('X-Admin-Token', '')
+    if supplied != ADMIN_TOKEN:
+        return jsonify({'error': '未授权：管理员令牌无效或缺失'}), 401
+    return None
+
 crawler_status = {
     'running': False,
     'last_run': None,
@@ -37,6 +75,11 @@ crawler_status = {
     'log': [],
     'history': []
 }
+
+# 保护 crawler_status 的跨线程读写：execute_crawler 后台线程写日志，
+# /admin/api/crawler/status 请求线程读，需加锁避免 list 并发修改。
+# 使用可重入锁：append_log 持锁时内部还会调用 _save_crawler_status（同样加锁）。
+CRAWLER_LOCK = threading.RLock()
 
 
 def _load_crawler_status():
@@ -53,7 +96,8 @@ def _load_crawler_status():
 def _save_crawler_status():
     """将爬虫状态（含历史日志）持久化到磁盘，保证服务重启后仍可查看历史记录"""
     try:
-        save_json(CRAWLER_STATUS_FILE, crawler_status)
+        with CRAWLER_LOCK:
+            save_json(CRAWLER_STATUS_FILE, crawler_status)
     except Exception:
         pass
 
@@ -69,10 +113,49 @@ def load_json(filepath):
         return None
 
 
+# ============ JSON 文件 mtime 缓存 ============
+# 高频只读数据文件（models-lite/hardware 等）在多个 API 中被反复读取，
+# 每次全量解析开销较大。这里按文件 mtime 做进程内缓存：文件未变化时直接复用，
+# 避免重复读盘与 json 解析。save_json 是唯一的 JSON 写入入口，写后自动失效。
+_JSON_CACHE = {}
+_JSON_CACHE_LOCK = threading.Lock()
+
+
+def load_json_cached(filepath):
+    """加载 JSON 文件，带 mtime 缓存（仅用于高频只读数据文件）。
+
+    文件不存在/解析失败时返回 None，与 load_json 行为一致。
+    """
+    try:
+        mtime = os.path.getmtime(filepath)
+    except OSError:
+        return None
+    with _JSON_CACHE_LOCK:
+        hit = _JSON_CACHE.get(str(filepath))
+        if hit and hit[0] == mtime:
+            return hit[1]
+    data = load_json(filepath)
+    with _JSON_CACHE_LOCK:
+        _JSON_CACHE[str(filepath)] = (mtime, data)
+    return data
+
+
+def _invalidate_json_cache(filepath):
+    """使某个 JSON 文件（或路径前缀）的缓存失效。
+
+    用于 save_json 之外的写路径（如备份恢复直接用 shutil 覆盖文件）。
+    """
+    key = str(filepath)
+    with _JSON_CACHE_LOCK:
+        if key in _JSON_CACHE:
+            _JSON_CACHE.pop(key, None)
+
+
 def save_json(filepath, data):
     """保存 JSON 文件"""
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    _invalidate_json_cache(filepath)
 
 
 def get_data_size_mb():
@@ -86,10 +169,10 @@ def get_data_size_mb():
 
 def get_data_stats():
     """获取数据统计信息"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
-    detail = load_json(DATA_DIR / 'models-detail.json') or []
-    train = load_json(DATA_DIR / 'train-models.json') or {}
-    hardware = load_json(DATA_DIR / 'hardware.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    detail = load_json_cached(DATA_DIR / 'models-detail.json') or []
+    train = load_json_cached(DATA_DIR / 'train-models.json') or {}
+    hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
     status = load_json(DATA_DIR / 'crawl-status.json') or {}
 
     categories = {}
@@ -136,15 +219,32 @@ def paginate(items, page, page_size):
     return items[start:end], total, max(1, (total + page_size - 1) // page_size)
 
 
+def _parse_int(request, key, default, min_val=None, max_val=None):
+    """安全解析整型请求参数。
+
+    非法值（非数字/越界）回退到 default，可选夹取到 [min_val, max_val]，
+    避免 ?page=abc 之类的畸形参数直接抛 ValueError 导致 500。
+    """
+    try:
+        val = int(request.args.get(key, default))
+    except (TypeError, ValueError):
+        val = default
+    if min_val is not None:
+        val = max(min_val, val)
+    if max_val is not None:
+        val = min(max_val, val)
+    return val
+
+
 def get_all_sources():
     """获取所有数据来源"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     return sorted(list(set(m.get('source', '未知') for m in models)))
 
 
 def get_all_categories():
     """获取所有分类"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     return sorted(list(set(m.get('category', '其他') for m in models)))
 
 
@@ -157,6 +257,13 @@ def index():
 
 # ============ Admin 路由 ============
 
+def _no_cache(resp):
+    """禁止浏览器缓存静态资源，确保改版后强制拉取最新 js/css。"""
+    resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    resp.headers['Pragma'] = 'no-cache'
+    resp.headers['Expires'] = '0'
+    return resp
+
 @app.route('/admin')
 @app.route('/admin/')
 def admin_index():
@@ -165,12 +272,16 @@ def admin_index():
 
 @app.route('/admin/css/<path:filename>')
 def admin_css(filename):
-    return send_from_directory(str(BASE_DIR / 'admin' / 'css'), filename)
+    resp = send_from_directory(str(BASE_DIR / 'admin' / 'css'), filename)
+    _no_cache(resp)
+    return resp
 
 
 @app.route('/admin/js/<path:filename>')
 def admin_js(filename):
-    return send_from_directory(str(BASE_DIR / 'admin' / 'js'), filename)
+    resp = send_from_directory(str(BASE_DIR / 'admin' / 'js'), filename)
+    _no_cache(resp)
+    return resp
 
 
 @app.route('/admin/api/stats')
@@ -180,12 +291,12 @@ def api_stats():
 
 @app.route('/admin/api/models')
 def api_models():
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     search = request.args.get('search', '')
     source = request.args.get('source', '')
     category = request.args.get('category', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 50))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
 
     filtered = filter_models(models, search, source, category)
     page_items, total, total_pages = paginate(filtered, page, page_size)
@@ -203,8 +314,8 @@ def api_models():
 
 @app.route('/admin/api/models/<model_id>', methods=['GET'])
 def api_model_get(model_id):
-    models = load_json(DATA_DIR / 'models-lite.json') or []
-    detail = load_json(DATA_DIR / 'models-detail.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    detail = load_json_cached(DATA_DIR / 'models-detail.json') or []
     m = next((x for x in models if x.get('id') == model_id), None)
     d = next((x for x in detail if x.get('id') == model_id), None)
     if not m:
@@ -217,7 +328,7 @@ def api_model_update(model_id):
     data = request.json
     if not data:
         return jsonify({'error': '无效数据'}), 400
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     for i, m in enumerate(models):
         if m.get('id') == model_id:
             models[i].update(data)
@@ -228,12 +339,12 @@ def api_model_update(model_id):
 
 @app.route('/admin/api/models/<model_id>', methods=['DELETE'])
 def api_model_delete(model_id):
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     new_models = [m for m in models if m.get('id') != model_id]
     if len(new_models) == len(models):
         return jsonify({'error': '模型不存在'}), 404
     save_json(DATA_DIR / 'models-lite.json', new_models)
-    full_models = load_json(DATA_DIR / 'models.json') or []
+    full_models = load_json_cached(DATA_DIR / 'models.json') or []
     full_models = [m for m in full_models if m.get('id') != model_id]
     save_json(DATA_DIR / 'models.json', full_models)
     return jsonify({'success': True, 'deleted': model_id})
@@ -245,11 +356,11 @@ def api_models_batch():
     ids = request.json.get('ids', [])
     if not ids:
         return jsonify({'error': '请选择模型'}), 400
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     if action == 'delete':
         new_models = [m for m in models if m.get('id') not in ids]
         save_json(DATA_DIR / 'models-lite.json', new_models)
-        full_models = load_json(DATA_DIR / 'models.json') or []
+        full_models = load_json_cached(DATA_DIR / 'models.json') or []
         full_models = [m for m in full_models if m.get('id') not in ids]
         save_json(DATA_DIR / 'models.json', full_models)
         return jsonify({'success': True, 'deleted': len(ids), 'remaining': len(new_models)})
@@ -261,7 +372,101 @@ def api_models_batch():
 
 @app.route('/admin/api/crawler/status')
 def api_crawler_status():
-    return jsonify(crawler_status)
+    # 在锁内取快照，避免序列化过程中后台线程仍在 append 日志导致并发修改
+    with CRAWLER_LOCK:
+        snapshot = {
+            'running': crawler_status['running'],
+            'last_run': crawler_status['last_run'],
+            'last_status': crawler_status['last_status'],
+            'progress': crawler_status['progress'],
+            'pid': crawler_status['pid'],
+            'log': list(crawler_status['log']),
+            'history': list(crawler_status['history']),
+        }
+    return jsonify(snapshot)
+
+
+def execute_crawler():
+    """后台执行爬虫子进程，实时更新 crawler_status（含过程日志）。
+    供手动触发（/admin/api/crawler/run）与定时爬取任务共用。"""
+    crawler_status['running'] = True
+    crawler_status['last_run'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    crawler_status['last_status'] = None
+    crawler_status['log'] = []
+    crawler_status['progress'] = '正在启动爬虫...'
+    _save_crawler_status()
+
+    def append_log(line):
+        line = line.rstrip('\n')
+        if not line:
+            return
+        with CRAWLER_LOCK:
+            crawler_status['log'].append(line)
+            # 保留最近 200 行，避免内存与传输过大
+            if len(crawler_status['log']) > 200:
+                crawler_status['log'] = crawler_status['log'][-200:]
+            crawler_status['progress'] = line
+            _save_crawler_status()
+
+    append_log(f"[{crawler_status['last_run']}] 开始运行爬虫...")
+    try:
+        # 使用 Popen 实时逐行读取输出；-u 关闭子进程 stdout 块缓冲，确保 print 实时到达管道
+        proc = subprocess.Popen(
+            [sys.executable, '-u', str(SCRIPTS_DIR / 'crawler.py')],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            text=True, bufsize=1, cwd=str(BASE_DIR)
+        )
+        crawler_status['pid'] = proc.pid
+        _save_crawler_status()
+
+        import select
+        try:
+            while True:
+                # 非阻塞读取一行，以便检测 running 被停止等外部状态
+                rlist, _, _ = select.select([proc.stdout], [], [], 0.5)
+                if rlist:
+                    line = proc.stdout.readline()
+                    if line:
+                        append_log(line)
+                        continue
+                    # readline 返回空且进程已结束 -> 退出
+                    if proc.poll() is not None:
+                        break
+                else:
+                    if proc.poll() is not None:
+                        # 进程结束，清空剩余输出
+                        for rest in proc.stdout:
+                            append_log(rest)
+                        break
+            proc.wait(timeout=1)
+        except Exception:
+            pass
+
+        if proc.returncode == 0:
+            crawler_status['last_status'] = 'success'
+            append_log('爬取完成')
+        else:
+            crawler_status['last_status'] = 'failed'
+            append_log(f'爬虫异常退出，退出码: {proc.returncode}')
+    except subprocess.TimeoutExpired:
+        crawler_status['last_status'] = 'failed'
+        append_log('爬虫执行超时（>10分钟）')
+    except Exception as e:
+        crawler_status['last_status'] = 'failed'
+        append_log(f'爬虫执行失败: {str(e)}')
+    finally:
+        crawler_status['running'] = False
+        crawler_status['pid'] = None
+        # 写入历史记录（最近 20 条）
+        crawler_status['history'].append({
+            'time': crawler_status['last_run'],
+            'status': crawler_status['last_status'],
+            'summary': crawler_status['log'][-1] if crawler_status['log'] else ''
+        })
+        if len(crawler_status['history']) > 20:
+            crawler_status['history'] = crawler_status['history'][-20:]
+        append_log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 爬虫执行结束（状态: {crawler_status['last_status']}）")
+        _save_crawler_status()
 
 
 @app.route('/admin/api/crawler/run', methods=['POST'])
@@ -269,85 +474,7 @@ def api_crawler_run():
     if crawler_status['running']:
         return jsonify({'error': '爬虫正在运行中'}), 400
 
-    def run_crawler():
-        crawler_status['running'] = True
-        crawler_status['last_run'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        crawler_status['last_status'] = None
-        crawler_status['log'] = []
-        crawler_status['progress'] = '正在启动爬虫...'
-        _save_crawler_status()
-
-        def append_log(line):
-            line = line.rstrip('\n')
-            if line:
-                crawler_status['log'].append(line)
-                # 保留最近 200 行，避免内存与传输过大
-                if len(crawler_status['log']) > 200:
-                    crawler_status['log'] = crawler_status['log'][-200:]
-                crawler_status['progress'] = line
-                _save_crawler_status()
-
-        append_log(f"[{crawler_status['last_run']}] 开始运行爬虫...")
-        try:
-            # 使用 Popen 实时逐行读取输出；-u 关闭子进程 stdout 块缓冲，确保 print 实时到达管道
-            proc = subprocess.Popen(
-                [sys.executable, '-u', str(SCRIPTS_DIR / 'crawler.py')],
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                text=True, bufsize=1, cwd=str(BASE_DIR)
-            )
-            crawler_status['pid'] = proc.pid
-            _save_crawler_status()
-
-            import select
-            try:
-                while True:
-                    # 非阻塞读取一行，以便检测 running 被停止等外部状态
-                    rlist, _, _ = select.select([proc.stdout], [], [], 0.5)
-                    if rlist:
-                        line = proc.stdout.readline()
-                        if line:
-                            append_log(line)
-                            continue
-                        # readline 返回空且进程已结束 -> 退出
-                        if proc.poll() is not None:
-                            break
-                    else:
-                        if proc.poll() is not None:
-                            # 进程结束，清空剩余输出
-                            for rest in proc.stdout:
-                                append_log(rest)
-                            break
-                proc.wait(timeout=1)
-            except Exception:
-                pass
-
-            if proc.returncode == 0:
-                crawler_status['last_status'] = 'success'
-                append_log('爬取完成')
-            else:
-                crawler_status['last_status'] = 'failed'
-                append_log(f'爬虫异常退出，退出码: {proc.returncode}')
-        except subprocess.TimeoutExpired:
-            crawler_status['last_status'] = 'failed'
-            append_log('爬虫执行超时（>10分钟）')
-        except Exception as e:
-            crawler_status['last_status'] = 'failed'
-            append_log(f'爬虫执行失败: {str(e)}')
-        finally:
-            crawler_status['running'] = False
-            crawler_status['pid'] = None
-            # 写入历史记录（最近 20 条）
-            crawler_status['history'].append({
-                'time': crawler_status['last_run'],
-                'status': crawler_status['last_status'],
-                'summary': crawler_status['log'][-1] if crawler_status['log'] else ''
-            })
-            if len(crawler_status['history']) > 20:
-                crawler_status['history'] = crawler_status['history'][-20:]
-            append_log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 爬虫执行结束（状态: {crawler_status['last_status']}）")
-            _save_crawler_status()
-
-    thread = threading.Thread(target=run_crawler, daemon=True)
+    thread = threading.Thread(target=execute_crawler, daemon=True)
     thread.start()
     return jsonify({'success': True, 'message': '爬虫已启动'})
 
@@ -358,10 +485,7 @@ def api_data_backup():
     backup_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     backup_info = []
-    for f in ['models.json', 'models-lite.json', 'models-detail.json',
-              'train-models.json', 'hardware.json', 'crawl-status.json',
-              'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json',
-              'global-models.json', 'benchmarks.json', 'model-params.json']:
+    for f in BACKUP_FILES:
         src = DATA_DIR / f
         if src.exists():
             dst = backup_dir / f'{timestamp}_{f}'
@@ -386,6 +510,8 @@ def api_data_restore():
     target_name = filename.split('_', 1)[1] if '_' in filename else filename
     target_path = DATA_DIR / target_name
     shutil.copy2(backup_path, target_path)
+    # restore 直接用 shutil 覆盖目标文件，不走 save_json，需手动使缓存失效
+    _invalidate_json_cache(target_path)
     return jsonify({'success': True, 'restored': target_name})
 
 
@@ -411,8 +537,8 @@ def api_data_backups():
 @app.route('/admin/api/homepage/stats')
 def api_homepage_stats():
     """首页头部统计数据"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
-    hardware = load_json(DATA_DIR / 'hardware.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
     categories = list(set(m.get('category', '其他') for m in models))
     return jsonify({
         'modelCount': len(models),
@@ -425,15 +551,15 @@ def api_homepage_stats():
 @app.route('/admin/api/homepage/models')
 def api_homepage_models():
     """首页模型清单数据（支持搜索/筛选/分页）"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
     search = request.args.get('search', '').lower()
     category = request.args.get('category', '')
     tag = request.args.get('tag', '')
     support = request.args.get('support', '')
     hardware = request.args.get('hardware', '')
     sort = request.args.get('sort', 'default')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 50))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
 
     filtered = models
     if search:
@@ -480,7 +606,7 @@ def api_homepage_models():
 
 def load_global_models():
     """加载全球AI大模型数据"""
-    data = load_json(DATA_DIR / 'global-models.json') or {}
+    data = load_json_cached(DATA_DIR / 'global-models.json') or {}
     return data.get('models', []), data.get('pagination'), data.get('fetched_at')
 
 
@@ -496,8 +622,8 @@ def api_global_models():
     commercial = request.args.get('commercial', '')
     scale = request.args.get('scale', '')
     lifecycle = request.args.get('lifecycle', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 24))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 24)
 
     filtered = models
     if search:
@@ -543,13 +669,19 @@ def api_global_models():
     })
 
 
-@app.route('/admin/api/global-models/<model_id>', methods=['PUT'])
+@app.route('/admin/api/global-models/<model_id>', methods=['GET', 'PUT'])
 def api_global_model_update(model_id):
-    """Admin：保存编辑后的全球AI大模型数据"""
+    """Admin：读取/保存编辑后的全球AI大模型数据"""
+    if request.method == 'GET':
+        payload = load_json_cached(DATA_DIR / 'global-models.json') or {}
+        for m in payload.get('models', []):
+            if str(m.get('model_id')) == str(model_id):
+                return jsonify({'model': m})
+        return jsonify({'error': '模型不存在'}), 404
     data = request.json
     if not data:
         return jsonify({'error': '无效数据'}), 400
-    payload = load_json(DATA_DIR / 'global-models.json') or {}
+    payload = load_json_cached(DATA_DIR / 'global-models.json') or {}
     models = payload.get('models', [])
     for i, m in enumerate(models):
         if str(m.get('model_id')) == str(model_id):
@@ -669,7 +801,7 @@ def api_hot_models():
     参数：limit（默认 30，最大 100）、sort（trending/downloads/likes，默认 trending）
     """
     try:
-        limit = int(request.args.get('limit', 30))
+        limit = _parse_int(request, 'limit', 30)
     except (TypeError, ValueError):
         limit = 30
     limit = max(1, min(limit, 100))
@@ -983,24 +1115,30 @@ def api_global_model_detail_proxy(model_code):
                    + '</div>')
         return h[:div_start] + toolbar + h[t_end:]
 
-    main_html = _rewrite_benchmark_toolbar(
-        main_html, model_code, name, bm_thinking, bm_tool, bm_mode, thinking_modes
-    )
+    # 上游 DataLearner 页面结构可能改版，精细改写（toolbar 注入、按钮/链接删除）
+    # 用 try/except 兜底：任一环节异常时降级为"保留原始 <main> 主体"，避免整页 500。
+    try:
+        main_html = _rewrite_benchmark_toolbar(
+            main_html, model_code, name, bm_thinking, bm_tool, bm_mode, thinking_modes
+        )
 
-    # 需求6：删除 API 定价区域中的"了解不同定价模式详解"链接及其外层容器
-    # （该链接指向 DataLearner 外部页面，在本站无对应目标，删除以保持页面纯净）
-    _pm_key = main_html.find('了解不同定价模式详解')
-    if _pm_key != -1:
-        # 向前定位包裹该链接的外层 div（flex items-center justify-end，仅含此链接）
-        _pm_start = main_html.rfind('<div class="flex items-center justify-end">', 0, _pm_key)
-        _pm_a_end = main_html.find('</a>', _pm_key)
-        if _pm_start != -1 and _pm_a_end != -1:
-            _pm_div_end = main_html.find('</div>', _pm_a_end)
-            if _pm_div_end != -1:
-                main_html = main_html[:_pm_start] + main_html[_pm_div_end + len('</div>'):]
+        # 需求6：删除 API 定价区域中的"了解不同定价模式详解"链接及其外层容器
+        # （该链接指向 DataLearner 外部页面，在本站无对应目标，删除以保持页面纯净）
+        _pm_key = main_html.find('了解不同定价模式详解')
+        if _pm_key != -1:
+            # 向前定位包裹该链接的外层 div（flex items-center justify-end，仅含此链接）
+            _pm_start = main_html.rfind('<div class="flex items-center justify-end">', 0, _pm_key)
+            _pm_a_end = main_html.find('</a>', _pm_key)
+            if _pm_start != -1 and _pm_a_end != -1:
+                _pm_div_end = main_html.find('</div>', _pm_a_end)
+                if _pm_div_end != -1:
+                    main_html = main_html[:_pm_start] + main_html[_pm_div_end + len('</div>'):]
 
-    # 需求7：删除"了解数据收集方法"链接（指向 DataLearner 外部页面，本站无对应目标）
-    main_html = _remove_btn(main_html, '了解数据收集方法')
+        # 需求7：删除"了解数据收集方法"链接（指向 DataLearner 外部页面，本站无对应目标）
+        main_html = _remove_btn(main_html, '了解数据收集方法')
+    except Exception:
+        # 解析失败时保持 main_html 为原始 <main> 主体，仍能正常展示
+        pass
 
     doc = (
         '<!DOCTYPE html><html lang="zh-CN"><head>'
@@ -1087,8 +1225,8 @@ def api_global_model_detail_spec(model_code):
 @app.route('/admin/api/homepage/models/<model_id>')
 def api_homepage_model_detail(model_id):
     """首页模型详情"""
-    models = load_json(DATA_DIR / 'models-lite.json') or []
-    detail = load_json(DATA_DIR / 'models-detail.json') or []
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    detail = load_json_cached(DATA_DIR / 'models-detail.json') or []
     m = next((x for x in models if x.get('id') == model_id), None)
     d = next((x for x in detail if x.get('id') == model_id), None)
     if not m:
@@ -1099,7 +1237,7 @@ def api_homepage_model_detail(model_id):
 @app.route('/admin/api/homepage/hardware')
 def api_homepage_hardware():
     """首页硬件数据"""
-    hardware = load_json(DATA_DIR / 'hardware.json') or []
+    hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
     search = request.args.get('search', '').lower()
     hw_type = request.args.get('type', '')
     chip = request.args.get('chip', '')
@@ -1125,7 +1263,7 @@ def api_homepage_hardware():
 @app.route('/admin/api/homepage/nv-hardware')
 def api_homepage_nv_hardware():
     """首页 NV（NVIDIA）产品数据"""
-    hardware = load_json(DATA_DIR / 'nv-hardware.json') or []
+    hardware = load_json_cached(DATA_DIR / 'nv-hardware.json') or []
     search = request.args.get('search', '').lower()
     chip = request.args.get('chip', '')
 
@@ -1366,8 +1504,8 @@ def api_model_params_list():
     """全球AI模型参数列表（支持搜索/分页）"""
     search = request.args.get('search', '').lower()
     has_params = request.args.get('hasParams', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 50))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
 
     items = load_model_params()
     filtered = items
@@ -1454,13 +1592,53 @@ def api_model_params_delete(mp_code):
 # ---------- HF（hf-mirror）架构字段补全 ----------
 HF_MIRROR_BASE = 'https://hf-mirror.com'
 
+# 统一外部请求 UA（避免在多处重复硬编码，且便于统一伪装为浏览器）
+_HTTP_UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+            '(KHTML, like Gecko) Chrome/120.0 Safari/537.36')
+# 外部站点（hf-mirror / datalearner / LLM 网关）偶发超时/抖动，做有限次重试
+_HTTP_RETRIES = 2
+_HTTP_BACKOFF = 0.8
+
 
 def _http_get(url, timeout=20):
-    req = urllib.request.Request(url, headers={
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-    })
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode('utf-8', errors='replace')
+    """GET 抓取外部页面文本，带有限次重试（应对外部站点偶发超时/抖动）。"""
+    req = urllib.request.Request(url, headers={'User-Agent': _HTTP_UA})
+    last_exc = None
+    for attempt in range(_HTTP_RETRIES + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read().decode('utf-8', errors='replace')
+        except Exception as e:  # noqa: BLE001 - 网络层统一重试
+            last_exc = e
+            if attempt < _HTTP_RETRIES:
+                threading.Event().wait(_HTTP_BACKOFF * (attempt + 1))
+    raise last_exc
+
+
+def _http_post_json(url, payload, timeout=120, headers=None, retries=0):
+    """POST JSON 并返回解析后的响应体（OpenAI 兼容接口统一调用入口）。
+
+    payload 为 dict，自动序列化并携带 UA；headers 可附加（如 Authorization）。
+    """
+    hdrs = {'User-Agent': _HTTP_UA, 'Content-Type': 'application/json'}
+    if headers:
+        hdrs.update(headers)
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload, ensure_ascii=False).encode('utf-8'),
+        headers=hdrs,
+        method='POST',
+    )
+    last_exc = None
+    for attempt in range(retries + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode('utf-8'))
+        except Exception as e:  # noqa: BLE001
+            last_exc = e
+            if attempt < retries:
+                threading.Event().wait(_HTTP_BACKOFF * (attempt + 1))
+    raise last_exc
 
 
 def _extract_hf_link(detail_html):
@@ -1687,14 +1865,14 @@ def enrich_train_model(m):
 @app.route('/admin/api/homepage/train-models')
 def api_homepage_train_models():
     """首页训练模型数据"""
-    train = load_json(DATA_DIR / 'train-models.json') or {}
+    train = load_json_cached(DATA_DIR / 'train-models.json') or {}
     train_models = train.get('models', [])
     search = request.args.get('search', '').lower()
     framework = request.args.get('framework', '')
     category = request.args.get('category', '')
     status = request.args.get('status', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 30))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 30)
 
     filtered = train_models
     if search:
@@ -1723,6 +1901,116 @@ def api_homepage_train_models():
     })
 
 
+# ============ 训练模型管理（后台 CRUD）============
+
+def _load_train_file():
+    """读取训练模型清单文件，返回顶层 dict 与 models 列表。"""
+    train = load_json(MODEL_TRAIN_FILE) or {}
+    if not isinstance(train, dict):
+        train = {'models': train if isinstance(train, list) else []}
+    train.setdefault('models', [])
+    return train
+
+
+def _save_train_file(train):
+    """保存训练模型清单文件，并同步 total 计数。"""
+    train['total'] = len(train.get('models', []))
+    save_json(MODEL_TRAIN_FILE, train)
+
+
+@app.route('/admin/api/train-models')
+def api_train_models():
+    """后台训练模型列表（支持搜索/筛选/分页）。"""
+    train = _load_train_file()
+    models = train.get('models', [])
+    search = request.args.get('search', '').lower()
+    framework = request.args.get('framework', '')
+    category = request.args.get('category', '')
+    status = request.args.get('status', '')
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
+
+    filtered = models
+    if search:
+        filtered = [m for m in filtered if search in m.get('name', '').lower()
+                    or search in m.get('framework', '').lower()
+                    or search in m.get('task', '').lower()]
+    if framework and framework != 'all':
+        filtered = [m for m in filtered if m.get('framework') == framework]
+    if category and category != 'all':
+        filtered = [m for m in filtered if m.get('category') == category]
+    if status and status != 'all':
+        filtered = [m for m in filtered if m.get('status') == status]
+
+    page_items, total, total_pages = paginate(filtered, page, page_size)
+    page_items = [enrich_train_model(m) for m in page_items]
+
+    return jsonify({
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+        'total_pages': total_pages,
+        'models': page_items,
+        'frameworks': sorted(list(set(m.get('framework', '') for m in models if m.get('framework')))),
+        'categories': sorted(list(set(m.get('category', '') for m in models if m.get('category')))),
+        'statuses': sorted(list(set(m.get('status', '') for m in models if m.get('status')))),
+    })
+
+
+@app.route('/admin/api/train-models', methods=['POST'])
+def api_train_models_add():
+    """新增训练模型。"""
+    data = request.json or {}
+    name = str(data.get('name', '')).strip()
+    if not name:
+        return jsonify({'error': '模型名称不能为空'}), 400
+    train = _load_train_file()
+    models = train.get('models', [])
+    if any(m.get('name', '').strip().lower() == name.lower() for m in models):
+        return jsonify({'error': '模型已存在：' + name}), 400
+    fields = ('name', 'params', 'task', 'cluster', 'precision', 'framework', 'status', 'category', 'desc', 'source')
+    model = {k: data.get(k) for k in fields if data.get(k) is not None and data.get(k) != ''}
+    models.append(model)
+    _save_train_file(train)
+    return jsonify({'success': True, 'model': model})
+
+
+@app.route('/admin/api/train-models/<name>', methods=['GET', 'PUT'])
+def api_train_models_update(name):
+    """读取/更新训练模型（按 name 定位）。"""
+    if request.method == 'GET':
+        train = _load_train_file()
+        for m in train.get('models', []):
+            if m.get('name', '') == name:
+                return jsonify({'model': m})
+        return jsonify({'error': '模型不存在：' + name}), 404
+    data = request.json or {}
+    train = _load_train_file()
+    models = train.get('models', [])
+    for m in models:
+        if m.get('name', '') == name:
+            fields = ('name', 'params', 'task', 'cluster', 'precision', 'framework', 'status', 'category', 'desc', 'source')
+            for k in fields:
+                if k in data:
+                    m[k] = data[k]
+            _save_train_file(train)
+            return jsonify({'success': True, 'model': m})
+    return jsonify({'error': '模型不存在：' + name}), 404
+
+
+@app.route('/admin/api/train-models/<name>', methods=['DELETE'])
+def api_train_models_delete(name):
+    """删除训练模型（按 name 定位）。"""
+    train = _load_train_file()
+    models = train.get('models', [])
+    new_models = [m for m in models if m.get('name', '') != name]
+    if len(new_models) == len(models):
+        return jsonify({'error': '模型不存在：' + name}), 404
+    train['models'] = new_models
+    _save_train_file(train)
+    return jsonify({'success': True, 'deleted': name})
+
+
 # 预定义数据源列表（含 URL）
 PREDEFINED_SOURCES = [
     {'name': 'vLLM Ascend', 'url': 'https://docs.vllm.ai/projects/ascend/en/latest/user_guide/support_matrix/supported_models.html'},
@@ -1737,8 +2025,8 @@ PREDEFINED_SOURCES = [
 
 @app.route('/admin/api/sources')
 def api_sources():
-    models = load_json(DATA_DIR / 'models-lite.json') or []
-    train = load_json(DATA_DIR / 'train-models.json') or {}
+    models = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    train = load_json_cached(DATA_DIR / 'train-models.json') or {}
     train_models = train.get('models', [])
 
     # 统计各来源的模型数据（含推理模型和训练模型）
@@ -1855,8 +2143,8 @@ def enrich_acl_model(m):
 @app.route('/admin/api/acl-models')
 def api_acl_models():
     """小模型数据（合并 ACL_PyTorch + PyTorch 两个目录）"""
-    acl_models = load_json(DATA_DIR / 'acl-pytorch-models.json') or []
-    pytorch_models = load_json(DATA_DIR / 'pytorch-models.json') or []
+    acl_models = load_json_cached(DATA_DIR / 'acl-pytorch-models.json') or []
+    pytorch_models = load_json_cached(DATA_DIR / 'pytorch-models.json') or []
 
     # 为每个模型标记数据源目录
     for m in acl_models:
@@ -1870,8 +2158,8 @@ def api_acl_models():
     category = request.args.get('category', '')
     source = request.args.get('source', '')
     data_dir = request.args.get('data_dir', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 50))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
 
     filtered = models
     if search:
@@ -1921,14 +2209,14 @@ def enrich_mindie_model(m):
 @app.route('/admin/api/mindie-models')
 def api_mindie_models():
     """MindIE 模型数据"""
-    mindie_models = load_json(DATA_DIR / 'mindie-models.json') or []
+    mindie_models = load_json_cached(DATA_DIR / 'mindie-models.json') or []
 
     search = request.args.get('search', '').lower()
     category = request.args.get('category', '')
     source = request.args.get('source', '')
     data_dir = request.args.get('data_dir', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 50))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 50)
 
     filtered = mindie_models
     if search:
@@ -1974,7 +2262,7 @@ def api_mindie_models():
 
 def load_benchmarks():
     """加载大模型评测基准数据"""
-    data = load_json(DATA_DIR / 'benchmarks.json') or {}
+    data = load_json_cached(DATA_DIR / 'benchmarks.json') or {}
     return data.get('benchmarks', []), data.get('fetched_at')
 
 
@@ -1989,8 +2277,8 @@ def api_benchmarks():
     language = request.args.get('language', '')
     difficulty = request.args.get('difficulty', '')
     institution = request.args.get('institution', '')
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('page_size', 24))
+    page = _parse_int(request, 'page', 1)
+    page_size = _parse_int(request, 'page_size', 24)
 
     filtered = benchmarks
     if search:
@@ -2035,13 +2323,19 @@ def api_benchmarks():
     })
 
 
-@app.route('/admin/api/benchmarks/<benchmark_id>', methods=['PUT'])
+@app.route('/admin/api/benchmarks/<benchmark_id>', methods=['GET', 'PUT'])
 def api_benchmark_update(benchmark_id):
-    """Admin：保存编辑后的评测基准数据"""
+    """Admin：读取/保存编辑后的评测基准数据"""
+    if request.method == 'GET':
+        payload = load_json_cached(DATA_DIR / 'benchmarks.json') or {}
+        for b in payload.get('benchmarks', []):
+            if str(b.get('id')) == str(benchmark_id):
+                return jsonify({'benchmark': b})
+        return jsonify({'error': '评测基准不存在'}), 404
     data = request.json
     if not data:
         return jsonify({'error': '无效数据'}), 400
-    payload = load_json(DATA_DIR / 'benchmarks.json') or {}
+    payload = load_json_cached(DATA_DIR / 'benchmarks.json') or {}
     benchmarks = payload.get('benchmarks', [])
     for i, b in enumerate(benchmarks):
         if str(b.get('id')) == str(benchmark_id):
@@ -2139,12 +2433,8 @@ def scheduled_backup():
     backup_dir = DATA_DIR / 'backups'
     backup_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    backup_files = ['models.json', 'models-lite.json', 'models-detail.json',
-                    'train-models.json', 'hardware.json', 'crawl-status.json',
-                    'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json',
-                    'global-models.json', 'benchmarks.json']
     backed_up = []
-    for f in backup_files:
+    for f in BACKUP_FILES:
         src = DATA_DIR / f
         if src.exists():
             dst = backup_dir / f'{timestamp}_{f}'
@@ -2171,20 +2461,1641 @@ def run_daily_backup():
             print(f"[{datetime.now().strftime('%Y%m%d_%H%M%S')}] ⏰ 定时备份失败: {e}")
 
 
+def run_daily_crawler():
+    """定时线程：每天 24:00（午夜 0 点）自动执行模型爬取任务"""
+    while True:
+        now = datetime.now()
+        # 计算到下一次 24:00（即次日 00:00）的秒数
+        target = now.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        wait_seconds = (target - now).total_seconds()
+        threading.Event().wait(wait_seconds)
+        try:
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ⏰ 定时爬取开始（每天 24:00）...")
+            # 若上一次爬虫仍在运行则跳过本次，避免并发冲突
+            if crawler_status['running']:
+                print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ⏰ 定时爬取跳过：爬虫仍在运行中")
+                continue
+            execute_crawler()
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ⏰ 定时爬取结束（状态: {crawler_status['last_status']}）")
+        except Exception as e:
+            print(f"[{datetime.now().strftime('%Y%m%d_%H%M%S')}] ⏰ 定时爬取失败: {e}")
+
+
+# ============ AI使能服务报价器 ============
+
+QUOTE_CONFIG_FILE = DATA_DIR / 'quote_config.json'
+QUOTE_HISTORY_FILE = DATA_DIR / 'quote_history.json'
+
+# 服务目录（与 js/quote-data.js 保持一致，作为后端报价金额的权威来源）
+# 默认内置目录；可通过后台管理页持久化到 data/quote_services.json 后增删改。
+QUOTE_SERVICES_FILE = DATA_DIR / 'quote_services.json'
+
+QUOTE_CATEGORIES = [
+    {'id': 1, 'name': 'AI赋能'},
+    {'id': 2, 'name': 'AI基础开发与运行环境搭建'},
+    {'id': 3, 'name': '模型安装'},
+    {'id': 4, 'name': '应用搭建'},
+    {'id': 5, 'name': '硬件集群组网'},
+    {'id': 6, 'name': '维护升级'},
+]
+
+_DEFAULT_QUOTE_SERVICES = [
+    {'code': '45SC0109', 'name': '开发与运行环境部署赋能', 'days': 2, 'category': 1},
+    {'code': '45SC0110', 'name': '集群环境搭建部署赋能', 'days': 2, 'category': 1},
+    {'code': '45SC0111', 'name': '开发工具赋能', 'days': 2, 'category': 1},
+    {'code': '45SC0133', 'name': '模型迁移/部署赋能', 'days': 2, 'category': 1},
+    {'code': '45SC0134', 'name': '本地化知识库/工作流赋能', 'days': 2, 'category': 1},
+    {'code': '45SC0112', 'name': '安装部署评估与方案设计（必选）', 'days': 2, 'category': 2},
+    {'code': '45SC0113', 'name': '运行开发环境搭建', 'days': 1, 'category': 2},
+    {'code': '45SC0114', 'name': '推理容器镜像', 'days': 2, 'category': 2},
+    {'code': '45SC0115', 'name': '模型部署评估与方案设计（必选）', 'days': 2, 'category': 3},
+    {'code': '42SC0118', 'name': '模型增量包（1人天/实例）', 'days': 1, 'category': 3},
+    {'code': '42SC0119', 'name': 'DeepSeek集群部署（8人天）', 'days': 8, 'category': 3},
+    {'code': '45SC0135', 'name': '常规大模型部署', 'days': 5, 'category': 3},
+    {'code': '42SC0120', 'name': '专项调优（单次15人天）', 'days': 15, 'category': 3},
+    {'code': '45SC0136', 'name': 'RAG模型部署', 'days': 3, 'category': 3},
+    {'code': '42SC0121', 'name': '模型迁移评估与方案设计（必选-单次）', 'days': 5, 'category': 3},
+    {'code': '42SC0122', 'name': '模型迁移(单个)', 'days': 10, 'category': 3},
+    {'code': '45SC0137', 'name': '简易前端界面', 'days': 2, 'category': 4},
+    {'code': '45SC0138', 'name': 'RAG服务', 'days': 3, 'category': 4},
+    {'code': '45SC0139', 'name': '知识库/工作流demo构建', 'days': 2, 'category': 4},
+    {'code': '45SC0120', 'name': '集群环境搭建方案设计', 'days': 3, 'category': 5},
+    {'code': '45SC0121', 'name': '双机组网', 'days': 2, 'category': 5},
+    {'code': '45SC0122', 'name': '多机跨交换机组网', 'days': 5, 'category': 5},
+    {'code': '45SC0123', 'name': '集群验证', 'days': 5, 'category': 5},
+    {'code': '45SC0124', 'name': '根据部署模型进行升级服务', 'days': 20, 'category': 6},
+]
+
+
+def load_quote_services():
+    """读取服务目录；文件不存在或损坏时回退到内置默认目录。"""
+    data = load_json(QUOTE_SERVICES_FILE)
+    if isinstance(data, list) and data:
+        return data
+    return [dict(s) for s in _DEFAULT_QUOTE_SERVICES]
+
+
+def get_quote_service_by_code():
+    return {s['code']: s for s in load_quote_services()}
+
+# ============ 昇腾模型适配清单（技术方案选型用）============
+# 检索优先级：① 昇腾适配清单 → ② MindIE → ③ 大模型训练清单 → ④ 小模型清单
+MODEL_ADAPT_FILE = DATA_DIR / 'models.json'
+MODEL_ADAPT_DETAIL_FILE = DATA_DIR / 'models-detail.json'
+MODEL_MINDIE_FILE = DATA_DIR / 'mindie-models.json'
+MODEL_TRAIN_FILE = DATA_DIR / 'train-models.json'
+MODEL_SMALL_ACL_FILE = DATA_DIR / 'acl-pytorch-models.json'
+MODEL_SMALL_PT_FILE = DATA_DIR / 'pytorch-models.json'
+
+
+def _load_model_list(path, key=None):
+    """读取模型清单文件，统一返回列表。"""
+    data = load_json(path)
+    if not data:
+        return []
+    if isinstance(data, dict):
+        if key and isinstance(data.get(key), list):
+            return data[key]
+        for v in data.values():
+            if isinstance(v, list):
+                return v
+        return []
+    return data if isinstance(data, list) else []
+
+
+def _model_name(m):
+    """取模型记录的名称字段（不同清单字段名不同）。"""
+    for k in ('name', 'model_abbr_name', 'model_name'):
+        if m.get(k):
+            return str(m[k])
+    return ''
+
+
+def _find_model(name):
+    """按优先级查找模型：适配清单 → MindIE → 训练清单 → 小模型清单。
+
+    返回 {source, model, matched} 或 None（未找到）。
+    """
+    if not name:
+        return None
+    target = str(name).strip().lower()
+
+    def _search(items, source):
+        for m in items:
+            if _model_name(m).strip().lower() == target:
+                return {'source': source, 'model': m, 'matched': _model_name(m)}
+        return None
+
+    # ① 昇腾适配清单（主源，models.json / models-detail.json）
+    for f in (MODEL_ADAPT_FILE, MODEL_ADAPT_DETAIL_FILE):
+        r = _search(_load_model_list(f), '昇腾适配清单')
+        if r:
+            return r
+    # ② MindIE
+    r = _search(_load_model_list(MODEL_MINDIE_FILE), 'MindIE')
+    if r:
+        return r
+    # ③ 大模型训练清单
+    r = _search(_load_model_list(MODEL_TRAIN_FILE, 'models'), '大模型训练清单')
+    if r:
+        return r
+    # ④ 小模型清单（ACL + PyTorch）
+    for f in (MODEL_SMALL_ACL_FILE, MODEL_SMALL_PT_FILE):
+        r = _search(_load_model_list(f), '小模型清单')
+        if r:
+            return r
+    return None
+
+
+def load_quote_config():
+    """读取报价器 LLM 连接配置。
+
+    支持用环境变量 LLM_BASE_URL / LLM_API_KEY / LLM_MODEL 覆盖配置文件，
+    便于将凭据放在环境而非落盘到 data/ 目录（data/ 已被静态路由屏蔽，此处为纵深防御）。
+    """
+    cfg = load_json(QUOTE_CONFIG_FILE)
+    if not cfg or not isinstance(cfg, dict):
+        cfg = {'llm': {'base_url': '', 'api_key': '', 'model': ''}, 'price_per_day': 6000, 'enabled': True}
+    cfg.setdefault('price_per_day', 6000)
+    cfg.setdefault('enabled', True)
+    cfg.setdefault('llm', {})
+    llm = cfg['llm']
+    for env_key, cfg_key in (('LLM_BASE_URL', 'base_url'),
+                             ('LLM_API_KEY', 'api_key'),
+                             ('LLM_MODEL', 'model')):
+        val = os.environ.get(env_key, '').strip()
+        if val:
+            llm[cfg_key] = val
+    return cfg
+
+
+def save_quote_config(cfg):
+    """保存报价器 LLM 连接配置。"""
+    save_json(QUOTE_CONFIG_FILE, cfg)
+
+
+def load_quote_history():
+    """读取历史报价列表。"""
+    hist = load_json(QUOTE_HISTORY_FILE)
+    return hist if isinstance(hist, list) else []
+
+
+def _call_llm_for_quote(requirement, cfg):
+    """调用本地大模型（OpenAI 兼容接口），返回推荐的报价 JSON 字符串。
+
+    复用 _call_llm_json 的统一调用逻辑，仅在此构造报价专属的 system/user 提示词。
+    """
+    catalog_lines = []
+    for s in load_quote_services():
+        catalog_lines.append(f"[{s['code']}] {s['name']}（{s['days']}人天）")
+
+    system_prompt = (
+        '你是昇腾AI使能服务的售前技术方案与报价专家。根据客户需求，先给出技术方案，再推荐服务项。\n'
+        '只输出一个 JSON 对象，不要输出其他任何文字。JSON 格式：\n'
+        '{"plan": "技术方案正文（markdown，含：需求分析/总体架构/模型选型与理由/部署与实施步骤/服务项说明，各章节用 ## 标题）", '
+        '"model": "方案选用的模型名称（若需求明确指定则用指定名称，否则从客户描述中推断）", '
+        '"codes": ["服务编码1", "服务编码2"], "summary": "一句话报价方案说明"}\n'
+        '要求：\n'
+        '1. plan 用 markdown 撰写，条理清晰、面向售前客户。\n'
+        '2. model 尽量填写具体的模型名（如 DeepSeek-R1、Qwen2.5-72B），不要编造；不确定可留空。\n'
+        '3. codes 只能包含下方目录中存在且与需求相关的服务编码。\n'
+        '4. 若需求涉及模型部署/环境搭建，应包含对应的"必选"评估方案项。\n'
+        '5. 不要编造目录中不存在的服务或编码。\n'
+        '服务目录：\n' + '\n'.join(catalog_lines)
+    )
+    return _call_llm_json(system_prompt, f'客户需求：{requirement}', cfg)
+
+
+def _extract_json_object(content):
+    """从文本中提取第一个完整 JSON 对象（字符串感知的括号配对）。
+
+    跳过字符串值内部的 {}，避免 markdown 方案中的花括号干扰配对。
+    """
+    if not content:
+        return None
+    start = content.find('{')
+    if start == -1:
+        return None
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(content)):
+        ch = content[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == '\\':
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == '{':
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(content[start:i + 1])
+                except Exception:
+                    return None
+    return None
+
+
+def _build_quote_from_codes(codes, price_per_day):
+    """根据服务编码列表，从权威目录计算报价明细与合计。"""
+    service_by_code = get_quote_service_by_code()
+    items = []
+    for code in codes:
+        svc = service_by_code.get(code)
+        if not svc:
+            continue
+        amount = svc['days'] * price_per_day
+        items.append({
+            'code': svc['code'],
+            'name': svc['name'],
+            'days': svc['days'],
+            'price_per_day': price_per_day,
+            'amount': amount,
+        })
+    total_days = sum(it['days'] for it in items)
+    total_amount = sum(it['amount'] for it in items)
+    return items, total_days, total_amount
+
+
+def _cn_upper_amount(num):
+    """将金额转为人民币大写（分后截断）。"""
+    units = ['', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿', '拾', '佰', '仟', '万亿', '拾', '佰', '仟']
+    nums = '零壹贰叁肆伍陆柒捌玖'
+    num = int(round(num))
+    if num == 0:
+        return '零元整'
+    result = ''
+    # 处理亿/万
+    yi = num // 100000000
+    wan = (num % 100000000) // 10000
+    ge = num % 10000
+    parts = []
+    for i, val in enumerate([yi, wan, ge]):
+        if val:
+            s = _cn_four_digits(val, nums)
+            if i == 0:
+                s += '亿'
+            elif i == 1:
+                s += '万'
+            parts.append(s)
+    return ''.join(parts) + '元整'
+
+
+def _cn_four_digits(val, nums):
+    """把 0-9999 转成中文数字（不含单位后缀）。"""
+    units = ['', '拾', '佰', '仟']
+    if val == 0:
+        return '零'
+    s = ''
+    zero = False
+    pos = 3
+    while pos >= 0:
+        d = (val // (10 ** pos)) % 10
+        if d == 0:
+            zero = True
+        else:
+            if zero and s:
+                s += '零'
+            zero = False
+            s += nums[d] + units[pos]
+        pos -= 1
+    return s
+
+
+@app.route('/admin/api/quote/config', methods=['GET', 'POST'])
+def api_quote_config():
+    """读取/保存报价器 LLM 配置。"""
+    if request.method == 'POST':
+        data = request.get_json(silent=True) or {}
+        cfg = load_quote_config()
+        if 'llm' in data and isinstance(data['llm'], dict):
+            cfg['llm'].update({k: v for k, v in data['llm'].items() if v is not None})
+        if 'price_per_day' in data:
+            try:
+                cfg['price_per_day'] = int(data['price_per_day'])
+            except (TypeError, ValueError):
+                pass
+        if 'enabled' in data:
+            cfg['enabled'] = bool(data['enabled'])
+        save_quote_config(cfg)
+        return jsonify(_mask_api_key(cfg))
+    cfg = load_quote_config()
+    return jsonify(_mask_api_key(cfg))
+
+
+def _mask_api_key(cfg):
+    """对返回给前端的配置掩码 api_key，避免明文凭据泄露（前端不使用该字段）。"""
+    if isinstance(cfg, dict):
+        llm = cfg.get('llm')
+        if isinstance(llm, dict) and llm.get('api_key'):
+            llm['api_key'] = '***'
+    return cfg
+
+
+@app.route('/admin/api/quote/catalog')
+def api_quote_catalog():
+    """返回服务目录（供前端展示/勾选，金额以后端计算为准）。"""
+    cfg = load_quote_config()
+    return jsonify({
+        'services': load_quote_services(),
+        'price_per_day': cfg.get('price_per_day', 6000),
+        'categories': QUOTE_CATEGORIES,
+    })
+
+
+# ============ 使能服务目录管理（后台）============
+def _save_quote_services(services):
+    save_json(QUOTE_SERVICES_FILE, services)
+
+
+@app.route('/admin/api/quote/services')
+def api_quote_services_list():
+    """后台：获取使能服务目录列表。"""
+    return jsonify({
+        'services': load_quote_services(),
+        'categories': QUOTE_CATEGORIES,
+    })
+
+
+@app.route('/admin/api/quote/services', methods=['POST'])
+def api_quote_services_create():
+    """后台：新增使能服务。"""
+    data = request.get_json(silent=True) or {}
+    code = (data.get('code') or '').strip()
+    name = (data.get('name') or '').strip()
+    if not code or not name:
+        return jsonify({'error': '服务编码与服务名不能为空'}), 400
+    try:
+        days = int(data.get('days', 1))
+    except (TypeError, ValueError):
+        days = 1
+    category = int(data.get('category', 1) or 1)
+    services = load_quote_services()
+    if any(s['code'] == code for s in services):
+        return jsonify({'error': f'服务编码 {code} 已存在'}), 409
+    service = {'code': code, 'name': name, 'days': days, 'category': category}
+    services.append(service)
+    _save_quote_services(services)
+    return jsonify({'success': True, 'service': service})
+
+
+@app.route('/admin/api/quote/services/<code>', methods=['GET', 'PUT'])
+def api_quote_services_update(code):
+    """后台：读取/修改使能服务。"""
+    if request.method == 'GET':
+        services = load_quote_services()
+        for s in services:
+            if s.get('code') == code:
+                return jsonify({'service': s})
+        return jsonify({'error': f'未找到服务 {code}'}), 404
+    data = request.get_json(silent=True) or {}
+    services = load_quote_services()
+    for s in services:
+        if s['code'] == code:
+            if 'name' in data and data['name'] is not None:
+                s['name'] = str(data['name']).strip()
+            if 'days' in data:
+                try:
+                    s['days'] = int(data['days'])
+                except (TypeError, ValueError):
+                    pass
+            if 'category' in data:
+                try:
+                    s['category'] = int(data['category'])
+                except (TypeError, ValueError):
+                    pass
+            _save_quote_services(services)
+            return jsonify({'success': True, 'service': s})
+    return jsonify({'error': f'未找到服务 {code}'}), 404
+
+
+@app.route('/admin/api/quote/services/<code>', methods=['DELETE'])
+def api_quote_services_delete(code):
+    """后台：删除使能服务。"""
+    services = load_quote_services()
+    new_services = [s for s in services if s['code'] != code]
+    if len(new_services) == len(services):
+        return jsonify({'error': f'未找到服务 {code}'}), 404
+    _save_quote_services(new_services)
+    return jsonify({'success': True})
+
+
+@app.route('/admin/api/quote/generate', methods=['POST'])
+def api_quote_generate():
+    """根据客户需求调用 LLM 推荐服务项，并计算报价。"""
+    data = request.get_json(silent=True) or {}
+    requirement = (data.get('requirement') or '').strip()
+    if not requirement:
+        return jsonify({'error': '客户需求不能为空'}), 400
+
+    cfg = load_quote_config()
+    if not cfg.get('enabled', True):
+        return jsonify({'error': '报价器已停用'}), 400
+
+    try:
+        result = _call_llm_for_quote(requirement, cfg)
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'调用大模型失败: {e}'}), 502
+
+    codes = result.get('codes') or []
+    items, total_days, total_amount = _build_quote_from_codes(codes, cfg.get('price_per_day', 6000))
+    if not items:
+        return jsonify({'error': 'LLM 未能匹配到合适的服务项，请调整需求描述后重试'}), 422
+
+    # 方案选型模型检索（按 适配清单→MindIE→训练→小模型 优先级）
+    model_name = (result.get('model') or '').strip()
+    model_found = _find_model(model_name) if model_name else None
+
+    return jsonify({
+        'plan': result.get('plan', ''),
+        'summary': result.get('summary', ''),
+        'model': {
+            'name': model_name,
+            'matched': (model_found or {}).get('matched', ''),
+            'source': (model_found or {}).get('source', ''),
+            'found': bool(model_found),
+            'info': (model_found or {}).get('model') or None,
+        } if model_name else None,
+        'items': items,
+        'total_days': total_days,
+        'total_amount': total_amount,
+        'total_amount_cn': _cn_upper_amount(total_amount),
+        'price_per_day': cfg.get('price_per_day', 6000),
+    })
+
+
+@app.route('/admin/api/quote/history', methods=['GET', 'POST'])
+def api_quote_history():
+    """读取/保存历史报价。"""
+    if request.method == 'POST':
+        data = request.get_json(silent=True) or {}
+        if not data.get('requirement'):
+            return jsonify({'error': '缺少需求信息'}), 400
+        history = load_quote_history()
+        record = {
+            'id': f"Q{datetime.now().strftime('%Y%m%d%H%M%S')}",
+            'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'customer': data.get('customer', ''),
+            'requirement': data.get('requirement', ''),
+            'plan': data.get('plan', ''),
+            'summary': data.get('summary', ''),
+            'items': data.get('items', []),
+            'total_days': data.get('total_days', 0),
+            'total_amount': data.get('total_amount', 0),
+            'total_amount_cn': data.get('total_amount_cn', ''),
+            'price_per_day': data.get('price_per_day', 6000),
+        }
+        history.insert(0, record)
+        # 最多保留 200 条
+        save_json(QUOTE_HISTORY_FILE, history[:200])
+        return jsonify(record)
+    history = load_quote_history()
+    # 后端分页 + 搜索，避免每次全量拉取后本地过滤
+    search = (request.args.get('search') or '').strip().lower()
+    if search:
+        history = [h for h in history
+                   if search in (h.get('customer') or '').lower()
+                   or search in (h.get('requirement') or '').lower()]
+    total = len(history)
+    page = _parse_int(request, 'page', 1, 1)
+    page_size = _parse_int(request, 'page_size', 50, 1, 500)
+    start = (page - 1) * page_size
+    items = history[start:start + page_size]
+    return jsonify({'items': items, 'total': total, 'page': page, 'page_size': page_size,
+                    'total_pages': max(1, -(-total // page_size))})
+
+
+@app.route('/admin/api/quote/history/batch-delete', methods=['POST'])
+def api_quote_history_batch_delete():
+    """批量删除历史报价。"""
+    data = request.get_json(silent=True) or {}
+    ids = data.get('ids') or []
+    if not isinstance(ids, list) or not ids:
+        return jsonify({'error': '缺少要删除的报价单 ID'}), 400
+    id_set = set(str(i) for i in ids)
+    history = load_quote_history()
+    remaining = [h for h in history if h.get('id') not in id_set]
+    deleted = len(history) - len(remaining)
+    save_json(QUOTE_HISTORY_FILE, remaining)
+    return jsonify({'ok': True, 'deleted': deleted})
+
+
+@app.route('/admin/api/quote/history/<quote_id>', methods=['GET', 'DELETE'])
+def api_quote_history_delete(quote_id):
+    """读取/删除一条历史报价。"""
+    history = load_quote_history()
+    if request.method == 'GET':
+        for h in history:
+            if h.get('id') == quote_id:
+                return jsonify({'record': h})
+        return jsonify({'error': '报价单不存在'}), 404
+    history = [h for h in history if h.get('id') != quote_id]
+    save_json(QUOTE_HISTORY_FILE, history)
+    return jsonify({'ok': True})
+
+
+# ============ 模型性能查询 ============
+
+PERFORMANCE_FILE = DATA_DIR / 'performance.json'
+# Excel 源数据目录（A 方式：本地路径导入）
+PERF_SRC_DIR = BASE_DIR / 'data_preformce_data'
+# 标准化后的性能记录字段（页面展示用）
+PERF_METRIC_FIELDS = [
+    'ttft_ms', 'ttft_p90', 'tpot_ms', 'tpot_p90', 'e2e_s',
+    'output_tps', 'per_card_output_tps', 'e2e_tps', 'per_card_e2e_tps',
+    'qps', 'qpm',
+]
+
+_perf_cache = {'mtime': None, 'data': None}
+
+
+def load_performance(force=False):
+    """读取性能数据（带 mtime 缓存）。文件不存在时返回空结构。"""
+    mtime = PERFORMANCE_FILE.stat().st_mtime if PERFORMANCE_FILE.exists() else 0
+    if _perf_cache['data'] is None or force or _perf_cache['mtime'] != mtime:
+        data = load_json(PERFORMANCE_FILE)
+        if not isinstance(data, dict) or not isinstance(data.get('items'), list):
+            data = {'source': '昇腾推理性能基线合集', 'updated_at': '', 'total': 0, 'items': []}
+        _perf_cache['mtime'] = mtime
+        _perf_cache['data'] = data
+    return _perf_cache['data']
+
+
+def save_performance(data):
+    """保存性能数据并刷新缓存。"""
+    save_json(PERFORMANCE_FILE, data)
+    _perf_cache['mtime'] = PERFORMANCE_FILE.stat().st_mtime if PERFORMANCE_FILE.exists() else 0
+    _perf_cache['data'] = data
+
+
+def _perf_next_id(items):
+    """生成下一个自增 id（perf-N）。"""
+    mx = 0
+    for it in items:
+        m = re.search(r'(\d+)$', str(it.get('id', '')))
+        if m:
+            mx = max(mx, int(m.group(1)))
+    return f'perf-{mx + 1}'
+
+
+def _perf_clean_rec(rec):
+    """清洗单条性能记录：只保留白名单字段、数值字段转 float/None。"""
+    allowed = {'id', 'model', 'framework', 'product', 'scenario', 'hardware', 'topology',
+               'total_cards', 'data_format', 'avg_input', 'avg_output', 'prefix_cache',
+               'concurrency', 'max_concurrency', 'req_rate', 'version', 'parallel',
+               'source_file', 'source_sheet', 'note',
+               'avg_input_raw', 'avg_output_raw'}
+    allowed |= set(PERF_METRIC_FIELDS)
+    out = {}
+    for k, v in (rec or {}).items():
+        if k not in allowed:
+            continue
+        if k in PERF_METRIC_FIELDS or k in ('total_cards', 'avg_input', 'avg_output',
+                                            'prefix_cache', 'concurrency', 'max_concurrency', 'req_rate'):
+            try:
+                out[k] = None if v in (None, '') else float(v)
+            except (TypeError, ValueError):
+                out[k] = None
+        else:
+            out[k] = None if v is None else str(v).strip()
+    return out
+
+
+@app.route('/admin/api/performance/sources')
+def api_perf_sources():
+    """后台：扫描本地 Excel 源目录，返回各文件的导入状态。"""
+    sources = []
+    if PERF_SRC_DIR.is_dir():
+        for f in sorted(PERF_SRC_DIR.glob('*.xlsx')):
+            try:
+                mtime = datetime.fromtimestamp(f.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+                size = f.stat().st_size
+            except OSError:
+                mtime, size = '', 0
+            sources.append({
+                'name': f.name,
+                'path': str(f),
+                'size': size,
+                'mtime': mtime,
+            })
+    data = load_performance()
+    # 统计每个源文件已导入的记录数
+    count_by_file = {}
+    for it in data.get('items', []):
+        sf = it.get('source_file') or ''
+        count_by_file[sf] = count_by_file.get(sf, 0) + 1
+    for s in sources:
+        s['imported'] = count_by_file.get(s['name'], 0)
+    return jsonify({
+        'sources': sources,
+        'total': data.get('total', 0),
+        'updated_at': data.get('updated_at', ''),
+    })
+
+
+@app.route('/admin/api/performance/import', methods=['POST'])
+def api_perf_import():
+    """导入性能数据。
+
+    方式 A：request.json['path'] —— 本地 data_preformce_data 目录下的 xlsx 路径
+    方式 B：multipart 上传文件字段 file —— 浏览器上传 xlsx
+    """
+    data = load_performance()
+    items = data.get('items', [])
+
+    # 方式 B：multipart 上传
+    if 'file' in request.files:
+        up = request.files['file']
+        if not up or not up.filename:
+            return jsonify({'error': '未选择文件'}), 400
+        if not up.filename.lower().endswith('.xlsx'):
+            return jsonify({'error': '仅支持 .xlsx 文件'}), 400
+        tmp = DATA_DIR / ('_upload_' + up.filename)
+        try:
+            up.save(str(tmp))
+            recs = _parse_perf_xlsx(str(tmp), up.filename)
+        except Exception as e:
+            return jsonify({'error': f'解析失败: {e}'}), 400
+        finally:
+            if tmp.exists():
+                tmp.unlink()
+        full = (request.form.get('mode') or '').strip().lower() == 'full'
+        return _merge_perf_import(recs, up.filename, full=full)
+
+    # 方式 A：本地路径导入
+    body = request.get_json(silent=True) or {}
+    path = (body.get('path') or '').strip()
+    if not path:
+        return jsonify({'error': '请提供本地文件路径（path）或上传文件'}), 400
+    p = Path(path)
+    # 允许绝对路径或相对项目根的 data_preformce_data/*.xlsx
+    if not p.is_absolute():
+        p = BASE_DIR / p
+    if not p.exists() or not p.is_file():
+        return jsonify({'error': f'文件不存在: {p}'}), 404
+    if p.suffix.lower() != '.xlsx':
+        return jsonify({'error': '仅支持 .xlsx 文件'}), 400
+    try:
+        recs = _parse_perf_xlsx(str(p), p.name)
+    except Exception as e:
+        return jsonify({'error': f'解析失败: {e}'}), 400
+    full = (body.get('mode') or '').strip().lower() == 'full'
+    return _merge_perf_import(recs, p.name, full=full)
+
+
+def _parse_perf_xlsx(path, display_name):
+    """调用解析脚本的核心函数，解析单个 xlsx 为标准化记录列表。"""
+    # 复用 scripts/parse_performance.py 的解析逻辑（避免重复实现）
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        'parse_performance_mod', str(BASE_DIR / 'scripts' / 'parse_performance.py'))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.parse_file(Path(path))
+
+
+def _merge_perf_import(recs, file_name, full=False):
+    """合并导入记录到 performance.json（按关键字段去重）并返回统计。
+
+    full=False：增量合并，已存在的记录跳过，只新增。
+    full=True：全量重导，清空现有记录后用 recs 重建。
+    """
+    if not recs:
+        return jsonify({'error': '未解析到有效数据记录'}), 422
+    data = load_performance()
+    items = [] if full else data.get('items', [])
+    seen = set()
+    for it in items:
+        key = (str(it.get('model')), str(it.get('product')), str(it.get('scenario')),
+               it.get('avg_input'), it.get('avg_output'), it.get('total_cards'),
+               it.get('ttft_ms'), it.get('output_tps'),
+               str(it.get('source_file')), str(it.get('source_sheet')))
+        seen.add(key)
+    added = 0
+    for rec in recs:
+        key = (rec['model'], rec['product'], rec['scenario'],
+               rec['avg_input'], rec['avg_output'], rec.get('total_cards'),
+               rec.get('ttft_ms'), rec.get('output_tps'),
+               file_name, rec['source_sheet'])
+        if key in seen:
+            continue
+        seen.add(key)
+        rec['id'] = _perf_next_id(items)
+        rec['source_file'] = file_name
+        items.append(rec)
+        added += 1
+    data['items'] = items
+    data['total'] = len(items)
+    data['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    save_performance(data)
+    return jsonify({'success': True, 'added': added, 'total': len(items)})
+
+
+@app.route('/admin/api/performance/items')
+def api_perf_items():
+    """后台：性能记录列表（支持搜索与分页）。"""
+    data = load_performance()
+    items = data.get('items', [])
+    q = (request.args.get('q') or '').strip().lower()
+    page = _parse_int(request, 'page', 1, min_val=1)
+    page_size = _parse_int(request, 'page_size', 20, min_val=1, max_val=200)
+    if q:
+        items = [it for it in items if q in str(it.get('model', '')).lower()
+                 or q in str(it.get('product', '')).lower()
+                 or q in str(it.get('framework', '')).lower()]
+    total = len(items)
+    start = (page - 1) * page_size
+    return jsonify({
+        'items': items[start:start + page_size],
+        'total': total,
+        'page': page,
+        'page_size': page_size,
+    })
+
+
+@app.route('/admin/api/performance/items', methods=['POST'])
+def api_perf_item_create():
+    """后台：新增单条性能记录。"""
+    data = load_performance()
+    items = data.get('items', [])
+    rec = _perf_clean_rec(request.get_json(silent=True) or {})
+    if not rec.get('model'):
+        return jsonify({'error': '模型名称不能为空'}), 400
+    rec['id'] = _perf_next_id(items)
+    rec['source_file'] = rec.get('source_file') or '手动添加'
+    items.append(rec)
+    data['items'] = items
+    data['total'] = len(items)
+    data['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    save_performance(data)
+    return jsonify({'success': True, 'item': rec})
+
+
+@app.route('/admin/api/performance/items/<perf_id>', methods=['PUT'])
+def api_perf_item_update(perf_id):
+    """后台：修改单条性能记录。"""
+    data = load_performance()
+    items = data.get('items', [])
+    for it in items:
+        if it.get('id') == perf_id:
+            patch = _perf_clean_rec(request.get_json(silent=True) or {})
+            # 保留 id / source_file / source_sheet 不被覆盖
+            patch.pop('id', None)
+            patch.pop('source_file', None)
+            patch.pop('source_sheet', None)
+            it.update(patch)
+            data['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            save_performance(data)
+            return jsonify({'success': True, 'item': it})
+    return jsonify({'error': f'未找到记录 {perf_id}'}), 404
+
+
+@app.route('/admin/api/performance/items/<perf_id>', methods=['DELETE'])
+def api_perf_item_delete(perf_id):
+    """后台：删除单条性能记录。"""
+    data = load_performance()
+    items = data.get('items', [])
+    new_items = [it for it in items if it.get('id') != perf_id]
+    if len(new_items) == len(items):
+        return jsonify({'error': f'未找到记录 {perf_id}'}), 404
+    data['items'] = new_items
+    data['total'] = len(new_items)
+    data['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    save_performance(data)
+    return jsonify({'success': True})
+
+
+@app.route('/admin/api/performance/filters')
+def api_perf_filters():
+    """返回筛选项可选值（模型/框架/版本/产品组合/场景/数据格式/卡数）。"""
+    data = load_performance()
+    items = data.get('items', [])
+    def _uniq(field):
+        return sorted({str(it.get(field)).strip() for it in items if it.get(field)})
+    cards = sorted({int(it['total_cards']) for it in items
+                    if it.get('total_cards') is not None and int(it['total_cards']) > 0})
+    return jsonify({
+        'models': _uniq('model'),
+        'frameworks': _uniq('framework'),
+        'versions': _uniq('version'),
+        'products': _uniq('product'),
+        'scenarios': _uniq('scenario'),
+        'data_formats': _uniq('data_format'),
+        'cards': cards,
+    })
+
+
+@app.route('/admin/api/performance/query')
+def api_perf_query():
+    """性能查询（页面使用）：按筛选条件返回匹配记录。"""
+    data = load_performance()
+    items = data.get('items', [])
+    args = request.args
+
+    def _match(it, field, arg_key):
+        val = (args.get(arg_key) or '').strip()
+        if not val:
+            return True
+        return str(it.get(field, '')).strip() == val
+
+    def _num_range(it, field, arg_min, arg_max):
+        v = it.get(field)
+        if v is None:
+            return True
+        lo = args.get(arg_min)
+        hi = args.get(arg_max)
+        if lo not in (None, ''):
+            try:
+                if v < float(lo):
+                    return False
+            except ValueError:
+                pass
+        if hi not in (None, ''):
+            try:
+                if v > float(hi):
+                    return False
+            except ValueError:
+                pass
+        return True
+
+    filtered = [
+        it for it in items
+        if _match(it, 'model', 'model')
+        and _match(it, 'framework', 'framework')
+        and _match(it, 'version', 'version')
+        and _match(it, 'product', 'product')
+        and _match(it, 'scenario', 'scenario')
+        and _match(it, 'data_format', 'data_format')
+        and _match(it, 'total_cards', 'cards')
+        and _num_range(it, 'avg_input', 'min_in', 'max_in')
+        and _num_range(it, 'avg_output', 'min_out', 'max_out')
+    ]
+    return jsonify({'total': len(filtered), 'items': filtered})
+
+
+# ============ 售前选型：模型→推荐设备 + 业务满足度评估 ============
+
+# 显存判定：product / 设备名中包含的关键词 → 显存标注
+_MEM_32G_KEYWORDS = ('32g', '32 g', 'w8a8 32', '32gb')
+_MEM_64G_KEYWORDS = ('64g', '64 g', 'w8a8 64', '64gb')
+# models-lite.recommendedHardware 中的噪声默认值，不作为有效推荐
+_REC_NOISE = {'Atlas 800T A3', 'Atlas 系列硬件', 'Ascend C', 'Ascend AI处理器',
+              'Ascend 实测确认', 'Atlas A2', 'Ascend NPU model', 'Ascend Model Agent'}
+
+
+def _perf_valid_official_hw(value):
+    """判断 models-lite.recommendedHardware 是否为有效的官方推荐硬件名。
+
+    仅接受以 Atlas 开头、且不含 GitHub 项目噪声（路径分隔符 /、Star/Fork、README 等）的干净硬件名。
+    """
+    v = (value or '').strip()
+    if not v or not v.startswith('Atlas'):
+        return False
+    if v in _REC_NOISE:
+        return False
+    noise = ('/', 'Star', 'Fork', 'README', 'Pull', 'Issue', '代码', '项目', '仓库', '部署', '验证', '生态')
+    if any(n in v for n in noise):
+        return False
+    # 过长或过短视为异常
+    if not (3 <= len(v) <= 40):
+        return False
+    return True
+
+
+def _perf_dev_memory(product):
+    """根据产品组合字符串粗判显存（32G/64G/未知）。"""
+    p = (product or '').lower()
+    if any(k in p for k in _MEM_64G_KEYWORDS):
+        return '64G'
+    if any(k in p for k in _MEM_32G_KEYWORDS):
+        return '32G'
+    if '300idu' in p or '300i duo' in p:
+        return '48/96G'
+    return ''
+
+
+def _perf_clean_dev_name(product):
+    """规整产品组合名，去掉 W8A8 等格式后缀，便于展示。"""
+    p = str(product or '').strip()
+    for suf in (' w8a8sc', ' W8A8SC', ' w8a8', ' W8A8', ' w8a8s', ' W8A8S'):
+        p = p.replace(suf, '')
+    return p.strip()
+
+
+def _perf_pick_representative(group):
+    """从同一产品组合的多条记录中选一条代表性记录（优先典型输入输出 + 高并发）。"""
+    if not group:
+        return None
+    # 优先 1024/1024 或 2048/2048 的典型测试点
+    def score(it):
+        ai = it.get('avg_input') or 0
+        ao = it.get('avg_output') or 0
+        s = 0
+        if ai in (1024, 2048) and ao in (1024, 2048):
+            s += 100
+        s += (it.get('concurrency') or 0)
+        return s
+    return max(group, key=score)
+
+
+def _perf_hw_memory(prod, hardware):
+    """先从产品名关键词判定显存，再从硬件库按名称匹配兜底。"""
+    mem = _perf_dev_memory(prod)
+    if mem:
+        return mem
+    pl = (prod or '').lower()
+    # 归一化：去掉空格/分隔符便于匹配硬件名
+    norm = re.sub(r'[\s_\-/]+', '', pl)
+    for h in hardware:
+        name = re.sub(r'[\s_\-/]+', '', str(h.get('name', '')).lower())
+        if not name:
+            continue
+        if name in norm or norm in name or norm.split('w8a8')[0] in name:
+            m = str(h.get('memory') or '')
+            if '64g' in m.lower() or '64 g' in m.lower():
+                return '64G'
+            if '32g' in m.lower() or '32 g' in m.lower():
+                return '32G'
+            if '48' in m or '96' in m:
+                return '48/96G'
+            break
+    return ''
+
+
+def _perf_recommend_hardware(model, items, models_lite, hardware):
+    """按模型聚合推荐设备（融合 performance 实测 + models-lite 官方推荐 + hardware 参数）。"""
+    model_l = (model or '').strip().lower()
+    if not model_l:
+        return []
+
+    # 1) performance.json 实测：按 product 聚合
+    grouped = {}
+    for it in items:
+        m = str(it.get('model', '')).strip().lower()
+        if m == model_l or (model_l and model_l in m):
+            prod = it.get('product') or '未标注产品'
+            grouped.setdefault(prod, []).append(it)
+
+    # 2) models-lite 官方推荐（仅保留有效的干净硬件名，过滤 GitHub 噪声）
+    rec_hw = []
+    min_hw = ''
+    for x in models_lite:
+        if str(x.get('name', '')).strip().lower() == model_l:
+            r = str(x.get('recommendedHardware') or '').strip()
+            if _perf_valid_official_hw(r):
+                rec_hw.append(r)
+            min_hw = str(x.get('minHardware') or '').strip()
+
+    # 3) hardware.json 参数索引（按名称关键词匹配显存/算力）
+    hw_idx = {str(h.get('name', '')).lower(): h for h in hardware}
+
+    devices = []
+    for prod, group in grouped.items():
+        rep = _perf_pick_representative(group)
+        mem = _perf_hw_memory(prod, hardware)
+        devices.append({
+            'product': prod,
+            'display': _perf_clean_dev_name(prod),
+            'memory': mem,
+            'source': '实测',
+            'total_cards': rep.get('total_cards'),
+            'avg_input': rep.get('avg_input'),
+            'avg_output': rep.get('avg_output'),
+            'concurrency': rep.get('concurrency'),
+            'ttft_ms': rep.get('ttft_ms'),
+            'tpot_ms': rep.get('tpot_ms'),
+            'output_tps': rep.get('output_tps'),
+            'per_card_output_tps': rep.get('per_card_output_tps'),
+            'e2e_tps': rep.get('e2e_tps'),
+            'per_card_e2e_tps': rep.get('per_card_e2e_tps'),
+            'qps': rep.get('qps'),
+            'records': len(group),
+        })
+
+    # 官方推荐硬件作为补充（无实测时给出候选）
+    for r in rec_hw:
+        rl = r.lower()
+        if any(str(d['display']).lower() in rl or rl in str(d['product']).lower() for d in devices):
+            continue
+        mem = ''
+        for name, h in hw_idx.items():
+            if rl in name or name in rl:
+                m = str(h.get('memory') or '')
+                if '64g' in m.lower() or '64 g' in m.lower():
+                    mem = '64G'
+                elif '32g' in m.lower():
+                    mem = '32G'
+                break
+        devices.append({
+            'product': r, 'display': r, 'memory': mem, 'source': '官方推荐',
+            'total_cards': None, 'avg_input': None, 'avg_output': None,
+            'concurrency': None, 'ttft_ms': None, 'tpot_ms': None,
+            'output_tps': None, 'per_card_output_tps': None,
+            'e2e_tps': None, 'per_card_e2e_tps': None, 'qps': None, 'records': 0,
+        })
+
+    # 排序：有实测的优先（按单卡吞吐降序）
+    def sort_key(d):
+        v = d['per_card_e2e_tps'] if d.get('per_card_e2e_tps') else d['e2e_tps']
+        return (1 if d['source'] == '实测' else 0, v if v else -1)
+    devices.sort(key=sort_key, reverse=True)
+    return devices
+
+
+def _perf_satisfy(dev, biz):
+    """业务满足度评估：返回 (level, reasons, advice)。level: 满足/临界/不满足/无数据。"""
+    if dev.get('source') != '实测':
+        return ('无数据', ['暂无该设备的实测性能数据，无法评估'], '建议联系技术团队实测评估')
+
+    reasons = []
+    advice = []
+    level_bad = False
+    level_warn = False
+
+    # 输入/输出长度匹配
+    need_in = biz.get('input_len')
+    need_out = biz.get('output_len')
+    if need_in and dev.get('avg_input') and need_in > dev['avg_input'] * 1.5:
+        reasons.append(f'业务输入长度({need_in})超出实测基线({dev["avg_input"]:.0f})较多，时延/吞吐可能偏差')
+        level_warn = True
+
+    # 并发
+    need_conc = biz.get('concurrency')
+    rec_conc = dev.get('concurrency')
+    if need_conc and rec_conc:
+        if need_conc > rec_conc * 1.2:
+            reasons.append(f'期望并发({need_conc:.0f})高于实测基线({rec_conc:.0f})，建议实测验证')
+            level_warn = True
+
+    # 时延上限（TTFT）
+    need_ttft = biz.get('max_ttft')
+    rec_ttft = dev.get('ttft_ms')
+    if need_ttft and rec_ttft:
+        if rec_ttft > need_ttft:
+            reasons.append(f'实测首token时延({rec_ttft:.0f}ms)超过业务上限({need_ttft:.0f}ms)')
+            level_bad = True
+        elif rec_ttft > need_ttft * 0.85:
+            reasons.append(f'首token时延({rec_ttft:.0f}ms)接近业务上限({need_ttft:.0f}ms)，偏紧')
+            level_warn = True
+
+    # QPS / 吞吐
+    need_qps = biz.get('qps')
+    rec_qps = dev.get('qps')
+    if need_qps and rec_qps:
+        if need_qps > rec_qps * 1.2:
+            reasons.append(f'期望QPS({need_qps:.2f})高于实测基线({rec_qps:.2f})，建议增加卡数或换更高配设备')
+            advice.append('增加总卡数 / 换 64G 大显存设备')
+            level_bad = True
+        elif need_qps > rec_qps:
+            reasons.append(f'期望QPS({need_qps:.2f})接近实测基线({rec_qps:.2f})，偏紧')
+            level_warn = True
+
+    if level_bad:
+        level = '不满足'
+        if not advice:
+            advice.append('建议增加总卡数 / 换 64G 大显存设备，或联系技术团队评估')
+    elif level_warn:
+        level = '临界'
+        advice.append('建议在目标场景下实测验证后再承诺')
+    else:
+        level = '满足'
+        advice.append('实测基线可覆盖当前业务参数')
+    if not reasons:
+        reasons.append('未提供业务约束，仅展示实测基线')
+    return (level, reasons, advice)
+
+
+@app.route('/admin/api/performance/models')
+def api_perf_models():
+    """售前选型：返回可用于推荐的模型列表（performance 实测 + models-lite 适配）。"""
+    data = load_performance()
+    perf_models = sorted({str(it.get('model', '')).strip() for it in data.get('items', []) if it.get('model')})
+    lite = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    lite_models = sorted({str(x.get('name', '')).strip() for x in lite if x.get('name')})
+    return jsonify({'performance_models': perf_models, 'lite_models': lite_models})
+
+
+@app.route('/admin/api/performance/recommend')
+def api_perf_recommend():
+    """售前选型：按模型推荐设备 + 业务满足度评估。"""
+    model = (request.args.get('model') or '').strip()
+    if not model:
+        return jsonify({'error': '请提供模型名称'}), 400
+
+    data = load_performance()
+    items = data.get('items', [])
+    lite = load_json_cached(DATA_DIR / 'models-lite.json') or []
+    hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
+
+    # 业务参数（可选）
+    def _f(k):
+        v = request.args.get(k)
+        if v in (None, ''):
+            return None
+        try:
+            return float(v)
+        except ValueError:
+            return None
+    biz = {
+        'input_len': _f('input_len'),
+        'output_len': _f('output_len'),
+        'concurrency': _f('concurrency'),
+        'max_ttft': _f('max_ttft'),
+        'qps': _f('qps'),
+    }
+
+    devices = _perf_recommend_hardware(model, items, lite, hardware)
+    # 满足度评估
+    for d in devices:
+        level, reasons, advice = _perf_satisfy(d, biz)
+        d['satisfy_level'] = level
+        d['satisfy_reasons'] = reasons
+        d['satisfy_advice'] = advice
+
+    matched = [it for it in items if model.lower() in str(it.get('model', '')).lower()]
+    return jsonify({
+        'model': model,
+        'matched_total': len(matched),
+        'devices': devices,
+        'has_biz': any(v is not None for v in biz.values()),
+    })
+
+
+def _call_llm_json(system_prompt, user_content, cfg, temperature=0.2, max_tokens=2000):
+    """通用 LLM 调用（OpenAI 兼容接口），要求模型返回一个 JSON 对象。
+
+    复用报价器的 LLM 配置（load_quote_config）。调用失败抛 ValueError / 网络异常。
+    """
+    llm = cfg.get('llm', {})
+    base_url = (llm.get('base_url') or '').rstrip('/')
+    api_key = llm.get('api_key') or ''
+    model = llm.get('model') or ''
+    if not base_url or not model:
+        raise ValueError('LLM 未配置：请先在报价器页面设置 base_url 和 model')
+
+    if base_url.endswith('/chat/completions'):
+        url = base_url
+    elif base_url.endswith('/v1'):
+        url = base_url + '/chat/completions'
+    else:
+        url = base_url + '/v1/chat/completions'
+
+    payload = {
+        'model': model,
+        'messages': [
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_content},
+        ],
+        'temperature': float(llm.get('temperature', temperature)),
+        'max_tokens': int(llm.get('max_tokens', max_tokens)),
+        'stream': False,
+    }
+    headers = {}
+    if api_key:
+        headers['Authorization'] = f'Bearer {api_key}'
+
+    body = _http_post_json(url, payload, headers=headers)
+    content = body['choices'][0]['message']['content']
+    obj = _extract_json_object(content)
+    if obj is None:
+        raise ValueError('LLM 返回内容不包含有效 JSON')
+    return obj
+
+
+@app.route('/admin/api/performance/llm-advice', methods=['POST'])
+def api_perf_llm_advice():
+    """售前选型：用 LLM 补充解读规则引擎结果，给出结构化选型建议。"""
+    data = request.get_json(silent=True) or {}
+    model = (data.get('model') or '').strip()
+    devices = data.get('devices') or []
+    biz = data.get('biz') or {}
+    if not model:
+        return jsonify({'error': '请提供模型名称'}), 400
+    if not devices:
+        return jsonify({'error': '暂无设备数据，请先完成选型'}), 400
+
+    cfg = load_quote_config()
+    if not cfg.get('enabled', True):
+        return jsonify({'error': 'LLM 服务已停用，请在报价器页面启用'}), 400
+
+    # 构造给 LLM 的输入：业务参数 + 规则引擎评估结果
+    biz_lines = []
+    labels = {
+        'input_len': '输入长度',
+        'output_len': '输出长度',
+        'concurrency': '并发数',
+        'max_ttft': '最大首token时延(ms)',
+        'qps': 'QPS',
+    }
+    for k, label in labels.items():
+        v = biz.get(k)
+        if v not in (None, ''):
+            biz_lines.append(f"{label}={v}")
+    biz_desc = '；'.join(biz_lines) if biz_lines else '未提供（按通用场景评估）'
+
+    dev_lines = []
+    dev_names = []
+    for d in devices:
+        dev_name = d.get('device') or d.get('name') or d.get('display') or d.get('product') or '未知设备'
+        dev_names.append(dev_name)
+        dev_lines.append(
+            f"- 设备 {dev_name}（显存 {d.get('memory') or '未知'}，"
+            f"来源 {d.get('source') or d.get('source_label') or '未知'}）"
+            f"：满足度=「{d.get('satisfy_level') or '无数据'}」"
+            + (f"，理由：{d.get('satisfy_reasons')}" if d.get('satisfy_reasons') else '')
+            + (f"，建议：{d.get('satisfy_advice')}" if d.get('satisfy_advice') else '')
+        )
+    valid_names = '、'.join(dev_names) or '（无）'
+
+    system_prompt = (
+        '你是昇腾服务器售前选型专家。系统已根据实测性能数据与业务参数，用规则引擎对每个候选设备'
+        '给出了满足度评估（满足/临界/不满足/无数据）。你的任务是在此基础上，用售前视角对结果进行'
+        '补充解读并给出结构化选型建议。\n'
+        '只输出一个 JSON 对象，不要输出任何其他文字。JSON 格式：\n'
+        '{"recommend": "首选推荐的设备名称（必须严格等于下方有效设备名之一，若认为无合适设备填 null）", '
+        '"confidence": "高|中|低", '
+        '"summary": "一段面向客户的自然语言选型解读（150字内，说明为什么推荐/不推荐、关键取舍）", '
+        '"risk": "该选型的主要风险或注意事项（无则填空字符串）", '
+        '"advice": "给售前/客户的下一步建议（如扩容、降并发、换卡等）"}\n'
+        '要求：\n'
+        '1. recommend 必须严格等于下方「有效设备名」列表中的某一个名称，不要加任何前缀、括号或修饰。\n'
+        '2. 结合业务参数（并发、QPS、时延等）判断设备是否满足，而非只看满足度标签。\n'
+        '3. 规则引擎已判为「不满足」的设备一般不应作为首选，除非它是唯一选项并给出风险提示。\n'
+        '4. summary 面向客户、通俗易懂，避免过多技术堆砌。\n'
+        f'有效设备名：{valid_names}'
+    )
+    user_content = (
+        f"模型：{model}\n"
+        f"业务参数：{biz_desc}\n"
+        f"候选设备与规则引擎评估结果：\n" + '\n'.join(dev_lines)
+    )
+
+    try:
+        result = _call_llm_json(system_prompt, user_content, cfg)
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'调用大模型失败: {e}'}), 502
+
+    return jsonify({
+        'model': model,
+        'recommend': result.get('recommend'),
+        'confidence': result.get('confidence'),
+        'summary': result.get('summary', ''),
+        'risk': result.get('risk', ''),
+        'advice': result.get('advice', ''),
+    })
+
+
+def _perf_calc_cards(dev, biz):
+    """按业务参数推算所需设备（卡）数量。
+
+    基于实测的单卡 QPS / 单卡并发 / 单卡吞吐，取各约束所需卡数的上限。
+    返回 (cards, reason)；无实测数据返回 (None, 原因)。
+    """
+    if dev.get('source') != '实测':
+        return (None, '无实测数据，无法推算设备数量')
+
+    total_cards = dev.get('total_cards') or 1
+    per_card_qps = (dev.get('qps') or 0) / total_cards if dev.get('qps') else None
+    per_card_conc = (dev.get('concurrency') or 0) / total_cards if dev.get('concurrency') else None
+
+    need = []
+    qps = biz.get('qps')
+    if qps and per_card_qps:
+        c = max(1, int(-(-qps // per_card_qps)))  # ceil
+        need.append(('QPS', c))
+    conc = biz.get('concurrency')
+    if conc and per_card_conc:
+        c = max(1, int(-(-conc // per_card_conc)))
+        need.append(('并发', c))
+
+    if not need:
+        return (None, '未提供 QPS/并发约束，无法推算设备数量')
+
+    cards = max(c for _, c in need)
+    labels = '、'.join(f"{k}需{c}卡" for k, c in need)
+    # 模型部署约束：实测基线卡数即该模型在该设备上拉起服务所需的最小卡数。
+    # 仅按性能推算可能给出不现实的低卡数（如超大模型推成 1 卡），须以基线卡数为下限。
+    min_cards = int(total_cards) if total_cards else 1
+    if cards < min_cards:
+        cards = min_cards
+        return (cards, f"按{labels}推算需{cards}卡，但 {total_cards} 卡为模型部署基线（最小拉起卡数），按实际部署取 {cards} 卡")
+    return (cards, f"按{labels}推算，建议 {cards} 卡（{total_cards} 卡基线换算）")
+
+
+def _perf_requirement_candidates(items, biz, hardware, top_n=6):
+    """需求驱动的规则引擎初筛：返回满足度最好的候选模型及其最优设备。
+
+    遍历所有有实测数据的模型，对每个模型选单卡吞吐最高的设备作为代表，
+    结合业务参数做满足度评估与卡数推算，按满足度排序取 Top N。
+    """
+    # 按模型聚合
+    models = {}
+    for it in items:
+        m = str(it.get('model', '')).strip()
+        if not m:
+            continue
+        models.setdefault(m, []).append(it)
+
+    cands = []
+    for m, group in models.items():
+        # 选该模型单卡吞吐最高的产品作为代表
+        best = None
+        best_tps = -1
+        for it in group:
+            tps = it.get('per_card_e2e_tps') or it.get('e2e_tps') or 0
+            if tps > best_tps:
+                best_tps = tps
+                best = it
+        if best is None:
+            continue
+        prod = best.get('product') or '未标注产品'
+        dev = {
+            'product': prod,
+            'display': _perf_clean_dev_name(prod),
+            'memory': _perf_hw_memory(prod, hardware),
+            'source': '实测',
+            'total_cards': best.get('total_cards'),
+            'concurrency': best.get('concurrency'),
+            'ttft_ms': best.get('ttft_ms'),
+            'tpot_ms': best.get('tpot_ms'),
+            'output_tps': best.get('output_tps'),
+            'per_card_e2e_tps': best.get('per_card_e2e_tps'),
+            'e2e_tps': best.get('e2e_tps'),
+            'qps': best.get('qps'),
+            'avg_input': best.get('avg_input'),
+            'avg_output': best.get('avg_output'),
+        }
+        level, reasons, advice = _perf_satisfy(dev, biz)
+        cards, card_reason = _perf_calc_cards(dev, biz)
+        cands.append({
+            'model': m,
+            'device': dev,
+            'satisfy_level': level,
+            'reasons': reasons,
+            'advice': advice,
+            'cards': cards,
+            'card_reason': card_reason,
+            'records': len(group),
+        })
+
+    # 排序：满足 > 临界 > 无数据 > 不满足；同级按单卡吞吐降序
+    rank = {'满足': 0, '临界': 1, '无数据': 2, '不满足': 3}
+    cands.sort(key=lambda c: (rank.get(c['satisfy_level'], 4),
+                              -(c['device'].get('per_card_e2e_tps') or c['device'].get('e2e_tps') or 0)))
+    return cands[:top_n]
+
+
+@app.route('/admin/api/performance/recommend-by-requirement', methods=['POST'])
+def api_perf_recommend_by_requirement():
+    """需求驱动选型：根据业务需求推荐具体模型 + 设备 + 设备数量。
+
+    规则引擎初筛候选（满足度 + 卡数推算），再由 LLM 做最终解读与确认。
+    """
+    data = request.get_json(silent=True) or {}
+
+    def _num(k):
+        v = data.get(k)
+        if v in (None, ''):
+            return None
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return None
+
+    biz = {
+        'input_len': _num('input_len'),
+        'output_len': _num('output_len'),
+        'concurrency': _num('concurrency'),
+        'qps': _num('qps'),
+        'max_ttft': _num('max_ttft'),
+    }
+    scene = (data.get('scene') or '').strip()
+    mem_pref = (data.get('memory') or '').strip()
+
+    if not any(v is not None for v in biz.values()) and not scene:
+        return jsonify({'error': '请至少提供业务参数或场景描述'}), 400
+
+    data_perf = load_performance()
+    items = data_perf.get('items', [])
+    if not items:
+        return jsonify({'error': '暂无性能数据，无法选型'}), 400
+
+    hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
+    cands = _perf_requirement_candidates(items, biz, hardware, top_n=6)
+    if not cands:
+        return jsonify({'error': '未找到匹配的实测模型数据'}), 404
+
+    # 规则引擎结果 → LLM 解读
+    cfg = load_quote_config()
+    has_llm = bool(cfg.get('enabled', True)) and bool((cfg.get('llm') or {}).get('base_url')) and bool((cfg.get('llm') or {}).get('model'))
+
+    if has_llm:
+        cand_lines = []
+        for c in cands:
+            d = c['device']
+            cand_lines.append(
+                f"- 模型「{c['model']}」→ 设备 {d['display'] or d['product']}"
+                f"（显存 {d.get('memory') or '未知'}，{c['records']} 条实测）"
+                f"：满足度=「{c['satisfy_level']}」"
+                f"，推算设备数量：{c['cards'] if c['cards'] else '无法推算'}（{c['card_reason'] or ''}）"
+                + (f"，理由：{'；'.join(c['reasons'])}" if c['reasons'] else '')
+            )
+        system_prompt = (
+            '你是昇腾服务器售前选型专家。系统已根据业务需求，用规则引擎从有实测数据的模型中'
+            '初筛出若干候选（含推荐设备与推算的设备数量）。你的任务是：从候选模型中挑选最适合'
+            '该业务需求的具体模型，给出推荐设备与设备数量，并做售前解读。\n'
+            '只输出一个 JSON 对象，不要输出任何其他文字。JSON 格式：\n'
+            '{"recommend": "推荐的具体模型名称（必须严格等于下方候选模型之一，若都不合适填 null）", '
+            '"device": "推荐设备名称（来自该模型对应的设备）", '
+            '"cards": 建议设备数量（整数，参考规则引擎推算值，允许微调；无法确定填 null）, '
+            '"confidence": "高|中|低", '
+            '"scene_fit": "该模型适合在什么业务场景下使用（结合用户填写的场景说明），例如适合做多轮客服/代码补全/长文档问答等，1-2句", '
+            '"rationale": "模型选型理由：为什么选这个模型而不是其他候选，重点讲模型能力与该业务需求的匹配点（如长上下文、低时延、高吞吐、显存占用等），不要只罗列性能数字，1-3句", '
+            '"summary": "面向客户的选型解读（120字内：综合场景适配+选型理由+是否满足业务，一句话讲清为什么选它）", '
+            '"risk": "主要风险或注意事项（无则填空字符串）", '
+            '"advice": "下一步建议（如扩容、实测验证、显存选择等）"}\n'
+            '要求：\n'
+            '1. recommend 必须严格等于下方候选模型名称之一，不要加前后缀。\n'
+            '2. 结论必须同时说明「该模型用在什么场景」和「为什么选它（选型理由）」，不要只描述性能表现。\n'
+            '3. 结合业务参数（并发/QPS/时延/输入输出长度）与显存偏好判断，而非只看满足度标签。\n'
+            '4. 规则引擎已判「不满足」的模型一般不应作为首选，除非它是最接近且可扩容的选项。\n'
+            '5. cards 优先采用规则引擎推算值，除非你有明确依据才调整。'
+        )
+        user_content = (
+            f"业务需求：场景「{scene or '通用'}」；输入长度 {biz.get('input_len') or '不限'}；"
+            f"输出长度 {biz.get('output_len') or '不限'}；并发 {biz.get('concurrency') or '不限'}；"
+            f"QPS {biz.get('qps') or '不限'}；首token时延上限 {biz.get('max_ttft') or '不限'}ms；"
+            f"显存偏好 {mem_pref or '不限'}。\n"
+            f"候选模型与规则引擎初筛结果：\n" + '\n'.join(cand_lines)
+        )
+        try:
+            llm_result = _call_llm_json(system_prompt, user_content, cfg)
+        except ValueError as e:
+            llm_result = None
+            llm_err = str(e)
+        except Exception as e:
+            llm_result = None
+            llm_err = f'调用大模型失败: {e}'
+    else:
+        llm_result = None
+        llm_err = 'LLM 未配置，仅返回规则引擎结果'
+
+    # 组装最终候选列表（含规则引擎结果）
+    final_cands = []
+    for c in cands:
+        final_cands.append({
+            'model': c['model'],
+            'device': c['device']['display'] or c['device']['product'],
+            'product': c['device']['product'],
+            'memory': c['device']['memory'],
+            'satisfy_level': c['satisfy_level'],
+            'reasons': c['reasons'],
+            'advice': c['advice'],
+            'cards': c['cards'],
+            'card_reason': c['card_reason'],
+            'total_cards_baseline': c['device']['total_cards'],
+            'per_card_tps': c['device'].get('per_card_e2e_tps'),
+            'e2e_tps': c['device'].get('e2e_tps'),
+            'ttft_ms': c['device'].get('ttft_ms'),
+            'concurrency': c['device'].get('concurrency'),
+            'records': c['records'],
+        })
+
+    return jsonify({
+        'candidates': final_cands,
+        'llm': llm_result,
+        'llm_available': has_llm,
+        'llm_error': None if has_llm and llm_result else (llm_err if has_llm else None),
+    })
+
+
 # ============ 首页静态文件路由（放在 Admin 路由之后）============
+
+# 允许公开访问的静态资源扩展名（其余如 .py/.json/.log/.md/.xlsx 等一律屏蔽，
+# 避免 server.py 源码、data/*.json 数据与凭据、日志等被匿名下载）
+_PUBLIC_STATIC_EXTS = {
+    '.html', '.htm', '.css', '.js', '.map',
+    '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.webp', '.avif',
+    '.woff', '.woff2', '.ttf', '.eot', '.otf',
+}
+# 禁止直接服务的敏感目录（源码/数据/凭据/日志/版本库等）
+_BLOCKED_STATIC_DIRS = (
+    'data/', 'skills/', 'logs/', 'scripts/', 'node_modules/',
+    '__pycache__/', '.git/', '.gitcode/', '.agent_history/', 'Yuxi/',
+)
+
+
+def _is_public_static(path):
+    """判断 path 是否为允许公开访问的静态资源。
+
+    规则：不在敏感目录内、扩展名在白名单内，才允许直接返回文件。
+    """
+    p = path.lstrip('/')
+    if any(p.startswith(d) for d in _BLOCKED_STATIC_DIRS):
+        return False
+    ext = os.path.splitext(p)[1].lower()
+    return ext in _PUBLIC_STATIC_EXTS
+
 
 @app.route('/<path:path>')
 def static_files(path):
     # 排除 admin 路由（让 Flask 匹配更具体的 admin 路由）
     if path.startswith('admin/'):
         return admin_index()
-    file_path = BASE_DIR / path
-    if file_path.exists() and file_path.is_file():
-        return send_from_directory(str(BASE_DIR), path)
+    # 仅允许公开静态资源，屏蔽源码/数据/凭据/日志等敏感文件
+    if _is_public_static(path):
+        file_path = BASE_DIR / path
+        if file_path.exists() and file_path.is_file():
+            return send_from_directory(str(BASE_DIR), path)
+    # 未知路径或不公开文件：SPA 回退首页；敏感路径则返回 404，避免泄露
+    if any(path.lstrip('/').startswith(d) for d in _BLOCKED_STATIC_DIRS):
+        return ('Not Found', 404)
     return send_from_directory(str(BASE_DIR), 'index.html')
 
 
 # ============ 启动 ============
+# ============ 售前三级推荐（编排 Skill 服务端封装）============
+def _load_presales_module():
+    """动态加载编排 Skill 的 recommend.py（避免顶层 import 与路径耦合）。"""
+    import importlib.util
+    path = BASE_DIR / 'skills' / 'ascend-presales-recommend' / 'recommend.py'
+    spec = importlib.util.spec_from_file_location('presales_recommend', str(path))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+@app.route('/api/presales-recommend', methods=['GET', 'POST'])
+def api_presales_recommend():
+    """售前三级推荐：①全球大模型推荐 → ②昇腾适配筛选 → ③硬件推荐+TCO。
+
+    参数（GET query 或 POST JSON，均可）：
+      scene        业务场景(智能问答/内容生成/代码辅助/文档处理/知识抽取/翻译/多模态/语音/推理)
+      precision    精度档位(fp16/int8/int4/极高/较高/一般)
+      qps          并发 QPS
+      in_len       平均输入长度(tokens)
+      out_len      平均输出长度(tokens)
+      require_open 仅推荐开源/可私有化模型(1/true)
+      top          候选模型数量
+      adapt_only   只跑①②不做硬件估算(1/true)
+    """
+    src = request.get_json(silent=True) or {}
+    def gv(k, default=None):
+        v = request.args.get(k)
+        if v is None and k in src:
+            v = src[k]
+        return v
+
+    scene = gv('scene') or '智能问答'
+    precision = gv('precision') or 'fp16'
+    qps = float(gv('qps') or 30)
+    # in_len/out_len 缺省传 None，交由 skill 按场景预设(SCENE_PRESETS)套用
+    def _int_opt(k):
+        v = gv(k)
+        return int(v) if v not in (None, '') else None
+    in_len = _int_opt('in_len')
+    out_len = _int_opt('out_len')
+    top = int(gv('top') or 5)
+    def truthy(v):
+        return str(v).lower() in ('1', 'true', 'yes', 'on')
+    require_open = truthy(gv('require_open', ''))
+    adapt_only = truthy(gv('adapt_only', ''))
+
+    try:
+        rec = _load_presales_module()
+        args = rec.argparse.Namespace(
+            repo=str(BASE_DIR), scene=scene, precision=precision, qps=qps,
+            in_len=in_len, out_len=out_len, require_open=require_open,
+            top=top, adapt_only=adapt_only, out=None)
+        data = rec.Data(str(BASE_DIR))
+        data.load()
+        report = rec.build_report(data, args)
+        if adapt_only:
+            report.pop('step3', None)
+        # params 反映套用场景预设后的实际值（report.meta 是 build_report 解析后的最终值）
+        meta = report.get('meta', {})
+        return jsonify({'success': True, 'params': {
+            'scene': scene, 'precision': precision, 'qps': qps,
+            'in_len': meta.get('in_len', in_len), 'out_len': meta.get('out_len', out_len),
+            'require_open': require_open, 'top': top, 'adapt_only': adapt_only,
+        }, 'report': report})
+    except Exception as e:  # noqa: BLE001
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     # 加载爬虫历史状态（重启后保留历史日志）
     _load_crawler_status()
@@ -2193,8 +4104,17 @@ if __name__ == '__main__':
     backup_thread.start()
     print("⏰ 定时备份已启动（每天 23:00 自动备份）")
 
+    # 启动定时爬取线程（每天 24:00 / 午夜 0 点自动爬取模型）
+    crawler_thread = threading.Thread(target=run_daily_crawler, daemon=True)
+    crawler_thread.start()
+    print("⏰ 定时爬取已启动（每天 24:00 自动爬取模型）")
+
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
     print(f"🚀 服务启动于 http://localhost:{port}")
     print(f"   📋 首页: http://localhost:{port}/")
     print(f"   ⚙️  Admin: http://localhost:{port}/admin")
+    if ADMIN_TOKEN:
+        print("🔒 Admin 写操作鉴权已启用（X-Admin-Token）")
+    else:
+        print("⚠️  未设置 ADMIN_TOKEN 环境变量，Admin 写操作未鉴权；生产环境请设置 ADMIN_TOKEN 启用保护")
     app.run(host='0.0.0.0', port=port, debug=False)

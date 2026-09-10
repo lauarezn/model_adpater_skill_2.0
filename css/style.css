@@ -1610,6 +1610,18 @@ table.bd-table tbody tr:hover { background: var(--color-bg-secondary); }
   font-size: 0.8rem;
   color: var(--color-text-tertiary);
 }
+.hot-ranking-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+  white-space: nowrap;
+}
 .hot-ranking-sort {
   display: flex;
   align-items: center;
@@ -1621,83 +1633,140 @@ table.bd-table tbody tr:hover { background: var(--color-bg-secondary); }
   min-width: 110px;
 }
 
-.hot-ranking-table-wrap {
+.hot-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hot-card {
+  display: flex;
+  gap: 16px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  overflow: hidden;
+  padding: 16px 18px;
   box-shadow: var(--color-card-shadow);
+  transition: var(--transition);
+  align-items: flex-start;
 }
-.hot-ranking-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
+.hot-card:hover {
+  box-shadow: var(--color-card-shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-primary-light);
 }
-.hot-ranking-table thead th {
-  background: var(--color-bg-tertiary);
+.hot-card-rank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding-top: 2px;
+}
+.hot-rank-num {
+  font-size: 1.3rem;
+  font-weight: 800;
   color: var(--color-text-secondary);
-  text-align: left;
-  padding: 12px 16px;
-  font-weight: 600;
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
-.hot-ranking-table tbody td {
-  padding: 12px 16px;
-  border-top: 1px solid var(--color-border);
-  vertical-align: middle;
+.hot-card:nth-child(-n+3) .hot-rank-num { color: var(--color-primary); }
+.hot-medal {
+  font-size: 1.2rem;
+  margin-top: 4px;
 }
-.hot-ranking-table tbody tr:hover {
-  background: var(--color-bg-secondary);
+.hot-card-body {
+  flex: 1;
+  min-width: 0;
 }
-.hot-ranking-table .hot-rank {
-  width: 60px;
-  font-weight: 700;
-  color: var(--color-text);
-  text-align: center;
-  font-size: 1.05rem;
+.hot-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
 }
-.hot-rank-medal {
-  display: block;
-  font-size: 1.1rem;
-  margin-top: 2px;
-}
-.hot-model a {
+.hot-card-title {
   display: flex;
   flex-direction: column;
   text-decoration: none;
   color: var(--color-text);
+  min-width: 0;
 }
-.hot-model .hot-dev {
-  font-size: 0.75rem;
+.hot-card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  word-break: break-all;
+  transition: color 0.2s;
+}
+.hot-card-title:hover .hot-card-name { color: var(--color-primary); }
+.hot-card-dev {
+  font-size: 0.78rem;
   color: var(--color-text-secondary);
   font-weight: 500;
+  margin-top: 2px;
 }
-.hot-model .hot-name {
-  font-size: 0.95rem;
+.hot-card-tag {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
   font-weight: 600;
+  background: var(--color-primary-light);
   color: var(--color-primary);
-  word-break: break-all;
-}
-.hot-model a:hover .hot-name {
-  text-decoration: underline;
-}
-.hot-tag {
-  color: var(--color-text-secondary);
   white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.hot-downloads,
-.hot-likes,
-.hot-trend {
+.hot-card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.hot-stat {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "icon label"
+    "icon value"
+    "bar bar";
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
+}
+.hot-stat-icon { grid-area: icon; font-size: 1.05rem; }
+.hot-stat-label { grid-area: label; font-size: 0.72rem; color: var(--color-text-secondary); }
+.hot-stat-value {
+  grid-area: value;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-text);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
 }
-.hot-trend {
-  color: var(--color-text-secondary);
+.hot-stat-bar {
+  grid-area: bar;
+  height: 5px;
+  background: var(--color-bg-tertiary);
+  border-radius: 999px;
+  margin-top: 4px;
+  overflow: hidden;
 }
+.hot-stat-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.hot-bar-downloads { background: #3B82F6; }
+.hot-bar-likes { background: #8B5CF6; }
+.hot-bar-trend { background: #F59E0B; }
 .hot-ranking-count {
-  margin-top: 12px;
+  margin-top: 16px;
   font-size: 0.85rem;
   color: var(--color-text-secondary);
   text-align: right;
@@ -1707,10 +1776,7 @@ table.bd-table tbody tr:hover { background: var(--color-bg-secondary); }
 }
 
 @media (max-width: 720px) {
-  .hot-ranking-table-wrap {
-    overflow-x: auto;
-  }
-  .hot-ranking-table {
-    min-width: 640px;
-  }
+  .hot-card { flex-direction: column; align-items: center; }
+  .hot-card-rank { flex-direction: row; gap: 8px; min-width: 0; }
+  .hot-card-stats { grid-template-columns: 1fr; }
 }

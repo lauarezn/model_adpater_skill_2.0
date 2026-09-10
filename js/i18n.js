@@ -4,8 +4,8 @@
 const I18N = {
   zh: {
     // 头部
-    'site.title': '🚀 昇腾服务器 大模型适配清单',
-    'site.subtitle': '查询大模型在华为昇腾平台上的适配状态与部署指南',
+    'site.title': '🧮 别叫我小趴菜，我<span class="accent">一点都不菜</span>',
+    'site.subtitle': '算力不够？Token来凑 · 昇腾硬件 · 大模型适配 · 评测基准 · Token计算器',
     'stat.models': '已收录 {n} 个模型',
     'stat.hardware': '{n} 款服务器型号',
     'stat.categories': '{n} 个类别',
@@ -124,8 +124,8 @@ const I18N = {
     'lang.en': 'English',
   },
   en: {
-    'site.title': '🚀 Ascend Server LLM Adaptation List',
-    'site.subtitle': 'Check LLM adaptation status and deployment guides on Huawei Ascend',
+    'site.title': '🧮 Out of Compute? <span class="accent">Token to the Rescue</span>',
+    'site.subtitle': 'Ascend/Global AI Hardware · Model Adaptation · Benchmarks · Token Calculator, all in one',
     'stat.models': '{n} models',
     'stat.hardware': '{n} server models',
     'stat.categories': '{n} categories',

@@ -34,6 +34,36 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .sidebar nav { padding: 10px 0; }
+.nav-group { margin: 4px 0; }
+.nav-group-title {
+  margin: 0;
+  padding: 10px 16px 10px 18px;
+  color: var(--text);
+  background: var(--bg-hover);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 3px solid var(--primary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.nav-group-title:hover { background: var(--bg-hover); filter: brightness(1.03); }
+.nav-arrow {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+}
+.nav-group.collapsed .nav-arrow { transform: rotate(-90deg); }
+.nav-group.collapsed .nav-group-items { display: none; }
+.nav-group-items {
+  padding: 4px 0;
+  border-left: 3px solid transparent;
+}
 .sidebar a {
   display: block;
   padding: 10px 20px;
@@ -46,6 +76,24 @@ body {
 .sidebar a:hover, .sidebar a.active {
   background: var(--bg-hover);
   color: var(--text);
+  border-left: 3px solid var(--primary);
+}
+/* 二级菜单项：必须在 .sidebar a 之后定义，覆盖通用样式以体现层级 */
+.nav-group-items a {
+  padding-left: 38px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  border-left: 3px solid transparent;
+}
+.nav-group-items a:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+  border-left: 3px solid var(--border);
+}
+.nav-group-items a.active {
+  background: var(--bg-hover);
+  color: var(--primary);
+  font-weight: 600;
   border-left: 3px solid var(--primary);
 }
 .main {
@@ -208,6 +256,11 @@ tr:hover { background: var(--bg-hover); }
   font-size: 0.85rem;
 }
 .modal .form-group textarea { min-height: 80px; resize: vertical; }
+.modal .form-row {
+  display: flex;
+  gap: 12px;
+}
+.modal .form-row .form-group { flex: 1; min-width: 0; }
 .modal .form-actions {
   display: flex;
   gap: 8px;
