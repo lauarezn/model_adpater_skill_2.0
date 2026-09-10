@@ -559,7 +559,9 @@
   </div>
 </div>
 
-<script src="js/data-loader.js"></script>
+<!-- data-loader.js 已删除：浏览器端爬虫为停用死代码。此处保留全局变量声明，
+     供 app.js/models.js 等使用（数据实际由后端 API 提供）。 -->
+<script>let models = []; let dataSource = 'local';</script>
 <script src="js/hardware.js"></script>
 <script src="js/nv-hardware.js"></script>
 <script src="js/models.js"></script>
