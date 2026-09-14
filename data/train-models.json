@@ -445,6 +445,42 @@
       "source": "MindSpeed-MM"
     },
     {
+      "name": "Kimi-K3-2.8T",
+      "params": "2.8T",
+      "task": "微调",
+      "cluster": "1x16",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态模型",
+      "source": "MindSpeed-MM"
+    },
+    {
+      "name": "MiniMax-M3-427B",
+      "params": "427B",
+      "task": "微调",
+      "cluster": "1x8",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态模型",
+      "source": "MindSpeed-MM"
+    },
+    {
+      "name": "GLM-5.3-Flash-321B",
+      "params": "321B",
+      "task": "微调",
+      "cluster": "1x16",
+      "precision": "BF16",
+      "framework": "MM",
+      "status": "已支持",
+      "category": "多模态理解",
+      "desc": "多模态模型",
+      "source": "MindSpeed-MM"
+    },
+    {
       "name": "Whisper-1.5B",
       "params": "1.5B",
       "task": "预训练",
@@ -2559,8 +2595,8 @@
       "source": "MindSpeed-LLM"
     }
   ],
-  "crawl_time": "2026-09-05 21:55:19",
-  "total": 149,
-  "mm_count": 39,
+  "crawl_time": "2026-09-15 00:00:00",
+  "total": 152,
+  "mm_count": 42,
   "llm_count": 110
 }
