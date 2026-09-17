@@ -1,14 +1,14 @@
 {
-  "crawl_time": "2026-09-15 00:00:00",
+  "crawl_time": "2026-09-17 00:00:00",
   "sources": {
     "vllm_ascend": 103,
-    "vllm_omni": 106,
-    "sglang_ascend": 109,
+    "vllm_omni": 109,
+    "sglang_ascend": 105,
     "gitcode_ai": 10000,
-    "ascend_sact": 808,
+    "ascend_sact": 0,
     "mindspeed_mm": 42,
     "mindspeed_llm": 110
   },
-  "total_models": 5098,
+  "total_models": 4785,
   "total_train_models": 152
 }

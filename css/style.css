@@ -326,6 +326,17 @@ header p {
 .meta-tag.source-omni { background: #EDE9FE; color: #6D28D9; }
 .meta-tag.source-sglang { background: #D1FAE5; color: #065F46; }
 .meta-tag.source-gitcode { background: #FEF3C7; color: #92400E; }
+.variant-badge {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: #FCE7F3;
+  color: #BE185D;
+  border: 1px solid #F9A8D4;
+  cursor: default;
+}
+[data-theme="dark"] .variant-badge { background: #4A1D3A; color: #F9A8D4; border-color: #9D174D; }
 .meta-tag.source-link {
   background: #E0E7FF;
   color: #4338CA;

@@ -1,0 +1,146 @@
+[
+  {
+    "code": "45SC0109",
+    "name": "开发与运行环境部署赋能",
+    "days": 2,
+    "category": 1
+  },
+  {
+    "code": "45SC0110",
+    "name": "集群环境搭建部署赋能",
+    "days": 2,
+    "category": 1
+  },
+  {
+    "code": "45SC0111",
+    "name": "开发工具赋能",
+    "days": 2,
+    "category": 1
+  },
+  {
+    "code": "45SC0133",
+    "name": "模型迁移/部署赋能",
+    "days": 2,
+    "category": 1
+  },
+  {
+    "code": "45SC0134",
+    "name": "本地化知识库/工作流赋能",
+    "days": 2,
+    "category": 1
+  },
+  {
+    "code": "45SC0112",
+    "name": "安装部署评估与方案设计（必选）",
+    "days": 2,
+    "category": 2
+  },
+  {
+    "code": "45SC0113",
+    "name": "运行开发环境搭建",
+    "days": 1,
+    "category": 2
+  },
+  {
+    "code": "45SC0114",
+    "name": "推理容器镜像",
+    "days": 2,
+    "category": 2
+  },
+  {
+    "code": "45SC0115",
+    "name": "模型部署评估与方案设计（必选）",
+    "days": 2,
+    "category": 3
+  },
+  {
+    "code": "42SC0118",
+    "name": "模型增量包（1人天/实例）",
+    "days": 1,
+    "category": 3
+  },
+  {
+    "code": "42SC0119",
+    "name": "DeepSeek集群部署（8人天）",
+    "days": 8,
+    "category": 3
+  },
+  {
+    "code": "45SC0135",
+    "name": "常规大模型部署",
+    "days": 5,
+    "category": 3
+  },
+  {
+    "code": "42SC0120",
+    "name": "专项调优（单次15人天）",
+    "days": 15,
+    "category": 3
+  },
+  {
+    "code": "45SC0136",
+    "name": "RAG模型部署",
+    "days": 3,
+    "category": 3
+  },
+  {
+    "code": "42SC0121",
+    "name": "模型迁移评估与方案设计（必选-单次）",
+    "days": 5,
+    "category": 3
+  },
+  {
+    "code": "42SC0122",
+    "name": "模型迁移(单个)",
+    "days": 10,
+    "category": 3
+  },
+  {
+    "code": "45SC0137",
+    "name": "简易前端界面",
+    "days": 2,
+    "category": 4
+  },
+  {
+    "code": "45SC0138",
+    "name": "RAG服务",
+    "days": 3,
+    "category": 4
+  },
+  {
+    "code": "45SC0139",
+    "name": "知识库/工作流demo构建",
+    "days": 2,
+    "category": 4
+  },
+  {
+    "code": "45SC0120",
+    "name": "集群环境搭建方案设计",
+    "days": 3,
+    "category": 5
+  },
+  {
+    "code": "45SC0121",
+    "name": "双机组网",
+    "days": 2,
+    "category": 5
+  },
+  {
+    "code": "45SC0122",
+    "name": "多机跨交换机组网",
+    "days": 5,
+    "category": 5
+  },
+  {
+    "code": "45SC0123",
+    "name": "集群验证",
+    "days": 5,
+    "category": 5
+  },
+  {
+    "code": "45SC0124",
+    "name": "根据部署模型进行升级服务",
+    "days": 20,
+    "category": 6
+  }
+]

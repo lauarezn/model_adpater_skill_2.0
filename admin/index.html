@@ -35,9 +35,13 @@
       </div>
       <a onclick="switchTab('backup')">💾 数据备份</a>
       <a onclick="switchTab('sources')">📡 数据来源</a>
+      <a onclick="switchTab('users')">👥 用户管理</a>
     </nav>
     <div style="padding: 20px; border-top: 1px solid var(--border); margin-top: 20px;">
-      <a href="/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem;">← 返回首页</a>
+      <div id="adminUserInfo" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;"></div>
+      <button onclick="openChangePwdModal()" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;width:100%;font-size:0.85rem;margin-bottom:8px;">🔑 修改密码</button>
+      <button id="adminLogoutBtn" onclick="Auth.logout()" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;width:100%;font-size:0.85rem;">退出登录</button>
+      <a href="/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; display:block; margin-top:10px;">← 返回首页</a>
     </div>
   </div>
 
@@ -108,6 +112,7 @@
               <tr>
                 <th class="checkbox-col"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
                 <th>模型名称</th>
+                <th>链接</th>
                 <th>开发者</th>
                 <th>分类</th>
                 <th>状态</th>
@@ -246,6 +251,7 @@
           <span id="crawlerStatusText">就绪</span>
         </div>
         <p style="margin-top:8px;font-size:0.8rem;color:var(--text-secondary)">⏰ 定时爬取已开启：每天 24:00（午夜 0 点）自动执行</p>
+        <p style="margin-top:4px;font-size:0.8rem;color:var(--text-secondary)">⏰ 定时抓取全球AI大模型已开启：每天 00:00（午夜 12 点）自动执行</p>
         <div style="display: flex; gap: 12px; margin-bottom: 16px;">
           <button class="btn btn-success" id="runCrawlerBtn" onclick="runCrawler()">▶️ 运行爬虫</button>
           <button class="btn btn-primary" onclick="refreshCrawlerStatus()">🔄 刷新状态</button>
@@ -484,8 +490,7 @@
       <div class="card">
         <h3>📐 全球AI模型参数</h3>
         <p style="color:var(--text-secondary);margin-bottom:16px">
-          数据源：优先从 DataLearner（datalearner.com/ai-models/pretrained-models）提取，全球AI大模型页面作为备选；
-          层数/KV头数/头维度等缺失字段可从 hf-mirror.com 模型配置自动补全。<strong id="modelParamCount">0</strong> 条
+          模型名称/清单来自 DataLearner 抓取的 global-models.json；层数/KV头数/头维度等架构字段可从 hf-mirror.com 模型配置自动补全。<strong id="modelParamCount">0</strong> 条
         </p>
         <div class="search-bar">
           <input type="text" id="modelParamSearch" placeholder="🔍 搜索模型名称、标识..." oninput="debouncedModelParamSearch()">
@@ -495,6 +500,8 @@
             <option value="no">无总参</option>
           </select>
           <button class="btn btn-warning btn-sm" onclick="fetchHfAllModelParams()">⬇️ 一键补全</button>
+          <button class="btn btn-info btn-sm" onclick="syncModelParamsFromGlobal(false)">🔄 从全球模型同步</button>
+          <button class="btn btn-info btn-sm" onclick="syncModelParamsFromGlobal(true)">🔁 同步+HF补全</button>
           <button class="btn btn-success btn-sm" onclick="addModelParam()">➕ 新增</button>
           <button class="btn btn-primary btn-sm" onclick="searchModelParams(1)">🔄 刷新</button>
         </div>
@@ -581,7 +588,89 @@
         <div id="sourceStats"></div>
       </div>
     </div>
+
+    <!-- 用户管理（审批升级） -->
+    <div class="section" id="section-users">
+      <div class="card">
+        <h3>👥 用户管理</h3>
+        <div style="display:flex;gap:12px;margin-bottom:16px;align-items:center;flex-wrap:wrap;">
+          <input id="newUserUsername" placeholder="用户名" style="padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+          <div style="position:relative">
+            <input id="newUserPassword" type="password" placeholder="初始密码" style="padding:8px 32px 8px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+            <button type="button" tabindex="-1" data-toggle-for="newUserPassword" title="显示/隐藏密码" style="position:absolute;top:50%;right:4px;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:14px;color:#888;padding:2px">👁</button>
+          </div>
+          <select id="newUserRole" style="padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+            <option value="viewer">访客（仅大模型）</option>
+            <option value="member">正式用户（含硬件）</option>
+            <option value="editor">编辑</option>
+            <option value="admin">管理员</option>
+          </select>
+          <button class="btn btn-primary" onclick="createUser()">➕ 新建用户</button>
+        </div>
+        <div class="hint" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">
+          注册用户默认「访客」角色仅可查看大模型；将其升级为「正式用户」即完成审批，即可查看硬件、报价等数据。
+        </div>
+        <table class="table" style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="text-align:left;border-bottom:1px solid var(--border)">
+              <th style="padding:8px">用户名</th>
+              <th style="padding:8px">邮箱</th>
+              <th style="padding:8px">角色</th>
+              <th style="padding:8px">状态</th>
+              <th style="padding:8px">注册时间</th>
+              <th style="padding:8px">最近登录</th>
+              <th style="padding:8px">操作</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <tr><td colspan="7" style="padding:16px;text-align:center;color:var(--text-secondary)">加载中...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+
+  <!-- 登录保护层：未登录或非管理员时覆盖后台 -->
+  <div id="authGate" style="position:fixed;inset:0;background:#0F172A;z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;text-align:center;">
+    <div style="background:#fff;color:#111;border-radius:12px;padding:32px;width:380px;max-width:92vw;box-shadow:0 10px 40px rgba(0,0,0,.4);font-family:-apple-system,Segoe UI,Roboto,sans-serif;">
+      <h2 style="margin:0 0 6px;font-size:20px">Admin 管理后台</h2>
+      <div style="color:#666;font-size:13px;margin-bottom:20px">请登录管理员账号后访问</div>
+      <input id="gateUser" placeholder="用户名" style="width:100%;box-sizing:border-box;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:6px;font-size:14px">
+      <div style="position:relative;margin-bottom:12px">
+        <input id="gatePass" type="password" placeholder="密码" style="width:100%;box-sizing:border-box;padding:10px 38px 10px 10px;border:1px solid #ddd;border-radius:6px;font-size:14px">
+        <button type="button" tabindex="-1" data-toggle-for="gatePass" title="显示/隐藏密码" style="position:absolute;top:50%;right:6px;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:16px;color:#888;padding:4px">👁</button>
+      </div>
+      <div id="gateMsg" style="color:#dc2626;font-size:13px;margin-bottom:10px;min-height:18px"></div>
+      <button id="gateSubmit" style="width:100%;padding:11px;background:#2563EB;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer">登 录</button>
+      <a href="/" style="display:block;margin-top:14px;color:#2563EB;font-size:13px;text-decoration:none">← 返回首页</a>
+    </div>
+  </div>
+
+  <!-- 修改密码弹窗 -->
+  <div class="modal-overlay" id="changePwdModal" style="display:none;">
+    <div class="modal" style="max-width:400px;">
+      <h2>🔑 修改密码</h2>
+      <div style="margin:16px 0">
+        <div style="position:relative;margin-bottom:10px">
+          <input id="cpOld" type="password" placeholder="原密码" style="width:100%;box-sizing:border-box;padding:10px 38px 10px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+          <button type="button" tabindex="-1" data-toggle-for="cpOld" title="显示/隐藏密码" style="position:absolute;top:50%;right:6px;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:16px;color:#888;padding:4px">👁</button>
+        </div>
+        <div style="position:relative;margin-bottom:10px">
+          <input id="cpNew" type="password" placeholder="新密码（至少6位）" style="width:100%;box-sizing:border-box;padding:10px 38px 10px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+          <button type="button" tabindex="-1" data-toggle-for="cpNew" title="显示/隐藏密码" style="position:absolute;top:50%;right:6px;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:16px;color:#888;padding:4px">👁</button>
+        </div>
+        <div style="position:relative">
+          <input id="cpNew2" type="password" placeholder="确认新密码" style="width:100%;box-sizing:border-box;padding:10px 38px 10px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+          <button type="button" tabindex="-1" data-toggle-for="cpNew2" title="显示/隐藏密码" style="position:absolute;top:50%;right:6px;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:16px;color:#888;padding:4px">👁</button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="submitChangePwd()">💾 保存</button>
+        <button class="btn" style="background:var(--bg-hover);color:var(--text)" onclick="closeChangePwdModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- 编辑模型弹窗 -->
   <div class="modal-overlay" id="editModal">
@@ -595,6 +684,167 @@
     </div>
   </div>
 
-  <script src="/admin/js/admin.js?v=5"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+  // ============ Admin 登录保护 + 用户管理 ============
+  (function () {
+    function enterAdmin(user) {
+      var gate = document.getElementById('authGate');
+      if (gate) gate.style.display = 'none';
+      var info = document.getElementById('adminUserInfo');
+      if (info) info.textContent = '👤 ' + user.username + ' · ' + (Auth.roleLabel(user.role) || user.role);
+    }
+
+    function showGate(msg) {
+      var gate = document.getElementById('authGate');
+      if (gate) gate.style.display = 'flex';
+      var m = document.getElementById('gateMsg');
+      if (m && msg) m.textContent = msg;
+    }
+
+    function doGateLogin() {
+      var u = document.getElementById('gateUser').value.trim();
+      var p = document.getElementById('gatePass').value;
+      var m = document.getElementById('gateMsg');
+      var btn = document.getElementById('gateSubmit');
+      if (!u || !p) { m.textContent = '请输入用户名和密码'; return; }
+      btn.disabled = true; btn.textContent = '登录中...';
+      Auth.login(u, p).then(function (user) {
+        if (user.role !== 'admin') {
+          Auth.logout();
+          // logout 会跳转 /admin，此处直接提示后由前端处理
+          m.textContent = '仅管理员可访问后台';
+          btn.disabled = false; btn.textContent = '登 录';
+          return;
+        }
+        enterAdmin(user);
+        initUserManagement();
+        if (window.switchTab) switchTab('dashboard');
+      }).catch(function (err) {
+        m.textContent = err.message;
+        btn.disabled = false; btn.textContent = '登 录';
+      });
+    }
+
+    function initUserManagement() {
+      var tbody = document.getElementById('userTableBody');
+      if (!tbody) return;
+      Auth.getToken && fetch('/admin/api/admin/users', { headers: { 'Authorization': 'Bearer ' + Auth.getToken() } })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var rows = (data.users || []).map(function (u) {
+            return '<tr style="border-bottom:1px solid var(--border)">' +
+              '<td style="padding:8px">' + u.username + '</td>' +
+              '<td style="padding:8px">' + (u.email || '-') + '</td>' +
+              '<td style="padding:8px">' + (Auth.roleLabel(u.role) || u.role) + '</td>' +
+              '<td style="padding:8px">' + (u.status === 'active' ? '正常' : '禁用') + '</td>' +
+              '<td style="padding:8px">' + (u.created_at || '-') + '</td>' +
+              '<td style="padding:8px">' + (u.last_login || '-') + '</td>' +
+              '<td style="padding:8px">' +
+                '<button class="btn" style="padding:4px 8px;margin-right:4px;font-size:12px" onclick="setUserRole(\'' + u.id + '\',\'member\')">升正式</button>' +
+                '<button class="btn" style="padding:4px 8px;margin-right:4px;font-size:12px" onclick="setUserRole(\'' + u.id + '\',\'admin\')">升管理员</button>' +
+                '<button class="btn" style="padding:4px 8px;margin-right:4px;font-size:12px" onclick="toggleUserStatus(\'' + u.id + '\')">禁用/启用</button>' +
+                '<button class="btn" style="padding:4px 8px;font-size:12px;color:#dc2626" onclick="deleteUser(\'' + u.id + '\')">删除</button>' +
+              '</td></tr>';
+          }).join('');
+          tbody.innerHTML = rows || '<tr><td colspan="7" style="padding:16px;text-align:center;color:var(--text-secondary)">暂无用户</td></tr>';
+        })
+        .catch(function () { tbody.innerHTML = '<tr><td colspan="7" style="padding:16px;text-align:center;color:#dc2626">用户列表加载失败</td></tr>'; });
+    }
+
+    // 暴露给 HTML 内联 onclick
+    window.setUserRole = function (id, role) {
+      fetch('/admin/api/admin/users/' + id, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.getToken() },
+        body: JSON.stringify({ role: role })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.success) { showToast && showToast('已更新角色', 'success'); initUserManagement(); }
+        else { showToast && showToast(d.error || '操作失败', 'error'); }
+      });
+    };
+    window.toggleUserStatus = function (id) {
+      var row = document.getElementById('userTableBody').querySelector('tr');
+      fetch('/admin/api/admin/users/' + id, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.getToken() },
+        body: JSON.stringify({ status: '__toggle' })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.success) { showToast && showToast('已更新状态', 'success'); initUserManagement(); }
+        else { showToast && showToast(d.error || '操作失败', 'error'); }
+      });
+    };
+    window.deleteUser = function (id) {
+      if (!confirm('确定删除该用户？')) return;
+      fetch('/admin/api/admin/users/' + id, {
+        method: 'DELETE', headers: { 'Authorization': 'Bearer ' + Auth.getToken() }
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.success) { showToast && showToast('已删除', 'success'); initUserManagement(); }
+        else { showToast && showToast(d.error || '操作失败', 'error'); }
+      });
+    };
+    window.createUser = function () {
+      var u = document.getElementById('newUserUsername').value.trim();
+      var p = document.getElementById('newUserPassword').value;
+      var r = document.getElementById('newUserRole').value;
+      fetch('/admin/api/admin/users', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.getToken() },
+        body: JSON.stringify({ username: u, password: p, role: r })
+      }).then(function (res) { return res.json(); }).then(function (d) {
+        if (d.success) { showToast && showToast('用户创建成功', 'success'); document.getElementById('newUserUsername').value=''; document.getElementById('newUserPassword').value=''; initUserManagement(); }
+        else { showToast && showToast(d.error || '创建失败', 'error'); }
+      });
+    };
+
+    // ===== 修改当前登录用户密码 =====
+    window.openChangePwdModal = function () {
+      document.getElementById('changePwdModal').style.display = 'flex';
+      document.getElementById('cpOld').value = '';
+      document.getElementById('cpNew').value = '';
+      document.getElementById('cpNew2').value = '';
+      document.getElementById('cpOld').focus();
+    };
+    window.closeChangePwdModal = function () {
+      document.getElementById('changePwdModal').style.display = 'none';
+    };
+    window.submitChangePwd = function () {
+      var oldPw = document.getElementById('cpOld').value;
+      var newPw = document.getElementById('cpNew').value;
+      var newPw2 = document.getElementById('cpNew2').value;
+      if (!oldPw || !newPw) { showToast && showToast('请填写原密码和新密码', 'error'); return; }
+      if (newPw.length < 6) { showToast && showToast('新密码长度不能少于 6 位', 'error'); return; }
+      if (newPw !== newPw2) { showToast && showToast('两次输入的新密码不一致', 'error'); return; }
+      fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.getToken() },
+        body: JSON.stringify({ old_password: oldPw, new_password: newPw })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.success) {
+          closeChangePwdModal();
+          showToast && showToast('密码修改成功', 'success');
+        } else {
+          showToast && showToast(d.error || '修改失败', 'error');
+        }
+      }).catch(function () { showToast && showToast('修改失败', 'error'); });
+    };
+
+    // 初始化：恢复会话 -> 未登录或非 admin 则显示登录层
+    document.getElementById('gateSubmit').onclick = doGateLogin;
+    document.getElementById('gatePass').addEventListener('keydown', function (e) { if (e.key === 'Enter') doGateLogin(); });
+    // 批量绑定「显示/隐藏密码」切换按钮
+    document.querySelectorAll('button[data-toggle-for]').forEach(function (btn) {
+      var input = document.getElementById(btn.getAttribute('data-toggle-for'));
+      if (!input) return;
+      btn.addEventListener('click', function () {
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.textContent = show ? '🙈' : '👁';
+      });
+    });
+    Auth.init(function (user) {
+      if (user && user.role === 'admin') { enterAdmin(user); }
+      else { showGate(); }
+    });
+  })();
+  </script>
+  <script src="/admin/js/admin.js?v=7"></script>
 </body>
 </html>

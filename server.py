@@ -9,6 +9,10 @@ import os
 import sys
 import re
 import json
+import time
+import hmac
+import base64
+import hashlib
 import shutil
 import subprocess
 import threading
@@ -30,7 +34,7 @@ BACKUP_FILES = [
     'train-models.json', 'hardware.json', 'nv-hardware.json', 'crawl-status.json',
     'acl-pytorch-models.json', 'pytorch-models.json', 'mindie-models.json',
     'global-models.json', 'benchmarks.json', 'model-params.json',
-    'gpu_lib.json', 'performance.json',
+    'gpu_lib.json', 'performance.json', 'users.json',
 ]
 
 # 注意：不要用 static_url_path='' 把整个项目根目录挂载为静态目录，
@@ -61,10 +65,351 @@ def _admin_api_auth():
         return None
     if not request.path.startswith('/admin/api/'):
         return None
+    # 只读接口豁免：普通用户功能页（模型性能查询、AI使能服务报价器）里
+    # 以 POST 承载的只读计算接口，无需管理员令牌
+    READONLY_POST = {
+        '/admin/api/performance/llm-advice',              # AI 选型建议（只读解读）
+        '/admin/api/performance/recommend-by-requirement', # 按需求智能选型（只读推荐）
+        '/admin/api/quote/generate',                      # 报价器生成报价（只读计算）
+    }
+    if request.path.rstrip('/') in READONLY_POST:
+        return None
     supplied = request.headers.get('X-Admin-Token', '')
     if supplied != ADMIN_TOKEN:
         return jsonify({'error': '未授权：管理员令牌无效或缺失'}), 401
     return None
+
+
+# ============ 用户认证与权限体系 ============
+# 数据模型：data/users.json 存用户（密码仅存 PBKDF2 哈希，绝不存明文）。
+# 角色为累积式等级：viewer(1) < member(2) < editor(3) < admin(4)，
+# 更高角色拥有更低角色的全部权限。注册默认 viewer（仅可见大模型），
+# 由 admin 后台升级到 member 后可见硬件/报价/性能等敏感数据。
+from werkzeug.security import generate_password_hash, check_password_hash
+
+USERS_FILE = DATA_DIR / 'users.json'
+AUTH_SECRET = os.environ.get('AUTH_SECRET', '').strip() or 'jiuwenswarm-default-auth-secret'
+AUTH_TOKEN_TTL = 12 * 3600  # token 有效期 12 小时
+
+# 角色等级映射（数值越大权限越高）
+ROLE_LEVEL = {'viewer': 1, 'member': 2, 'editor': 3, 'admin': 4}
+# 认证接口自身的路径，不参与权限拦截
+AUTH_PUBLIC_PATHS = (
+    '/api/auth/login', '/api/auth/register', '/api/auth/me', '/api/auth/logout',
+    '/api/auth/change-password',
+)
+
+# 敏感数据接口前缀：仅 member(2) 及以上角色可访问（viewer 只能看大模型）。
+# 覆盖硬件、报价、性能、评测基准、模型参数等内部价值数据。
+SENSITIVE_API_PREFIXES = (
+    '/admin/api/homepage/hardware', '/admin/api/homepage/nv-hardware',
+    '/admin/api/hardware-params', '/admin/api/quote/', '/admin/api/benchmarks',
+    '/admin/api/performance/', '/admin/api/model-params', '/api/calc/hw',
+    '/admin/api/homepage/nv',
+)
+# 数据维护写操作：所有 /admin/api/* 的 POST/PUT/DELETE/PATCH 默认需 editor(3)+。
+# 只读计算接口（READONLY_POST_PATHS）除外；admin 专属接口由 ADMIN_ONLY 优先判定。
+EDITOR_WRITE_PREFIXES = ('/admin/api/',)
+# 需 admin(4) 才能执行的接口前缀（爬虫/备份恢复/用户管理）
+ADMIN_ONLY_PREFIXES = (
+    '/admin/api/crawler/', '/admin/api/data/backup', '/admin/api/data/restore',
+    '/admin/api/data/backups', '/admin/api/admin/users',
+)
+
+# 以 POST 承载的只读计算接口（无数据写副作用），不要求编辑角色，member 即可用
+READONLY_POST_PATHS = {
+    '/admin/api/quote/generate',                # 报价器生成报价（只读计算）
+    '/admin/api/quote/parse-requirement',       # 需求解析（只读计算）
+    '/admin/api/performance/llm-advice',        # AI 选型建议（只读解读）
+    '/admin/api/performance/recommend-by-requirement',  # 按需求智能选型（只读推荐）
+    '/api/presales-extract', '/api/presales-recommend',
+}
+
+
+def load_users():
+    data = load_json(USERS_FILE) or {}
+    return data.get('users', [])
+
+
+def save_users(users):
+    save_json(USERS_FILE, {'users': users})
+
+
+def find_user(username=None, uid=None):
+    users = load_users()
+    if username is not None:
+        return next((u for u in users if u.get('username') == username), None)
+    return next((u for u in users if u.get('id') == uid), None)
+
+
+def _b64e(raw):
+    return base64.urlsafe_b64encode(raw).rstrip(b'=').decode()
+
+
+def _b64d(s):
+    return base64.urlsafe_b64decode(s + '=' * (-len(s) % 4))
+
+
+def make_token(user):
+    """签发 HS256 风格 JWT（自签，不依赖第三方库）。"""
+    header = _b64e(json.dumps({'alg': 'HS256', 'typ': 'JWT'}).encode())
+    payload = _b64e(json.dumps({
+        'uid': user['id'], 'username': user['username'], 'role': user['role'],
+        'exp': int(time.time()) + AUTH_TOKEN_TTL,
+    }).encode())
+    signing = f'{header}.{payload}'.encode()
+    sig = hmac.new(AUTH_SECRET.encode(), signing, hashlib.sha256).digest()
+    return f'{header}.{payload}.{_b64e(sig)}'
+
+
+def verify_token(token):
+    """校验并解析 token，成功返回用户 dict，失败返回 None。"""
+    try:
+        parts = token.split('.')
+        if len(parts) != 3:
+            return None
+        header, payload, sig = parts
+        expected = hmac.new(AUTH_SECRET.encode(), f'{header}.{payload}'.encode(), hashlib.sha256).digest()
+        if not hmac.compare_digest(_b64d(sig), expected):
+            return None
+        data = json.loads(_b64d(payload))
+        if data.get('exp', 0) < time.time():
+            return None
+        user = find_user(uid=data.get('uid'))
+        if not user or user.get('status') != 'active':
+            return None
+        # 以库中最新角色为准，避免 token 里角色过期后仍沿用旧权限
+        data['role'] = user['role']
+        return data
+    except Exception:
+        return None
+
+
+def current_user():
+    """从请求头 Authorization: Bearer <token> 解析当前用户，未登录返回 None。"""
+    auth = request.headers.get('Authorization', '')
+    if not auth.startswith('Bearer '):
+        return None
+    return verify_token(auth[len('Bearer '):].strip())
+
+
+def role_level(role):
+    return ROLE_LEVEL.get(role, 0)
+
+
+@app.before_request
+def _auth_permission_gate():
+    """统一权限拦截：所有 /api/auth/* 之外的接口按需校验登录角色。
+
+    - /api/auth/* 认证接口本身始终开放（除 me/change-password 需登录）；
+    - 敏感数据接口要求 member(2)+；
+    - 数据维护写操作要求 editor(3)+；
+    - 爬虫/备份/用户管理要求 admin(4)+。
+    未登录访问受保护接口返回 401，角色不足返回 403。
+    """
+    path = request.path.rstrip('/')
+    # 认证接口自身放行（其中需登录的接口在各自函数内校验）
+    if path.startswith('/api/auth/'):
+        return None
+
+    # 判定所需最低角色
+    need = None
+    if any(path.startswith(p) for p in SENSITIVE_API_PREFIXES):
+        need = 'member'
+    if any(path.startswith(p) for p in ADMIN_ONLY_PREFIXES):
+        need = 'admin'
+    if request.method in ('POST', 'PUT', 'DELETE', 'PATCH'):
+        # 只读计算接口（以 POST 承载的计算/推荐，无数据写副作用）不视为编辑写操作
+        if path.rstrip('/') not in READONLY_POST_PATHS:
+            if any(path.startswith(p) for p in EDITOR_WRITE_PREFIXES):
+                need = max(need or 'member', 'editor', key=role_level) or 'editor'
+    if need is None:
+        return None
+
+    user = current_user()
+    if user is None:
+        return jsonify({'error': '未登录或登录已过期，请先登录'}), 401
+    if role_level(user.get('role')) < role_level(need):
+        return jsonify({'error': f'权限不足：需要 {need} 及以上角色'}), 403
+    return None
+
+
+# ============ 用户认证 API ============
+
+@app.route('/api/auth/register', methods=['POST'])
+def api_auth_register():
+    """自助注册。默认角色 viewer（仅可见大模型），需 admin 升级后才可见硬件等敏感数据。"""
+    data = request.json or {}
+    username = (data.get('username') or '').strip()
+    password = data.get('password') or ''
+    email = (data.get('email') or '').strip()
+
+    if not username or not password:
+        return jsonify({'error': '用户名和密码不能为空'}), 400
+    if not re.fullmatch(r'[A-Za-z0-9_\-]{3,32}', username):
+        return jsonify({'error': '用户名需为 3-32 位字母、数字、下划线或中划线'}), 400
+    if len(password) < 6:
+        return jsonify({'error': '密码长度不能少于 6 位'}), 400
+    if find_user(username=username):
+        return jsonify({'error': '用户名已存在'}), 409
+
+    users = load_users()
+    user = {
+        'id': f"u_{int(time.time())}_{len(users) + 1}",
+        'username': username,
+        'password_hash': generate_password_hash(password),
+        'email': email,
+        'role': 'viewer',
+        'status': 'active',
+        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'last_login': None,
+    }
+    users.append(user)
+    save_users(users)
+    return jsonify({'success': True, 'message': '注册成功，默认权限为查看大模型；如需查看硬件等数据请联系管理员升级权限',
+                    'user': {'id': user['id'], 'username': username, 'role': user['role']}}), 201
+
+
+@app.route('/api/auth/login', methods=['POST'])
+def api_auth_login():
+    """登录，返回 token 与用户信息。"""
+    data = request.json or {}
+    username = (data.get('username') or '').strip()
+    password = data.get('password') or ''
+    user = find_user(username=username)
+    if not user or not check_password_hash(user.get('password_hash', ''), password):
+        return jsonify({'error': '用户名或密码错误'}), 401
+    if user.get('status') != 'active':
+        return jsonify({'error': '账号已被禁用，请联系管理员'}), 403
+
+    users = load_users()
+    for u in users:
+        if u.get('id') == user['id']:
+            u['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    save_users(users)
+
+    token = make_token(user)
+    return jsonify({'success': True, 'token': token, 'user': {
+        'id': user['id'], 'username': user['username'], 'role': user['role'],
+    }})
+
+
+@app.route('/api/auth/me', methods=['GET'])
+def api_auth_me():
+    """获取当前登录用户信息（用于前端恢复会话）。"""
+    user = current_user()
+    if not user:
+        return jsonify({'error': '未登录'}), 401
+    return jsonify({'user': {
+        'id': user['uid'], 'username': user['username'], 'role': user['role'],
+    }})
+
+
+@app.route('/api/auth/logout', methods=['POST'])
+def api_auth_logout():
+    """登出。无状态 JWT 无法服务端强制失效，此处由前端清除本地 token 即可。"""
+    return jsonify({'success': True})
+
+
+@app.route('/api/auth/change-password', methods=['POST'])
+def api_auth_change_password():
+    """修改密码（需登录）。"""
+    user = current_user()
+    if not user:
+        return jsonify({'error': '未登录'}), 401
+    data = request.json or {}
+    old_pw = data.get('old_password') or ''
+    new_pw = data.get('new_password') or ''
+    if len(new_pw) < 6:
+        return jsonify({'error': '新密码长度不能少于 6 位'}), 400
+    users = load_users()
+    for u in users:
+        if u.get('id') == user['uid']:
+            if not check_password_hash(u.get('password_hash', ''), old_pw):
+                return jsonify({'error': '原密码错误'}), 400
+            u['password_hash'] = generate_password_hash(new_pw)
+            save_users(users)
+            return jsonify({'success': True, 'message': '密码修改成功'})
+    return jsonify({'error': '用户不存在'}), 404
+
+
+# ============ 用户管理 API（admin）============
+
+@app.route('/admin/api/admin/users', methods=['GET'])
+def api_admin_users_list():
+    """用户列表（admin）。"""
+    users = load_users()
+    return jsonify({'users': [{
+        'id': u['id'], 'username': u['username'], 'email': u.get('email', ''),
+        'role': u['role'], 'status': u.get('status', 'active'),
+        'created_at': u.get('created_at', ''), 'last_login': u.get('last_login', ''),
+    } for u in users]})
+
+
+@app.route('/admin/api/admin/users', methods=['POST'])
+def api_admin_user_create():
+    """创建用户（admin），可指定角色。"""
+    data = request.json or {}
+    username = (data.get('username') or '').strip()
+    password = data.get('password') or ''
+    role = data.get('role') or 'viewer'
+    if not username or not password:
+        return jsonify({'error': '用户名和密码不能为空'}), 400
+    if role not in ROLE_LEVEL:
+        return jsonify({'error': '无效的角色'}), 400
+    if find_user(username=username):
+        return jsonify({'error': '用户名已存在'}), 409
+    users = load_users()
+    user = {
+        'id': f"u_{int(time.time())}_{len(users) + 1}",
+        'username': username,
+        'password_hash': generate_password_hash(password),
+        'email': (data.get('email') or '').strip(),
+        'role': role,
+        'status': 'active',
+        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'last_login': None,
+    }
+    users.append(user)
+    save_users(users)
+    return jsonify({'success': True, 'user': user}), 201
+
+
+@app.route('/admin/api/admin/users/<user_id>', methods=['PUT'])
+def api_admin_user_update(user_id):
+    """更新用户角色/状态/重置密码（admin）。"""
+    data = request.json or {}
+    users = load_users()
+    for u in users:
+        if u.get('id') == user_id:
+            if 'role' in data:
+                if data['role'] not in ROLE_LEVEL:
+                    return jsonify({'error': '无效的角色'}), 400
+                u['role'] = data['role']
+            if 'status' in data:
+                if data['status'] == '__toggle':
+                    u['status'] = 'disabled' if u.get('status') == 'active' else 'active'
+                else:
+                    u['status'] = 'active' if data['status'] == 'active' else 'disabled'
+            if data.get('password'):
+                if len(data['password']) < 6:
+                    return jsonify({'error': '密码长度不能少于 6 位'}), 400
+                u['password_hash'] = generate_password_hash(data['password'])
+            save_users(users)
+            return jsonify({'success': True, 'user': u})
+    return jsonify({'error': '用户不存在'}), 404
+
+
+@app.route('/admin/api/admin/users/<user_id>', methods=['DELETE'])
+def api_admin_user_delete(user_id):
+    """删除用户（admin）。"""
+    users = load_users()
+    new_users = [u for u in users if u.get('id') != user_id]
+    if len(new_users) == len(users):
+        return jsonify({'error': '用户不存在'}), 404
+    save_users(new_users)
+    return jsonify({'success': True})
+
 
 crawler_status = {
     'running': False,
@@ -1589,6 +1934,141 @@ def api_model_params_delete(mp_code):
     return jsonify({'success': True})
 
 
+# ============ 统一计算 API（复用 Skill 计算引擎，单一口径） ============
+# 计算逻辑统一由 skills/ 下的 Python 引擎承担，避免与前端 JS / 编排 Skill 多处重复实现漂移。
+SKILLS_DIR = BASE_DIR / 'skills'
+
+
+def _load_calc_engine(rel_module):
+    """动态加载 Skill 计算引擎模块（路径含目录名，用 importlib 避免目录包约束）。"""
+    import importlib.util
+    path = SKILLS_DIR / rel_module
+    spec = importlib.util.spec_from_file_location('_calc_engine', path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+@app.route('/api/calc/token')
+def api_calc_token():
+    """LLM Token 计算：复用 llm-token-calculator 引擎，口径与页面 recalc() 一致。
+
+    参数：gpu, model, gpu_count, quant, kv_prec, prompt_len, gen_len,
+          efficiency, tp_coef, seq
+    """
+    gpu = request.args.get('gpu', '')
+    model = request.args.get('model', '')
+    if not gpu or not model:
+        return jsonify({'error': '缺少 gpu 或 model 参数'}), 400
+    try:
+        eng = _load_calc_engine('llm-token-calculator/token_calc.py')
+        gpu_lib = eng.load_gpu_lib(str(BASE_DIR))
+        model_lib = eng.load_model_lib(str(BASE_DIR))
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': '计算引擎加载失败: %s' % e}), 500
+
+    def f(name, default=None):
+        v = request.args.get(name)
+        if v is None or v == '':
+            return default
+        try:
+            return float(v)
+        except ValueError:
+            return default
+
+    if gpu not in gpu_lib:
+        return jsonify({'error': 'GPU 型号不存在: %s' % gpu}), 404
+    m = model_lib.get(model)
+    if m is None:
+        low = model.lower()
+        m = next((v for k, v in model_lib.items()
+                  if k.lower() == low or v['modelCode'].lower() == low), None)
+        if m is None:
+            return jsonify({'error': '模型不存在: %s' % model}), 404
+
+    params = {
+        'gpu_name': gpu, 'model_name': m['name'],
+        'gpu_count': int(f('gpu_count', 8) or 8),
+        'bandwidth': gpu_lib[gpu]['bw'], 'fp16': gpu_lib[gpu]['fp16'],
+        'vram': gpu_lib[gpu]['vram'],
+        'quant_prec': request.args.get('quant', 'INT8'),
+        'kv_prec': request.args.get('kv_prec', 'FP16'),
+        'prompt_len': f('prompt_len', 512), 'gen_len': f('gen_len', 128000),
+        'efficiency': f('efficiency', 0.65), 'tp_coef': f('tp_coef', 0.92),
+        'seq': f('seq', 8192),
+        'model': m,
+    }
+    try:
+        r = eng.calc(params)
+        # 不同量化精度对比（与页面「不同量化精度对比」表口径一致）
+        active = m['active']
+        vram = gpu_lib[gpu]['vram']
+        bw = gpu_lib[gpu]['bw']
+        eff = f('efficiency', 0.65)
+        quant_compare = []
+        for p in ('FP32', 'FP16', 'INT8', 'INT4', 'INT2'):
+            b = eng.QUANT_BYTES[p]
+            w = active * b
+            t = bw / w if w > 0 else 0
+            quant_compare.append({
+                'precision': p, 'bytes': b, 'weight_gb': w,
+                'theo_decode_toks': t, 'actual_decode_toks': t * eff,
+                'enough_single_gpu': w <= vram,
+            })
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': '计算失败: %s' % e}), 400
+    return jsonify({'gpu': gpu_lib[gpu], 'model': m, 'result': r, 'quant_compare': quant_compare})
+
+
+@app.route('/api/calc/hw')
+def api_calc_hw():
+    """GPU 硬件对比/选型：复用 gpu-hardware-compare 引擎，口径与 hw_estimate() 一致。
+
+    参数：model, precision, in_len, out_len, qps, mode(compare/recommend/all), gpus(逗号分隔)
+    """
+    model = request.args.get('model', '')
+    if not model:
+        return jsonify({'error': '缺少 model 参数'}), 400
+    try:
+        eng = _load_calc_engine('gpu-hardware-compare/hw_compare.py')
+        model_lib = eng.load_model_lib(str(BASE_DIR))
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': '计算引擎加载失败: %s' % e}), 500
+
+    m = eng.resolve_model(model_lib, model)
+    if m is None:
+        return jsonify({'error': '模型不存在: %s' % model}), 404
+
+    def f(name, default):
+        v = request.args.get(name)
+        if v is None or v == '':
+            return default
+        try:
+            return float(v)
+        except ValueError:
+            return default
+
+    precision = request.args.get('precision', 'fp16').lower()
+    in_len = f('in_len', 512)
+    out_len = f('out_len', 512)
+    qps = f('qps', 1.0)
+    mode = request.args.get('mode', 'all')
+    gpus = None
+    if request.args.get('gpus'):
+        gpus = [g.strip() for g in request.args.get('gpus').split(',') if g.strip()]
+
+    report = {'model': {k: m[k] for k in ('name', 'modelCode', 'total', 'active', 'layers',
+                                          'kvHeads', 'headDim', 'ctx', 'arch', 'moe')}}
+    try:
+        if mode in ('compare', 'all'):
+            report['compare'] = eng.gpu_compare(m, precision, in_len, out_len, gpus, str(BASE_DIR))
+        if mode in ('recommend', 'all'):
+            report['recommend'] = eng.recommend_cards(m, precision, in_len, out_len, qps, str(BASE_DIR))
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': '计算失败: %s' % e}), 400
+    return jsonify(report)
+
+
 # ---------- HF（hf-mirror）架构字段补全 ----------
 HF_MIRROR_BASE = 'https://hf-mirror.com'
 
@@ -1796,6 +2276,156 @@ def api_model_params_fetch_hf():
         except Exception as e:
             results.append({'code': code, 'success': False, 'error': str(e)})
     return jsonify({'results': results, 'success_count': sum(1 for r in results if r['success'])})
+
+
+# ============ 从 global-models.json 全量对齐 model-params.json ============
+# 数据来源调整：模型名称/清单来自 DataLearner 抓取的 global-models.json，
+# 架构字段（层数/KV头数/头维度/上下文/是否MoE）从 HF config.json/tokenizer_config.json 补全。
+# 策略：全量对齐 —— 以 global-models.json 为准重建 model-params.json，
+#       已存在的条目保留其架构字段（优先已有值，其次 HF 补全）。
+GLOBAL_MODELS_FILE = DATA_DIR / 'global-models.json'
+
+
+def _search_hf_repo(query):
+    """用模型名在 hf-mirror 搜索 API 匹配仓库，返回最可能的 repo id（org/name）或 None。"""
+    try:
+        raw = _http_get(f'{HF_MIRROR_BASE}/api/models?search={urllib.parse.quote(query)}&limit=5', timeout=20)
+        arr = json.loads(raw)
+    except Exception:
+        return None
+    if not isinstance(arr, list) or not arr:
+        return None
+    for m in arr:
+        rid = (m.get('id') or '').strip()
+        # 优先与查询名精确匹配（忽略大小写与 -/_ 差异）
+        if rid and rid.split('/')[-1].lower().replace('_', '-') == query.lower().replace('_', '-'):
+            return rid
+    return (arr[0].get('id') or '').strip() or None
+
+
+def _resolve_hf_repo(global_model, existing):
+    """解析一个模型的 HF repo id。优先级：已有 hfRepo → DataLearner 详情页提取 → hf-mirror 搜索。"""
+    if existing and existing.get('hfRepo'):
+        return existing['hfRepo']
+    code = global_model.get('model_code')
+    # 1) DataLearner 详情页提取 HF 链接
+    if code:
+        try:
+            detail_html = _http_get(f'{DATALEARNER_DETAIL_BASE}/{code}', timeout=20)
+            repo = _extract_hf_link(detail_html)
+            if repo:
+                return repo
+        except Exception:
+            pass
+    # 2) hf-mirror 按模型名搜索兜底
+    abbr = (global_model.get('model_abbr_name') or '').strip()
+    if abbr:
+        repo = _search_hf_repo(abbr)
+        if repo:
+            return repo
+    return None
+
+
+def _sync_model_params_from_global(fetch_hf=False, hf_errors=None):
+    """按 global-models.json 全量对齐 model-params.json。
+
+    返回 (items, summary)。items 为重建后的完整列表；summary 记录新增/更新/删除统计。
+    fetch_hf=True 时对缺失架构字段的模型从 HF config.json 补全（较慢）。
+    """
+    gm = load_json(GLOBAL_MODELS_FILE) or {}
+    gm_models = gm.get('models', []) or []
+    old_items = load_model_params() or []
+    old_by_code = {str(m.get('modelCode')): m for m in old_items if m.get('modelCode')}
+
+    new_items = []
+    added, updated, kept = 0, 0, 0
+    for g in gm_models:
+        code = (g.get('model_code') or '').strip()
+        if not code:
+            continue
+        old = old_by_code.get(code)
+        # 名称/参数量来自 global-models；架构字段优先保留已有，缺失时后续补
+        item = {
+            'modelCode': code,
+            'name': (g.get('model_abbr_name') or code).strip(),
+            'totalParams': g.get('totalParamsB'),
+            'activeParams': g.get('activeParamsB'),
+        }
+        if old:
+            # 保留已有架构字段与 hfRepo（避免重复抓取 / 丢失人工整理结果）
+            for k in ('layers', 'attentionHeads', 'kvHeads', 'headDim', 'context',
+                      'architecture', 'isMoE', 'hfRepo'):
+                if old.get(k) is not None:
+                    item[k] = old[k]
+        # 缺架构字段时，若开启 fetch_hf 则从 HF 补全
+        if fetch_hf and (item.get('layers') is None or item.get('context') is None):
+            repo = item.get('hfRepo') or _resolve_hf_repo(g, old)
+            if repo:
+                try:
+                    fields = _fetch_hf_config(repo)
+                    for k, v in fields.items():
+                        if k in ('layers', 'attentionHeads', 'kvHeads', 'headDim',
+                                 'context', 'architecture', 'isMoE'):
+                            if item.get(k) is None:
+                                item[k] = v
+                    item['hfRepo'] = repo
+                except Exception as e:  # noqa: BLE001 - 单模型补全失败不阻断整体
+                    if hf_errors is not None:
+                        hf_errors.append({'code': code, 'error': str(e)})
+        # 统计
+        if old is None:
+            added += 1
+        elif item != old:
+            updated += 1
+        else:
+            kept += 1
+        new_items.append(item)
+
+    removed = [c for c in old_by_code if c not in {m['modelCode'] for m in new_items}]
+    summary = {
+        'added': added,
+        'updated': updated,
+        'kept': kept,
+        'removed': removed,
+        'total_new': len(new_items),
+        'total_old': len(old_items),
+    }
+    return new_items, summary
+
+
+@app.route('/admin/api/model-params/sync', methods=['POST'])
+def api_model_params_sync():
+    """从 global-models.json 全量对齐 model-params.json。
+
+    请求体可选 {"fetch_hf": true}：对齐后对缺失架构字段的模型从 HF config.json 补全。
+    写前自动备份到 data/backups/。
+    """
+    data = request.json or {}
+    fetch_hf = bool(data.get('fetch_hf'))
+    hf_errors = []
+
+    try:
+        items, summary = _sync_model_params_from_global(fetch_hf=fetch_hf, hf_errors=hf_errors)
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': f'同步失败: {e}'}), 500
+
+    # 写前备份
+    try:
+        ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+        bak_dir = DATA_DIR / 'backups'
+        bak_dir.mkdir(exist_ok=True)
+        shutil.copy(MODEL_PARAMS_FILE, bak_dir / f'model-params-backup-{ts}.json')
+    except Exception:
+        pass  # 备份失败不阻断同步
+
+    save_model_params(items)
+    return jsonify({
+        'success': True,
+        'fetch_hf': fetch_hf,
+        'summary': summary,
+        'hf_errors': hf_errors[:20],  # 仅返回前 20 条错误，避免响应过大
+        'hf_error_count': len(hf_errors),
+    })
 
 
 # 训练模型部署链接映射（模型名 → 部署指南 URL）
@@ -3003,6 +3633,160 @@ def api_quote_history_delete(quote_id):
     return jsonify({'ok': True})
 
 
+# ============ 需求文件解析（报价器导入） ============
+
+SUPPORTED_REQ_EXTS = {'.txt', '.md', '.docx', '.doc', '.pdf', '.xlsx', '.xls', '.csv'}
+
+
+def _extract_req_text(filepath, ext):
+    """根据扩展名从需求文件中抽取纯文本，返回 (text, note)。"""
+    ext = (ext or '').lower()
+    if ext in ('.txt', '.md', '.csv'):
+        # 文本类：兼容常见编码，优先 utf-8，回退 gbk
+        for enc in ('utf-8', 'gbk', 'utf-16'):
+            try:
+                return filepath.read_text(encoding=enc), ''
+            except (UnicodeDecodeError, UnicodeError):
+                continue
+        # 全部失败则用 errors=replace 兜底
+        return filepath.read_text(encoding='utf-8', errors='replace'), '（部分字符无法识别，已替换）'
+
+    if ext in ('.docx',):
+        import docx
+        doc = docx.Document(str(filepath))
+        parts = []
+        for p in doc.paragraphs:
+            t = p.text.strip()
+            if t:
+                parts.append(t)
+        for table in doc.tables:
+            for row in table.rows:
+                cells = [c.text.strip() for c in row.cells if c.text.strip()]
+                if cells:
+                    parts.append(' | '.join(cells))
+        return '\n'.join(parts), ''
+
+    if ext in ('.doc',):
+        # 旧版 .doc：先尝试 antiword/textract，失败则提示无法解析
+        import subprocess
+        for cmd in (['antiword', str(filepath)], ['textract', str(filepath)]):
+            try:
+                out = subprocess.run(cmd, capture_output=True, timeout=60, text=True)
+                if out.returncode == 0 and out.stdout.strip():
+                    return out.stdout, ''
+            except Exception:
+                continue
+        raise ValueError('暂不支持旧版 .doc 格式，请转换为 .docx 后重试')
+
+    if ext in ('.pdf',):
+        import pdfplumber
+        parts = []
+        with pdfplumber.open(str(filepath)) as pdf:
+            for page in pdf.pages:
+                t = page.extract_text() or ''
+                if t.strip():
+                    parts.append(t)
+        return '\n'.join(parts), ''
+
+    if ext in ('.xlsx', '.xls'):
+        import openpyxl
+        wb = openpyxl.load_workbook(str(filepath), read_only=True, data_only=True)
+        parts = []
+        for ws in wb.worksheets:
+            for row in ws.iter_rows(values_only=True):
+                cells = [str(c).strip() for c in row if c is not None and str(c).strip()]
+                if cells:
+                    parts.append(' | '.join(cells))
+        return '\n'.join(parts), ''
+
+    raise ValueError(f'不支持的文件格式：{ext}')
+
+
+def _summarize_requirement(raw_text, cfg):
+    """用 LLM 对需求文件原文做需求摘取，提炼关键信息。
+
+    返回 (summary_text, used_llm)。LLM 未配置或调用失败时回退返回原文。
+    """
+    if not cfg.get('enabled', True):
+        return raw_text, False
+    system_prompt = (
+        '你是昇腾AI使能服务的售前需求分析师。用户会提供一份客户需求文件的原文，'
+        '你需要从中摘取与「AI使能服务报价」相关的关键需求信息，剔除无关的冗余描述。\n'
+        '只输出一个 JSON 对象，不要输出任何其他文字。JSON 格式：\n'
+        '{"summary": "提炼后的客户需求摘要（一段连贯中文，按重要程度排列关键点：业务场景与目标、'
+        '涉及的模型名称、算力规模（如卡数/集群/并发/QPS）、部署环境（昇腾/GPU/云）、'
+        '配套需求（如RAG知识库、性能调优、运维维护、训练/推理等））。"}\n'
+        '要求：\n'
+        '1. 只保留与模型部署、算力、服务项相关的内容，忽略营销话术、公司介绍、签字盖章等无关内容。\n'
+        '2. 若原文信息不足，仅描述已明确的内容，不要编造或补充。\n'
+        '3. 摘要控制在 300 字以内，条理清晰。'
+    )
+    try:
+        obj = _call_llm_json(system_prompt, f'需求文件原文：\n{raw_text}', cfg, temperature=0.2, max_tokens=1000)
+        summary = (obj or {}).get('summary') or ''
+        summary = summary.strip()
+        if summary:
+            return summary, True
+    except Exception:
+        pass
+    return raw_text, False
+
+
+@app.route('/admin/api/quote/parse-requirement', methods=['POST'])
+def api_quote_parse_requirement():
+    """上传需求文件，解析文本后调用 LLM 提炼关键需求，供报价器一键导入。
+
+    支持 .txt / .md / .docx / .doc / .pdf / .xlsx / .xls / .csv。
+    """
+    if 'file' not in request.files:
+        return jsonify({'error': '未选择文件'}), 400
+    up = request.files['file']
+    if not up or not up.filename:
+        return jsonify({'error': '未选择文件'}), 400
+    ext = Path(up.filename).suffix.lower()
+    if ext not in SUPPORTED_REQ_EXTS:
+        return jsonify({'error': f'不支持的文件格式：{ext or "未知"}，请上传 ' + ' / '.join(sorted(SUPPORTED_REQ_EXTS))}), 400
+
+    # 限制上传大小（10MB）
+    up.stream.seek(0, 2)
+    size = up.stream.tell()
+    up.stream.seek(0)
+    if size > 10 * 1024 * 1024:
+        return jsonify({'error': '文件过大，请上传 10MB 以内的文件'}), 400
+
+    tmp = DATA_DIR / ('_req_upload_' + up.filename)
+    try:
+        up.save(str(tmp))
+        text, note = _extract_req_text(tmp, ext)
+    except Exception as e:
+        return jsonify({'error': f'文件解析失败：{e}'}), 400
+    finally:
+        if tmp.exists():
+            tmp.unlink()
+
+    text = (text or '').strip()
+    if not text:
+        return jsonify({'error': '未能从文件中提取到有效内容'}), 422
+
+    # 截断过长原文，避免超出模型上下文
+    max_len = 8000
+    truncated = len(text) > max_len
+    if truncated:
+        text = text[:max_len] + '\n……（原文过长，已截断）'
+
+    # 用 LLM 提炼关键需求；失败则回退返回原文
+    cfg = load_quote_config()
+    summary, used_llm = _summarize_requirement(text, cfg)
+    return jsonify({
+        'text': text,
+        'summary': summary,
+        'used_llm': used_llm,
+        'filename': up.filename,
+        'note': note,
+        'truncated': truncated,
+    })
+
+
 # ============ 模型性能查询 ============
 
 PERFORMANCE_FILE = DATA_DIR / 'performance.json'
@@ -3431,17 +4215,26 @@ def _perf_hw_memory(prod, hardware):
     return ''
 
 
+def _perf_norm_name(s):
+    """归一化模型名用于模糊匹配：去大小写、空格、连字符、点、下划线。
+
+    使 'Qwen2.5-72B-Instruct' 能匹配 'Qwen2.5-72B'，'deepseek v4 flash' 能匹配
+    'DeepSeek-V4-Flash'，避免用户带精度后缀/变体输入时匹配失败导致无推荐设备。
+    """
+    return re.sub(r'[\s\-_.]+', '', str(s or '')).lower()
+
+
 def _perf_recommend_hardware(model, items, models_lite, hardware):
     """按模型聚合推荐设备（融合 performance 实测 + models-lite 官方推荐 + hardware 参数）。"""
-    model_l = (model or '').strip().lower()
+    model_l = _perf_norm_name(model)
     if not model_l:
         return []
 
-    # 1) performance.json 实测：按 product 聚合
+    # 1) performance.json 实测：按 product 聚合（归一化双向子串匹配，容忍大小写/空格/连字符/后缀差异）
     grouped = {}
     for it in items:
-        m = str(it.get('model', '')).strip().lower()
-        if m == model_l or (model_l and model_l in m):
+        m = _perf_norm_name(it.get('model'))
+        if m and (model_l in m or m in model_l):
             prod = it.get('product') or '未标注产品'
             grouped.setdefault(prod, []).append(it)
 
@@ -3449,7 +4242,7 @@ def _perf_recommend_hardware(model, items, models_lite, hardware):
     rec_hw = []
     min_hw = ''
     for x in models_lite:
-        if str(x.get('name', '')).strip().lower() == model_l:
+        if _perf_norm_name(x.get('name')) == model_l:
             r = str(x.get('recommendedHardware') or '').strip()
             if _perf_valid_official_hw(r):
                 rec_hw.append(r)
@@ -3621,7 +4414,8 @@ def api_perf_recommend():
         d['satisfy_reasons'] = reasons
         d['satisfy_advice'] = advice
 
-    matched = [it for it in items if model.lower() in str(it.get('model', '')).lower()]
+    _mn = _perf_norm_name(model)
+    matched = [it for it in items if _mn and (_mn in _perf_norm_name(it.get('model')) or _perf_norm_name(it.get('model')) in _mn)]
     return jsonify({
         'model': model,
         'matched_total': len(matched),
@@ -3793,13 +4587,60 @@ def _perf_calc_cards(dev, biz):
     return (cards, f"按{labels}推算，建议 {cards} 卡（{total_cards} 卡基线换算）")
 
 
-def _perf_requirement_candidates(items, biz, hardware, top_n=6):
+def _perf_fusion_cards(model_entry, biz, repo=None, precision='int8'):
+    """估算兜底：用 gpu-hardware-compare 引擎按显存三约束推卡数。
+
+    model_entry: model-params.json 单条；biz: 业务参数 dict。
+    返回 {'source': '估算', 'plan': [...], 'card_reason': str}；引擎异常时返回空估算。
+    """
+    try:
+        import importlib.util
+        hw_path = os.path.join(repo or str(BASE_DIR), 'skills', 'gpu-hardware-compare', 'hw_compare.py')
+        spec = importlib.util.spec_from_file_location('_fusion_hw', hw_path)
+        eng = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(eng)
+
+        active = model_entry.get('activeParams')
+        if active is None:
+            active = model_entry.get('totalParams')
+        if not active:
+            return {'source': '估算', 'plan': [], 'card_reason': '模型参数量缺失，无法估算'}
+
+        # 组装模型字典（有结构时用真实 KV，否则引擎走经验比例）
+        model = {
+            'name': model_entry.get('name') or model_entry.get('modelCode') or '',
+            'active': active,
+            'total': model_entry.get('totalParams') or active,
+            'layers': model_entry.get('layers'),
+            'kvHeads': model_entry.get('kvHeads'),
+            'headDim': model_entry.get('headDim'),
+        }
+        in_len = biz.get('input_len') or 0
+        out_len = biz.get('output_len') or 0
+        qps = biz.get('qps') or 0
+        result = eng.recommend_cards(model, precision, in_len, out_len, qps, repo or str(BASE_DIR))
+        plans = result.get('plans', [])
+        if not plans:
+            return {'source': '估算', 'plan': [], 'card_reason': '估算未产出可行方案（可能超出单集群上限）'}
+        best = plans[0]
+        card_reason = ('估算（显存三约束）：推荐 %s × %s 卡，总显存需求约 %sGB，成本约 %s 万'
+                       % (best['gpu'], best['cards'], round(result.get('total_vram_gb', 0), 1),
+                          round(best['cost_cny'] / 10000, 1)))
+        return {'source': '估算', 'plan': plans, 'card_reason': card_reason,
+                'best': best, 'total_vram_gb': result.get('total_vram_gb')}
+    except Exception as e:  # noqa: BLE001 - 估算失败不阻断
+        return {'source': '估算', 'plan': [], 'card_reason': '估算引擎异常: %s' % e}
+
+
+def _perf_requirement_candidates(items, biz, hardware, top_n=6, repo=None, model_params=None):
     """需求驱动的规则引擎初筛：返回满足度最好的候选模型及其最优设备。
 
-    遍历所有有实测数据的模型，对每个模型选单卡吞吐最高的设备作为代表，
-    结合业务参数做满足度评估与卡数推算，按满足度排序取 Top N。
+    融合策略（方案③）：有实测用实测，无实测用 Skill 估算兜底。
+    - 有实测的模型：选单卡吞吐最高的设备为代表，做满足度评估与实测卡数推算，并附加估算方案。
+    - 无实测数据的模型（来自 model-params 参数库）：用 gpu-hardware-compare 引擎估算兜底。
+    返回统一候选列表（每条含 device.source = 实测|估算）。
     """
-    # 按模型聚合
+    # 按模型聚合实测记录
     models = {}
     for it in items:
         m = str(it.get('model', '')).strip()
@@ -3809,7 +4650,6 @@ def _perf_requirement_candidates(items, biz, hardware, top_n=6):
 
     cands = []
     for m, group in models.items():
-        # 选该模型单卡吞吐最高的产品作为代表
         best = None
         best_tps = -1
         for it in group:
@@ -3838,6 +4678,11 @@ def _perf_requirement_candidates(items, biz, hardware, top_n=6):
         }
         level, reasons, advice = _perf_satisfy(dev, biz)
         cards, card_reason = _perf_calc_cards(dev, biz)
+        # 附加估算方案（融合：实测为主，估算作补充对比）
+        entry = None
+        if model_params:
+            entry = _perf_find_model_param(model_params, m)
+        fusion = _perf_fusion_cards(entry or {}, biz, repo) if model_params else None
         cands.append({
             'model': m,
             'device': dev,
@@ -3846,14 +4691,124 @@ def _perf_requirement_candidates(items, biz, hardware, top_n=6):
             'advice': advice,
             'cards': cards,
             'card_reason': card_reason,
+            'fusion': fusion,
             'records': len(group),
         })
 
-    # 排序：满足 > 临界 > 无数据 > 不满足；同级按单卡吞吐降序
+    # 估算兜底：从全球模型参数库补充「无实测但满足需求」的模型
+    if model_params and len(cands) < top_n:
+        cands = _perf_estimate_fallback_candidates(cands, model_params, biz, repo, top_n)
+
+    # 排序：优先满足「需求输入长度」的模型（上下文覆盖），再满足 > 临界 > 无数据 > 不满足，同级按单卡吞吐降序。
+    # 目的：让不同输入长度/场景产生不同推荐，避免始终推荐同一短对话模型。
     rank = {'满足': 0, '临界': 1, '无数据': 2, '不满足': 3}
-    cands.sort(key=lambda c: (rank.get(c['satisfy_level'], 4),
-                              -(c['device'].get('per_card_e2e_tps') or c['device'].get('e2e_tps') or 0)))
+    need_in = biz.get('input_len')
+    def _tps(c):
+        return (c['device'].get('per_card_e2e_tps') or c['device'].get('e2e_tps') or 0)
+    def _req_key(c):
+        tps = _tps(c)
+        lvl = rank.get(c['satisfy_level'], 4)
+        if not need_in:
+            return (0.0, lvl, -tps)
+        ctx = _perf_model_context(model_params, c['model'])
+        if ctx:
+            # 能覆盖需求长度 → gap=0；覆盖不足 → 按缺口比例惩罚
+            gap = 0.0 if ctx >= need_in else min(1.0, (need_in - ctx) / need_in)
+        else:
+            # 上下文未知：视为无法确认覆盖，排在「明确能覆盖」之后
+            gap = 0.5
+        return (gap, lvl, -tps)
+    cands.sort(key=_req_key)
     return cands[:top_n]
+
+
+def _perf_model_context(model_params, model):
+    """返回模型的最大上下文长度（tokens）；查不到或无效时返回 None。
+
+    用于需求驱动选型时评估「该模型能否覆盖业务输入长度」，从而让长上下文
+    需求优先推荐长上下文模型，避免始终推荐同一短对话模型。
+    """
+    if not model_params:
+        return None
+    entry = _perf_find_model_param(model_params, model)
+    if not entry:
+        return None
+    ctx = entry.get('context')
+    try:
+        ctx = int(ctx)
+    except (TypeError, ValueError):
+        return None
+    return ctx if ctx and ctx > 0 else None
+
+
+def _perf_find_model_param(model_params, model):
+    """在 model-params 数据中按 modelCode/name 匹配模型参数条目（大小写不敏感）。"""
+    items = model_params.get('models', model_params) if isinstance(model_params, dict) else model_params
+    target = re.sub(r'[\s\-_.]+', '', str(model or '').lower())
+    for m in items or []:
+        if not m:
+            continue
+        if re.sub(r'[\s\-_.]+', '', str(m.get('modelCode') or '').lower()) == target \
+                or re.sub(r'[\s\-_.]+', '', str(m.get('name') or '').lower()) == target:
+            return m
+    return None
+
+
+def _perf_estimate_fallback_candidates(cands, model_params, biz, repo, top_n):
+    """估算兜底：当实测候选不足时，从 model-params 挑选若干模型用估算补足。
+
+    优先选「有参数量且与业务场景规模匹配」的模型；仅附加估算方案，不做满足度判定。
+    """
+    items = model_params.get('models', model_params) if isinstance(model_params, dict) else model_params
+    # 已覆盖的模型名
+    covered = set(c['model'].lower() for c in cands)
+    # 挑有参数量、且未被覆盖的模型；totalParams 单位为 B（如 40=40B），
+    # 过滤掉 <1B 的 embedding/encoder 小模型（不适合做生成服务候选），
+    # 优先取 1B~100B 的中小规模 LLM（估算更可信），按总参数升序补足。
+    candidates = []
+    for m in items or []:
+        if not m:
+            continue
+        name = (m.get('name') or m.get('modelCode') or '').strip()
+        if not name or name.lower() in covered:
+            continue
+        total = m.get('totalParams')
+        if total is None or total < 1:
+            continue
+        candidates.append(m)
+    # 按总参数升序取前 top_n - len(cands) 个，作为估算兜底候选
+    candidates.sort(key=lambda x: x.get('totalParams') or 1e18)
+    for entry in candidates[:max(0, top_n - len(cands))]:
+        name = (entry.get('name') or entry.get('modelCode') or '').strip()
+        fusion = _perf_fusion_cards(entry, biz, repo)
+        dev = {
+            'product': '（估算）',
+            'display': name,
+            'memory': '',
+            'source': '估算',
+            'total_cards': None,
+            'concurrency': None,
+            'ttft_ms': None,
+            'tpot_ms': None,
+            'output_tps': None,
+            'per_card_e2e_tps': None,
+            'e2e_tps': None,
+            'qps': None,
+            'avg_input': None,
+            'avg_output': None,
+        }
+        cands.append({
+            'model': name,
+            'device': dev,
+            'satisfy_level': '无数据',
+            'reasons': ['暂无该模型实测性能数据，以下为估算方案，建议 POC 实测校准'],
+            'advice': ['建议先实测验证估算吞吐与显存，再确定采购方案'],
+            'cards': (fusion.get('best') or {}).get('cards'),
+            'card_reason': fusion.get('card_reason'),
+            'fusion': fusion,
+            'records': 0,
+        })
+    return cands
 
 
 @app.route('/admin/api/performance/recommend-by-requirement', methods=['POST'])
@@ -3892,9 +4847,12 @@ def api_perf_recommend_by_requirement():
         return jsonify({'error': '暂无性能数据，无法选型'}), 400
 
     hardware = load_json_cached(DATA_DIR / 'hardware.json') or []
-    cands = _perf_requirement_candidates(items, biz, hardware, top_n=6)
+    # 融合选型：有实测用实测，无实测用 Skill 估算兜底（传入 repo + 全球模型参数库）
+    model_params = load_model_params()
+    cands = _perf_requirement_candidates(items, biz, hardware, top_n=6,
+                                         repo=str(BASE_DIR), model_params=model_params)
     if not cands:
-        return jsonify({'error': '未找到匹配的实测模型数据'}), 404
+        return jsonify({'error': '未找到匹配的模型数据（无实测且无法估算）'}), 404
 
     # 规则引擎结果 → LLM 解读
     cfg = load_quote_config()
@@ -3904,9 +4862,12 @@ def api_perf_recommend_by_requirement():
         cand_lines = []
         for c in cands:
             d = c['device']
+            # 附上模型上下文长度，供 LLM 判断输入长度匹配（长输入需求选长上下文模型）
+            ctx = _perf_model_context(model_params, c['model'])
+            ctx_txt = f"，上下文≈{ctx} tokens" if ctx else "，上下文未知"
             cand_lines.append(
                 f"- 模型「{c['model']}」→ 设备 {d['display'] or d['product']}"
-                f"（显存 {d.get('memory') or '未知'}，{c['records']} 条实测）"
+                f"（显存 {d.get('memory') or '未知'}，{c['records']} 条实测）{ctx_txt}"
                 f"：满足度=「{c['satisfy_level']}」"
                 f"，推算设备数量：{c['cards'] if c['cards'] else '无法推算'}（{c['card_reason'] or ''}）"
                 + (f"，理由：{'；'.join(c['reasons'])}" if c['reasons'] else '')
@@ -3930,7 +4891,9 @@ def api_perf_recommend_by_requirement():
             '2. 结论必须同时说明「该模型用在什么场景」和「为什么选它（选型理由）」，不要只描述性能表现。\n'
             '3. 结合业务参数（并发/QPS/时延/输入输出长度）与显存偏好判断，而非只看满足度标签。\n'
             '4. 规则引擎已判「不满足」的模型一般不应作为首选，除非它是最接近且可扩容的选项。\n'
-            '5. cards 优先采用规则引擎推算值，除非你有明确依据才调整。'
+            '5. cards 优先采用规则引擎推算值，除非你有明确依据才调整。\n'
+            '6. 若业务输入长度很大，优先选「上下文」能覆盖输入长度的模型（候选行标注了上下文 tokens），'
+            '不要选上下文小于输入长度的短对话模型。'
         )
         user_content = (
             f"业务需求：场景「{scene or '通用'}」；输入长度 {biz.get('input_len') or '不限'}；"
@@ -3959,6 +4922,7 @@ def api_perf_recommend_by_requirement():
             'device': c['device']['display'] or c['device']['product'],
             'product': c['device']['product'],
             'memory': c['device']['memory'],
+            'source': c['device']['source'],
             'satisfy_level': c['satisfy_level'],
             'reasons': c['reasons'],
             'advice': c['advice'],
@@ -3969,6 +4933,7 @@ def api_perf_recommend_by_requirement():
             'e2e_tps': c['device'].get('e2e_tps'),
             'ttft_ms': c['device'].get('ttft_ms'),
             'concurrency': c['device'].get('concurrency'),
+            'fusion': c.get('fusion'),
             'records': c['records'],
         })
 
@@ -4021,6 +4986,10 @@ def static_files(path):
     # 未知路径或不公开文件：SPA 回退首页；敏感路径则返回 404，避免泄露
     if any(path.lstrip('/').startswith(d) for d in _BLOCKED_STATIC_DIRS):
         return ('Not Found', 404)
+    # API 未知路径返回 JSON 404（而非 SPA HTML 回退），
+    # 避免前端 res.json() 解析到 HTML 报 "Unexpected token '<'"。
+    if path.startswith('api/') or path.startswith('admin/api/'):
+        return jsonify({'error': '接口不存在'}), 404
     return send_from_directory(str(BASE_DIR), 'index.html')
 
 
@@ -4034,6 +5003,123 @@ def _load_presales_module():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+# 售前选型可识别的场景/精度枚举（与 skills/ascend-presales-recommend/recommend.py 保持一致，
+# 优先从模块动态读取，避免两处硬编码漂移）
+_PRESALES_SCENES = [
+    '智能问答', '内容生成', '代码辅助', '文档处理', '知识抽取', '翻译', '多模态', '语音', '推理',
+    '多轮客服', '行业助手', 'Code Agent 短链', 'Code Agent 中链', '全仓库',
+    '中文档 RAG', '全文档 QA', '整本书 QA',
+]
+_PRESALES_PRECISIONS = ['fp16', 'int8', 'int4', '极高', '较高', '一般']
+
+
+def _norm_scene(text):
+    """把 LLM 提取的场景归一到已知枚举；无法匹配返回 None。"""
+    text = re.sub(r'[\s\-_.()（）]+', '', str(text or '').lower())
+    if not text:
+        return None
+    for sc in _PRESALES_SCENES:
+        if text == re.sub(r'[\s\-_.()（）]+', '', sc.lower()):
+            return sc
+    # 模糊包含匹配：长枚举优先，避免短词误吞
+    best, best_len = None, 0
+    for sc in _PRESALES_SCENES:
+        ns = re.sub(r'[\s\-_.()（）]+', '', sc.lower())
+        if ns and (ns in text or text in ns) and len(ns) > best_len:
+            best, best_len = sc, len(ns)
+    return best
+
+
+@app.route('/api/presales-extract', methods=['POST'])
+def api_presales_extract():
+    """用 LLM 从大段自然语言需求中提取售前选型关键参数。
+
+    输入：{"requirement": "客户大段需求描述"}
+    输出：{success, params:{scene,precision,qps,in_len,out_len,top,require_open},
+          missing:[未提取到的字段], summary:需求要点摘要}
+    参数做归一化与数值校验；in_len/out_len 缺省时按场景预设套用（与推荐引擎一致）。
+    """
+    data = request.get_json(silent=True) or {}
+    requirement = (data.get('requirement') or '').strip()
+    if not requirement:
+        return jsonify({'error': '请提供需求描述'}), 400
+
+    cfg = load_quote_config()
+    if not cfg.get('enabled', True):
+        return jsonify({'error': 'LLM 服务已停用，请在报价器页面启用'}), 400
+
+    scene_enum = ' / '.join(_PRESALES_SCENES)
+    prec_enum = ' / '.join(_PRESALES_PRECISIONS)
+    system_prompt = (
+        '你是昇腾售前选型的需求解析助手。请从用户的大段业务需求描述中，提取售前选型所需的关键参数，'
+        '只输出一个 JSON 对象，不要输出其他文字。字段如下（无法确定的字段返回 null 或省略）：\n'
+        '{\n'
+        '  "scene": 业务场景，只能取以下枚举之一：' + scene_enum + '，\n'
+        '  "precision": 精度档位，只能取：' + prec_enum + '（缺省倾向 fp16），\n'
+        '  "qps": 并发/峰值每秒请求数(数值)，\n'
+        '  "in_len": 平均输入长度(tokens, 整数)，\n'
+        '  "out_len": 平均输出长度(tokens, 整数)，\n'
+        '  "top": 期望的候选模型数量(整数)，\n'
+        '  "require_open": 是否要求开源/可私有化(布尔，true/false)，\n'
+        '  "summary": 一句话概括核心需求要点(字符串)\n'
+        '}\n'
+        '判断依据：场景看业务类型；in_len/out_len 看输入输出规模或是否长文本/代码/文档；'
+        'qps 看并发/吞吐要求；require_open 看是否提到私有化、开源、信创、数据不出域。'
+    )
+    try:
+        obj = _call_llm_json(system_prompt, '客户需求：\n' + requirement, cfg)
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:  # noqa: BLE001
+        return jsonify({'error': f'调用大模型失败: {e}'}), 502
+    if not isinstance(obj, dict):
+        return jsonify({'error': 'LLM 返回格式异常'}), 502
+
+    def _num(v):
+        try:
+            f = float(v)
+            return f if f > 0 else None
+        except (TypeError, ValueError):
+            return None
+
+    scene = _norm_scene(obj.get('scene'))
+    precision = obj.get('precision')
+    if precision not in _PRESALES_PRECISIONS:
+        precision = 'fp16'
+    qps = _num(obj.get('qps'))
+    top_raw = _num(obj.get('top'))
+    top = int(top_raw) if top_raw else None
+    if top is not None:
+        top = max(1, min(20, top))
+
+    # in_len/out_len：显式给出则用，否则按场景预设(与推荐引擎 SCENE_PRESETS 一致)
+    in_len = _num(obj.get('in_len'))
+    out_len = _num(obj.get('out_len'))
+    if scene:
+        try:
+            rec = _load_presales_module()
+            preset = getattr(rec, 'SCENE_PRESETS', {}).get(scene, {})
+            if in_len is None:
+                in_len = preset.get('in_len')
+            if out_len is None:
+                out_len = preset.get('out_len')
+        except Exception:  # noqa: BLE001
+            pass
+    if in_len is not None:
+        in_len = int(in_len)
+    if out_len is not None:
+        out_len = int(out_len)
+
+    params = {
+        'scene': scene, 'precision': precision, 'qps': qps,
+        'in_len': in_len, 'out_len': out_len,
+        'top': top, 'require_open': bool(obj.get('require_open')),
+        'summary': obj.get('summary') or '',
+    }
+    missing = [k for k, v in params.items() if k != 'summary' and v in (None, '')]
+    return jsonify({'success': True, 'params': params, 'missing': missing})
 
 
 @app.route('/api/presales-recommend', methods=['GET', 'POST'])

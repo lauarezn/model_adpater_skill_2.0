@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模型性能查询 · 售前选型</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .calc-page, body.calc-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-header {
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detail-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .detail-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .detail-header h1 .accent { color: var(--color-accent); }
+    .detail-header .back-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .detail-header .back-link:hover { text-decoration: underline; }
+    .detail-content { flex: 1; background: var(--color-bg); padding: 28px 0 60px; }
+    .calc-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    .calc-block {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--color-card-shadow);
+    }
+    .calc-block h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 18px;
+      color: var(--color-text);
+      border-left: 4px solid var(--color-accent);
+      padding-left: 10px;
+    }
+    .calc-block h3 .sub { font-size: 0.78rem; font-weight: 400; color: var(--color-text-secondary); margin-left: 8px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px 18px; }
+    .form-item { display: flex; flex-direction: column; gap: 6px; }
+    .form-item label { font-size: 0.82rem; color: var(--color-text-secondary); font-weight: 500; }
+    .form-item label .hint { font-size: 0.72rem; color: var(--color-text-tertiary); font-weight: 400; margin-left: 4px; }
+    .form-item input, .form-item select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 0.9rem;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-item input:focus, .form-item select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+    .form-item input.in-orange, .form-item select.in-orange { background: #FFF7E6; border-color: #FBBF24; }
+    [data-theme="dark"] .form-item input.in-orange, [data-theme="dark"] .form-item select.in-orange { background: #3A2E12; border-color: #B45309; color: #FDE68A; }
+    .range-row { display: flex; align-items: center; gap: 6px; }
+    .range-row input { min-width: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border: 1px solid var(--color-primary);
+      border-radius: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .88; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn.secondary { background: var(--color-bg); color: var(--color-primary); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+
+    .result-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .result-table th, .result-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    .result-table th {
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      background: var(--color-bg-secondary);
+      white-space: nowrap;
+    }
+    .result-table td { color: var(--color-text); }
+    .result-table .num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+    .result-table tbody tr { transition: background .12s; }
+    .result-table tbody tr:hover { background: var(--color-bg-secondary); }
+    .result-table tbody tr.selected { background: var(--color-primary-light); }
+    .result-table .metric-hl { font-weight: 600; color: var(--color-accent); }
+    .table-scroll { overflow-x: auto; }
+
+    .summary-box {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--color-bg-secondary);
+      border-left: 4px solid var(--color-accent);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .status-msg { margin-top: 10px; font-size: 0.85rem; }
+    .status-msg.error { color: var(--color-error); }
+    .status-msg.ok { color: var(--color-success); }
+
+    .config-toggle {
+      background: none; border: none; color: var(--color-primary);
+      font-size: 0.82rem; cursor: pointer; padding: 0; font-weight: 500;
+    }
+    .config-toggle:hover { text-decoration: underline; }
+
+    .chart-wrap { margin-top: 16px; }
+    .chart-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .chart-tab {
+      padding: 6px 14px; border: 1px solid var(--color-border); border-radius: 16px;
+      background: var(--color-bg); color: var(--color-text-secondary);
+      font-size: 0.82rem; cursor: pointer; font-weight: 500;
+    }
+    .chart-tab.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+    .chart-empty { color: var(--color-text-tertiary); font-size: 0.85rem; padding: 20px 0; text-align: center; }
+
+    .empty-state { color: var(--color-text-tertiary); font-size: 0.9rem; padding: 24px 0; text-align: center; }
+
+    /* ===== 售前选型工作台 ===== */
+    .steps { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .step-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border: 1px solid var(--color-border); border-radius: 20px;
+      font-size: 0.82rem; color: var(--color-text-secondary); background: var(--color-bg);
+    }
+    .step-pill .n {
+      width: 18px; height: 18px; border-radius: 50%; background: var(--color-primary);
+      color: #fff; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .step-pill.done .n { background: var(--color-success); }
+
+    .model-select-row { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+    .model-select-row .form-item { flex: 1; min-width: 260px; }
+
+    .dev-card {
+      border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px;
+      background: var(--color-bg); transition: box-shadow .15s, border-color .15s;
+    }
+    .dev-card:hover { box-shadow: var(--color-card-shadow); }
+    .dev-card.recommended { border-color: var(--color-accent); }
+    .dev-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .dev-card-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .dev-card-title strong { font-size: 1.02rem; }
+    .dev-card-title .badge { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .badge.src-measured { background: var(--color-primary-light); color: var(--color-primary); }
+    .badge.src-estimate { background: #E0E7FF; color: #4338CA; }
+    [data-theme="dark"] .badge.src-estimate { background: #1E1B4B; color: #A5B4FC; }
+    .badge.src-official { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+    .badge.mem { background: #FEF3C7; color: #92400E; }
+    [data-theme="dark"] .badge.mem { background: #3A2E12; color: #FDE68A; }
+    .badge.rec { background: var(--color-accent); color: #fff; }
+    .dev-metrics {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 16px;
+      margin: 14px 0 0; font-size: 0.84rem;
+    }
+    .dev-metric .k { color: var(--color-text-tertiary); font-size: 0.74rem; }
+    .dev-metric .v { font-variant-numeric: tabular-nums; font-weight: 600; margin-top: 2px; }
+    .dev-metric .v.metric-hl { color: var(--color-accent); }
+
+    .satisfy {
+      margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; line-height: 1.55;
+      border-left: 4px solid var(--color-border); background: var(--color-bg-secondary);
+    }
+    .satisfy.ok { border-left-color: var(--color-success); }
+    .satisfy.warn { border-left-color: #F59E0B; }
+    .satisfy.bad { border-left-color: var(--color-error); }
+    .satisfy.na { border-left-color: var(--color-text-tertiary); }
+    .satisfy .lvl { font-weight: 700; }
+    .satisfy.ok .lvl { color: var(--color-success); }
+    .satisfy.warn .lvl { color: #B45309; }
+    .satisfy.bad .lvl { color: var(--color-error); }
+    .satisfy.na .lvl { color: var(--color-text-tertiary); }
+    .satisfy ul { margin: 4px 0 0; padding-left: 18px; }
+    .satisfy .advice { margin-top: 4px; color: var(--color-text-secondary); }
+
+    .ai-rec { font-weight: 700; color: var(--color-accent); }
+    .ai-rec.na { color: var(--color-text-tertiary); }
+    .advice-bad { color: var(--color-error); padding: 4px 0; }
+
+    .section-toggle {
+      background: none; border: none; color: var(--color-primary); font-size: 0.9rem;
+      cursor: pointer; font-weight: 600; padding: 0;
+    }
+    .section-toggle:hover { text-decoration: underline; }
+
+    /* ===== 需求驱动选型 · 分组布局 ===== */
+    .req-groups { display: flex; flex-direction: column; gap: 18px; }
+    .req-group {
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      padding: 14px 16px 16px;
+      background: var(--color-bg-secondary);
+    }
+    .req-group-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; font-weight: 700; color: var(--color-text-secondary);
+      margin-bottom: 12px; letter-spacing: .02em;
+    }
+    .req-group-title .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-accent); flex-shrink: 0;
+    }
+    .req-group-title .tag {
+      margin-left: auto; font-size: 0.72rem; font-weight: 500;
+      color: var(--color-text-tertiary);
+    }
+    .req-group .form-grid { gap: 14px 18px; }
+    .req-group .form-item input, .req-group .form-item select {
+      background: var(--color-bg);
+      border-color: var(--color-border);
+    }
+    .req-scene-row { grid-column: 1 / -1; }
+    .req-actions {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* ===== 合并后的 Tab 导航 ===== */
+    .wb-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .wb-tab {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border: 1px solid var(--color-border); border-radius: 10px;
+      background: var(--color-bg); color: var(--color-text-secondary);
+      font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: all .15s;
+    }
+    .wb-tab:hover { border-color: var(--color-primary); color: var(--color-text); }
+    .wb-tab.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+    .wb-pane { display: none; }
+    .wb-pane.active { display: block; }
+
+    /* 三级推荐（并入 Tab 1） */
+    .pr-result-block { display: none; }
+    .pr-step-head {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 1.02rem; margin: 0 0 14px; color: var(--color-text);
+    }
+    .pr-step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 7px;
+      background: var(--color-primary); color: #fff;
+      font-size: .85rem; font-weight: 700; flex-shrink: 0;
+    }
+    .pr-step-badge.g { background: var(--color-success); }
+    .pr-step-badge.o { background: var(--color-accent); color: #333; }
+    .pr-note { font-size: .8rem; color: var(--color-text-tertiary); margin-left: auto; }
+    .pr-cand-card {
+      border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 16px;
+      margin-bottom: 12px; background: var(--color-bg);
+    }
+    .pr-cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pr-cand-name { font-weight: 700; font-size: .96rem; }
+    .pr-cand-org { color: var(--color-text-tertiary); font-size: .82rem; }
+    .pr-cand-score { color: var(--color-accent); font-weight: 700; white-space: nowrap; }
+    .pr-cand-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .pr-cand-reasons { font-size: .82rem; }
+    .pr-cand-reasons .pos { color: var(--color-success); padding: 1px 0; }
+    .pr-cand-reasons .neg { color: var(--color-error); padding: 1px 0; }
+    .pr-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: .8rem; color: var(--color-text-secondary); padding: 10px 2px 0; }
+    .pr-legend .dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    .pr-badge {
+      display: inline-block; padding: 2px 9px; border-radius: 20px;
+      font-size: .74rem; font-weight: 600; white-space: nowrap;
+    }
+    .pr-b-prod { background: rgba(52, 211, 153, .15); color: var(--color-success); }
+    .pr-b-exp  { background: rgba(251, 191, 36, .15); color: var(--color-accent); }
+    .pr-b-comp { background: rgba(96, 165, 250, .15); color: var(--color-primary); }
+    .pr-b-mig  { background: rgba(251, 146, 60, .15); color: #F97316; }
+    .pr-b-none { background: rgba(239, 68, 68, .12); color: var(--color-error); }
+    .pr-series-note { font-size: .78rem; color: var(--color-accent); margin-top: 5px; line-height: 1.5; }
+    .pr-extract-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .pr-extract-tag { background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 8px; padding: 6px 10px; font-size: .82rem; }
+    .pr-extract-tag b { color: var(--color-primary); }
+    .pr-extract-summary { font-size: .85rem; color: var(--color-text-secondary); margin-top: 8px; }
+    .pr-extract-missing { font-size: .8rem; color: var(--color-accent); margin-top: 6px; }
+  </style>
+</head>
+<body class="calc-page">
+  <header class="detail-header">
+    <div class="container">
+      <h1>🧭 <span class="accent">售前选型工作台</span></h1>
+      <a class="back-link" href="index.html">← 返回首页</a>
+    </div>
+  </header>
+
+  <div class="detail-content">
+    <div class="calc-wrap">
+
+      <!-- Tab 导航 -->
+      <div class="wb-tabs">
+        <button class="wb-tab active" onclick="switchTab('rec', this)">🎯 需求驱动推荐</button>
+        <button class="wb-tab" onclick="switchTab('query', this)">🔍 按模型精确查询</button>
+        <button class="wb-tab" onclick="switchTab('adv', this)">⚙️ 高级筛选对比</button>
+      </div>
+
+      <!-- Tab 1：需求驱动推荐（三级推荐 + 实测融合选型） -->
+      <div class="wb-pane active" id="pane-rec">
+
+      <!-- 需求驱动选型（实测融合 + 三级推荐，共用输入表单，引擎切换） -->
+      <div class="calc-block">
+        <h3>🎯 需求驱动选型 <span class="sub">填写业务需求，自动推荐具体模型 + 设备 + 设备数量</span></h3>
+
+        <!-- 引擎切换 -->
+        <div class="wb-tabs" style="margin-bottom:16px;">
+          <button class="wb-tab active" id="engRec" onclick="switchEngine('rec', this)">🧪 实测融合选型</button>
+          <button class="wb-tab" id="engPr" onclick="switchEngine('pr', this)">🧭 三级推荐报告</button>
+        </div>
+
+        <!-- 自然语言 AI 提取（共用） -->
+        <div class="form-item" style="margin-bottom:14px;">
+          <label>自然语言需求 <span class="hint">粘贴需求，由 AI 提取关键参数并回填下方表单（可选）</span></label>
+          <textarea id="pr_req" rows="3" placeholder="例如：客户要建设一个面向金融客服的智能问答系统，要求私有化部署、数据不出域，峰值并发约 50 QPS，单轮输入约 2K tokens，输出 500 tokens，希望优先考虑开源模型…"></textarea>
+          <div class="pr-actions" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+            <button class="btn" id="prExtractBtn" onclick="prAiExtract()">🤖 AI 提取关键参数</button>
+            <span class="status-msg" id="prExtractMsg"></span>
+          </div>
+          <div id="prExtractResult" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="req-groups">
+
+          <div class="req-group">
+            <div class="req-group-title"><span class="dot"></span>① 业务场景 <span class="tag">可从预设下拉选择，也可自行输入</span></div>
+            <div class="form-grid">
+              <div class="form-item req-scene-row">
+                <label>场景 <span class="hint">选预设自动带入业界默认 token，可再手动修改</span></label>
+                <input type="text" id="reqScene" list="scenePresets" placeholder="选择或输入场景，如：多轮客服 / 智能客服对话">
+                <datalist id="scenePresets">
+                  <option value="多轮客服">多轮客服（输入 2048 / 输出 512）</option>
+                  <option value="行业助手">行业助手（输入 16000 / 输出 1024）</option>
+                  <option value="Code Agent 短链">AI Coding · Code Agent 短链（输入 32000 / 输出 800）</option>
+                  <option value="Code Agent 中链">AI Coding · Code Agent 中链（输入 100000 / 输出 800）</option>
+                  <option value="全仓库">AI Coding · 全仓库（输入 500000 / 输出 2000）</option>
+                  <option value="中文档 RAG">长上下文 RAG · 中文档（输入 32000 / 输出 1000）</option>
+                  <option value="全文档 QA">长上下文 RAG · 全文档 QA（输入 300000 / 输出 2000）</option>
+                  <option value="整本书 QA">长上下文 RAG · 整本书 QA（输入 800000 / 输出 2000）</option>
+                </datalist>
+              </div>
+            </div>
+          </div>
+
+          <div class="req-group">
+            <div class="req-group-title"><span class="dot"></span>② Token 配置 <span class="tag">选场景后自动填充</span></div>
+            <div class="form-grid">
+              <div class="form-item">
+                <label>期望输入长度 <span class="hint">token</span></label>
+                <input type="number" id="reqInput" placeholder="如 2048" min="0">
+              </div>
+              <div class="form-item">
+                <label>期望输出长度 <span class="hint">token</span></label>
+                <input type="number" id="reqOutput" placeholder="如 512" min="0">
+              </div>
+            </div>
+          </div>
+
+          <!-- 实测融合专属参数 -->
+          <div class="req-group" id="grpRecParams">
+            <div class="req-group-title"><span class="dot"></span>③ 负载与时延 <span class="tag">选填，用于实测性能匹配</span></div>
+            <div class="form-grid">
+              <div class="form-item">
+                <label>期望并发 <span class="hint">并发数</span></label>
+                <input type="number" id="reqConc" placeholder="如 50" min="0">
+              </div>
+              <div class="form-item">
+                <label>期望 QPS <span class="hint">请求/秒</span></label>
+                <input type="number" id="reqQps" placeholder="如 5" min="0" step="0.1">
+              </div>
+              <div class="form-item">
+                <label>首token时延上限 <span class="hint">ms</span></label>
+                <input type="number" id="reqTtft" placeholder="如 1000" min="0">
+              </div>
+              <div class="form-item">
+                <label>显存偏好</label>
+                <select id="reqMem">
+                  <option value="">不限</option>
+                  <option value="32G">32G</option>
+                  <option value="64G">64G</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 三级推荐专属参数 -->
+          <div class="req-group" id="grpPrParams" style="display:none;">
+            <div class="req-group-title"><span class="dot"></span>③ 推荐参数 <span class="tag">三级推荐引擎专用</span></div>
+            <div class="form-grid">
+              <div class="form-item">
+                <label>精度档位</label>
+                <select id="pr_precision">
+                  <option value="fp16" selected>fp16</option>
+                  <option value="int8">int8</option>
+                  <option value="int4">int4</option>
+                  <option value="极高">极高</option>
+                  <option value="较高">较高</option>
+                  <option value="一般">一般</option>
+                </select>
+              </div>
+              <div class="form-item">
+                <label>候选模型数量</label>
+                <input type="number" id="pr_top" value="5" min="1" max="20">
+              </div>
+              <div class="form-item">
+                <label>开源/可私有化约束</label>
+                <select id="pr_require_open">
+                  <option value="0" selected>不限</option>
+                  <option value="1">仅开源/可私有化</option>
+                </select>
+              </div>
+              <div class="form-item">
+                <label>计算范围</label>
+                <select id="pr_adapt_only">
+                  <option value="0" selected>完整三级（含硬件估算）</option>
+                  <option value="1">仅①②（适配等级，不估算硬件）</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="req-actions">
+          <button class="btn" id="reqBtn" onclick="runReq()">🤖 智能选型</button>
+          <button class="btn" id="prRunBtn" onclick="prRun()" style="display:none;">🚀 生成推荐报告</button>
+          <button class="btn secondary" onclick="clearReq()">↺ 清空</button>
+          <button class="btn secondary" onclick="prLoadExample()">填充示例</button>
+          <span class="status-msg" id="reqMsg"></span>
+        </div>
+        <div id="prErrBox" class="err-box" style="display:none;"></div>
+
+        <!-- 实测融合结果 -->
+        <div id="reqResult" style="margin-top:18px;"></div>
+
+        <!-- 三级推荐结果 -->
+        <div id="prResultBlock" class="pr-result-block" style="margin-top:18px;display:none;">
+          <div class="calc-block">
+            <div class="pr-step-head"><span class="pr-step-badge">1</span>全球大模型推荐
+              <span class="pr-note" id="prNote1"></span></div>
+            <div id="prResult1"></div>
+          </div>
+          <div class="calc-block">
+            <div class="pr-step-head"><span class="pr-step-badge o">2</span>昇腾适配筛选
+              <span class="pr-note">按昇腾适配清单(models.json 主源)标注等级</span></div>
+            <div class="pr-legend">
+              <span><span class="dot" style="background:#34D399"></span>生产级 ✅</span>
+              <span><span class="dot" style="background:#FBBF24"></span>实验级 🔵</span>
+              <span><span class="dot" style="background:#60A5FA"></span>兼容级 🔄</span>
+              <span><span class="dot" style="background:#F97316"></span>迁移级 🔧</span>
+              <span><span class="dot" style="background:#EF4444"></span>无适配 ⚠️</span>
+            </div>
+            <div class="table-scroll" id="prResult2"></div>
+          </div>
+          <div class="calc-block" id="prStep3Card">
+            <div class="pr-step-head"><span class="pr-step-badge g">3</span>硬件推荐 & TCO
+              <span class="pr-note">实测优先 · 估算兜底(±20% 建议 POC)</span></div>
+            <div id="prResult3"></div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /pane-rec -->
+
+      <!-- Tab 2：按模型精确查询 -->
+      <div class="wb-pane" id="pane-query">
+
+      <!-- 精确选型（按模型查询） -->
+      <div class="calc-block">
+        <h3>🔍 按模型精确查询</h3>
+        <div id="modelBody">
+          <p style="margin-top:0;color:var(--color-text-secondary);font-size:0.85rem">已知目标模型时，可按模型精确查询推荐设备与实测性能。</p>
+
+      <!-- 步骤一：选择模型 -->
+      <div class="calc-block">
+        <div class="steps">
+          <span class="step-pill" id="step1Pill"><span class="n">1</span> 选择模型</span>
+          <span class="step-pill" id="step2Pill"><span class="n">2</span> 查看推荐设备</span>
+          <span class="step-pill" id="step3Pill"><span class="n">3</span> 业务满足度评估</span>
+        </div>
+        <h3>🎯 步骤 1 · 选择模型</h3>
+        <div class="model-select-row">
+          <div class="form-item">
+            <label>模型 <span class="hint">可输入关键词搜索</span></label>
+            <input type="text" id="modelSearch" list="modelList" placeholder="输入模型名称，如 Qwen3-32B / DeepSeek-V4">
+            <datalist id="modelList"></datalist>
+          </div>
+          <div class="form-item" style="flex:0 0 auto;">
+            <label>&nbsp;</label>
+            <button class="btn" id="recBtn" onclick="runRecommend()">🔍 查询推荐设备</button>
+          </div>
+        </div>
+        <div class="status-msg" id="recMsg"></div>
+      </div>
+
+      <!-- 步骤二：推荐设备 -->
+      <div class="calc-block" id="devBlock" style="display:none;">
+        <h3>🖥️ 步骤 2 · 推荐设备与实测性能 <span class="sub" id="devCount"></span></h3>
+        <div id="devList"></div>
+        <div class="empty-state" id="devEmpty" style="display:none;"></div>
+      </div>
+
+      <!-- 步骤三：业务满足度评估 -->
+      <div class="calc-block" id="bizBlock" style="display:none;">
+        <h3>📈 步骤 3 · 业务满足度评估 <span class="sub">填写业务约束，评估各设备能否满足（可选，留空仅展示基线）</span></h3>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>期望输入长度 <span class="hint">token</span></label>
+            <input type="number" id="bizInput" placeholder="如 2048" min="0">
+          </div>
+          <div class="form-item">
+            <label>期望输出长度 <span class="hint">token</span></label>
+            <input type="number" id="bizOutput" placeholder="如 1024" min="0">
+          </div>
+          <div class="form-item">
+            <label>期望并发 <span class="hint">并发数</span></label>
+            <input type="number" id="bizConc" placeholder="如 50" min="0">
+          </div>
+          <div class="form-item">
+            <label>期望 QPS <span class="hint">请求/秒</span></label>
+            <input type="number" id="bizQps" placeholder="如 5" min="0" step="0.1">
+          </div>
+          <div class="form-item">
+            <label>首token时延上限 <span class="hint">ms</span></label>
+            <input type="number" id="bizTtft" placeholder="如 1000" min="0">
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:16px;">
+          <button class="btn" id="evalBtn" onclick="runEval()">📊 评估满足度</button>
+          <button class="btn" id="aiBtn" onclick="runAiAdvice()">🤖 AI 选型建议</button>
+          <button class="btn secondary" onclick="clearBiz()">↺ 清除业务参数</button>
+        </div>
+        <div id="aiAdviceBox" style="display:none;margin-top:18px;border:1px solid var(--color-border);border-radius:10px;padding:16px 18px;background:var(--color-bg-secondary);"></div>
+      </div>
+        </div><!-- /modelBody -->
+      </div><!-- /按模型精确查询 -->
+      </div><!-- /pane-query -->
+
+      <!-- Tab 3：高级筛选对比 -->
+      <div class="wb-pane" id="pane-adv">
+
+      <!-- 高级筛选与对比 -->
+      <div class="calc-block">
+        <h3>⚙️ 高级筛选与对比</h3>
+        <div id="advBody">
+
+          <div class="form-grid">
+            <div class="form-item">
+              <label>模型</label>
+              <select id="fModel"><option value="">全部模型</option></select>
+            </div>
+            <div class="form-item">
+              <label>推理框架</label>
+              <select id="fFramework"><option value="">全部框架</option></select>
+            </div>
+            <div class="form-item">
+              <label>产品组合</label>
+              <select id="fProduct"><option value="">全部产品组合</option></select>
+            </div>
+            <div class="form-item">
+              <label>场景</label>
+              <select id="fScenario"><option value="">全部场景</option></select>
+            </div>
+            <div class="form-item">
+              <label>数据格式</label>
+              <select id="fFormat"><option value="">全部格式</option></select>
+            </div>
+            <div class="form-item">
+              <label>总卡数</label>
+              <select id="fCards"><option value="">全部卡数</option></select>
+            </div>
+            <div class="form-item">
+              <label>平均输入长度 <span class="hint">范围</span></label>
+              <div class="range-row">
+                <input type="number" id="fMinIn" placeholder="最小" min="0">
+                <span>~</span>
+                <input type="number" id="fMaxIn" placeholder="最大" min="0">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>平均输出长度 <span class="hint">范围</span></label>
+              <div class="range-row">
+                <input type="number" id="fMinOut" placeholder="最小" min="0">
+                <span>~</span>
+                <input type="number" id="fMaxOut" placeholder="最大" min="0">
+              </div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:16px;">
+            <button class="btn" id="queryBtn" onclick="runQuery()">🔍 查询</button>
+            <button class="btn secondary" onclick="resetFilters()">↺ 重置</button>
+            <span class="status-msg" id="queryMsg"></span>
+          </div>
+
+          <div style="margin-top:22px;">
+            <h3>📋 查询结果 <span class="sub" id="resultCount"></span></h3>
+            <div class="table-scroll">
+              <table class="result-table" id="resultTable">
+                <thead>
+                  <tr>
+                    <th style="width:36px"><input type="checkbox" id="checkAll" onclick="toggleAll(this)"></th>
+                    <th>模型</th>
+                    <th>框架</th>
+                    <th>产品组合</th>
+                    <th>场景</th>
+                    <th class="num">卡数</th>
+                    <th class="num">输入/输出</th>
+                    <th class="num">并发</th>
+                    <th class="num">TTFT(ms)</th>
+                    <th class="num">TPOT(ms)</th>
+                    <th class="num">输出吞吐(tps)</th>
+                    <th class="num">单卡吞吐(tps)</th>
+                  </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="resultEmpty" style="display:none;">未匹配到符合条件的性能数据，请调整筛选条件后重试。</div>
+          </div>
+
+          <div style="margin-top:22px; display:none;" id="compareBlock">
+            <h3>📊 指标对比 <span class="sub" id="compareCount"></span></h3>
+            <div class="chart-tabs" id="chartTabs"></div>
+            <div class="chart-wrap" id="chartWrap"></div>
+            <div class="chart-empty" id="chartEmpty" style="display:none;">请先在结果表中勾选需要对比的记录（≥1 条）。</div>
+          </div>
+
+        </div>
+      </div>
+      </div><!-- /pane-adv -->
+
+    </div>
+  </div>
+
+  <script>
+    // ============ Tab 切换 ============
+    function switchTab(name, btn) {
+      document.querySelectorAll('.wb-tab').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.wb-pane').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('pane-' + name).classList.add('active');
+    }
+
+    // ============ 状态 ============
+    var allItems = [];
+    var selectedMap = {};   // id -> record
+    var recDevices = [];    // 当前推荐设备
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) {
+      var A = String.fromCharCode(38);
+      return String(s == null ? '' : s)
+        .replace(/&/g, A + 'amp;').replace(/</g, A + 'lt;')
+        .replace(/>/g, A + 'gt;').replace(/"/g, A + 'quot;');
+    }
+    function fmtNum(n) {
+      if (n === null || n === undefined || n === '') return '-';
+      var v = Number(n);
+      if (isNaN(v)) return '-';
+      return v.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
+    }
+
+    // ============ 主题 ============
+    function toggleTheme() {
+      var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', cur);
+      try { localStorage.setItem('dl-theme', cur); } catch (e) {}
+    }
+
+    // ============ 高级筛选区折叠 ============
+    function toggleAdv() {
+      var b = $('advBody'), t = $('advToggle');
+      var show = b.style.display === 'none';
+      b.style.display = show ? '' : 'none';
+      t.textContent = show ? '收起 ▴' : '展开 ▾';
+      if (show && !allItems.length) runQuery();
+    }
+
+    // ============ 模型下拉（售前选型） ============
+    function loadModels() {
+      fetch('/admin/api/performance/models')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var set = {};
+          (d.performance_models || []).forEach(function (m) { set[m] = true; });
+          (d.lite_models || []).forEach(function (m) { set[m] = true; });
+          var names = Object.keys(set).filter(function (m) { return m && m.trim(); }).sort();
+          $('modelList').innerHTML = names.map(function (m) { return '<option value="' + esc(m) + '"></option>'; }).join('');
+        })
+        .catch(function () {});
+    }
+
+    // ============ 售前选型：推荐设备 ============
+    function setStep(n) {
+      var pills = { 1: 'step1Pill', 2: 'step2Pill', 3: 'step3Pill' };
+      for (var k in pills) $(pills[k]).classList.toggle('done', n >= Number(k));
+    }
+
+    function runRecommend() {
+      var model = $('modelSearch').value.trim();
+      var msg = $('recMsg');
+      if (!model) { msg.className = 'status-msg error'; msg.textContent = '❌ 请先输入模型名称'; return; }
+      msg.className = 'status-msg ok';
+      msg.textContent = '⏳ 正在匹配推荐设备…';
+      var btn = $('recBtn'); btn.disabled = true;
+
+      fetch('/admin/api/performance/recommend?model=' + encodeURIComponent(model))
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (d) {
+          recDevices = d.devices || [];
+          renderDevices(d);
+          setStep(2);
+          msg.textContent = '✅ 已匹配 ' + recDevices.length + ' 个设备（实测 ' +
+            recDevices.filter(function (x) { return x.source === '实测'; }).length +
+            ' / 官方推荐 ' + recDevices.filter(function (x) { return x.source === '官方推荐'; }).length + '）';
+        })
+        .catch(function (err) {
+          msg.className = 'status-msg error'; msg.textContent = '❌ 查询失败：' + (err && err.message ? err.message : '未知错误');
+        })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function renderDevices(d) {
+      var list = $('devList'), empty = $('devEmpty'), count = $('devCount');
+      $('devBlock').style.display = '';
+      count.textContent = '共 ' + recDevices.length + ' 个候选设备';
+      if (!recDevices.length) {
+        list.innerHTML = '';
+        empty.style.display = '';
+        empty.textContent = '未找到「' + esc(d.model) + '」的实测性能数据或官方推荐硬件。\n请尝试其他模型名，或联系技术团队评估。';
+        $('bizBlock').style.display = 'none';
+        setStep(2);
+        return;
+      }
+      empty.style.display = 'none';
+      list.innerHTML = recDevices.map(function (dev, i) {
+        var srcBadge = dev.source === '实测'
+          ? '<span class="badge src-measured">实测</span>'
+          : '<span class="badge src-official">官方推荐</span>';
+        var memBadge = dev.memory ? '<span class="badge mem">' + esc(dev.memory) + '</span>' : '';
+        var recBadge = (i === 0 && dev.source === '实测') ? '<span class="badge rec">首选推荐</span>' : '';
+        var satisfyHtml = renderSatisfy(dev);
+        return '<div class="dev-card ' + (i === 0 && dev.source === '实测' ? 'recommended' : '') + '">' +
+          '<div class="dev-card-head">' +
+            '<div class="dev-card-title"><strong>' + esc(dev.display || dev.product) + '</strong>' +
+              srcBadge + memBadge + recBadge + '</div>' +
+            '<div class="dev-card-title"><span class="sub">' + esc(dev.product) + ' · ' + dev.records + ' 条记录</span></div>' +
+          '</div>' +
+          '<div class="dev-metrics">' +
+            metric('总卡数', dev.total_cards) +
+            metric('并发', dev.concurrency) +
+            metric('输入/输出', dev.avg_input !== null && dev.avg_output !== null ? fmtNum(dev.avg_input) + '/' + fmtNum(dev.avg_output) : '-') +
+            metric('TTFT(ms)', dev.ttft_ms, true) +
+            metric('TPOT(ms)', dev.tpot_ms) +
+            metric('总吞吐(tps)', dev.e2e_tps) +
+            metric('单卡吞吐(tps)', dev.per_card_e2e_tps, true) +
+            metric('QPS', dev.qps) +
+          '</div>' +
+          satisfyHtml +
+        '</div>';
+      }).join('');
+      $('bizBlock').style.display = '';
+    }
+
+    function metric(k, v, hl) {
+      // 数字用 fmtNum 格式化；字符串（如已拼接的 "1,024/1,024"）原样展示，避免二次转换
+      var val = (typeof v === 'string') ? v : fmtNum(v);
+      return '<div class="dev-metric"><div class="k">' + k + '</div><div class="v ' + (hl ? 'metric-hl' : '') + '">' + val + '</div></div>';
+    }
+
+    function renderSatisfy(dev) {
+      var lvl = dev.satisfy_level || '无数据';
+      var cls = lvl === '满足' ? 'ok' : lvl === '临界' ? 'warn' : lvl === '不满足' ? 'bad' : 'na';
+      var reasons = (dev.satisfy_reasons || []).map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('');
+      // satisfy_advice 后端可能返回字符串或数组，统一转数组
+      var adv = dev.satisfy_advice;
+      if (typeof adv === 'string') adv = [adv];
+      var advice = (adv || []).join('；');
+      return '<div class="satisfy ' + cls + '">' +
+        '<span class="lvl">' + esc(lvl) + '</span>' +
+        (reasons ? '<ul>' + reasons + '</ul>' : '') +
+        (advice ? '<div class="advice">💡 ' + esc(advice) + '</div>' : '') +
+      '</div>';
+    }
+
+    // ============ 业务满足度评估 ============
+    function runEval() {
+      var model = $('modelSearch').value.trim();
+      if (!model) { alert('请先选择模型'); return; }
+      var params = new URLSearchParams();
+      params.set('model', model);
+      var fields = [['bizInput', 'input_len'], ['bizOutput', 'output_len'], ['bizConc', 'concurrency'], ['bizQps', 'qps'], ['bizTtft', 'max_ttft']];
+      fields.forEach(function (f) {
+        var v = $(f[0]).value;
+        if (v !== '') params.set(f[1], v);
+      });
+      var btn = $('evalBtn'); btn.disabled = true;
+      fetch('/admin/api/performance/recommend?' + params.toString())
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          recDevices = d.devices || [];
+          renderDevices(d);
+          setStep(3);
+        })
+        .catch(function () { alert('评估失败'); })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function clearBiz() {
+      ['bizInput', 'bizOutput', 'bizConc', 'bizQps', 'bizTtft'].forEach(function (id) { $(id).value = ''; });
+      var model = $('modelSearch').value.trim();
+      if (model) { recDevices = []; runRecommend(); }
+    }
+
+    // ============ AI 选型建议（LLM 补充解读规则引擎结果） ============
+    function runAiAdvice() {
+      var box = $('aiAdviceBox');
+      var model = $('modelSearch').value.trim();
+      if (!model) { alert('请先选择模型'); return; }
+      if (!recDevices || !recDevices.length) {
+        alert('暂无设备数据，请先点击「评估满足度」');
+        return;
+      }
+      var biz = {};
+      var map = { bizInput: 'input_len', bizOutput: 'output_len', bizConc: 'concurrency', bizQps: 'qps', bizTtft: 'max_ttft' };
+      Object.keys(map).forEach(function (id) {
+        var v = $(id).value;
+        if (v !== '') biz[map[id]] = Number(v);
+      });
+      var btn = $('aiBtn');
+      btn.disabled = true;
+      box.style.display = '';
+      box.innerHTML = '<div class="loading" style="padding:20px"><div class="spinner"></div><p>🤖 AI 正在解读选型结果…</p></div>';
+      fetch('/admin/api/performance/llm-advice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: model, devices: recDevices, biz: biz }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { box.innerHTML = '<div class="advice-bad">❌ ' + esc(d.error) + '</div>'; return; }
+          var rec = d.recommend ? '<span class="ai-rec">' + esc(d.recommend) + '</span>' : '<span class="ai-rec na">暂无明确推荐</span>';
+          var conf = d.confidence ? '（置信度：' + esc(d.confidence) + '）' : '';
+          var html = '<div style="font-weight:700;margin-bottom:8px;">🤖 AI 选型建议 ' + conf + '</div>' +
+            '<div style="margin-bottom:8px;">首选设备：' + rec + '</div>' +
+            '<div style="margin-bottom:8px;">📝 ' + esc(d.summary || '') + '</div>';
+          if (d.risk) html += '<div style="margin-bottom:8px;">⚠️ 风险：' + esc(d.risk) + '</div>';
+          if (d.advice) html += '<div>💡 建议：' + esc(d.advice) + '</div>';
+          box.innerHTML = html;
+        })
+        .catch(function () { box.innerHTML = '<div class="advice-bad">❌ AI 建议获取失败</div>'; })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    // ============ 按模型精确查询：折叠 ============
+    function toggleModel() {
+      var b = $('modelBody'), t = $('modelToggle');
+      var show = b.style.display === 'none';
+      b.style.display = show ? '' : 'none';
+      t.textContent = show ? '收起 ▴' : '展开 ▾';
+    }
+
+    // ============ 需求驱动选型 ============
+    function clearReq() {
+      ['reqScene', 'reqInput', 'reqOutput', 'reqConc', 'reqQps', 'reqTtft'].forEach(function (id) { $(id).value = ''; });
+      $('reqMem').value = '';
+      $('reqResult').innerHTML = '';
+      $('prErrBox').style.display = 'none';
+      $('prResult1').innerHTML = '';
+      $('prResult2').innerHTML = '';
+      $('prResult3').innerHTML = '';
+      $('prResultBlock').style.display = 'none';
+      $('reqMsg').className = 'status-msg';
+      $('reqMsg').textContent = '';
+    }
+
+    function reqVal(id) {
+      var v = $(id).value;
+      return v === '' ? null : Number(v);
+    }
+
+    // ============ 业界默认场景预设（实时交互类 token 配置） ============
+    // 选择场景后自动填充输入/输出 token，用户仍可手动修改。
+    // 键名与后端 recommend.py 的 SCENE_PRESETS 保持一致（含空格），避免场景匹配失败。
+    var SCENE_PRESETS = {
+      '多轮客服':        { input: 2048,  output: 512 },
+      '行业助手':        { input: 16000, output: 1024 },
+      'Code Agent 短链': { input: 32000, output: 800 },
+      'Code Agent 中链': { input: 100000, output: 800 },
+      '全仓库':          { input: 500000, output: 2000 },
+      '中文档 RAG':      { input: 32000, output: 1000 },
+      '全文档 QA':       { input: 300000, output: 2000 },
+      '整本书 QA':       { input: 800000, output: 2000 },
+    };
+    function onSceneChange() {
+      var scene = $('reqScene').value;
+      var preset = SCENE_PRESETS[scene];
+      if (preset) {
+        $('reqInput').value = preset.input;
+        $('reqOutput').value = preset.output;
+      }
+    }
+    $('reqScene').addEventListener('change', onSceneChange);
+
+    // ============ 需求驱动引擎切换（实测融合 / 三级推荐） ============
+    var reqEngine = 'rec';   // 'rec' | 'pr'
+    function switchEngine(name, btn) {
+      reqEngine = name;
+      document.querySelectorAll('#pane-rec .wb-tab').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var isPr = name === 'pr';
+      // 引擎专属参数组
+      $('grpRecParams').style.display = isPr ? 'none' : '';
+      $('grpPrParams').style.display = isPr ? '' : 'none';
+      // 运行按钮
+      $('reqBtn').style.display = isPr ? 'none' : '';
+      $('prRunBtn').style.display = isPr ? '' : 'none';
+      // 结果容器
+      $('reqResult').style.display = isPr ? 'none' : '';
+      $('prResultBlock').style.display = isPr ? 'block' : 'none';
+      $('reqMsg').className = 'status-msg';
+      $('reqMsg').textContent = '';
+    }
+
+    function runReq() {
+      var msg = $('reqMsg');
+      var scene = $('reqScene').value.trim();
+      var biz = {
+        input_len: reqVal('reqInput'),
+        output_len: reqVal('reqOutput'),
+        concurrency: reqVal('reqConc'),
+        qps: reqVal('reqQps'),
+        max_ttft: reqVal('reqTtft'),
+      };
+      var hasAny = Object.keys(biz).some(function (k) { return biz[k] !== null; });
+      if (!scene && !hasAny) {
+        msg.className = 'status-msg error'; msg.textContent = '❌ 请至少填写业务参数或场景';
+        return;
+      }
+      var btn = $('reqBtn');
+      btn.disabled = true;
+      msg.className = 'status-msg ok';
+      msg.textContent = '⏳ 正在智能选型…';
+      $('reqResult').innerHTML = '<div class="loading" style="padding:20px"><div class="spinner"></div><p>🤖 AI 正在根据需求推荐模型与设备…</p></div>';
+      fetch('/admin/api/performance/recommend-by-requirement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scene: scene, memory: $('reqMem').value, input_len: biz.input_len, output_len: biz.output_len, concurrency: biz.concurrency, qps: biz.qps, max_ttft: biz.max_ttft }),
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (d) {
+          if (d.error) {
+            msg.className = 'status-msg error';
+            msg.textContent = '❌ ' + d.error;
+            $('reqResult').innerHTML = '';
+            return;
+          }
+          msg.className = 'status-msg ok';
+          msg.textContent = '✅ 已生成选型建议';
+          renderReqResult(d);
+        })
+        .catch(function (err) {
+          msg.className = 'status-msg error'; msg.textContent = '❌ 选型失败：' + (err && err.message ? err.message : '未知错误');
+          $('reqResult').innerHTML = '';
+        })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function renderReqResult(d) {
+      var box = $('reqResult');
+      var html = '';
+      // LLM 解读（首选）
+      var llm = d.llm;
+      if (llm) {
+        var conf = llm.confidence ? '（置信度：' + esc(llm.confidence) + '）' : '';
+        html += '<div class="calc-block" style="margin-bottom:16px;">' +
+          '<h3>🤖 AI 推荐结论 ' + conf + '</h3>';
+        if (llm.recommend) {
+          html += '<div style="margin:6px 0"><b>推荐模型：</b>' + esc(llm.recommend) +
+            (llm.device ? '　<b>设备：</b>' + esc(llm.device) : '') +
+            (llm.cards ? '　<b>设备数量：</b>' + esc(llm.cards) + ' 卡' : '') + '</div>';
+        } else {
+          html += '<div style="margin:6px 0;color:var(--color-error)">⚠️ 候选均不完全匹配，详见下方候选与建议。</div>';
+        }
+        if (llm.scene_fit) html += '<div style="margin:6px 0">🎯 <b>适用场景：</b>' + esc(llm.scene_fit) + '</div>';
+        if (llm.rationale) html += '<div style="margin:6px 0">🧠 <b>选型理由：</b>' + esc(llm.rationale) + '</div>';
+        if (llm.summary) html += '<div style="margin:6px 0">📝 <b>综合解读：</b>' + esc(llm.summary) + '</div>';
+        if (llm.risk) html += '<div style="margin:6px 0">⚠️ 风险：' + esc(llm.risk) + '</div>';
+        if (llm.advice) html += '<div style="margin:6px 0">💡 建议：' + esc(llm.advice) + '</div>';
+        html += '</div>';
+      } else if (d.llm_error) {
+        html += '<div class="advice-bad" style="margin-bottom:12px">⚠️ ' + esc(d.llm_error) + '（已展示规则引擎候选）</div>';
+      }
+
+      // 候选列表
+      var cands = d.candidates || [];
+      if (cands.length) {
+        html += '<h3 style="font-size:1rem;margin:6px 0 10px;color:var(--color-text-secondary)">候选模型（按满足度排序）</h3>';
+        html += cands.map(function (c) {
+          var cls = c.satisfy_level === '满足' ? 'ok' : c.satisfy_level === '临界' ? 'warn' : c.satisfy_level === '不满足' ? 'bad' : 'na';
+          var cardsHtml = c.cards !== null && c.cards !== undefined
+            ? '<span class="badge mem">需 ' + esc(c.cards) + ' 卡</span>'
+            : '<span class="badge mem">卡数待定</span>';
+          var reasons = (c.reasons || []).map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('');
+          // 数据来源徽章：实测 / 估算（后端 fusion 新增 source 字段）
+          var src = c.source === '估算'
+            ? '<span class="badge src-estimate">估算</span>'
+            : '<span class="badge src-measured">实测</span>';
+          // 估算兜底候选：无实测指标，改用 fusion 估算方案展示
+          var isEst = c.source === '估算';
+          var fusion = c.fusion || {};
+          var estBest = fusion.best || null;
+          var metricsHtml = '';
+          if (isEst) {
+            metricsHtml = estBest
+              ? '<div class="dev-metrics">' +
+                  metric('估算卡型', estBest.gpu) +
+                  metric('估算卡数', estBest.cards, true) +
+                  metric('估算显存(GB)', fusion.total_vram_gb != null ? Math.round(fusion.total_vram_gb) : null) +
+                  metric('估算成本(万)', estBest.cost_cny != null ? Math.round(estBest.cost_cny / 10000) : null) +
+                '</div>'
+              : '<div class="dev-metrics">' + metric('估算卡数', null) + '</div>';
+          } else {
+            metricsHtml = '<div class="dev-metrics">' +
+              metric('单卡吞吐(tps)', c.per_card_tps, true) +
+              metric('总吞吐(tps)', c.e2e_tps) +
+              metric('TTFT(ms)', c.ttft_ms) +
+              metric('并发', c.concurrency) +
+              metric('实测基线卡数', c.total_cards_baseline) +
+            '</div>';
+          }
+          // 实测候选附带 Skill 估算对比
+          var fusionHtml = '';
+          if (!isEst && estBest) {
+            fusionHtml = '<div style="margin-top:6px;font-size:0.82rem;color:var(--color-text-tertiary)">' +
+              '⚖️ Skill 估算对比：<b>' + esc(estBest.gpu) + ' × ' + esc(estBest.cards) + ' 卡</b>' +
+              (estBest.cost_cny != null ? '，约 ' + Math.round(estBest.cost_cny / 10000) + ' 万' : '') +
+              '</div>';
+          }
+          return '<div class="dev-card" style="margin-bottom:12px">' +
+            '<div class="dev-card-head"><div class="dev-card-title"><strong>' + esc(c.model) + '</strong>' +
+              src +
+              '<span class="badge ' + cls + '">' + esc(c.satisfy_level) + '</span>' +
+              (c.memory ? '<span class="badge mem">' + esc(c.memory) + '</span>' : '') +
+              cardsHtml + '</div>' +
+              '<div class="dev-card-title"><span class="sub">' + esc(c.device) + (isEst ? ' · 估算方案' : ' · ' + c.records + ' 条实测') + '</span></div>' +
+            '</div>' +
+            metricsHtml +
+            (reasons ? '<ul style="margin:6px 0 0;padding-left:18px;font-size:0.85rem;color:var(--color-text-secondary)">' + reasons + '</ul>' : '') +
+            (c.card_reason ? '<div style="margin-top:6px;font-size:0.82rem;color:var(--color-text-tertiary)">📐 ' + esc(c.card_reason) + '</div>' : '') +
+            fusionHtml +
+          '</div>';
+        }).join('');
+      }
+      box.innerHTML = html;
+    }
+
+
+    // ============ 高级筛选：加载筛选选项 ============
+    function loadFilters() {
+      fetch('/admin/api/performance/filters')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          fillSelect('fModel', d.models || []);
+          fillSelect('fFramework', d.frameworks || []);
+          fillSelect('fProduct', d.products || []);
+          fillSelect('fScenario', d.scenarios || []);
+          fillSelect('fFormat', d.data_formats || []);
+          var cards = (d.cards || []).map(function (c) { return String(c); });
+          fillSelect('fCards', cards);
+        })
+        .catch(function () {});
+    }
+
+    function fillSelect(id, values) {
+      var sel = $(id);
+      if (!sel) return;
+      var html = '<option value="">' + (id === 'fCards' ? '全部卡数' : '全部' + labelOf(id)) + '</option>';
+      values.forEach(function (v) {
+        html += '<option value="' + esc(v) + '">' + esc(v) + '</option>';
+      });
+      sel.innerHTML = html;
+    }
+    function labelOf(id) {
+      return { fModel: '模型', fFramework: '框架', fProduct: '产品组合', fScenario: '场景', fFormat: '格式' }[id] || '';
+    }
+
+    // ============ 高级筛选：查询 ============
+    function runQuery() {
+      var msg = $('queryMsg');
+      msg.className = 'status-msg';
+      var params = new URLSearchParams();
+      ['fModel', 'fFramework', 'fProduct', 'fScenario', 'fFormat', 'fCards'].forEach(function (id) {
+        var v = $(id).value;
+        if (v) params.set(id.slice(1).toLowerCase(), v);
+      });
+      ['fMinIn', 'fMaxIn', 'fMinOut', 'fMaxOut'].forEach(function (id) {
+        var v = $(id).value;
+        if (v !== '') params.set(id.slice(1).toLowerCase(), v);
+      });
+
+      var btn = $('queryBtn');
+      btn.disabled = true;
+      msg.textContent = '⏳ 查询中…';
+      msg.classList.add('ok');
+      fetch('/admin/api/performance/query?' + params.toString())
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (d) {
+          allItems = d.items || [];
+          renderResult();
+          msg.textContent = '✅ 共 ' + d.total + ' 条结果';
+          msg.classList.remove('error');
+        })
+        .catch(function (err) {
+          msg.textContent = '❌ 查询失败：' + (err && err.message ? err.message : '未知错误');
+          msg.classList.add('error');
+        })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function renderResult() {
+      var tbody = $('resultBody');
+      $('resultCount').textContent = '共 ' + allItems.length + ' 条';
+      if (!allItems.length) {
+        tbody.innerHTML = '';
+        $('resultEmpty').style.display = '';
+        return;
+      }
+      $('resultEmpty').style.display = 'none';
+      var html = '';
+      allItems.forEach(function (it) {
+        var checked = selectedMap[it.id] ? 'checked' : '';
+        html += '<tr data-id="' + esc(it.id) + '" class="' + (selectedMap[it.id] ? 'selected' : '') + '">' +
+          '<td><input type="checkbox" class="row-check" data-id="' + esc(it.id) + '" ' + checked + ' onchange="toggleRow(this)"></td>' +
+          '<td><strong>' + esc(it.model) + '</strong></td>' +
+          '<td>' + esc(it.framework || '-') + '</td>' +
+          '<td>' + esc(it.product || '-') + '</td>' +
+          '<td>' + esc(it.scenario || '-') + '</td>' +
+          '<td class="num">' + fmtNum(it.total_cards) + '</td>' +
+          '<td class="num">' + fmtNum(it.avg_input) + '/' + fmtNum(it.avg_output) + '</td>' +
+          '<td class="num">' + fmtNum(it.concurrency) + '</td>' +
+          '<td class="num metric-hl">' + fmtNum(it.ttft_ms) + '</td>' +
+          '<td class="num">' + fmtNum(it.tpot_ms) + '</td>' +
+          '<td class="num metric-hl">' + fmtNum(it.output_tps) + '</td>' +
+          '<td class="num">' + fmtNum(it.per_card_output_tps) + '</td>' +
+          '</tr>';
+      });
+      tbody.innerHTML = html;
+      updateCompare();
+    }
+
+    // ============ 勾选对比 ============
+    function toggleAll(cb) {
+      allItems.forEach(function (it) {
+        if (cb.checked) selectedMap[it.id] = it;
+        else delete selectedMap[it.id];
+      });
+      renderResult();
+    }
+    function toggleRow(cb) {
+      var id = cb.getAttribute('data-id');
+      if (cb.checked) {
+        var rec = allItems.find(function (x) { return x.id === id; });
+        if (rec) selectedMap[id] = rec;
+      } else {
+        delete selectedMap[id];
+      }
+      var row = document.querySelector('tr[data-id="' + id + '"]');
+      if (row) row.classList.toggle('selected', cb.checked);
+      updateCompare();
+    }
+    function selectedList() {
+      return Object.keys(selectedMap).map(function (k) { return selectedMap[k]; });
+    }
+
+    var METRICS = [
+      { key: 'ttft_ms', label: 'TTFT(ms)', lower: true },
+      { key: 'tpot_ms', label: 'TPOT(ms)', lower: true },
+      { key: 'output_tps', label: '输出吞吐(tps)', lower: false },
+      { key: 'per_card_output_tps', label: '单卡吞吐(tps)', lower: false },
+      { key: 'e2e_s', label: 'E2E时间(s)', lower: true },
+      { key: 'e2e_tps', label: 'E2E吞吐(tps)', lower: false }
+    ];
+    var activeMetric = 'output_tps';
+
+    function updateCompare() {
+      var list = selectedList();
+      $('compareCount').textContent = '已选 ' + list.length + ' 条';
+      if (!list.length) {
+        $('compareBlock').style.display = 'none';
+        return;
+      }
+      $('compareBlock').style.display = '';
+      renderChartTabs();
+      renderChart();
+    }
+
+    function renderChartTabs() {
+      var html = METRICS.map(function (m) {
+        return '<span class="chart-tab ' + (m.key === activeMetric ? 'active' : '') + '" onclick="setMetric(\'' + m.key + '\')">' + esc(m.label) + '</span>';
+      }).join('');
+      $('chartTabs').innerHTML = html;
+    }
+    function setMetric(key) {
+      activeMetric = key;
+      renderChartTabs();
+      renderChart();
+    }
+
+    // 内联 SVG 柱状图（无外部依赖，跟随主题配色）
+    function renderChart() {
+      var wrap = $('chartWrap');
+      var empty = $('chartEmpty');
+      var list = selectedList();
+      if (!list.length) { wrap.innerHTML = ''; empty.style.display = ''; return; }
+      empty.style.display = 'none';
+
+      var m = METRICS.find(function (x) { return x.key === activeMetric; });
+      var data = list.map(function (it) {
+        var v = it[m.key];
+        return { label: it.model + ' · ' + (it.product || '-'), value: (v === null || v === undefined || isNaN(Number(v))) ? null : Number(v) };
+      });
+      var hasVal = data.some(function (d) { return d.value !== null; });
+      if (!hasVal) { wrap.innerHTML = '<div class="chart-empty">该指标在当前所选记录中无数据，请切换指标或选择其他记录。</div>'; return; }
+
+      var W = 900, H = 340, padL = 70, padR = 20, padT = 30, padB = 120;
+      var plotW = W - padL - padR, plotH = H - padT - padB;
+      var vals = data.map(function (d) { return d.value; });
+      var maxV = Math.max.apply(null, vals.filter(function (v) { return v !== null; }));
+      maxV = maxV <= 0 ? 1 : maxV;
+      var n = data.length;
+      var bw = Math.min(70, (plotW / n) * 0.6);
+      var step = plotW / n;
+
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var cAxis = isDark ? '#8b8b94' : '#666';
+      var cText = isDark ? '#c9c9d1' : '#333';
+      var cGrid = isDark ? '#33333c' : '#e5e5e5';
+      var cBar = isDark ? '#5b8def' : '#4a7de0';
+      var cLabel = isDark ? '#a6a6b0' : '#555';
+
+      function niceMax(v) {
+        var p = Math.pow(10, Math.floor(Math.log10(v)));
+        var m = v / p;
+        var nm = m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10;
+        return nm * p;
+      }
+      maxV = niceMax(maxV);
+      // 网格线（5 条）
+      var gridHtml = '', tickHtml = '';
+      for (var i = 0; i <= 5; i++) {
+        var y = padT + plotH - (plotH * i / 5);
+        var val = maxV * i / 5;
+        gridHtml += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="' + cGrid + '" stroke-width="1"/>';
+        tickHtml += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" fill="' + cAxis + '">' + fmtNum(val) + '</text>';
+      }
+      var bars = '';
+      data.forEach(function (d, idx) {
+        var cx = padL + step * idx + step / 2;
+        if (d.value === null) {
+          bars += '<text x="' + cx + '" y="' + (padT + 8) + '" text-anchor="middle" font-size="11" fill="' + cLabel + '">无数据</text>';
+          return;
+        }
+        var bh = Math.max(2, plotH * (d.value / maxV));
+        var y = padT + plotH - bh;
+        bars += '<rect x="' + (cx - bw / 2) + '" y="' + y + '" width="' + bw + '" height="' + bh + '" fill="' + cBar + '" rx="3"/>';
+        bars += '<text x="' + cx + '" y="' + (y - 6) + '" text-anchor="middle" font-size="11" fill="' + cText + '">' + fmtNum(d.value) + '</text>';
+        // 底部标签（两行：模型 + 产品）
+        var label = d.label;
+        var parts = label.split(' · ');
+        bars += '<text x="' + cx + '" y="' + (H - padB + 24) + '" text-anchor="middle" font-size="10" fill="' + cLabel + '">' + esc(parts[0]) + '</text>';
+        if (parts[1]) {
+          bars += '<text x="' + cx + '" y="' + (H - padB + 40) + '" text-anchor="middle" font-size="9" fill="' + cLabel + '">' + esc(parts[1]) + '</text>';
+        }
+      });
+
+      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" xmlns="http://www.w3.org/2000/svg">' +
+        '<text x="' + (W / 2) + '" y="18" text-anchor="middle" font-size="14" font-weight="600" fill="' + cText + '">' + esc(m.label) + ' 对比</text>' +
+        '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="transparent"/>' +
+        gridHtml + tickHtml + bars +
+        '</svg>';
+      wrap.innerHTML = svg;
+    }
+
+    // ============ 初始化 ============
+    function resetFilters() {
+      ['fModel', 'fFramework', 'fProduct', 'fScenario', 'fFormat', 'fCards'].forEach(function (id) { $(id).value = ''; });
+      ['fMinIn', 'fMaxIn', 'fMinOut', 'fMaxOut'].forEach(function (id) { $(id).value = ''; });
+      runQuery();
+    }
+
+    // 回车触发查询
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target && e.target.id === 'modelSearch') runRecommend();
+    });
+
+    loadModels();
+    loadFilters();
+
+    // ============ 需求驱动推荐 · 三级推荐（模型 > 昇腾适配 > 硬件&TCO） ============
+    var PR_LEVEL_CN = {
+      production: '生产级', experimental: '实验级', compatible: '兼容级',
+      migration: '迁移级', none: '无适配'
+    };
+    var PR_LEVEL_BADGE = {
+      production: 'pr-b-prod', experimental: 'pr-b-exp', compatible: 'pr-b-comp',
+      migration: 'pr-b-mig', none: 'pr-b-none'
+    };
+    // 场景 Token 预设统一使用上方 SCENE_PRESETS（与后端 recommend.py 一致）
+
+    function prAiExtract() {
+      var req = document.getElementById('pr_req').value.trim();
+      var msg = document.getElementById('prExtractMsg');
+      var box = document.getElementById('prExtractResult');
+      if (!req) { msg.textContent = '❌ 请先输入需求描述'; return; }
+      var btn = document.getElementById('prExtractBtn');
+      btn.disabled = true; msg.textContent = '⏳ AI 正在提取关键参数…'; box.innerHTML = '';
+      fetch('/api/presales-extract', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requirement: req })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.success) throw new Error(res.error || '提取失败');
+          var p = res.params || {};
+          if (p.scene) { $('reqScene').value = p.scene; onSceneChange(); }
+          if (p.precision) $('pr_precision').value = p.precision;
+          if (p.qps) $('reqQps').value = p.qps;
+          if (p.in_len) $('reqInput').value = p.in_len;
+          if (p.out_len) $('reqOutput').value = p.out_len;
+          if (p.top) $('pr_top').value = p.top;
+          $('pr_require_open').value = p.require_open ? '1' : '0';
+          var tags = [];
+          tags.push('<span class="pr-extract-tag">场景 <b>' + esc(p.scene || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">精度 <b>' + esc(p.precision || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">QPS <b>' + esc(p.qps || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">输入 <b>' + esc(p.in_len || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">输出 <b>' + esc(p.out_len || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">候选数 <b>' + esc(p.top || '—') + '</b></span>');
+          tags.push('<span class="pr-extract-tag">开源约束 <b>' + (p.require_open ? '仅开源' : '不限') + '</b></span>');
+          var html = '<div class="pr-extract-tags">' + tags.join('') + '</div>';
+          if (p.summary) html += '<div class="pr-extract-summary">📌 需求要点：' + esc(p.summary) + '</div>';
+          if (res.missing && res.missing.length) html += '<div class="pr-extract-missing">⚠ 未提取到（可手动补充）：' + esc(res.missing.join('、')) + '</div>';
+          box.innerHTML = html;
+          msg.textContent = '✅ 已提取并回填，可确认后生成报告';
+        })
+        .catch(function (err) {
+          msg.textContent = ''; box.innerHTML = '<div class="err-box" style="display:block">❌ ' + esc(err.message) + '</div>';
+        })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function prLoadExample() {
+      switchEngine('pr', $('engPr'));
+      $('reqScene').value = '智能问答';
+      $('pr_precision').value = 'fp16';
+      $('reqQps').value = '30';
+      $('reqInput').value = '1024';
+      $('reqOutput').value = '512';
+      $('pr_top').value = '5';
+      $('pr_require_open').value = '0';
+      $('pr_adapt_only').value = '0';
+    }
+
+    function prRun() {
+      var scene = $('reqScene').value;
+      var preset = SCENE_PRESETS[scene];
+      var inLenVal = $('reqInput').value;
+      var outLenVal = $('reqOutput').value;
+      var in_len = inLenVal !== '' ? parseInt(inLenVal) : (preset ? preset.input : 1024);
+      var out_len = outLenVal !== '' ? parseInt(outLenVal) : (preset ? preset.output : 512);
+      var params = {
+        scene: scene,
+        precision: $('pr_precision').value,
+        qps: parseFloat($('reqQps').value) || 30,
+        in_len: in_len, out_len: out_len,
+        top: parseInt($('pr_top').value) || 5,
+        require_open: $('pr_require_open').value === '1' ? '1' : '',
+        adapt_only: $('pr_adapt_only').value === '1' ? '1' : ''
+      };
+      var errBox = $('prErrBox');
+      errBox.style.display = 'none';
+      $('prResultBlock').style.display = 'block';
+      $('prResult1').innerHTML = '<div class="loading-tip">正在加载模型数据并计算…</div>';
+      $('prResult2').innerHTML = '';
+      $('prResult3').innerHTML = '';
+      $('prStep3Card').style.display = params.adapt_only ? 'none' : '';
+      var qs = Object.keys(params).map(function (k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+      }).join('&');
+      fetch('/api/presales-recommend?' + qs)
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (res) {
+          if (!res.success) throw new Error(res.error || '未知错误');
+          prRenderStep1(res.report.step1, res.report.ranked);
+          prRenderStep2(res.report.step2, res.report.step1.candidates);
+          if (!params.adapt_only && res.report.step3) prRenderStep3(res.report.step3, res.report.step1.candidates);
+        })
+        .catch(function (err) {
+          $('prResult1').innerHTML = '';
+          errBox.style.display = 'block'; errBox.textContent = '请求失败：' + (err && err.message ? err.message : '未知错误');
+        });
+    }
+
+    function prRenderStep1(step1, ranked) {
+      var cands = step1.candidates || [];
+      document.getElementById('prNote1').textContent =
+        '池 ' + step1.pool_total + ' → 过滤后 ' + step1.pool_after_filter + ' 个候选';
+      var rankOf = {};
+      (ranked || []).forEach(function (r, i) { rankOf[r.code] = i + 1; });
+      var html = cands.map(function (c) {
+        var badges = [];
+        if (c.type) badges.push(esc(c.type));
+        if (c.commercial) badges.push(esc(c.commercial));
+        if (c.org) badges.push(esc(c.org));
+        var reasons = c.reasons || { pos: [], neg: [] };
+        var posHtml = (reasons.pos || []).map(function (r) { return '<div class="pos">✔ ' + esc(r) + '</div>'; }).join('');
+        var negHtml = (reasons.neg || []).map(function (r) { return '<div class="neg">✘ ' + esc(r) + '</div>'; }).join('');
+        var rank = rankOf[c.code] || '';
+        return '<div class="pr-cand-card">' +
+          '<div class="pr-cand-head"><div><span class="pr-cand-name">' + esc(c.name) + '</span>' +
+          '<span class="pr-cand-org"> · ' + esc(c.org || '') + '</span></div>' +
+          '<div class="pr-cand-score">' + (c.score != null ? c.score + ' 分' : (rank ? '第 ' + rank + ' 名' : '')) + '</div></div>' +
+          '<div class="pr-cand-badges">' + badges.map(function (b) { return '<span class="pr-badge pr-b-comp">' + b + '</span>'; }).join('') + '</div>' +
+          '<div class="pr-cand-reasons">' + posHtml + negHtml + '</div>' +
+          '</div>';
+      }).join('');
+      document.getElementById('prResult1').innerHTML = html || '<div class="empty">无候选模型，请放宽条件。</div>';
+    }
+
+    function prRenderStep2(step2, cands) {
+      var per = step2.per_candidate || {};
+      var rows = cands.map(function (c) {
+        var a = per[c.code] || {};
+        var level = a.adapt_level || 'none';
+        var badge = '<span class="pr-badge ' + (PR_LEVEL_BADGE[level] || 'pr-b-none') + '">' + (PR_LEVEL_CN[level] || level) + '</span>';
+        var series = (a.matched_series || []).join('、') || '-';
+        var hw = a.recommended_hw || '-';
+        return '<tr>' +
+          '<td>' + esc(c.name) + '</td>' +
+          '<td>' + badge + '</td>' +
+          '<td>' + esc(series) + '</td>' +
+          '<td class="num">' + esc(hw) + '</td>' +
+          '<td>' + (a.inference_perf ? esc(a.inference_perf) : '-') + '</td>' +
+          '</tr>';
+      }).join('');
+      document.getElementById('prResult2').innerHTML =
+        '<div class="table-scroll"><table class="result-table"><thead><tr>' +
+        '<th>模型</th><th>适配等级</th><th>命中系列/条目</th><th>推荐卡型</th><th>推理性能</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+
+    function prRenderStep3(step3, cands) {
+      var per = step3.per_candidate || {};
+      var rows = cands.map(function (c) {
+        var h = per[c.code] || {};
+        var srcBadge = h.has_bench
+          ? '<span class="pr-badge pr-b-prod">实测</span>'
+          : '<span class="pr-badge pr-b-exp">估算(±20% POC)</span>';
+        var bench = h.bench, est = h.hw_estimate, detail = '-';
+        if (h.has_bench && bench) {
+          detail = esc(bench.hardware || '') + ' × ' + (bench.total_cards || '?') + ' 卡 · ' +
+            esc(bench.data_format || '') + ' · TTFT ' + (bench.ttft_ms != null ? bench.ttft_ms + 'ms' : '-') +
+            ' · 单卡 ' + (bench.per_card_output_tps != null ? bench.per_card_output_tps + ' tok/s' : '-');
+          if (bench.match_type === 'series') detail += '<div class="pr-series-note">⚠ 该配置来源于同系列实测：' + esc(bench.source_model || '同系列模型') + '</div>';
+        } else if (est && est.plans && est.plans.length) {
+          var p = est.plans[0];
+          detail = esc(p.gpu || '') + ' × ' + (p.cards != null ? p.cards + ' 卡' : '-') +
+            (p.total_vram_gb != null ? ' · ' + p.total_vram_gb + 'GB' : '') +
+            (p.cost_cny != null ? ' · 约 ' + p.cost_cny + ' 万' : '') +
+            (est.plans.length > 1 ? '（共 ' + est.plans.length + ' 档可选）' : '');
+          if (p.over_capacity || est.over_capacity) {
+            detail += '<div class="pr-series-note">⚠ 估算所需卡数超出单集群可部署上限（>512 卡），'
+              + (est.total_vram_gb != null ? '显存需求约 ' + est.total_vram_gb + 'GB，' : '')
+              + '需超大集群或降低上下文/并发</div>';
+          }
+        } else if (est && est.total_vram_gb != null) {
+          detail = '<div class="pr-series-note">超出当前 GPU 库可估算范围（显存需求约 ' + est.total_vram_gb +
+            'GB，无满足 ≤512 卡的可部署方案），建议补充实测或降低上下文/并发</div>';
+        }
+        return '<tr>' +
+          '<td>' + esc(c.name) + '</td>' +
+          '<td>' + srcBadge + '</td>' +
+          '<td>' + detail + '</td>' +
+          '</tr>';
+      }).join('');
+      document.getElementById('prResult3').innerHTML =
+        '<div class="table-scroll"><table class="result-table"><thead><tr>' +
+        '<th>模型</th><th>数据来源</th><th>硬件配置 / 关键指标</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+  </script>
+</body>
+</html>

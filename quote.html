@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI使能服务报价器</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // 全局主题：与 index.html 共用 localStorage('dl-theme')，保证跳转后颜色一致
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('dl-theme') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .calc-page, body.calc-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .detail-header {
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .detail-header .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .detail-header h1 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+    .detail-header h1 .accent { color: var(--color-accent); }
+    .detail-header .back-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .detail-header .back-link:hover { text-decoration: underline; }
+    .detail-content { flex: 1; background: var(--color-bg); padding: 28px 0 60px; }
+    .calc-wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    .calc-block {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--color-card-shadow);
+    }
+    .calc-block h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 18px;
+      color: var(--color-text);
+      border-left: 4px solid var(--color-accent);
+      padding-left: 10px;
+    }
+    .calc-block h3 .sub { font-size: 0.78rem; font-weight: 400; color: var(--color-text-secondary); margin-left: 8px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px 18px; }
+    .form-item { display: flex; flex-direction: column; gap: 6px; }
+    .form-item label { font-size: 0.82rem; color: var(--color-text-secondary); font-weight: 500; }
+    .form-item label .hint { font-size: 0.72rem; color: var(--color-text-tertiary); font-weight: 400; margin-left: 4px; }
+    .form-item input, .form-item select, .form-item textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 0.9rem;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-item input:focus, .form-item select:focus, .form-item textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+    .form-item textarea { resize: vertical; min-height: 90px; font-family: inherit; }
+    .form-item input.in-orange, .form-item select.in-orange, .form-item textarea.in-orange { background: #FFF7E6; border-color: #FBBF24; }
+    .form-item input.in-green, .form-item select.in-green { background: #ECFDF5; border-color: #34D399; }
+    [data-theme="dark"] .form-item input.in-orange, [data-theme="dark"] .form-item select.in-orange, [data-theme="dark"] .form-item textarea.in-orange { background: #3A2E12; border-color: #B45309; color: #FDE68A; }
+    [data-theme="dark"] .form-item input.in-green, [data-theme="dark"] .form-item select.in-green { background: #0F2E22; border-color: #059669; color: #A7F3D0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border: 1px solid var(--color-primary);
+      border-radius: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .88; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn.secondary { background: var(--color-bg); color: var(--color-primary); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+
+    .result-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .result-table th, .result-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--color-border); }
+    .result-table th {
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      background: var(--color-bg-secondary);
+      white-space: nowrap;
+    }
+    .result-table td { color: var(--color-text); }
+    .result-table .num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+    .result-table .total-row td { font-weight: 700; background: var(--color-bg-secondary); border-top: 2px solid var(--color-border); }
+    .table-scroll { overflow-x: auto; }
+
+    .summary-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--color-bg-secondary);
+      border-left: 4px solid var(--color-accent);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .summary-box .total-amount { font-size: 1.4rem; font-weight: 800; color: var(--color-accent); }
+
+    .plan-content {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--color-text);
+    }
+    .plan-content h2 { font-size: 1.05rem; margin: 14px 0 6px; }
+    .plan-content h2:first-child { margin-top: 0; }
+    .plan-content h3 { font-size: 0.95rem; margin: 12px 0 4px; }
+    .plan-content p { margin: 6px 0; }
+    .plan-content ul, .plan-content ol { margin: 6px 0; padding-left: 22px; }
+    .plan-content li { margin: 3px 0; }
+    .plan-content code { background: var(--color-bg); padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
+    .plan-content pre { background: var(--color-bg); padding: 10px 12px; border-radius: 6px; overflow-x: auto; }
+
+    .status-msg { margin-top: 10px; font-size: 0.85rem; }
+    .status-msg.error { color: var(--color-error); }
+    .status-msg.ok { color: var(--color-success); }
+
+    .config-toggle {
+      background: none; border: none; color: var(--color-primary);
+      font-size: 0.82rem; cursor: pointer; padding: 0; font-weight: 500;
+    }
+    .config-toggle:hover { text-decoration: underline; }
+    .config-hidden { display: none; }
+
+    .history-item {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+    .history-item:hover { border-color: var(--color-primary); }
+    .history-item .h-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .history-item .h-time { font-size: 0.78rem; color: var(--color-text-tertiary); }
+    .history-item .h-req { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 6px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .history-item .h-amount { font-weight: 700; color: var(--color-accent); white-space: nowrap; }
+    .history-empty { color: var(--color-text-tertiary); font-size: 0.85rem; padding: 8px 0; }
+
+    /* 报价单打印样式 */
+    .quote-sheet { display: none; }
+    @media print {
+      body * { visibility: hidden; }
+      .quote-sheet, .quote-sheet * { visibility: visible; }
+      .quote-sheet {
+        display: block; position: absolute; left: 0; top: 0; width: 100%;
+        background: #fff; color: #000; padding: 30px;
+      }
+      .quote-sheet h2 { font-size: 1.4rem; text-align: center; margin: 0 0 6px; }
+      .quote-sheet .qs-sub { text-align: center; color: #555; font-size: 0.85rem; margin-bottom: 24px; }
+      .quote-sheet table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+      .quote-sheet th, .quote-sheet td { border: 1px solid #999; padding: 8px 10px; text-align: left; }
+      .quote-sheet th { background: #f2f2f2; }
+      .quote-sheet .qs-meta { margin-bottom: 18px; font-size: 0.9rem; line-height: 1.9; }
+      .quote-sheet .qs-total { text-align: right; font-size: 1.1rem; font-weight: 700; margin-top: 16px; }
+      .quote-sheet .qs-cn { text-align: right; margin-top: 6px; }
+      .quote-sheet .qs-note { margin-top: 30px; font-size: 0.75rem; color: #666; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="calc-page">
+  <header class="detail-header">
+    <div class="container">
+      <h1>💼 <span class="accent">AI使能服务报价器</span></h1>
+      <a class="back-link" href="index.html">← 返回首页</a>
+    </div>
+  </header>
+
+  <div class="detail-content">
+    <div class="calc-wrap">
+
+      <!-- 使用说明 -->
+      <div class="calc-block">
+        <h3>📖 使用说明</h3>
+        <div class="calc-note">
+          <p style="margin-top:0"><b>流程：</b>① 确认本地大模型（默认配置）→ ② 输入客户需求 → ③ 点击「AI 生成报价」→ ④ 系统调用大模型推荐服务项并自动计算金额 → ⑤ 完善报价单信息后可打印/导出。</p>
+          <p style="margin:6px 0"><b>说明：</b>大模型负责理解需求并推荐服务项组合；<b>人天单价（6000 元/人天）与金额由系统按权威服务目录计算</b>，避免模型幻觉导致报价错误。</p>
+        </div>
+      </div>
+
+      <!-- LLM 配置（只读展示，默认配置不可修改） -->
+      <div class="calc-block">
+        <h3>🤖 本地大模型 <span class="sub">默认配置 · 仅展示模型名</span></h3>
+        <div id="configPanel">
+          <div class="form-grid">
+            <div class="form-item">
+              <label>模型名 <span class="hint">默认配置，不可修改</span></label>
+              <input type="text" id="cfgModel" readonly class="in-green" placeholder="dsv4">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 需求输入与报价生成 -->
+      <div class="calc-block">
+        <h3>📝 客户需求</h3>
+        <div class="form-item">
+          <label>客户名称 <span class="hint">选填，用于报价单</span></label>
+          <input type="text" id="customerName" placeholder="如：某省政务云 / 某某科技有限公司">
+        </div>
+        <div class="form-item" style="margin-top:14px;">
+          <label>客户需求描述 <span class="hint">描述业务场景、模型、规模、环境等</span></label>
+          <textarea id="requirement" class="in-orange" placeholder="例如：客户需要部署 DeepSeek-R1 满血版用于智能问答，要求搭建 RAG 知识库和前端界面，并提供模型性能调优与一年维护升级，环境为 8 卡昇腾集群。"></textarea>
+        </div>
+        <!-- 需求文件导入 -->
+        <div class="form-item" style="margin-top:12px;">
+          <label>需求文件导入 <span class="hint">支持 Word(.docx/.doc)、PDF、Excel(.xlsx/.xls/.csv)、文本(.txt/.md)，解析后由大模型提炼关键需求，一键填入上方需求描述</span></label>
+          <div class="btn-row">
+            <input type="file" id="reqFile" accept=".txt,.md,.docx,.doc,.pdf,.xlsx,.xls,.csv" style="display:none;">
+            <button class="btn secondary" type="button" onclick="document.getElementById('reqFile').click()">📂 选择需求文件</button>
+            <button class="btn secondary" type="button" id="importReqBtn" disabled onclick="importReqFile()">📥 一键导入</button>
+            <span class="status-msg" id="fileMsg"></span>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="generateBtn" onclick="generateQuote()">🤖 AI 生成报价</button>
+          <span class="status-msg" id="genMsg"></span>
+        </div>
+      </div>
+
+      <!-- 报价结果 -->
+      <div class="calc-block" id="resultBlock" style="display:none;">
+        <h3>💰 报价方案</h3>
+        <div class="summary-box" id="summaryBox"></div>
+
+        <!-- 技术方案（默认折叠） -->
+        <div id="planBlock" style="margin-top:16px; display:none;">
+          <h4 style="margin:0 0 4px; display:flex; align-items:center; gap:8px;">
+            <span>📋 技术方案</span>
+            <button class="config-toggle" id="planToggle" onclick="togglePlan()">展开 ▾</button>
+          </h4>
+          <div id="modelSel" style="font-size:0.86rem; color:var(--color-text-secondary); margin-bottom:8px;"></div>
+          <div id="planContent" class="plan-content" style="display:none;"></div>
+        </div>
+
+        <div class="table-scroll" style="margin-top:16px;">
+          <table class="result-table" id="quoteTable">
+            <thead>
+              <tr><th>编码</th><th>服务项</th><th class="num">人天</th><th class="num">单价(元)</th><th class="num">金额(元)</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="btn-row" style="margin-top:16px;">
+          <!-- 生成报价单 / 保存到历史 已隐藏：报价单默认自动保存到后端管理页 -->
+          <button class="btn secondary" style="display:none;" onclick="openQuoteSheet()">📄 生成报价单</button>
+          <button class="btn secondary" style="display:none;" onclick="saveHistory()">💾 保存到历史</button>
+          <button class="btn secondary" onclick="exportExcel()">📊 导出 Excel</button>
+          <button class="btn secondary" onclick="printQuote()">🖨️ 打印/导出PDF</button>
+        </div>
+        <!-- 报价单预览 -->
+        <div id="quoteSheetView" style="display:none; margin-top:22px; border-top: 2px solid var(--color-border); padding-top: 18px;">
+          <h3>📄 报价单预览</h3>
+          <div class="qs-meta" id="qsViewMeta"></div>
+          <div class="table-scroll" style="margin-top:12px;">
+            <table class="result-table" id="qsViewTable">
+              <thead><tr><th>序号</th><th>服务编码</th><th>服务项</th><th class="num">人天</th><th class="num">单价(元)</th><th class="num">金额(元)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div style="margin-top:14px; font-weight:700; text-align:right;" id="qsViewTotal"></div>
+          <div style="text-align:right; color:var(--color-text-secondary); margin-top:4px;" id="qsViewCn"></div>
+        </div>
+      </div>
+
+      <!-- 历史报价（已隐藏：报价单统一在后端管理页查看） -->
+      <div class="calc-block" style="display:none;">
+        <h3>🗂️ 历史报价</h3>
+        <button class="config-toggle" onclick="loadHistory()">↻ 刷新列表</button>
+        <div id="historyList" style="margin-top:12px;">
+          <div class="history-empty">暂无历史报价</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 报价单（打印/导出用） -->
+  <div class="quote-sheet" id="quoteSheet">
+    <h2>AI 使能服务报价单</h2>
+    <div class="qs-sub">2026年专业服务——专项服务</div>
+    <div class="qs-meta" id="qsMeta"></div>
+    <table id="qsTable">
+      <thead><tr><th>序号</th><th>服务编码</th><th>服务项</th><th>人天</th><th>单价(元)</th><th>金额(元)</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="qs-total" id="qsTotal"></div>
+    <div class="qs-cn" id="qsCn"></div>
+    <div class="qs-note" id="qsNote">注：本报价单由 AI 使能服务报价器自动生成，仅供售前参考，最终价格以正式合同为准。</div>
+  </div>
+
+  <script>
+    // ============ 状态 ============
+    var currentQuote = null; // { customer, requirement, summary, items, total_days, total_amount, total_amount_cn, price_per_day }
+
+    function $(id) { return document.getElementById(id); }
+
+    // ============ 主题 ============
+    function toggleTheme() {
+      var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', cur);
+      try { localStorage.setItem('dl-theme', cur); } catch (e) {}
+    }
+
+    // ============ LLM 配置 ============
+    function loadConfig() {
+      fetch('/admin/api/quote/config')
+        .then(function (r) { return r.json(); })
+        .then(function (cfg) {
+          var llm = cfg.llm || {};
+          $('cfgModel').value = llm.model || '';
+        })
+        .catch(function () {});
+    }
+
+    // ============ 需求文件导入 ============
+    var reqFileText = null; // 提炼后的需求文本（未导入前暂存）
+    var reqFileName = '';
+    var reqFileNote = '';   // 解析提示（如截断说明）
+
+    // 选择文件后调用后端解析并 LLM 提炼需求，结果暂存到 reqFileText，供「一键导入」使用
+    function setupReqFile() {
+      var input = $('reqFile');
+      var msg = $('fileMsg');
+      var btn = $('importReqBtn');
+      input.addEventListener('change', function () {
+        msg.className = 'status-msg';
+        var f = input.files && input.files[0];
+        if (!f) { reqFileText = null; btn.disabled = true; return; }
+        var sizeMB = (f.size / 1024 / 1024).toFixed(2);
+        // 校验扩展名
+        var name = (f.name || '').toLowerCase();
+        var okExt = ['.txt', '.md', '.docx', '.doc', '.pdf', '.xlsx', '.xls', '.csv'].some(function (e) { return name.endsWith(e); });
+        if (!okExt) {
+          reqFileText = null; btn.disabled = true;
+          msg.textContent = '❌ 不支持的文件格式，请选择 Word/PDF/Excel/文本文件';
+          msg.classList.add('error');
+          return;
+        }
+        btn.disabled = true;
+        msg.textContent = '⏳ 正在解析并提炼需求「' + f.name + '」（' + sizeMB + 'MB）…';
+        msg.classList.add('ok');
+        var fd = new FormData();
+        fd.append('file', f);
+        fetch('/admin/api/quote/parse-requirement', { method: 'POST', body: fd })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+          .then(function (res) {
+            if (!res.ok) throw new Error(res.data.error || '解析失败');
+            reqFileText = res.data.summary || res.data.text || '';
+            reqFileName = f.name;
+            reqFileNote = res.data.note || '';
+            btn.disabled = !reqFileText.trim();
+            var extra = res.data.truncated ? '（原文过长已截断）' : '';
+            var by = res.data.used_llm ? '已用大模型提炼关键需求' : '（未配置大模型，已回退原文）';
+            msg.textContent = '✅ ' + by + '「' + f.name + '」' + extra + '，点击「一键导入」填入需求描述';
+            msg.classList.add('ok');
+          })
+          .catch(function (err) {
+            reqFileText = null; btn.disabled = true;
+            msg.textContent = '❌ ' + err.message;
+            msg.classList.add('error');
+          });
+      });
+    }
+
+    function importReqFile() {
+      var msg = $('fileMsg');
+      msg.className = 'status-msg';
+      if (reqFileText == null || !reqFileText.trim()) {
+        msg.textContent = '❌ 请先选择并解析需求文件';
+        msg.classList.add('error');
+        return;
+      }
+      var req = $('requirement');
+      // 已有内容时拼接，避免误覆盖手工输入
+      var cur = req.value.trim();
+      var body = reqFileText.trim() + (reqFileNote ? ('\n' + reqFileNote) : '');
+      req.value = cur ? (cur + '\n\n—— 以下为文件「' + reqFileName + '」提炼的关键需求 ——\n' + body) : body;
+      req.focus();
+      msg.textContent = '✅ 已导入「' + reqFileName + '」提炼的需求，可检查后点击「AI 生成报价」';
+      msg.classList.add('ok');
+    }
+
+    // ============ 报价生成 ============
+    function generateQuote() {
+      var requirement = $('requirement').value.trim();
+      var msg = $('genMsg');
+      msg.className = 'status-msg';
+      if (!requirement) {
+        msg.textContent = '❌ 请先输入客户需求';
+        msg.classList.add('error');
+        return;
+      }
+      var btn = $('generateBtn');
+      btn.disabled = true;
+      msg.textContent = '⏳ 正在调用大模型匹配服务项…';
+      msg.classList.add('ok');
+
+      fetch('/admin/api/quote/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requirement: requirement })
+      })
+        .then(function (r) {
+          return r.json().then(function (data) { return { ok: r.ok, data: data }; });
+        })
+        .then(function (res) {
+          if (!res.ok) {
+            throw new Error(res.data.error || '生成失败');
+          }
+          currentQuote = {
+            customer: $('customerName').value.trim(),
+            requirement: requirement,
+            plan: res.data.plan || '',
+            model: res.data.model || null,
+            summary: res.data.summary || '',
+            items: res.data.items,
+            total_days: res.data.total_days,
+            total_amount: res.data.total_amount,
+            total_amount_cn: res.data.total_amount_cn,
+            price_per_day: res.data.price_per_day
+          };
+          renderQuote(currentQuote);
+          $('resultBlock').style.display = '';
+          msg.textContent = '✅ 报价生成成功';
+          // 报价单默认自动保存到后端（管理页「使能服务报价单管理」）
+          autoSaveQuote(msg);
+        })
+        .catch(function (err) {
+          msg.textContent = '❌ ' + err.message;
+          msg.classList.add('error');
+        })
+        .finally(function () { btn.disabled = false; });
+    }
+
+    function fmtNum(n) {
+      return (n || 0).toLocaleString('zh-CN');
+    }
+
+    // 轻量 markdown 渲染（标题/列表/代码/粗体），用于展示 LLM 生成的技术方案
+    function escHtml(s) {
+      // 用 charCode 拼实体，避免源码中的 HTML 实体被自动解码
+      var A = String.fromCharCode(38); // &
+      return String(s == null ? '' : s)
+        .replace(/&/g, A + 'amp;')
+        .replace(/</g, A + 'lt;')
+        .replace(/>/g, A + 'gt;')
+        .replace(/"/g, A + 'quot;');
+    }
+
+    function mdToHtml(md) {
+      if (!md) return '';
+      var lines = String(md).split(/\r?\n/);
+      var html = '';
+      var inList = false;
+      var inCode = false;
+      var codeBuf = [];
+      function closeList() { if (inList) { html += '</ul>'; inList = false; } }
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        var t = line.trim();
+        // 代码块
+        if (/^```/.test(t)) {
+          if (inCode) { html += '<pre>' + escHtml(codeBuf.join('\n')) + '</pre>'; codeBuf = []; inCode = false; }
+          else { closeList(); inCode = true; }
+          continue;
+        }
+        if (inCode) { codeBuf.push(line); continue; }
+        if (!t) { closeList(); continue; }
+        // 标题
+        var h = t.match(/^(#{1,6})\s+(.*)$/);
+        if (h) {
+          closeList();
+          var lv = h[1].length;
+          html += '<h' + Math.min(lv, 3) + '>' + inlineMd(h[2]) + '</h' + Math.min(lv, 3) + '>';
+          continue;
+        }
+        // 列表
+        var li = t.match(/^[-*+]\s+(.*)$/) || t.match(/^\d+[.)]\s+(.*)$/);
+        if (li) {
+          if (!inList) { html += '<ul>'; inList = true; }
+          html += '<li>' + inlineMd(li[1]) + '</li>';
+          continue;
+        }
+        closeList();
+        html += '<p>' + inlineMd(t) + '</p>';
+      }
+      closeList();
+      if (inCode) html += '<pre>' + escHtml(codeBuf.join('\n')) + '</pre>';
+      return html;
+    }
+
+    function inlineMd(s) {
+      return escHtml(s)
+        .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    function togglePlan() {
+      var content = $('planContent');
+      var btn = $('planToggle');
+      if (!content) return;
+      var collapsed = content.style.display === 'none';
+      content.style.display = collapsed ? '' : 'none';
+      btn.textContent = collapsed ? '收起 ▴' : '展开 ▾';
+    }
+
+    function renderPlan(q) {
+      var block = $('planBlock');
+      if (!block) return;
+      var plan = q.plan || '';
+      if (!plan) { block.style.display = 'none'; return; }
+      block.style.display = '';
+      // 模型选型展示
+      var m = q.model;
+      var modelHtml = '';
+      if (m && m.name) {
+        var status = m.found
+          ? ('<span style="color:var(--color-success)">✓ 已匹配：' + escHtml(m.matched) + '（来源：' + escHtml(m.source) + '）</span>')
+          : '<span style="color:var(--color-warning)">⚠ ' + escHtml(m.name) + ' 未在昇腾适配清单中匹配到，需人工确认</span>';
+        modelHtml = '<div><b>模型选型：</b>' + status + '</div>';
+      }
+      $('modelSel').innerHTML = modelHtml;
+      $('planContent').innerHTML = mdToHtml(plan);
+      // 默认折叠技术方案
+      $('planContent').style.display = 'none';
+      $('planToggle').textContent = '展开 ▾';
+    }
+
+    function renderQuote(q) {
+      renderPlan(q);
+      $('summaryBox').innerHTML =
+        '<div><b>方案说明：</b>' + (q.summary || '（无）') + '</div>' +
+        '<div style="margin-top:10px">人天合计：<b>' + q.total_days + '</b> 人天 &nbsp;·&nbsp; 报价合计：<span class="total-amount">¥ ' + fmtNum(q.total_amount) + '</span></div>';
+
+      var tbody = $('quoteTable').querySelector('tbody');
+      var html = '';
+      q.items.forEach(function (it) {
+        html += '<tr>' +
+          '<td>' + it.code + '</td>' +
+          '<td>' + it.name + '</td>' +
+          '<td class="num">' + it.days + '</td>' +
+          '<td class="num">' + fmtNum(it.price_per_day) + '</td>' +
+          '<td class="num">' + fmtNum(it.amount) + '</td>' +
+          '</tr>';
+      });
+      html += '<tr class="total-row">' +
+        '<td colspan="2">合计</td>' +
+        '<td class="num">' + q.total_days + '</td>' +
+        '<td class="num">—</td>' +
+        '<td class="num">' + fmtNum(q.total_amount) + '</td>' +
+        '</tr>';
+      tbody.innerHTML = html;
+    }
+
+    // ============ 报价单 ============
+    function todayStr() {
+      var d = new Date();
+      var p = function (x) { return (x < 10 ? '0' : '') + x; };
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+
+    // 报价单已保存标志（避免同一报价重复保存）
+    var quoteSaved = false;
+
+    function renderSheetRows(tbodyEl, withIndex) {
+      var html = '';
+      currentQuote.items.forEach(function (it, i) {
+        html += '<tr>' +
+          '<td>' + (withIndex ? (i + 1) : it.code) + '</td>' +
+          (withIndex ? '<td>' + it.code + '</td>' : '') +
+          '<td>' + it.name + '</td>' +
+          '<td>' + it.days + '</td>' +
+          '<td>' + fmtNum(it.price_per_day) + '</td>' +
+          '<td>' + fmtNum(it.amount) + '</td>' +
+          '</tr>';
+      });
+      tbodyEl.innerHTML = html;
+    }
+
+    function openQuoteSheet() {
+      if (!currentQuote) return;
+      // 填充打印版报价单
+      $('qsMeta').innerHTML =
+        '<div>客户名称：<b>' + (currentQuote.customer || '（未填写）') + '</b></div>' +
+        '<div>报价日期：' + todayStr() + '</div>' +
+        '<div>服务范围：' + currentQuote.requirement + '</div>';
+      renderSheetRows($('qsTable').querySelector('tbody'), true);
+      $('qsTotal').textContent = '合计金额：¥ ' + fmtNum(currentQuote.total_amount) + ' 元（' + currentQuote.total_days + ' 人天）';
+      $('qsCn').textContent = '大写：' + (currentQuote.total_amount_cn || '');
+
+      // 填充并显示页面上可见的报价单预览
+      $('qsViewMeta').innerHTML =
+        '<div>客户名称：<b>' + (currentQuote.customer || '（未填写）') + '</b></div>' +
+        '<div>报价日期：' + todayStr() + '</div>' +
+        '<div>服务范围：' + currentQuote.requirement + '</div>';
+      renderSheetRows($('qsViewTable').querySelector('tbody'), true);
+      $('qsViewTotal').textContent = '合计金额：¥ ' + fmtNum(currentQuote.total_amount) + ' 元（' + currentQuote.total_days + ' 人天）';
+      $('qsViewCn').textContent = '大写：' + (currentQuote.total_amount_cn || '');
+      $('quoteSheetView').style.display = '';
+
+      // 自动保存到历史
+      if (!quoteSaved) {
+        quoteSaved = true;
+        saveHistory(true);
+      }
+      window.scrollTo({ top: $('quoteSheetView').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function printQuote() {
+      openQuoteSheet();
+      setTimeout(function () { window.print(); }, 50);
+    }
+
+    // ============ 导出 Excel ============
+    function xmlEsc(s) {
+      // 用 charCode 拼出 XML 实体，避免源码中的 HTML 实体被自动解码
+      var AMP = String.fromCharCode(38); // &
+      return String(s == null ? '' : s)
+        .replace(/&/g, AMP + 'amp;')
+        .replace(/</g, AMP + 'lt;')
+        .replace(/>/g, AMP + 'gt;')
+        .replace(/"/g, AMP + 'quot;')
+        .replace(/'/g, AMP + 'apos;');
+    }
+
+    function exportExcel() {
+      if (!currentQuote) return;
+      // 生成 SpreadsheetML 2003 XML（.xls），Excel/WPS 均可打开，无需外部依赖
+      var rows = [];
+      rows.push('<Row><Cell><Data ss:Type="String">AI 使能服务报价单</Data></Cell></Row>');
+      rows.push('<Row><Cell><Data ss:Type="String">客户名称</Data></Cell><Cell><Data ss:Type="String">' + xmlEsc(currentQuote.customer || '') + '</Data></Cell></Row>');
+      rows.push('<Row><Cell><Data ss:Type="String">报价日期</Data></Cell><Cell><Data ss:Type="String">' + todayStr() + '</Data></Cell></Row>');
+      rows.push('<Row><Cell><Data ss:Type="String">服务范围</Data></Cell><Cell><Data ss:Type="String">' + xmlEsc(currentQuote.requirement || '') + '</Data></Cell></Row>');
+      rows.push('<Row><Cell></Cell></Row>');
+      // 表头
+      rows.push('<Row>' +
+        '<Cell><Data ss:Type="String">序号</Data></Cell>' +
+        '<Cell><Data ss:Type="String">服务编码</Data></Cell>' +
+        '<Cell><Data ss:Type="String">服务项</Data></Cell>' +
+        '<Cell><Data ss:Type="String">人天</Data></Cell>' +
+        '<Cell><Data ss:Type="String">单价(元)</Data></Cell>' +
+        '<Cell><Data ss:Type="String">金额(元)</Data></Cell>' +
+        '</Row>');
+      // 明细
+      currentQuote.items.forEach(function (it, i) {
+        rows.push('<Row>' +
+          '<Cell><Data ss:Type="Number">' + (i + 1) + '</Data></Cell>' +
+          '<Cell><Data ss:Type="String">' + xmlEsc(it.code) + '</Data></Cell>' +
+          '<Cell><Data ss:Type="String">' + xmlEsc(it.name) + '</Data></Cell>' +
+          '<Cell><Data ss:Type="Number">' + it.days + '</Data></Cell>' +
+          '<Cell><Data ss:Type="Number">' + it.price_per_day + '</Data></Cell>' +
+          '<Cell><Data ss:Type="Number">' + it.amount + '</Data></Cell>' +
+          '</Row>');
+      });
+      // 合计
+      rows.push('<Row>' +
+        '<Cell><Data ss:Type="String">合计</Data></Cell><Cell></Cell><Cell></Cell>' +
+        '<Cell><Data ss:Type="Number">' + currentQuote.total_days + '</Data></Cell>' +
+        '<Cell></Cell>' +
+        '<Cell><Data ss:Type="Number">' + currentQuote.total_amount + '</Data></Cell>' +
+        '</Row>');
+      rows.push('<Row><Cell></Cell></Row>');
+      rows.push('<Row><Cell><Data ss:Type="String">金额大写：' + xmlEsc(currentQuote.total_amount_cn || '') + '</Data></Cell></Row>');
+
+      var xml = '<?xml version="1.0"?>' +
+        '<?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
+        'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        '<Worksheet ss:Name="报价单"><Table>' +
+        rows.join('') +
+        '</Table></Worksheet></Workbook>';
+
+      var blob = new Blob(['\ufeff' + xml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+      var a = document.createElement('a');
+      var url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = '报价单_' + (currentQuote.customer || '客户') + '_' + todayStr() + '.xls';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ============ 历史报价 ============
+    function loadHistory() {
+      fetch('/admin/api/quote/history')
+        .then(function (r) { return r.json(); })
+        .then(function (list) {
+          var wrap = $('historyList');
+          if (!list || !list.length) {
+            wrap.innerHTML = '<div class="history-empty">暂无历史报价</div>';
+            return;
+          }
+          wrap.innerHTML = list.map(function (h) {
+            return '<div class="history-item" onclick="loadHistoryItem(\'' + h.id + '\')">' +
+              '<div class="h-top">' +
+                '<div><b>' + (h.customer || '未命名客户') + '</b>' +
+                '<span class="h-time"> · ' + (h.created_at || '') + '</span></div>' +
+                '<span class="h-amount">¥ ' + fmtNum(h.total_amount) + '</span>' +
+              '</div>' +
+              '<div class="h-req">' + (h.requirement || '') + '</div>' +
+              '</div>';
+          }).join('');
+        })
+        .catch(function () {});
+    }
+
+    function loadHistoryItem(id) {
+      fetch('/admin/api/quote/history')
+        .then(function (r) { return r.json(); })
+        .then(function (list) {
+          var h = (list || []).find(function (x) { return x.id === id; });
+          if (!h) return;
+          currentQuote = h;
+          $('customerName').value = h.customer || '';
+          $('requirement').value = h.requirement || '';
+          renderQuote(h);
+          $('resultBlock').style.display = '';
+          window.scrollTo({ top: $('resultBlock').offsetTop - 20, behavior: 'smooth' });
+        })
+        .catch(function () {});
+    }
+
+    function saveHistory() {
+      if (!currentQuote) return;
+      fetch('/admin/api/quote/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentQuote)
+      })
+        .then(function (r) { return r.json(); })
+        .then(function () { loadHistory(); })
+        .catch(function () {});
+    }
+
+    // 报价生成后自动保存到后端管理页（不阻塞主流程）
+    function autoSaveQuote(msg) {
+      if (!currentQuote) return;
+      fetch('/admin/api/quote/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentQuote)
+      })
+        .then(function (r) {
+          if (r.ok && msg) {
+            msg.textContent = '✅ 报价生成成功，已自动保存到管理后台';
+          }
+        })
+        .catch(function () {
+          if (msg) msg.textContent = '⚠ 报价已生成，但自动保存失败';
+        });
+    }
+
+    // ============ 初始化 ============
+    loadConfig();
+    loadHistory();
+    setupReqFile();
+  </script>
+</body>
+</html>

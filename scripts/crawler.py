@@ -139,13 +139,13 @@ def parse_vllm_ascend(html):
                     if link:
                         href = link.get('href', '')
                         if href and not href.startswith('http'):
-                            href = 'https://docs.vllm.ai' + href
+                            href = urljoin('https://docs.vllm.ai/projects/ascend/zh-cn/latest/', href)
                         doc_url = href
                 elif '长度' in h:
                     max_len = cells[i].get_text(strip=True)
 
             if not doc_url and doc_href:
-                doc_url = doc_href if doc_href.startswith('http') else 'https://docs.vllm.ai' + doc_href
+                doc_url = doc_href if doc_href.startswith('http') else urljoin('https://docs.vllm.ai/projects/ascend/zh-cn/latest/', doc_href)
 
             developer = _detect_developer(model_name)
             architecture = _detect_architecture(model_name)
@@ -356,37 +356,136 @@ def _extract_gitcode_from_html(html):
     return result
 
 
+def _fetch_gitcode_ai_projects():
+    """通过 GitCode AI 翻页接口抓取昇腾生态模型（替代 AtomGit 搜索 API）。
+
+    真实接口来自前端 JS (web-api.gitcode.com/aihub/api/v1/search/ai-projects)，
+    匿名可调、支持翻页，per_page 上限 50。返回原始模型数据列表。
+
+    服务端在累计请求量达到阈值（约1万条 / 200页）后会触发长时间限流（HTTP 500）。
+    因此单次抓取默认限制在 200 页（约1万条）以内，稳定不触发限流，覆盖主流
+    昇腾模型；采用低并发(4)快抓 + 遇到 500 时暂停等待恢复 + 失败页补抓兜底。
+    """
+    import socket
+    api = 'https://web-api.gitcode.com/aihub/api/v1/search/ai-projects'
+    api_host = 'web-api.gitcode.com'
+    params = {
+        'repo_type': 'model',
+        'per_page': 50,
+        'ascendNative': 'true',
+        '__s': 'aihub',
+    }
+    headers = dict(HEADERS)
+    headers['Referer'] = 'https://ai.gitcode.com/models?ascendNative=true'
+    headers['Origin'] = 'https://ai.gitcode.com'
+
+    all_models = []
+    seen_urls = set()
+    total = None
+
+    def _collect(data):
+        """把一页的数据并入结果（按 web_url 去重）。"""
+        nonlocal total
+        if not data:
+            return 0
+        total = data.get('total') or total
+        content = data.get('content') or []
+        new_count = 0
+        for m in content:
+            url = m.get('web_url', '')
+            if url and url not in seen_urls:
+                seen_urls.add(url)
+                all_models.append(m)
+                new_count += 1
+        return new_count
+
+    def _fetch_page(page):
+        """抓取单页：DNS 预解析 + 重试。遇到 500 限流时暂停 60s 等待恢复。
+        返回 (data, None) 或 (None, err)。
+        """
+        last_err = None
+        for attempt in range(4):
+            try:
+                socket.getaddrinfo(api_host, 443)
+            except Exception as dns_err:
+                last_err = dns_err
+                time.sleep(2 * (attempt + 1))
+                continue
+            try:
+                resp = requests.get(api, params={**params, 'page': page}, headers=headers, timeout=TIMEOUT)
+                if resp.status_code == 200:
+                    return resp.json(), None
+                last_err = f"HTTP {resp.status_code}"
+                if resp.status_code == 500:
+                    # 服务端限流：暂停较长时间让限流窗口过去再重试
+                    print(f"  ⏳ GitCode AI 第{page}页返回 500（限流），等待 60s 后重试 {attempt+1}/4")
+                    time.sleep(60)
+                    continue
+            except Exception as exc:
+                last_err = exc
+            time.sleep(2 * (attempt + 1))
+        return None, last_err
+
+    # 第1页：获取总页数
+    first, err = _fetch_page(1)
+    if first is None:
+        print(f"  ✗ GitCode AI 首页获取失败: {err}，放弃抓取")
+        return []
+    page_count = int(first.get('page_count') or 1)
+    # 限制单次抓取页数，避免累计请求量触发服务端限流（实测约200页/1万条后开始限流）
+    max_pages = 200
+    if page_count > max_pages:
+        print(f"  GitCode AI: 总页数 {page_count} 超过单次上限 {max_pages}，本次只抓前 {max_pages} 页")
+        page_count = max_pages
+    _collect(first)
+    print(f"  GitCode AI 第1页: 获取 {len(first.get('content') or [])} 条, 总页数 {page_count}, 总计 {first.get('total')}")
+
+    # 并发抓取其余页（4 个 worker）
+    pages = list(range(2, page_count + 1))
+    failed_pages = []
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        future_map = {executor.submit(_fetch_page, p): p for p in pages}
+        for future in as_completed(future_map):
+            p = future_map[future]
+            data, ferr = future.result()
+            if data is None:
+                print(f"  ✗ GitCode AI 第{p}页失败: {ferr}")
+                failed_pages.append(p)
+            else:
+                n = _collect(data)
+                print(f"  GitCode AI 第{p}页: 获取 {len(data.get('content') or [])} 条, 新增 {n} 条, 总 {len(all_models)}")
+            time.sleep(0.05)
+
+    # 补抓失败页（加大间隔，避开限流窗口）
+    for fp in failed_pages:
+        data, ferr = _fetch_page(fp)
+        if data is None:
+            print(f"  ✗ GitCode AI 补抓第{fp}页仍失败: {ferr}")
+            continue
+        n = _collect(data)
+        print(f"  GitCode AI 补抓第{fp}页: 获取 {len(data.get('content') or [])} 条, 新增 {n} 条, 总 {len(all_models)}")
+        time.sleep(1)
+
+    print(f"  GitCode AI (翻页接口): 共获取 {len(all_models)} 个模型, 总计 {total} 个")
+    return all_models
+
+
 def parse_gitcode_ai(html=None):
     """解析 GitCode AI 昇腾原生模型
 
-    优先通过 AtomGit 公开 API 获取数据，API 失败时回退到页面脱水数据解析。
-
-    AtomGit API: https://atomgit.com/api/v1/projects?type=model&search=ascend&page=1&per_page=100
-    可获取约100个与 ascend 相关的模型仓库（含工具库和用户 fork 副本）。
-
-    GitCode AI 页面 (ai.gitcode.com) 是 Next.js 服务端渲染，脱水数据只包含第1页（30个模型），
-    翻页 API (api-ai.gitcode.com) 需要认证无法直接调用。
+    优先通过 GitCode AI 翻页接口 (web-api.gitcode.com) 获取全部昇腾生态模型，
+    接口失败时回退到页面脱水数据解析（仅第1页约30个）。
 
     两种数据源合并去重，以 web_url 为去重依据。
     """
     models = []
-    atomgit_api = 'https://atomgit.com/api/v1/projects'
 
-    # 1. 通过 AtomGit API 获取数据
-    atomgit_models = []
+    # 1. 通过 GitCode AI 翻页接口获取数据（per_page=50，支持全量翻页）
+    api_models = []
     try:
-        resp = requests.get(atomgit_api, params={
-            'type': 'model', 'search': 'ascend', 'page': 1, 'per_page': 100
-        }, headers=HEADERS, timeout=TIMEOUT)
-        if resp.status_code == 200:
-            data = resp.json()
-            atomgit_models = data.get('content') or []
-            total = int(data.get('total', 0))
-            print(f"  GitCode AI (AtomGit API): 获取 {len(atomgit_models)} 个模型, 总计 {total} 个")
-        else:
-            print(f"  ✗ AtomGit API 返回 {resp.status_code}")
+        api_models = _fetch_gitcode_ai_projects()
     except Exception as e:
-        print(f"  ✗ AtomGit API 请求失败: {e}")
+        print(f"  ✗ GitCode AI 翻页接口请求失败: {e}")
 
     # 2. 从页面脱水数据解析（作为补充）
     page_models = []
@@ -397,7 +496,7 @@ def parse_gitcode_ai(html=None):
 
     # 3. 合并去重（以 web_url 为 key）
     seen_urls = set()
-    for m in atomgit_models + page_models:
+    for m in api_models + page_models:
         url = m.get('web_url', '')
         if url and url not in seen_urls:
             seen_urls.add(url)
@@ -473,7 +572,6 @@ def parse_gitcode_ai(html=None):
         })
 
     return parsed_models
-
 
 def parse_ascend_sact(html):
     """解析 Ascend-SACT 组织仓库页面（支持翻页）"""
@@ -1178,6 +1276,97 @@ def merge_models(all_source_models, no_dedup_sources=None):
     return merged
 
 
+# ============ 保留性增量合并（不覆盖手工整理结果） ============
+# 背景：后台/定时爬取若全量覆盖 models.json、models-lite.json，
+# 会把人工整理过的变体合并（name 改基础名 + displayName 保留原名）全部重置。
+# 因此爬取后以现有已整理文件为基线做“保留性”合并：
+#   - 已存在条目（按 id+source 匹配）保留手工整理的 name/displayName，仅更新其他字段；
+#   - 新增条目按变体合并模式处理（name 改基础名 + displayName 保留原名）。
+
+# 复刻前端 js/models.js 的 VAR_TOKEN / VAR_SUFFIX_RE（变体后缀剥离规则）
+_VAR_TOKEN = r'ascend|npu|a2|a3|atlas[a-z0-9]*|w8a8|w4a8|w4a16|w4a8c8|w8a8c8|w8a16|a8w8|a8w4|mxfp8|fp8|bf16|fp16|int8|int4|quantized|awq|gptq|gs|c8|orangepi|20\d{6}'
+_VAR_SUFFIX_RE = re.compile(
+    r'(?:-(' + _VAR_TOKEN + r'))(?:-(' + _VAR_TOKEN
+    + r'|deployment|model|infer|single|mtp|pd|per-channel|[a-z0-9]+))*$',
+    re.IGNORECASE
+)
+
+
+def _variant_base_name(name):
+    """尽力而为地剥离变体后缀得到基础名（与前端 baseDisplayName 一致）。
+    注意：只能覆盖 -Ascend/-A2/-w8a8 这类规则化后缀；语义映射
+    （如 GLM5→GLM-5、DeepSeekOCR2→DeepSeek-OCR-2）无法自动复现，
+    这类仍需人工通过后台整理。"""
+    return re.sub(_VAR_SUFFIX_RE, '', str(name)).strip()
+
+
+def _load_baseline():
+    """读取现有已整理的 models.json 作为基线，返回匹配键->记录 索引。
+    匹配键优先用 docUrl（对同一模型唯一稳定）；docUrl 为空时退回 (id, source)。
+    同 (id, source) 存在多条（不同 docUrl 的独立条目）时，优先保留带
+    displayName 的手工整理条目。"""
+    path = os.path.join(DATA_DIR, 'models.json')
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            records = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    idx = {}
+    for m in records:
+        if m.get('docUrl'):
+            key = ('url', m.get('docUrl'), m.get('source', ''))
+        elif m.get('id'):
+            key = ('id', m.get('id'), m.get('source', ''))
+        else:
+            continue
+        old = idx.get(key)
+        # 同一键多条时，优先保留带 displayName 的手工整理条目
+        if old is None or ('displayName' in m and 'displayName' not in old):
+            idx[key] = m
+    return idx
+
+
+def merge_crawled_with_baseline(merged_models):
+    """把爬虫新抓取的模型与现有已整理数据做保留性合并，返回合并后的列表。"""
+    baseline = _load_baseline()
+
+    def _baseline_lookup(m):
+        if m.get('docUrl'):
+            return baseline.get(('url', m.get('docUrl'), m.get('source', '')))
+        if m.get('id'):
+            return baseline.get(('id', m.get('id'), m.get('source', '')))
+        return None
+
+    result = []
+    kept = 0      # 命中基线、保留手工整理的条目数
+    updated = 0   # 命中基线且字段有更新的条目数
+    added = 0     # 新增条目数
+    for m in merged_models:
+        old = _baseline_lookup(m)
+        if old is not None:
+            # 已存在：保留手工整理的 name / displayName，其余字段用爬取到的新值
+            if 'displayName' in old:
+                m['displayName'] = old['displayName']
+            if old.get('name'):
+                m['name'] = old['name']
+            kept += 1
+            if old != m:
+                updated += 1
+        else:
+            # 新增：应用变体合并（name 改基础名 + displayName 保留原名）
+            orig = m.get('name', '')
+            base = _variant_base_name(orig)
+            if base and base != orig:
+                m['displayName'] = orig
+                m['name'] = base
+            added += 1
+        result.append(m)
+    print(f"  保留基线条目: {kept}（其中字段更新 {updated}），新增条目: {added}")
+    return result
+
+
 # ============ 主函数 ============
 
 def crawl_all():
@@ -1303,6 +1492,11 @@ def crawl_all():
                     pass
     print(f"从部署页面提取硬件信息: {hw_extracted_count} 个模型")
 
+    # 与现有已整理数据做保留性合并（不覆盖人工的变体合并/displayName）
+    print("\n=== 与现有已整理数据合并（保留手工整理结果） ===")
+    merged_models = merge_crawled_with_baseline(merged_models)
+    print(f"合并后模型数: {len(merged_models)} 个")
+
     # 保存模型清单数据
     models_file = os.path.join(DATA_DIR, 'models.json')
     with open(models_file, 'w', encoding='utf-8') as f:
@@ -1315,6 +1509,7 @@ def crawl_all():
         lite_models.append({
             'id': m.get('id', ''),
             'name': m.get('name', ''),
+            'displayName': m.get('displayName', ''),
             'category': m.get('category', ''),
             'developer': m.get('developer', ''),
             'parameters': m.get('parameters', ''),

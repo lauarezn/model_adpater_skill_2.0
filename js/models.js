@@ -107,6 +107,61 @@ window.addEventListener('resize', function () {
 })();
 
 // ============ Model Cards ============
+// 变体后缀（用于把同系列变体合并到一张主卡片）
+// 覆盖：硬件(-Ascend/-NPU/-A2/-A3/-Atlas)、量化(-w8a8/-mxfp8/-bf16等)、日期快照(-20260813)
+// 例：DeepSeek-V4-Flash-0731-w8a8-A2-PD、A2ZChromatin-Accessibility-Ascend-NPU 的基础名分别为
+//     DeepSeek-V4-Flash-0731、A2ZChromatin-Accessibility
+const VAR_TOKEN = 'ascend|npu|a2|a3|atlas[a-z0-9]*|w8a8|w4a8|w4a16|w4a8c8|w8a8c8|w8a16|a8w8|a8w4|mxfp8|fp8|bf16|fp16|int8|int4|quantized|awq|gptq|gs|c8|orangepi|20\\d{6}';
+const VAR_SUFFIX_RE = new RegExp('(?:-(' + VAR_TOKEN + '))(?:-(' + VAR_TOKEN + '|deployment|model|infer|single|mtp|pd|per-channel|[a-z0-9]+))*$', 'i');
+
+// 计算系列基础名（小写 key 用于分组）：剥离变体后缀 + 统一分隔符(下划线/点号/横杠)
+function familyKey(name) {
+  return String(name).replace(VAR_SUFFIX_RE, '').replace(/[_\-.]+/g, '-').toLowerCase();
+}
+
+// 计算基础名的展示名（保留原始大小写 + 原分隔符），用于没有精确基础名模型时作为主卡片名
+function baseDisplayName(name) {
+  return String(name).replace(VAR_SUFFIX_RE, '').trim();
+}
+
+// 判断是否为变体（名称末尾带有变体后缀）
+function isQuantHwVariant(name) {
+  return VAR_SUFFIX_RE.test(String(name));
+}
+
+// 按系列基础名合并模型列表：每个系列只保留主卡片（优先基础名模型，否则取第一个），
+// 并把同系列变体的部署文档链接收集到主模型的 variants 字段中。
+function groupByFamily(items) {
+  const groups = {};
+  items.forEach(m => {
+    const key = familyKey(m.name);
+    (groups[key] = groups[key] || []).push(m);
+  });
+  const out = [];
+  Object.keys(groups).forEach(key => {
+    const list = groups[key];
+    // 主卡片：优先名称归一化后恰等于基础名的模型（如 A2ZChromatin-Accessibility），否则取第一个
+    const exact = list.find(m => String(m.name).replace(/[_\-.]+/g, '-').toLowerCase() === key);
+    const main = exact || list[0];
+    const variants = list.filter(m => m !== main);
+    const merged = { ...main };
+    if (variants.length > 0) {
+      merged._variantCount = list.length;
+      merged._variants = variants;
+      // 若没有精确基础名模型，主卡片名显示为基础名（保留原大小写）
+      if (!exact) {
+        const base = baseDisplayName(main.name);
+        if (base && base !== main.name) merged.name = base;
+      }
+    } else {
+      merged._variantCount = 1;
+      merged._variants = [];
+    }
+    out.push(merged);
+  });
+  return out;
+}
+
 function renderModels(data) {
   const grid = document.getElementById('modelGrid');
   const empty = document.getElementById('emptyState');
@@ -118,7 +173,10 @@ function renderModels(data) {
   }
   empty.style.display = 'none';
 
-  grid.innerHTML = data.map(m => {
+  // 同系列变体合并：每个系列只显示一张主卡片
+  const mergedData = groupByFamily(data);
+
+  grid.innerHTML = mergedData.map(m => {
     const supportClass = m.supportLevel === '✅ 已支持' ? 'support-supported' :
                          m.supportLevel === '🔵 实验性' ? 'support-experimental' : 'support-extended';
     const perfClass = m.inferencePerf === '优' ? 'perf-supported' : 'perf-experimental';
@@ -128,6 +186,10 @@ function renderModels(data) {
     // 部署硬件：从模型数据中提取部署硬件信息
     // 优先使用 minHardware（来自支持矩阵或部署页面解析），否则显示 NA
     const deployHw = (hasDoc && m.minHardware) ? m.minHardware : 'NA';
+    // 变体徽标：主卡片 + 各变体文档链接数量
+    const variantBadge = (m._variantCount > 1)
+      ? `<span class="variant-badge" title="${m._variants.map(v => v.displayName || v.name).join('、')}">${m._variantCount} 个部署文档</span>`
+      : '';
 
     return `
       <div class="model-card" onclick="showModelDetail('${m.id}')">
@@ -142,6 +204,7 @@ function renderModels(data) {
           <span class="meta-tag category">${m.category}</span>
           <span class="meta-tag">${m.architecture}</span>
           <span class="meta-tag ${sourceClass}">${sourceLabel}</span>
+          ${variantBadge}
         </div>
         <dl class="model-card-details">
           <dt>适配状态</dt>
@@ -165,6 +228,22 @@ function renderModels(data) {
 let currentPage = 1;
 const PAGE_SIZE = 50;
 let filteredModels = [];
+
+// 开发者权威度（越小越靠前，用于综合排序优先展示权威组织的模型）
+// 1=头部厂商，2=国内主流厂商，3=国际知名机构，4=其他机构，5=社区
+// 注：华为默认不参与优先展示（780 个模型数量过大，会挤占其他权威组织），归入权重4
+const DEVELOPER_RANK = {
+  '阿里云': 1, '深度求索': 1, '智谱AI': 1,
+  '百度': 2, '腾讯': 2, '字节跳动': 2, '月之暗面': 2, 'MiniMax': 2,
+  '阶跃星辰': 2, '百川智能': 2, '零一万物': 2, '商汤': 2, '小米': 2, '面壁智能': 2,
+  'Meta': 3, 'Google': 3, 'Microsoft': 3, 'NVIDIA': 3, 'Mistral AI': 3,
+  'Stability AI': 3, 'Black Forest Labs': 3, 'Wan AI': 3, 'OpenMOSS': 3,
+  'OpenBMB': 3, '上海AI实验室': 3, 'FunAudioLLM': 3, 'Allen AI': 3, 'Lightricks': 3,
+  '华为': 4,
+};
+function developerRank(dev) {
+  return DEVELOPER_RANK[dev] || (dev === '社区' ? 5 : 4);
+}
 
 function filterModels() {
   const search = document.getElementById('searchInput').value.toLowerCase();
@@ -200,7 +279,13 @@ function filterModels() {
   } else if (sort === 'updated') {
     filteredModels.sort((a, b) => parseInt(b.id) - parseInt(a.id));
   } else {
-    filteredModels.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    // 综合排序：优先展示权威组织的模型，同权威度内按数据顺序(id升序)
+    filteredModels.sort((a, b) => {
+      const ar = developerRank(a.developer);
+      const br = developerRank(b.developer);
+      if (ar !== br) return ar - br;
+      return parseInt(a.id) - parseInt(b.id);
+    });
   }
 
   currentPage = 1;
@@ -289,6 +374,27 @@ function showModelDetail(id) {
   // 优先使用 minHardware（来自支持矩阵或部署页面解析），否则显示 NA
   const deployHw = (hasDoc && m.minHardware) ? m.minHardware : 'NA';
 
+  // 收集同系列变体的部署文档链接（含当前模型），用于合并展示
+  const familyItems = (window._detailModels || models).filter(x => familyKey(x.name) === familyKey(m.name));
+  const docLinks = [];
+  familyItems.forEach(x => {
+    if (x.docUrl && x.docUrl.length > 0) {
+      // 部署链接名优先用 displayName（变体原始名，如 DeepSeek-OCR2-CNPC），否则用模型名
+      docLinks.push({ name: x.displayName || x.name, url: x.docUrl });
+    }
+  });
+  const hasVariants = familyItems.length > 1;
+  // 部署文档区块：主文档 + 各变体链接列表
+  const docBlock = (docLinks.length > 0) ? `
+    <dt>📄 部署文档${hasVariants ? `（共 ${docLinks.length} 个）` : ''}</dt>
+    <dd>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${docLinks.map(d => `
+          <a href="${d.url}" target="_blank" style="color:var(--color-primary);word-break:break-all">${d.name} →</a>
+        `).join('')}
+      </div>
+    </dd>` : '';
+
   document.getElementById('modalBody').innerHTML = `
     <h2>${m.name} <span class="support-badge ${supportClass}" style="font-size:0.8rem;vertical-align:middle">${m.supportLevel}</span></h2>
     <p style="color:var(--color-text-secondary);margin-bottom:20px">${m.developer} · ${m.category} · <span style="color:${sourceColor}">数据源: ${sourceLabel}</span></p>
@@ -300,11 +406,11 @@ function showModelDetail(id) {
       <dt>MindSpore支持</dt><dd>${m.mindsporeSupport}</dd>
       <dt>CANN版本</dt><dd>${m.cannVersion}</dd>
       <dt>备注</dt><dd>${m.notes}</dd>
-      ${hasDoc ? `<dt>📄 部署文档</dt><dd><a href="${m.docUrl}" target="_blank" style="color:var(--color-primary)">${m.docUrl}</a></dd>` : ''}
+      ${docBlock}
     </dl>
     <div class="tags" style="margin-top:16px">${m.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-    ${hasDoc ? `<div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border-radius:8px">
-      <a href="${m.docUrl}" target="_blank" style="color:var(--color-primary);font-weight:600;text-decoration:none;font-size:1rem">
+    ${docLinks.length > 0 ? `<div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border-radius:8px">
+      <a href="${docLinks[0].url}" target="_blank" style="color:var(--color-primary);font-weight:600;text-decoration:none;font-size:1rem">
         📖 查看 ${m.name} 部署指南 →
       </a>
     </div>` : ''}

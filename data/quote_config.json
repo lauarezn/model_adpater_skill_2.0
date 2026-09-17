@@ -1,0 +1,11 @@
+{
+  "llm": {
+    "base_url": "http://192.5.53.7:8900/v1",
+    "api_key": "",
+    "model": "dsv4",
+    "temperature": 0.2,
+    "max_tokens": 2000
+  },
+  "price_per_day": 6000,
+  "enabled": true
+}

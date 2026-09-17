@@ -62,6 +62,12 @@
     }
     .calc-block h3 .sub { font-size: 0.78rem; font-weight: 400; color: var(--color-text-secondary); margin-left: 8px; }
 
+    /* AI 计算评估提示 */
+    .calc-block.calc-disclaimer { border-left: 4px solid var(--color-warning, #F59E0B); background: var(--color-bg-warning, #FFFBEB); }
+    [data-theme="dark"] .calc-block.calc-disclaimer { border-left-color: #FBBF24; background: #3A2E12; }
+    .calc-block.calc-disclaimer h3 { border-left: none; padding-left: 0; color: var(--color-warning, #B45309); }
+    [data-theme="dark"] .calc-block.calc-disclaimer h3 { color: #FDE68A; }
+
     /* 表单网格 */
     .form-grid {
       display: grid;
@@ -235,6 +241,14 @@
 
   <div class="detail-content">
     <div class="calc-wrap">
+
+      <!-- AI 计算评估提示 -->
+      <div class="calc-block calc-disclaimer">
+        <h3>⚠️ 重要提示</h3>
+        <div class="calc-note">
+          <p style="margin:0"><b>AI 计算评估仅供参考：</b>本页面由 AI 依据公开参数与理论公式自动估算，结果仅用于售前选型参考，<b>不构成任何性能承诺</b>。实际性能受软件栈、驱动版本、散热、供电、并发负载等因素影响，可能与估算值存在较大偏差（±20~30% 甚至更高），请以真实环境实测数据为准。</p>
+        </div>
+      </div>
 
       <!-- 使用说明 -->
       <div class="calc-block">
@@ -808,120 +822,136 @@
     }
 
     // ============ 计算 ============
+    // ============ 计算（统一走后端 /api/calc/* 引擎，前端不再维护公式） ============
+    var _calcTimer = null;          // 输入防抖
+    var _calcSeq = 0;               // 请求序号，丢弃过期响应
+
     function recalc() {
       var g = findGpu(document.getElementById('gpuModel').value);
       var m = findModel(document.getElementById('modelName').value);
       if (!g || !m) return;
 
-      var bw = Number(document.getElementById('gpuBandwidth').value);
-      var fp16 = Number(document.getElementById('gpuFp16').value);
-      var vram = Number(document.getElementById('gpuVram').value);
-      var gpuCount = Math.max(1, Number(document.getElementById('gpuCount').value) || 1);
+      // 精度联动（bytesPerParam / kvBytes 由精度选择即时显示）
+      var quantPrec = document.getElementById('quantPrec').value;
+      var kvPrec = document.getElementById('kvPrec').value;
+      document.getElementById('bytesPerParam').value = QUANT_BYTES[quantPrec];
+      document.getElementById('kvBytes').value = KV_BYTES[kvPrec];
 
-      var total = m.total;
-      var active = m.active;
-      var layers = m.layers;
-      var kvHeads = m.kvHeads;
-      var headDim = m.headDim;
+      clearTimeout(_calcTimer);
+      _calcTimer = setTimeout(function () {
+        var seq = ++_calcSeq;
+        var qp = new URLSearchParams({
+          gpu: document.getElementById('gpuModel').value,
+          model: document.getElementById('modelName').value,
+          gpu_count: document.getElementById('gpuCount').value,
+          quant: quantPrec,
+          kv_prec: kvPrec,
+          prompt_len: document.getElementById('promptLen').value,
+          gen_len: document.getElementById('genLen').value,
+          efficiency: document.getElementById('efficiency').value,
+          tp_coef: document.getElementById('tpCoef').value,
+          seq: document.getElementById('seqLen').value
+        });
 
-      var bytesPerParam = QUANT_BYTES[document.getElementById('quantPrec').value];
-      var kvBytes = KV_BYTES[document.getElementById('kvPrec').value];
-      document.getElementById('bytesPerParam').value = bytesPerParam;
-      document.getElementById('kvBytes').value = kvBytes;
+        // 主结果表 + 量化对比表（/api/calc/token）
+        fetch('/api/calc/token?' + qp.toString())
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (seq !== _calcSeq) return;   // 已有更新的请求，丢弃本响应
+            if (d.error) { renderMainError(d.error); return; }
+            renderMainTable(d.result);
+            renderQuantTable(d.quant_compare);
+          })
+          .catch(function (e) { if (seq === _calcSeq) renderMainError('计算失败: ' + e); });
 
-      var promptLen = Number(document.getElementById('promptLen').value) || 0;
-      var genLen = Number(document.getElementById('genLen').value) || 0;
-      var efficiency = Number(document.getElementById('efficiency').value) || 0;
-      var tpCoef = Number(document.getElementById('tpCoef').value) || 0;
-      var seq = Number(document.getElementById('seqLen').value) || 0;
+        // GPU 对比表（/api/calc/hw，多选）
+        renderGpuCompare(m, quantPrec);
+      }, 180);
+    }
 
-      // 计算
-      var weight = active * bytesPerParam;                       // 模型权重 GB
-      var kv = 2 * layers * kvHeads * headDim * seq * kvBytes / 1e9;  // KV Cache GB
-      var totalVram = weight + kv;
-      var theoDecode = weight > 0 ? bw / weight : 0;             // 理论 Decode
-      var theoKv = (weight + kv) > 0 ? bw / (weight + kv) : 0;   // 考虑 KV 理论
-      var actualDecode = theoKv * efficiency;                    // 实际 Decode 单卡
-      var tpSpeed = weight > 0 ? (bw * gpuCount) / weight * efficiency * tpCoef : 0;  // 多卡 TP
-      var perGpuVram = gpuCount > 0 ? totalVram / gpuCount : 0;
-      var prefillMs = (fp16 > 0 && gpuCount > 0) ? 2 * total * promptLen / (fp16 * gpuCount) * 1000 : 0;
-      var ttft = prefillMs;
-      var genTime = actualDecode > 0 ? genLen / actualDecode : 0;
-      var userThru = (prefillMs / 1000 + genTime) > 0 ? genLen / (prefillMs / 1000 + genTime) : 0;
-      var perToken = 2 * total;
-      var daily = actualDecode * 86400;
-      var perMillion = weight * 1e6;
-
-      var enough = totalVram <= vram;
-
-      // ===== 渲染结果表 =====
+    // ===== 主结果表 =====
+    function renderMainTable(r) {
       var rows = [
-        ['模型权重体积 (GB)', '激活参数 × 每参数字节数', fmt(weight), 'GB', ''],
-        ['KV Cache 体积 (GB)', '2×层数×KV头数×头维度×seq×字节/1e9', fmt(kv), 'GB', ''],
-        ['总显存占用 (GB)', '模型权重 + KV Cache', fmt(totalVram), 'GB', ''],
-        ['单卡显存是否足够', '总显存 vs 单卡显存容量', '', '', enough ? '<span class="ok">✅ 足够</span>' : '<span class="no">❌ 不足，需多卡或更低精度</span>'],
-        ['理论 Decode 速度', '显存带宽 ÷ 模型权重', fmt(theoDecode), 'tok/s', ''],
-        ['考虑 KV 的理论速度', '显存带宽 ÷ (权重+KV)', fmt(theoKv), 'tok/s', ''],
-        ['实际 Decode 速度 (单卡)', '考虑KV理论 × 效率系数', fmt(actualDecode), 'tok/s', ''],
-        ['多卡张量并行速度', '(带宽×卡数)÷权重×效率×通信系数', fmt(tpSpeed), 'tok/s', ''],
-        ['多卡每卡显存占用', '总显存 ÷ GPU数量', fmt(perGpuVram), 'GB', ''],
-        ['Prefill 时间 (ms)', '2×总参×提示÷(FP16×卡数)×1000', fmt(prefillMs), 'ms', ''],
-        ['首 Token 延迟 TTFT (ms)', '≈ Prefill 时间', fmt(ttft), 'ms', ''],
-        ['生成总耗时 (秒)', '生成长度 ÷ 实际Decode速度', fmt(genTime), '秒', ''],
-        ['用户感知吞吐 (tok/s)', '生成长度 ÷ (Prefill+生成时间)', fmt(userThru), 'tok/s', ''],
-        ['每 Token 算力消耗', '2 × 总参数量', fmt(perToken), 'GFLOPs', ''],
-        ['每日可生成 Token 数', '实际速度 × 86400秒', fmt(daily), 'tokens/day', ''],
-        ['每百万Token显存读取量', '权重(GB) × 1,000,000', fmt(perMillion), 'GB', '']
+        ['模型权重体积 (GB)', '激活参数 × 每参数字节数', fmt(r.weight_gb), 'GB', ''],
+        ['KV Cache 体积 (GB)', '2×层数×KV头数×头维度×seq×字节/1e9', fmt(r.kv_gb), 'GB', ''],
+        ['总显存占用 (GB)', '模型权重 + KV Cache', fmt(r.total_vram_gb), 'GB', ''],
+        ['单卡显存是否足够', '总显存 vs 单卡显存容量', '', '',
+          r.enough_single_gpu ? '<span class="ok">✅ 足够</span>' : '<span class="no">❌ 不足，需多卡或更低精度</span>'],
+        ['理论 Decode 速度', '显存带宽 ÷ 模型权重', fmt(r.theo_decode_toks), 'tok/s', ''],
+        ['考虑 KV 的理论速度', '显存带宽 ÷ (权重+KV)', fmt(r.theo_with_kv_toks), 'tok/s', ''],
+        ['实际 Decode 速度 (单卡)', '考虑KV理论 × 效率系数', fmt(r.actual_decode_toks), 'tok/s', ''],
+        ['多卡张量并行速度', '(带宽×卡数)÷权重×效率×通信系数', fmt(r.tp_speed_toks), 'tok/s', ''],
+        ['多卡每卡显存占用', '总显存 ÷ GPU数量', fmt(r.per_gpu_vram_gb), 'GB', ''],
+        ['Prefill 时间 (ms)', '2×总参×提示÷(FP16×卡数)×1000', fmt(r.prefill_ms), 'ms', ''],
+        ['首 Token 延迟 TTFT (ms)', '≈ Prefill 时间', fmt(r.ttft_ms), 'ms', ''],
+        ['生成总耗时 (秒)', '生成长度 ÷ 实际Decode速度', fmt(r.gen_time_sec), '秒', ''],
+        ['用户感知吞吐 (tok/s)', '生成长度 ÷ (Prefill+生成时间)', fmt(r.user_thru_toks), 'tok/s', ''],
+        ['每 Token 算力消耗', '2 × 总参数量', fmt(r.per_token_gflops), 'GFLOPs', ''],
+        ['每日可生成 Token 数', '实际速度 × 86400秒', fmt(r.daily_tokens), 'tokens/day', ''],
+        ['每百万Token显存读取量', '权重(GB) × 1,000,000', fmt(r.per_million_read_gb), 'GB', '']
       ];
-      document.getElementById('resultBody').innerHTML = rows.map(r =>
-        '<tr><td class="metric">' + r[0] + '</td><td>' + r[1] + '</td><td class="num">' + r[2] + '</td><td>' + r[3] + '</td><td>' + r[4] + '</td></tr>'
+      document.getElementById('resultBody').innerHTML = rows.map(rr =>
+        '<tr><td class="metric">' + rr[0] + '</td><td>' + rr[1] + '</td><td class="num">' + rr[2] + '</td><td>' + rr[3] + '</td><td>' + rr[4] + '</td></tr>'
       ).join('');
+    }
 
-      // ===== 量化对比表 =====
+    function renderMainError(msg) {
+      document.getElementById('resultBody').innerHTML =
+        '<tr><td colspan="5" style="color:var(--color-error)">' + msg + '</td></tr>';
+    }
+
+    // ===== 量化对比表（数据来自后端 quant_compare）=====
+    function renderQuantTable(qc) {
+      if (!qc) return;
       var qBody = document.getElementById('quantBody');
-      var qRows = ['FP32','FP16','INT8','INT4','INT2'].map(function (p) {
-        var b = QUANT_BYTES[p];
-        var w = active * b;
-        var t = w > 0 ? bw / w : 0;
-        var a = t * efficiency;
-        var ok = w <= vram;
+      qBody.innerHTML = qc.map(function (q) {
         return '<tr>' +
-          '<td class="metric">' + p + '</td>' +
-          '<td>' + b + '</td>' +
-          '<td class="num">' + fmt(w) + '</td>' +
-          '<td class="num">' + fmt(t) + '</td>' +
-          '<td class="num">' + fmt(a) + '</td>' +
-          '<td>' + (ok ? '<span class="ok">✅</span>' : '<span class="no">❌</span>') + '</td>' +
+          '<td class="metric">' + q.precision + '</td>' +
+          '<td>' + q.bytes + '</td>' +
+          '<td class="num">' + fmt(q.weight_gb) + '</td>' +
+          '<td class="num">' + fmt(q.theo_decode_toks) + '</td>' +
+          '<td class="num">' + fmt(q.actual_decode_toks) + '</td>' +
+          '<td>' + (q.enough_single_gpu ? '<span class="ok">✅</span>' : '<span class="no">❌</span>') + '</td>' +
           '</tr>';
-      });
-      qBody.innerHTML = qRows.join('');
+      }).join('');
+    }
 
-      // ===== GPU 对比表（用户多选参与对比的硬件）=====
+    // ===== GPU 对比表（后端 /api/calc/hw）=====
+    function renderGpuCompare(m, quantPrec) {
       var gBody = document.getElementById('gpuCmpBody');
       var gEmpty = document.getElementById('gpuCmpEmpty');
       var gSel = getSelectedGpuCmp();
       if (gSel.length === 0) {
         gBody.innerHTML = '';
         if (gEmpty) gEmpty.style.display = 'block';
-      } else {
-        if (gEmpty) gEmpty.style.display = 'none';
-        var gRows = gSel.map(function (name) {
-          var gg = findGpu(name);
-          if (!gg) return '';
-          var t = weight > 0 ? gg.bw / weight : 0;
-          var a = t * efficiency;
-          var p = (gg.fp16 > 0) ? 2 * total * promptLen / gg.fp16 * 1000 : 0;
-          return '<tr>' +
-            '<td class="metric">' + name + '</td>' +
-            '<td class="num">' + gg.bw + '</td>' +
-            '<td class="num">' + gg.fp16 + '</td>' +
-            '<td class="num">' + fmt(t) + '</td>' +
-            '<td class="num">' + fmt(a) + '</td>' +
-            '<td class="num">' + fmt(p) + '</td>' +
-            '</tr>';
-        });
-        gBody.innerHTML = gRows.join('');
+        return;
       }
+      if (gEmpty) gEmpty.style.display = 'none';
+      var precision = ({FP32:'fp32', FP16:'fp16', INT8:'int8', INT4:'int4'})[quantPrec] || 'fp16';
+      var qp = new URLSearchParams({
+        model: m.name,
+        precision: precision,
+        in_len: document.getElementById('promptLen').value,
+        out_len: document.getElementById('genLen').value,
+        mode: 'compare',
+        gpus: gSel.join(',')
+      });
+      fetch('/api/calc/hw?' + qp.toString())
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d.compare) return;
+          gBody.innerHTML = d.compare.map(function (c) {
+            return '<tr>' +
+              '<td class="metric">' + c.gpu + '</td>' +
+              '<td class="num">' + c.bandwidth + '</td>' +
+              '<td class="num">' + c.fp16_tflops + '</td>' +
+              '<td class="num">' + fmt(c.theo_decode_toks) + '</td>' +
+              '<td class="num">' + fmt(c.actual_decode_toks) + '</td>' +
+              '<td class="num">' + fmt(c.prefill_ms) + '</td>' +
+              '</tr>';
+          }).join('');
+        })
+        .catch(function () {});
     }
 
     // ============ 启动（并行加载 GPU 参数库 + 模型参数库，再初始化） ============

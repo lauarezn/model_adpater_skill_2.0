@@ -22,6 +22,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / 'data'
 OUTPUT = DATA_DIR / 'global-models.json'
+MODEL_PARAMS_FILE = DATA_DIR / 'model-params.json'
 
 PAGE_URL = 'https://www.datalearner.com/ai-models/pretrained-models'
 TOTAL_PAGES = 20
@@ -55,6 +56,58 @@ def fetch_page(page):
     req = urllib.request.Request(url, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=60) as r:
         return r.read().decode('utf-8', errors='replace')
+
+
+def sync_model_params(global_models):
+    """将 global-models.json 的模型清单/参数量增量并入 model-params.json。
+
+    只追加缺失的模型（modelCode），不覆盖已有条目（保留人工整理/HF 补全的架构字段），
+    与爬虫「保留性增量合并」策略一致。返回 (新增数, 更新数, 总条数)。
+    """
+    if not MODEL_PARAMS_FILE.exists():
+        print('⚠️ 未找到 model-params.json，跳过清单同步', flush=True)
+        return 0, 0, 0
+    try:
+        with open(MODEL_PARAMS_FILE, 'r', encoding='utf-8') as f:
+            items = json.load(f)
+    except Exception:
+        items = []
+    by_code = {str(m.get('modelCode')): m for m in items if m.get('modelCode')}
+
+    added, updated = 0, 0
+    for g in global_models:
+        code = (g.get('model_code') or '').strip()
+        if not code:
+            continue
+        name = (g.get('model_abbr_name') or code).strip()
+        total = g.get('totalParamsB')
+        active = g.get('activeParamsB')
+        old = by_code.get(code)
+        if old is None:
+            by_code[code] = {
+                'modelCode': code,
+                'name': name,
+                'totalParams': total,
+                'activeParams': active,
+            }
+            added += 1
+        else:
+            # 已有条目：仅补齐缺失的 name/参数量，不覆盖架构字段
+            changed = False
+            if not old.get('name') and name:
+                old['name'] = name; changed = True
+            if old.get('totalParams') is None and total is not None:
+                old['totalParams'] = total; changed = True
+            if old.get('activeParams') is None and active is not None:
+                old['activeParams'] = active; changed = True
+            if changed:
+                updated += 1
+
+    new_items = list(by_code.values())
+    DATA_DIR.mkdir(exist_ok=True)
+    with open(MODEL_PARAMS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(new_items, f, ensure_ascii=False, indent=2)
+    return added, updated, len(new_items)
 
 
 def main():
@@ -97,6 +150,10 @@ def main():
     with open(OUTPUT, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     print(f'\n✅ 抓取完成，共 {len(unique)} 个模型，已写入 {OUTPUT}')
+
+    # 同步清单到 model-params.json（增量并入，不覆盖已有架构字段）
+    added, updated, total = sync_model_params(unique)
+    print(f'📋 已同步 model-params.json：新增 {added}，补全 {updated}，共 {total} 条')
     return 0
 
 

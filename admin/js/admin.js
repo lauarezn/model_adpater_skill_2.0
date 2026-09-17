@@ -178,13 +178,14 @@ async function searchModels() {
       html += '<tr>' +
         '<td><input type="checkbox" class="model-checkbox" value="' + (m.id || '').replace(/"/g, '&quot;') + '" onchange="updateSelected()"></td>' +
         '<td><strong>' + (m.name || '').replace(/</g, '&lt;') + '</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">' + (m.id || '').replace(/</g, '&lt;') + '</span></td>' +
+        '<td>' + (m.docUrl ? '<a href="' + m.docUrl.replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none">🔗 文档</a>' : '<span style="color:var(--text-secondary);font-size:0.75rem">-</span>') + '</td>' +
         '<td>' + (m.developer || '').replace(/</g, '&lt;') + '</td>' +
         '<td><span class="badge badge-info">' + (m.category || '').replace(/</g, '&lt;') + '</span></td>' +
         '<td><span class="badge ' + statusClass + '">' + (m.supportLevel || '').replace(/</g, '&lt;') + '</span></td>' +
         '<td><span class="badge badge-info">' + (m.source || '').replace(/</g, '&lt;') + '</span></td>' +
         '<td style="font-size:0.75rem">' + (m.minHardware || '').replace(/</g, '&lt;') + '</td>' +
-        '<td><button class="btn btn-primary btn-sm" onclick="editModel(\'' + escJsStr(m.id) + '\')">✏️</button> ' +
-        '<button class="btn btn-danger btn-sm" onclick="deleteModel(\'' + escJsStr(m.id) + '\')">🗑️</button></td></tr>';
+        '<td><button class="btn btn-primary btn-sm" onclick="editModel(\'' + (m.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">✏️</button> ' +
+        '<button class="btn btn-danger btn-sm" onclick="deleteModel(\'' + (m.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🗑️</button></td></tr>';
     });
     document.getElementById('modelTableBody').innerHTML = html;
 
@@ -257,7 +258,7 @@ async function editModel(id) {
     var data = await res.json();
     var m = data.model;
     editingModelId = id;
-    var fields = ['name','developer','category','supportLevel','framework','minHardware','recommendedHardware','architecture','parameters','inferencePerf','trainingPerf','mindsporeSupport','cannVersion','notes'];
+    var fields = ['name','developer','category','supportLevel','framework','minHardware','recommendedHardware','architecture','parameters','inferencePerf','trainingPerf','mindsporeSupport','cannVersion','docUrl','notes'];
     var formHtml = '';
     fields.forEach(function(f) {
       var val = (m[f] || '');
@@ -386,7 +387,7 @@ async function listBackups() {
     if (data.backups.length === 0) { list.innerHTML = '<div class="empty-state">暂无备份数据</div>'; return; }
     list.innerHTML = data.backups.map(function(b) {
       return '<div class="backup-item"><div><div class="name">' + (b.name || '').replace(/</g, '&lt;') + '</div><div class="meta">' + (b.size_kb || 0) + ' KB · ' + (b.modified || '') + '</div></div>' +
-        '<button class="btn btn-primary btn-sm" onclick="restoreBackup(\'' + escJsStr(b.name) + '\')">🔄 恢复</button></div>';
+        '<button class="btn btn-primary btn-sm" onclick="restoreBackup(\'' + (b.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🔄 恢复</button></div>';
     }).join('');
   } catch(e) { showToast('加载备份列表失败', 'error'); }
 }
@@ -584,8 +585,8 @@ async function searchTrainModels() {
         '<td><span class="badge badge-info">' + escAttr(m.category) + '</span></td>' +
         '<td>' + escAttr(m.source) + '</td>' +
         '<td>' +
-          '<button class="btn btn-primary btn-sm" onclick="editTrainModel(' + escJsStr(m.name) + ')">✏️</button> ' +
-          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteTrainModel(' + escJsStr(m.name) + ')">🗑️</button>' +
+          '<button class="btn btn-primary btn-sm" onclick="editTrainModel(\'' + (m.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">✏️</button> ' +
+          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteTrainModel(\'' + (m.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🗑️</button>' +
         '</td></tr>';
     });
     document.getElementById('trainTableBody').innerHTML = html;
@@ -860,8 +861,8 @@ async function loadQuoteServices() {
         '<td><span class="badge badge-info">' + escAttr(catMap[s.category] || s.category) + '</span></td>' +
         '<td>¥ ' + (s.days * 6000).toLocaleString('zh-CN') + '</td>' +
         '<td>' +
-          '<button class="btn btn-primary btn-sm" onclick="editQuoteService(" + escJsStr(s.code) + ")">✏️</button> ' +
-          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteQuoteService(" + escJsStr(s.code) + ")">🗑️</button>' +
+          '<button class="btn btn-primary btn-sm" onclick="editQuoteService(\'' + (s.code || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">✏️</button> ' +
+          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteQuoteService(\'' + (s.code || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🗑️</button>' +
         '</td></tr>';
     });
     document.getElementById('quoteServiceAdminTableBody').innerHTML = html;
@@ -971,8 +972,8 @@ function renderQuoteSheets(items, total) {
         '<td>' + h.total_days + '</td>' +
         '<td>¥ ' + (h.total_amount || 0).toLocaleString('zh-CN') + '</td>' +
         '<td>' +
-          '<button class="btn btn-primary btn-sm" onclick="viewQuoteSheet(" + escJsStr(h.id) + ")">👁️ 查看</button> ' +
-          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteQuoteSheet(" + escJsStr(h.id) + ")">🗑️</button>' +
+          '<button class="btn btn-primary btn-sm" onclick="viewQuoteSheet(\'' + (h.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">👁️ 查看</button> ' +
+          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="deleteQuoteSheet(\'' + (h.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🗑️</button>' +
         '</td></tr>';
     }).join('');
   }
@@ -1205,8 +1206,8 @@ function perfRenderItems(list, total) {
         '<td class="num">' + perfFmtNum(it.output_tps) + '</td>' +
         '<td style="font-size:0.75rem">' + escAttr(it.source_file) + '</td>' +
         '<td>' +
-          '<button class="btn btn-primary btn-sm" onclick="perfEdit(" + escJsStr(it.id) + ")">✏️</button> ' +
-          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="perfDelete(" + escJsStr(it.id) + ")">🗑️</button>' +
+          '<button class="btn btn-primary btn-sm" onclick="perfEdit(\'' + (it.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">✏️</button> ' +
+          '<button class="btn btn-sm" style="background:var(--danger,#e5484d);color:#fff" onclick="perfDelete(\'' + (it.id || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + '\')">🗑️</button>' +
         '</td></tr>';
     });
     tbody.innerHTML = html;
@@ -1773,5 +1774,37 @@ async function fetchHfAllModelParams() {
     showToast('一键补全失败', 'error');
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '⬇️ 一键补全'; }
+  }
+}
+
+// 从 global-models.json 全量对齐 model-params.json（名称/参数量来自 DataLearner，
+// 架构字段保留已有，可选同步后从 HF config.json 补全缺失项）
+async function syncModelParamsFromGlobal(fetchHf) {
+  var label = fetchHf ? '同步并 HF 补全' : '同步';
+  if (!confirm('将从 global-models.json（DataLearner 抓取）全量对齐「全球AI模型参数」？\n' +
+               '名称/总参/激活来自全球模型，架构字段保留已有；' + (fetchHf ? '缺失项将从 HF config.json 补全（较慢）。' : '缺失架构字段暂不补全。') + '\n' +
+               '写入前会自动备份，DataLearner 中不存在的旧条目将被移除。')) return;
+  var btns = document.querySelectorAll('.search-bar button[onclick^="syncModelParamsFromGlobal"]');
+  btns.forEach(function(b) { b.disabled = true; });
+  showToast('正在' + label + '，请稍候...', 'info');
+  try {
+    var res = await fetch('/admin/api/model-params/sync', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({fetch_hf: !!fetchHf})
+    });
+    var r = await res.json();
+    if (!res.ok || !r.success) { showToast(r.error || label + '失败', 'error'); return; }
+    var s = r.summary || {};
+    var msg = label + '完成：新增 ' + s.added + '，更新 ' + s.updated + '，保留 ' + s.kept +
+              '，移除 ' + (s.removed || []).length + '，共 ' + s.total_new + ' 条';
+    if (r.hf_error_count) msg += '（HF补全失败 ' + r.hf_error_count + '）';
+    showToast(msg, 'success');
+    if (r.hf_error_count) console.warn('HF 补全错误：', r.hf_errors);
+    searchModelParams(1);
+  } catch(e) {
+    showToast(label + '失败', 'error');
+  } finally {
+    btns.forEach(function(b) { b.disabled = false; });
   }
 }

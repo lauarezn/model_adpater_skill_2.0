@@ -22,6 +22,11 @@
       <div class="header-controls">
         <button class="switch-btn" id="themeToggleBtn" onclick="toggleTheme()" title="切换主题">🌙 暗色</button>
         <button class="switch-btn" id="langToggleBtn" onclick="toggleLang()" title="切换语言">EN</button>
+        <div id="authArea" style="display:inline-flex;align-items:center;gap:8px">
+          <span id="authUserBadge" style="display:none;font-size:13px;color:var(--color-text, #333)"></span>
+          <button class="switch-btn" id="authLoginBtn" onclick="Auth.showAuthModal()" style="display:none">🔑 登录/注册</button>
+          <button class="switch-btn" id="authLogoutBtn" onclick="Auth.logout()" style="display:none">退出</button>
+        </div>
       </div>
     </div>
     <div class="header-stats">
@@ -44,7 +49,7 @@
 
 <nav class="nav-bar">
   <div class="container">
-    <div class="nav-dropdown" id="hardwareDropdown">
+    <div class="nav-dropdown" id="hardwareDropdown" data-auth-role="member">
       <button class="nav-btn dropdown-toggle" id="hardwareToggle" data-i18n="nav.hardwareGlobal" aria-haspopup="true" aria-expanded="false">🖥️ 全球AI硬件 ▾</button>
       <div class="dropdown-menu">
         <button class="dropdown-item" data-section="ascend-hardware-nv" data-i18n="nav.hardwareNv">🟢 NV产品</button>
@@ -63,16 +68,15 @@
         <button class="dropdown-item" data-section="global-models" data-view="hot" data-i18n="nav.globalHot">📈 最热排行</button>
       </div>
     </div>
-    <button class="nav-btn" data-section="benchmarks" data-i18n="nav.benchmarks">📊 评测基准</button>
-    <a class="nav-btn" href="token_calculator.html" style="text-decoration:none;cursor:pointer">🧮 LLM Token 计算器</a>
-    <a class="nav-btn" href="presales_recommend.html" style="text-decoration:none;cursor:pointer">🎯 售前选型推荐</a>
-    <a class="nav-btn" href="performance_query.html" style="text-decoration:none;cursor:pointer">🔍 模型性能查询</a>
-    <a class="nav-btn" href="quote.html" style="text-decoration:none;cursor:pointer">💼 AI使能报价器</a>
+    <button class="nav-btn" data-section="benchmarks" data-i18n="nav.benchmarks" data-auth-role="member">📊 评测基准</button>
+    <a class="nav-btn" href="token_calculator.html" style="text-decoration:none;cursor:pointer" data-auth-role="member">🧮 LLM Token 计算器</a>
+    <a class="nav-btn" href="performance_query.html" style="text-decoration:none;cursor:pointer" data-auth-role="member">🧭 售前选型工作台</a>
+    <a class="nav-btn" href="quote.html" style="text-decoration:none;cursor:pointer" data-auth-role="member">💼 AI使能报价器</a>
     <div class="nav-dropdown" id="compareDropdown">
       <button class="nav-btn dropdown-toggle" id="compareToggle" data-i18n="nav.compare" aria-haspopup="true" aria-expanded="false">⚖️ 产品对比 ▾</button>
       <div class="dropdown-menu">
         <button class="dropdown-item" data-section="compare-models" data-i18n="nav.compareModels">🤖 大模型对比</button>
-        <button class="dropdown-item" data-section="compare-hardware" data-i18n="nav.compareHardware">🖥️ 服务器硬件产品对比</button>
+        <button class="dropdown-item" data-section="compare-hardware" data-i18n="nav.compareHardware" data-auth-role="member">🖥️ 服务器硬件产品对比</button>
       </div>
     </div>
   </div>
@@ -573,6 +577,42 @@
 <script src="js/benchmarks.js"></script>
 <script src="js/compare.js"></script>
 <script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+<script>
+// 首页认证初始化：刷新登录态、渲染登录入口、按角色控制敏感导航可见性
+(function () {
+  function renderAuthUI(user) {
+    var badge = document.getElementById('authUserBadge');
+    var loginBtn = document.getElementById('authLoginBtn');
+    var logoutBtn = document.getElementById('authLogoutBtn');
+    if (!badge || !loginBtn || !logoutBtn) return;
+    if (user) {
+      badge.style.display = 'inline';
+      badge.textContent = user.username + ' · ' + (Auth.roleLabel(user.role) || user.role);
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+      loginBtn.style.display = 'inline-block';
+      logoutBtn.style.display = 'none';
+    }
+  }
+  // 根据角色隐藏 data-auth-role 标记的敏感导航项
+  function applyRoleVisibility(user) {
+    document.querySelectorAll('[data-auth-role]').forEach(function (el) {
+      var need = el.getAttribute('data-auth-role');
+      var ok = user && Auth.hasRole(need);
+      el.style.display = ok ? '' : 'none';
+    });
+  }
+  window.__renderAuthUI = renderAuthUI;
+  window.__applyRoleVisibility = applyRoleVisibility;
+  Auth.init(function (user) {
+    renderAuthUI(user);
+    applyRoleVisibility(user);
+  });
+})();
+</script>
 <script src="js/app.js"></script>
 </body>
 </html>

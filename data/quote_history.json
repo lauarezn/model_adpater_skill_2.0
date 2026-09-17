@@ -1,0 +1,916 @@
+[
+  {
+    "id": "Q20260915182506",
+    "created_at": "2026-09-15 18:25:06",
+    "customer": "",
+    "requirement": "客户为港城大算力中心，需采购AI使能服务，包括AI计算规划设计与实施服务（推理）用于Atlas 800I A3（64卡）和Atlas 800 (Model 3000)（1台，含硬件安装），DCS集群集成服务（智算服务器11台、通用服务器3台、存储6台，对接iMaster-CCAE，含运维和运营子系统对接），集群系统集成服务（训练）用于Atlas A3集群同构集成，以及AI计算使能服务。部署环境为昇腾（Atlas），涉及推理和训练场景。",
+    "plan": "## 需求分析\n客户为港城大算力中心，需采购AI使能服务，涵盖推理与训练场景，涉及Atlas 800I A3（64卡）和Atlas 800 (Model 3000)（1台）的AI计算规划设计与实施，DCS集群集成（智算服务器11台、通用服务器3台、存储6台，对接iMaster-CCAE），集群系统集成（训练）以及AI计算使能服务。部署环境为昇腾（Atlas），需完成硬件安装、环境部署、集群搭建、模型部署与调优等。\n\n## 总体架构\n本方案基于昇腾Atlas硬件，构建统一的AI计算平台，支持推理与训练场景。总体架构包括：\n- **硬件层**：Atlas 800I A3（64卡）用于大规模训练，Atlas 800 (Model 3000)用于推理，DCS集群包含智算服务器、通用服务器和存储设备。\n- **集群层**：通过DCS集群集成服务，实现计算、存储、网络资源的统一管理，对接iMaster-CCAE，包含运维和运营子系统。\n- **平台层**：部署AI开发与运行环境，支持模型迁移、部署和推理服务。\n- **应用层**：提供模型推理、知识库/工作流等AI服务。\n\n## 模型选型与理由\n根据客户需求（推理和训练场景），推荐使用DeepSeek-R1模型（适用于推理）和Qwen2.5-72B（适用于训练和通用场景）。理由：DeepSeek-R1在推理任务上性能优异，Qwen2.5-72B支持大规模训练，且两者在昇腾平台有良好适配。\n\n## 部署与实施步骤\n1. **硬件安装与集群环境搭建**：完成Atlas 800I A3和Atlas 800 (Model 3000)的硬件安装，搭建DCS集群（11台智算服务器、3台通用服务器、6台存储），配置网络和存储。\n2. **集群系统集成（训练）**：对Atlas A3集群进行同构集成，确保训练任务高效运行。\n3. **AI计算规划设计与实施（推理）**：设计推理计算方案，部署推理环境，实施推理服务。\n4. **AI计算使能服务**：包括开发与运行环境部署、模型迁移/部署、知识库/工作流构建等。\n5. **对接iMaster-CCAE**：集成运维和运营子系统，实现统一管理。\n\n## 服务项说明\n- **必选评估方案**：安装部署评估与方案设计（45SC0112）和模型部署评估与方案设计（45SC0115）为必选，确保方案可行性。\n- **环境部署**：开发与运行环境部署赋能（45SC0109）、集群环境搭建部署赋能（45SC0110）、运行开发环境搭建（45SC0113）。\n- **集群集成**：集群环境搭建方案设计（45SC0120）、双机组网（45SC0121）、多机跨交换机组网（45SC0122）、集群验证（45SC0123）。\n- **模型部署**：常规大模型部署（45SC0135）、DeepSeek集群部署（42SC0119）、模型迁移/部署赋能（45SC0133）。\n- **调优与升级**：专项调优（42SC0120）、根据部署模型进行升级服务（45SC0124）。\n- **AI使能**：开发工具赋能（45SC0111）、本地化知识库/工作流赋能（45SC0134）、简易前端界面（45SC0137）、RAG服务（45SC0138）、知识库/工作流demo构建（45SC0139）。\n",
+    "summary": "本方案为港城大算力中心提供昇腾AI使能服务，涵盖推理与训练场景的规划、部署、集成与调优，采用DeepSeek-R1模型，包含必选评估、环境部署、集群集成、模型部署及AI使能等服务。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 6000,
+        "code": "45SC0113",
+        "days": 1,
+        "name": "运行开发环境搭建",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0120",
+        "days": 3,
+        "name": "集群环境搭建方案设计",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0122",
+        "days": 5,
+        "name": "多机跨交换机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 48000,
+        "code": "42SC0119",
+        "days": 8,
+        "name": "DeepSeek集群部署（8人天）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0133",
+        "days": 2,
+        "name": "模型迁移/部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 120000,
+        "code": "45SC0124",
+        "days": 20,
+        "name": "根据部署模型进行升级服务",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0111",
+        "days": 2,
+        "name": "开发工具赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0134",
+        "days": 2,
+        "name": "本地化知识库/工作流赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0137",
+        "days": 2,
+        "name": "简易前端界面",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0138",
+        "days": 3,
+        "name": "RAG服务",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0139",
+        "days": 2,
+        "name": "知识库/工作流demo构建",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 85,
+    "total_amount": 510000,
+    "total_amount_cn": "伍拾壹万元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260915154742",
+    "created_at": "2026-09-15 15:47:42",
+    "customer": "",
+    "requirement": "报价书\n港城大算力中心-服务报价-0707\n0000Hz00643450202606150004\n广东政企业务部\n2026-08-31\n免责声明\n版本相关信息，请参阅表L3。\n如指定供应商资质不足或无法履行约定，华为有权另择供应商。\n现场线缆加长费用另付。\n重要声明：不论现场是否使用及使用的数量如何，中继线、光纤、以太网电缆、跳线、电源线、安装材料、辅料、馈线的总价已定。\n默认安装软件许可证声明：华为应用软件包可能包括默认安装软件许可证（ESL），即必须捆绑或集成华为应用软件或设备的第三方软件的许可证。该许可证仅供个体用户特定用途使用，不可单独维护或升级。ESL仅供华为应用包使用：（1）不得直接安装，配置，升级或修改；（2）非技术帮助用途，不可通过华为的应用包直接访问。\n不论其他条款如何约定，对于第三方产品的交付、质保、维保服务，按照第三方产品提供商提供的条款和条件执行。针对含软件第三方产品，若客户希望获取与源代码相关的服务，例如软件需求满足，软件质量问题解决，漏洞修复等以及质保期满后的维保服务，则需要客户与第三方产品提供商直接签署相关协议。华为将协助客户与第三方产品提供商签订相关协议。\n项目基本信息表\n参数名称 | 参数值\n报价单名称 | 港城大算力中心-服务报价-0707\n报价单号 | 0000Hz00643450202606150004\n客户名称\n方案号\n合同号\nPO号\n政企业务部/业务部 | 广东政企业务部\n经销商名称\n授权价名称\n报价单类型\nCOL_SORTNO.0 | COL_DESCRIPTION.0 | COL_ADD.0\n序号 | 配置名称 | 数量\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101, | 1 | 站点1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628367051,productid.147713011,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | AI计算规划设计与实施服务（推理）-800I A3 | 1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628366698,productid.147713007,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | AI计算规划设计与实施服务（推理）-model 3000 | 1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628365460,productid.147677525,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | DCS集群集成服务 | 1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628365462,productid.148156790,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | 集群系统集成服务（训练） | 1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628365455,productid.149454830,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | iMaster CCAE解决方案实施服务 | 1\ntotalprice.0,otherservicetotalprice.9,isServicePart.7,locationid.1227478101,productcfgid.628365456,productid.148261954,subnetid.null,cfgmodeltypeid.1,producttypeid.0,isquoteleaf.1 | AI计算使能服务 | 1\nCOL_SORTNO.0 | COL_PARAMITEM.0 | COL_PARAMVALUE.0\n序号 | 参数项 | 参数值\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051, | 1 | AI计算规划设计与实施服务（推理）-800I A3_站点1/1\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,midLayer.fatherParamCode.null,paramCode.PL_ServiceDesc, | AI计算规划设计与实施服务（推理）\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_DeviceTypes, | AI硬件设备类型 | Atlas 800I A3\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_SubScenario, | 客户类型 | 行业智算\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_384_cards, | Atlas 800I A3 SuperPoD（384卡） | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_256_cards, | Atlas 800I A3 SuperPoD（256卡） | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_192_cards, | Atlas 800I A3 SuperPoD（192卡） | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_128_cards, | Atlas 800I A3 SuperPoD（128卡） | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_96_cards, | Atlas 800I A3 SuperPoD（96卡） | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_64_cards, | Atlas 800I A3 SuperPoD（64卡） | 1\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_800IA3Double, | Atlas 800I A3-双机 | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-800I A3_站点1,prodmodelid.628367051,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_A3_800IA3Single, | Atlas 800I A3-单机 | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698, | 2 | AI计算规划设计与实施服务（推理）-model 3000_站点1/1\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,midLayer.fatherParamCode.null,paramCode.PL_ServiceDesc, | AI计算规划设计与实施服务（推理）\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_ConfigNotes_for_C, | 配置须知：Atlas 800服务器的硬件安装服务均已移至“是否报硬件安装服务”条目配置 | 已了解配置须知\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_HardwareInstall, | 是否报硬件安装服务 | 是\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_DeviceTypes, | AI硬件设备类型 | Atlas 800 服务器\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_SerNum800IA2, | Atlas 800I A2的数量 | 0\nsitecfgid.AI计算规划设计与实施服务（推理）-model 3000_站点1,prodmodelid.628366698,parameter.fatherParamCode.PL_ServiceDesc,paramCode.PL_SerNumM3000, | Atlas 800 (Model 3000)的数量 | 1\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460, | 3 | DCS集群集成服务_站点1/1\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.null,paramCode.PL_Description, | 说明：此服务不包含DCS软件部署，DCS软件部署需到DCS虚拟化套件规划设计与实施服务里配置\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,midLayer.fatherParamCode.null,paramCode.PL_DCS_Service, | DCS集群集成服务\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.PL_DCS_Service,paramCode.Num_Intell_Comput, | 智算服务器数量 | 11\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.PL_DCS_Service,paramCode.Num_univer_servers, | 通用服务器数量 | 3\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.PL_DCS_Service,paramCode.Num_Storage, | 存储数量 | 6\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.PL_DCS_Service,paramCode.DCS_ECEI, | DCS弹性容器引擎集成 | 不需要\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.628365460,parameter.fatherParamCode.PL_DCS_Service,paramCode.SDN_Networking, | 是否SDN组网 | 否\nsitecfgid.DCS集群集成服务_站点1,prodmodelid.62836546\n……（内容过长，已截断）",
+    "plan": "## 需求分析\n本报价书针对港城大算力中心项目，涉及AI计算规划设计与实施服务（推理）、DCS集群集成服务、集群系统集成服务（训练）、iMaster CCAE解决方案实施服务及AI计算使能服务。客户需部署Atlas 800I A3（64卡）和Atlas 800 (Model 3000)推理服务器，并构建DCS集群（含11台智算服务器、3台通用服务器、6台存储），同时提供训练集群集成服务。整体需求聚焦于推理场景的模型部署、集群环境搭建及使能服务。\n\n## 总体架构\n本方案基于昇腾AI硬件（Atlas 800I A3、Atlas 800 Model 3000）构建推理集群，采用DCS（数据中心虚拟化）集群集成，支持训练与推理混合负载。架构包括：\n- **硬件层**：Atlas 800I A3（64卡）推理节点、Atlas 800 Model 3000推理服务器、通用服务器及存储。\n- **集群层**：DCS集群集成，实现计算、存储、网络资源池化，支持弹性伸缩。\n- **平台层**：iMaster CCAE解决方案，提供集群管理、监控与运维。\n- **应用层**：部署大模型推理服务，支持RAG等增强功能。\n\n## 模型选型与理由\n根据客户推理场景需求，推荐部署**DeepSeek-R1**（推理优化模型）或**Qwen2.5-72B**（通用大模型）。理由：\n- DeepSeek-R1在推理任务上性能优异，适合高并发推理场景。\n- Qwen2.5-72B支持多模态和长上下文，适合知识库问答等复杂应用。\n具体模型需根据客户实际业务确认，本方案预留模型部署与调优服务。\n\n## 部署与实施步骤\n1. **环境评估与方案设计**：评估现有硬件、网络、存储，输出部署方案（必选）。\n2. **集群环境搭建**：完成DCS集群集成，包括智算服务器、通用服务器、存储的组网与配置。\n3. **模型部署**：在推理节点上部署所选大模型，配置推理容器镜像。\n4. **使能服务**：提供开发环境部署、开发工具赋能、模型迁移/部署赋能。\n5. **验证与调优**：进行集群验证和专项调优，确保性能达标。\n\n## 服务项说明\n- **安装部署评估与方案设计**：必选，评估环境并设计部署方案。\n- **集群环境搭建部署赋能**：提供集群搭建的赋能培训。\n- **模型部署评估与方案设计**：必选，评估模型部署方案。\n- **常规大模型部署**：部署通用大模型推理服务。\n- **开发与运行环境部署赋能**：搭建开发环境并赋能。\n- **开发工具赋能**：提供开发工具使用培训。\n- **模型迁移/部署赋能**：支持模型迁移至昇腾平台。\n- **集群验证**：验证集群功能与性能。\n- **专项调优**：针对推理性能进行专项优化。",
+    "summary": "本方案提供港城大算力中心AI推理集群的部署与使能服务，包含环境评估、集群搭建、模型部署及调优，推荐使用DeepSeek-R1模型。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0111",
+        "days": 2,
+        "name": "开发工具赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0133",
+        "days": 2,
+        "name": "模型迁移/部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 37,
+    "total_amount": 222000,
+    "total_amount_cn": "贰拾贰万贰仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260915154329",
+    "created_at": "2026-09-15 15:43:29",
+    "customer": "",
+    "requirement": "官方模型中转 | 用量/月（人民币） | 用量/月（美金） | 目录价折扣 | 逆向模型分类 | 用量/月（人民币） | 用量/月（美金） | 目录价折扣 | 备注 | MAP账号 | 用量/月（美金） | 目录价折扣\nClaude文本模型 | 20万 | 28k | 8.7折 | Claude文本模型 | 10万 | 14k | 5折 | 平台刊例定价是官方定价的五折\n目录价折扣是按照模型官方定价定价 | AWS IAM账号 | 10million | 9折，预付美金\n20-50万 | 28k-70k | 8.5折 | 10-30万 | 14k-42k | 4.5折\n50万以上 | 70k以上 | 8折 | 30万以上 | 42k以上 | 4折\nGPT文本模型 | 20万 | 28k | 8.7折 | GPT文本模型 | 10万 | 14k | 5折 | 平台刊例定价是官方定价的五折\n目录价折扣是按照模型官方定价定价\n20-50万 | 28k-70k | 8.5折 | 10-30万 | 14k-42k | 4.5折\n50万以上 | 70k以上 | 7.5折 | 30万以上 | 42k以上 | 4折\nGemini文本模型 | 20万 | 28k | 8.7折 | Gemini文本模型 | 10万 | 14k | 5折 | 平台刊例定价是官方定价的五折\n目录价折扣是按照模型官方定价定价\n20-50万 | 28k-70k | 8折 | 10-30万 | 14k-42k | 4.5折\n50万以上 | 70k以上 | 7.5折 | 30万以上 | 42k以上 | 4折\nGrok | 20万 | 28k | 7.5折 | Grok | 10万 | 14k | 5折 | 平台刊例定价是官方定价的五折\n目录价折扣是按照模型官方定价定价\n20-50万 | 28k-70k | 6.5折 | 10-30万 | 14k-42k | 4.5折\n50万以上 | 70k以上 | 6折 | 30万以上 | 42k以上 | 4折\nDoubao文本模型 | 20万 | 28k | 9.5折\n20-50万 | 28k-70k | 9折\n50万以上 | 70k以上 | 8.5折\nkimi文本模型 | 20万 | 28k | 8折\n20-50万 | 28k-70k | 7.5折\n50万以上 | 70k以上 | 7折\nkimi-k2.7 code | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nkimi-k2.5 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nkimi-k2.6 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\n智普文本模型 | 20万 | 28k | 8折\n20-50万 | 28k-70k | 7.5折\n50万以上 | 70k以上 | 7折\nGLM 5.2 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nGLM 5.1 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nGLM 5.0 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nDeepSeek文本模型 | 20万 | 28k | 7折\n20-50万 | 28k-70k | 6.5折\n50万以上 | 70k以上 | 6折\nDeepSeek-V4-flash(官方资源无SLA） | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nDeepSeek-V4-pro(大厂资源支持SLA） | 20万=8折 | 20-50万=7.5折 | 50万以上=7折\nDeepSeek-V4-pro(官方资源无SLA） | 20万=3折 | 20-50万=2.5折 | 50万以上=2.2折\nDeepSeek-V3.2 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nminimax文本模型 | 20万 | 28k | 8折 | minimax文本模型 | 20万 | 28k | 5.5折 | 5.5折\n20-50万 | 28k-70k | 7.5折 | 20-50万 | 28k-70k | 5折 | 5折\n50万以上 | 70k以上 | 7折 | 50万以上 | 70k以上 | 4.5折 | 4.5折\nMiniMax-M3 | 5折同官方\nminimax-m2.7 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nminimax-m2.5 | 20万=6折 | 20-50万=5.5折 | 50万以上=5折\nqwen文本模型 | 10万 | 28k | 6.5折\n10-30万 | 28k-70k | 6折\n30万以上 | 70k以上 | 5.5折\nqwen3.7-max | 20万=7.5折 | 20-50万=7折 | 50万以上=6.5折\nqwen3.6 | 20万=7.5折 | 20-50万=7折 | 50万以上=6.5折\nqwen3.5 | 20万=7.5折 | 20-50万=7折 | 50万以上=6.5折\nnano-banana系列 | 20万 | 28k | 8.5折 | nano-banana系列 | 20万 | 28k | 5折 | 5折\n20-50万 | 28k-70k | 8折 | 20-50万 | 28k-70k | 4.5折 | 4.5折\n50万以上 | 70k以上 | 7.5折 | 50万以上 | 70k以上 | 4折 | 4折\nGPT-image系列 | 20万 | 28k | 8折 | GPT-image系列 | 20万 | 28k | 5折 | 5折\n20-50万 | 28k-70k | 7.5折 | 20-50万 | 28k-70k | 4.5折 | 4.5折\n50万以上 | 70k以上 | 7折 | 50万以上 | 70k以上 | 4折 | 4折\ndoubao-seedream图片系列 | 20万 | 28k | 9折\n20-50万 | 28k-70k | 8.5折\n50万以上 | 70k以上 | 8折\ndoubao-seedance视频系列\nseedance2.0 | 20万 | 28k | 9折\n20-50万 | 28k-70k | 8.5折\n50万以上 | 70k以上 | 8折\ndoubao-seedance视频系列\nseedance2.0 海外版 | 20万 | 28k | 98折\n20-50万 | 28k-70k | 95折\n50万以上 | 70k以上 | 9折\nwanx视频系列 | 20万 | 28k | 5折\n20-50万 | 28k-70k | 4.5折\n50万以上 | 70k以上 | 4折\nGoogle Veo 视频系列 | 20万 | 28k | 8.5折 | Google Veo 视频系列 | 10万 | 28k | 5折 | 5折\n20-50万 | 28k-70k | 8折 | 10-30万 | 28k-70k | 4.5折 | 4.5折\n50万以上 | 70k以上 | 7.5折 | 30万以上 | 70k以上 | 4折 | 4折\nvidu视频系列 | 20万 | 28k | 7折\n20-50万 | 28k-70k | 6.5折\n50万以上 | 70k以上 | 6折\n可灵视频系列 | 20万 | 28k | 8折\n20-50万 | 28k-70k | 7.5折\n50万以上 | 70k以上 | 7折\nsora2视频系列 | 20万 | 28k | 8折 | sora2系列 | 20万 | 28k | 5折 | 5折\n20-50万 | 28k-70k | 7.5折 | 20-50万 | 28k-70k | 4.5折 | 4.5折\n50万以上 | 70k以上 | 7折 | 50万以上 | 70k以上 | 4折 | 4折\nMinimax-speech语音系列 | 20万 | 28k | 7.5折\n20-50万 | 28k-70k | 7折\n50万以上 | 70k以上 | 6.5折\nDoubao-tts语音系列 | 20万 | 28k | 6.5折\n20-50万 | 28k-70k | 6折\n50万以上 | 70k以上 | 5.5折",
+    "plan": "## 需求分析\n客户需求为官方模型中转服务，涉及多类模型（文本、图像、视频、语音）的API中转调用，并提供了详细的用量预估与折扣要求。核心诉求是获取具有竞争力的目录价折扣，并确保服务稳定可靠。\n\n## 总体架构\n本方案提供基于昇腾AI使能服务的官方模型中转平台，支持多模型接入、用量统计、折扣管理。架构包括：模型API网关、用量计量模块、折扣计算模块、客户管理模块。\n\n## 模型选型与理由\n根据客户需求，涉及Claude、GPT、Gemini、Grok、Doubao、kimi、智普、DeepSeek、minimax、qwen、nano-banana、GPT-image、doubao-seedream、doubao-seedance、wanx、Google Veo、vidu、可灵、sora2、Minimax-speech、Doubao-tts等模型。本方案不涉及模型部署，仅提供中转服务，因此模型选型以客户指定为准。\n\n## 部署与实施步骤\n1. 环境评估：评估现有IT环境，确定中转平台部署需求。\n2. 平台搭建：部署API网关、计量与折扣系统。\n3. 模型接入：对接各模型官方API，配置中转路由。\n4. 测试验证：进行功能与性能测试，确保折扣计算准确。\n5. 上线运营：正式上线，提供监控与支持。\n\n## 服务项说明\n本方案为官方模型中转服务，不涉及模型部署或迁移，主要提供平台搭建与集成服务。建议包含安装部署评估与方案设计（必选）以及运行开发环境搭建，确保平台稳定运行。",
+    "summary": "提供官方模型中转平台搭建服务，包含环境评估与运行环境搭建，确保多模型接入与折扣管理。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 6000,
+        "code": "45SC0113",
+        "days": 1,
+        "name": "运行开发环境搭建",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 3,
+    "total_amount": 18000,
+    "total_amount_cn": "壹万捌仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260909163753",
+    "created_at": "2026-09-09 16:37:53",
+    "customer": "test",
+    "requirement": "智能客服业务场景，部署大模型，一台机器",
+    "plan": "## 需求分析\n客户需要为智能客服业务场景部署大模型，当前环境为一台机器。智能客服通常需要处理自然语言理解、意图识别、对话生成等任务，对模型的推理能力和响应速度有一定要求。由于是单机部署，需考虑硬件资源（如GPU显存、内存）限制，选择合适的模型规模和部署方式。\n\n## 总体架构\n采用单机部署架构，基于昇腾AI硬件环境，部署大模型推理服务。架构包括：\n- 硬件层：单台昇腾服务器（含NPU）\n- 系统层：操作系统、驱动、固件\n- 运行环境：Python、PyTorch、CANN等\n- 模型层：预训练大模型（如Qwen2.5-7B或DeepSeek-R1-Distill）\n- 服务层：推理服务（如vLLM、Triton），提供API接口\n- 应用层：智能客服前端界面（可选）\n\n## 模型选型与理由\n根据智能客服场景和单机资源限制，推荐使用Qwen2.5-7B-Instruct或DeepSeek-R1-Distill-Qwen-7B。理由：\n- 7B参数规模在单机（如8卡或单卡大显存）上可部署，推理速度较快，适合实时对话。\n- 支持中文，指令跟随能力强，适合客服场景。\n- 若硬件资源充足（如多卡），可考虑更大模型如Qwen2.5-14B，但需评估显存。\n\n## 部署与实施步骤\n1. 环境准备：安装操作系统、驱动、CANN工具包。\n2. 运行环境搭建：配置Python、PyTorch、昇腾适配库。\n3. 模型获取：下载模型权重，转换为昇腾支持的格式。\n4. 推理服务部署：使用vLLM或MindIE部署模型，提供OpenAI兼容API。\n5. 功能验证：测试对话效果，调整参数。\n6. 可选：构建简易前端界面，集成到客服系统。\n\n## 服务项说明\n- 必选：安装部署评估与方案设计（45SC0112）和模型部署评估与方案设计（45SC0115），确保方案可行性。\n- 环境部署：开发与运行环境部署赋能（45SC0109）或运行开发环境搭建（45SC0113），根据客户现有环境选择。\n- 模型部署：常规大模型部署（45SC0135）覆盖单机部署。\n- 若需知识库：可增加RAG相关服务，但当前需求未明确，暂不推荐。\n- 可选：简易前端界面（45SC0137）用于快速演示。",
+    "summary": "为智能客服场景提供单机大模型部署方案，包含环境部署、模型部署及评估设计，选用Qwen2.5-7B模型。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 11,
+    "total_amount": 66000,
+    "total_amount_cn": "陆万陆仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260909163720",
+    "created_at": "2026-09-09 16:37:20",
+    "customer": "test",
+    "requirement": "智能客服业务场景，部署大模型",
+    "plan": "## 需求分析\n客户需要为智能客服业务场景部署大模型，核心诉求包括：\n- 提供自然语言理解与生成能力，支持多轮对话、意图识别、知识问答等客服功能。\n- 需要稳定、高效的模型推理服务，保障响应速度和并发能力。\n- 可能涉及本地知识库集成，以便回答企业专属问题。\n- 需要完整的部署方案、环境搭建和验证，确保生产可用。\n\n## 总体架构\n采用昇腾AI算力平台，部署大语言模型（如Qwen2.5-72B或DeepSeek-R1），架构如下：\n- **基础设施层**：昇腾服务器集群，配置高速网络（如双机或跨交换机），提供算力资源。\n- **平台层**：部署容器化推理环境，使用推理容器镜像，支持模型加载和推理服务。\n- **模型层**：选择适合客服场景的模型，支持对话生成和知识库检索增强（RAG）。\n- **应用层**：提供简易前端界面，集成知识库/工作流，实现智能客服交互。\n\n## 模型选型与理由\n推荐使用 **Qwen2.5-72B** 或 **DeepSeek-R1**，理由如下：\n- 两者均为中文优化的大模型，在客服场景中表现优异，支持多轮对话和指令遵循。\n- 支持昇腾适配，可通过模型迁移/部署赋能实现快速部署。\n- 若客户已有指定模型，则按指定模型执行。\n\n## 部署与实施步骤\n1. **评估与方案设计**：进行安装部署评估和模型部署评估，输出详细方案。\n2. **环境搭建**：部署开发与运行环境，包括集群环境搭建（如双机组网或跨交换机），并配置推理容器镜像。\n3. **模型部署**：执行常规大模型部署（若需RAG则选择RAG模型部署），并进行模型迁移（若需要）。\n4. **知识库集成**：构建本地化知识库/工作流，实现RAG服务。\n5. **前端界面**：开发简易前端界面，供客服人员使用。\n6. **验证与调优**：进行集群验证，根据需求进行专项调优，确保性能达标。\n\n## 服务项说明\n- **必选评估**：安装部署评估与方案设计（45SC0112）、模型部署评估与方案设计（45SC0115）。\n- **环境部署**：开发与运行环境部署赋能（45SC0109）、集群环境搭建部署赋能（45SC0110）、运行开发环境搭建（45SC0113）。\n- **模型部署**：常规大模型部署（45SC0135）或RAG模型部署（45SC0136），以及推理容器镜像（45SC0114）。\n- **知识库与前端**：本地化知识库/工作流赋能（45SC0134）、RAG服务（45SC0138）、简易前端界面（45SC0137）。\n- **可选增强**：集群验证（45SC0123）、专项调优（42SC0120）。",
+    "summary": "为智能客服场景提供大模型部署方案，包含环境搭建、模型部署、知识库集成和前端界面，并含必选评估与验证调优。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 6000,
+        "code": "45SC0113",
+        "days": 1,
+        "name": "运行开发环境搭建",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0114",
+        "days": 2,
+        "name": "推理容器镜像",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0134",
+        "days": 2,
+        "name": "本地化知识库/工作流赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0138",
+        "days": 3,
+        "name": "RAG服务",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0137",
+        "days": 2,
+        "name": "简易前端界面",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 43,
+    "total_amount": 258000,
+    "total_amount_cn": "贰拾伍万捌仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908155639",
+    "created_at": "2026-09-08 15:56:39",
+    "customer": "数据局",
+    "requirement": "A3双机灵衢组网，部署一个Dsv4-pro，部署dify",
+    "plan": "## 需求分析\n客户需要基于A3双机灵衢组网环境，部署一个Dsv4-pro模型，并部署Dify平台。需求涉及集群环境搭建、模型部署以及Dify应用平台部署。\n\n## 总体架构\n- 硬件环境：A3双机灵衢组网（双机互联）\n- 软件栈：操作系统、驱动、容器运行时、推理框架（如vLLM）、Dify平台\n- 模型：Dsv4-pro（假设为DeepSeek V4 Pro，若实际为其他模型请确认）\n- 部署形态：双机集群部署，模型推理服务高可用，Dify作为应用层提供工作流和知识库功能\n\n## 模型选型与理由\n- 模型名称：Dsv4-pro（根据客户指定）\n- 理由：客户明确指定，需按指定模型进行部署。该模型为大型语言模型，需高性能集群支持。\n\n## 部署与实施步骤\n1. **环境准备**：检查硬件、操作系统、网络配置，确保双机互联正常。\n2. **集群环境搭建**：配置双机组网，安装集群软件（如Kubernetes或Slurm），进行集群验证。\n3. **模型部署**：准备推理容器镜像，部署Dsv4-pro模型，配置推理服务。\n4. **Dify部署**：安装Dify平台，配置数据库、Redis等依赖，集成模型推理服务。\n5. **功能验证**：验证模型推理、Dify工作流和知识库功能。\n\n## 服务项说明\n- 必选评估方案设计：安装部署评估与方案设计、模型部署评估与方案设计，确保方案可行性。\n- 集群环境搭建：双机组网、集群验证，确保集群稳定。\n- 模型部署：推理容器镜像、常规大模型部署，完成模型服务。\n- Dify部署：本地化知识库/工作流赋能、RAG服务（若需要），支持Dify功能。\n- 可选：简易前端界面（若需要）\n",
+    "summary": "提供A3双机灵衢组网环境下的Dsv4-pro模型部署与Dify平台搭建服务，包含集群搭建、模型部署和Dify集成，确保系统稳定运行。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0114",
+        "days": 2,
+        "name": "推理容器镜像",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0134",
+        "days": 2,
+        "name": "本地化知识库/工作流赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0138",
+        "days": 3,
+        "name": "RAG服务",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 23,
+    "total_amount": 138000,
+    "total_amount_cn": "壹拾叁万捌仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908154059",
+    "created_at": "2026-09-08 15:40:59",
+    "customer": "test",
+    "requirement": "软件功能:部署开源千问大模型、部署YOLO大模型(支持图片、视频、\nRTSP视频流检测和跟踪)、部署语音大模型",
+    "plan": "## 需求分析\n客户需要部署三个开源大模型：千问（Qwen）大模型、YOLO大模型（支持图片、视频、RTSP视频流检测和跟踪）、语音大模型。需要完成环境搭建、模型部署、推理服务配置，并确保YOLO支持RTSP流处理。\n\n## 总体架构\n采用昇腾AI服务器，基于Atlas 800/3000系列，使用CANN工具链和MindSpore或PyTorch框架。部署三个独立推理服务：Qwen用于文本生成，YOLO用于视觉检测，语音模型用于语音识别/合成。通过容器化隔离，使用Kubernetes或Docker管理。\n\n## 模型选型与理由\n- 千问大模型：选用Qwen2.5-72B（或根据客户资源调整），因其性能优异且开源，支持中文，适合通用文本任务。\n- YOLO大模型：选用YOLOv8或YOLOv5，支持目标检测和跟踪，可处理图片、视频和RTSP流，需集成DeepStream或OpenCV。\n- 语音大模型：选用Whisper或SenseVoice，支持语音识别，可部署为API服务。\n\n## 部署与实施步骤\n1. 环境评估与方案设计：检查硬件资源，设计部署架构。\n2. 开发与运行环境部署：安装CANN、驱动、容器运行时。\n3. 集群环境搭建（如多机）：配置网络和集群。\n4. 模型迁移与部署：将模型转换为昇腾支持的格式，部署推理服务。\n5. 开发工具赋能：配置调试和优化工具。\n6. 验证与调优：测试模型性能，优化推理延迟。\n\n## 服务项说明\n- 必选：安装部署评估与方案设计（45SC0112）和模型部署评估与方案设计（45SC0115）\n- 环境部署：开发与运行环境部署赋能（45SC0109）、集群环境搭建部署赋能（45SC0110）\n- 模型部署：模型迁移/部署赋能（45SC0133）、常规大模型部署（45SC0135）\n- 专项调优：如需要性能优化，可选专项调优（42SC0120）\n- 其他：开发工具赋能（45SC0111）",
+    "summary": "提供千问、YOLO、语音大模型的部署方案，包含环境搭建、模型部署和调优服务。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0133",
+        "days": 2,
+        "name": "模型迁移/部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0111",
+        "days": 2,
+        "name": "开发工具赋能",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 17,
+    "total_amount": 102000,
+    "total_amount_cn": "壹拾万贰仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908112804",
+    "created_at": "2026-09-08 11:28:04",
+    "customer": "宏讯算力节点建设",
+    "requirement": "大模型Qwen3.5 35B/32B-Instrct Int8量化版本；高质量使用MiniMax ；paddle V5.0\nOCR/Ebedding/reranker/版面yolov5，100人使用，活跃用户10%-20%评估（20人），并发（10并发），上下文：20k，输入：输出：，首字时间：10s-1min，整个报告生成时间，5000-10000（5k），10min输出",
+    "plan": "## 需求分析\n客户需要部署大模型Qwen3.5 35B/32B-Instruct Int8量化版本，并集成MiniMax高质量使用、PaddleOCR、Embedding、Reranker、版面分析YOLOv5等组件。系统面向100人使用，活跃用户10%-20%（约20人），并发10，上下文长度20k，首字时间10s-1min，报告生成时间5k-10k字在10分钟内输出。\n\n## 总体架构\n采用昇腾AI服务器集群，部署Qwen3.5模型推理服务，集成OCR、Embedding、Reranker、版面分析等AI组件，构建RAG工作流，提供前端界面供用户使用。\n\n## 模型选型与理由\n选用Qwen3.5-32B-Instruct Int8量化版本，平衡性能与资源消耗，满足20k上下文和并发需求。MiniMax用于高质量生成，PaddleOCR用于文档解析，Embedding和Reranker用于检索增强，YOLOv5用于版面分析。\n\n## 部署与实施步骤\n1. 环境评估与方案设计（必选）\n2. 集群环境搭建（含组网、验证）\n3. 开发与运行环境部署\n4. 模型部署（Qwen3.5、OCR、Embedding等）\n5. RAG服务与知识库构建\n6. 前端界面开发\n7. 专项调优与验证\n\n## 服务项说明\n- 安装部署评估与方案设计：评估硬件、网络、软件依赖，输出部署方案。\n- 集群环境搭建：包括双机组网、多机跨交换机组网、集群验证。\n- 开发与运行环境部署：配置开发工具、运行环境。\n- 模型部署：部署Qwen3.5、OCR、Embedding、Reranker、YOLOv5等模型。\n- RAG服务：构建知识库、工作流，提供检索增强生成。\n- 前端界面：简易交互界面。\n- 专项调优：优化推理性能，满足首字时间和报告生成时间要求。",
+    "summary": "提供基于昇腾的Qwen3.5-32B-Instruct-Int8大模型部署及RAG应用集成方案，包含集群搭建、模型部署、知识库构建和调优，满足100人使用和10并发需求。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0122",
+        "days": 5,
+        "name": "多机跨交换机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 6000,
+        "code": "45SC0113",
+        "days": 1,
+        "name": "运行开发环境搭建",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0133",
+        "days": 2,
+        "name": "模型迁移/部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0136",
+        "days": 3,
+        "name": "RAG模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0138",
+        "days": 3,
+        "name": "RAG服务",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0134",
+        "days": 2,
+        "name": "本地化知识库/工作流赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0139",
+        "days": 2,
+        "name": "知识库/工作流demo构建",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0137",
+        "days": 2,
+        "name": "简易前端界面",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 53,
+    "total_amount": 318000,
+    "total_amount_cn": "叁拾壹万捌仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908112415",
+    "created_at": "2026-09-08 11:24:15",
+    "customer": "XX",
+    "requirement": "Atlas800推理服务器(型号3000)\n硬件配置:\n1)处理器:2颗32核心鲲鹏920处理器，主频2.6GHz，共64核;2)内存:256GB DDR4;\n3)硬盘:系统盘960GB SSDx2(RAID1);\n4)网络:10/100/1000Mbps RJ45电口x2,10GE SFP+光口(含光模块)\nx2;\n5)电源:AC220V，双电源冗余供电;\n6)管理:板载iBMC管理模块，支持持续监控系统运行状态;\n7)GPU:Atlas 300I Duo 96GB推理卡x4,单卡最大提供280 TOPS INT8\n算力，支持4卡并行运行。\n软件功能:部署开源千问大模型、部署YOLO大模型(支持图片、视频、\nRTSP视频流检测和跟踪)、部署语音大模型",
+    "plan": "## 需求分析\n客户需在Atlas 800推理服务器（型号3000）上部署三类大模型：开源千问（Qwen）大模型、YOLO大模型（支持图片、视频、RTSP视频流检测与跟踪）、语音大模型。硬件配置为鲲鹏920双路64核、256GB内存、4张Atlas 300I Duo推理卡（单卡280 TOPS INT8），需充分利用昇腾算力，实现高效推理。\n\n## 总体架构\n本方案基于Atlas 800推理服务器，采用昇腾AI软件栈（CANN、MindIE等），构建容器化推理环境。整体架构分为：\n- **硬件层**：Atlas 300I Duo推理卡提供算力，通过NPU直通或虚拟化方式分配给容器。\n- **软件层**：操作系统（openEuler/Ubuntu）+ 昇腾驱动固件 + CANN工具包 + 推理引擎（MindIE或vLLM适配昇腾）。\n- **模型层**：分别部署Qwen系列（如Qwen2.5-7B/14B）、YOLO系列（如YOLOv5/v8）、语音模型（如Whisper或SenseVoice）。\n- **服务层**：提供RESTful API或RTSP流处理接口，支持图片、视频、RTSP流输入。\n\n## 模型选型与理由\n- **千问大模型**：选用Qwen2.5-7B或14B（根据显存和性能平衡），支持中文，适合通用对话和文本生成。\n- **YOLO大模型**：选用YOLOv8或YOLOv5，支持目标检测、跟踪，可处理图片、视频和RTSP流。\n- **语音大模型**：选用Whisper（openai）或SenseVoice（阿里），支持语音识别和转写。\n理由：以上模型在昇腾平台有较好兼容性，且有社区适配经验，可满足客户需求。\n\n## 部署与实施步骤\n1. **环境准备**：安装操作系统、昇腾驱动和固件，配置NPU。\n2. **容器环境**：搭建Docker容器，使用昇腾推理镜像（如ascend-inference）。\n3. **模型转换**：将模型转换为昇腾支持的格式（如OM或MindIE格式）。\n4. **模型部署**：分别部署Qwen、YOLO、语音模型，配置推理服务。\n5. **功能验证**：测试图片、视频、RTSP流检测跟踪，语音识别功能。\n6. **优化调优**：根据性能瓶颈进行专项调优。\n\n## 服务项说明\n- **必选评估**：安装部署评估与方案设计（45SC0112）、模型部署评估与方案设计（45SC0115）。\n- **环境部署**：开发与运行环境部署赋能（45SC0109）、集群环境搭建部署赋能（45SC0110，若需多机）。\n- **模型部署**：常规大模型部署（45SC0135）用于Qwen和语音模型，RAG模型部署（45SC0136）若需知识库增强，模型迁移/部署赋能（45SC0133）用于YOLO等。\n- **专项调优**：专项调优（42SC0120）用于性能优化。\n- **可选服务**：简易前端界面（45SC0137）若需可视化界面，RAG服务（45SC0138）若需知识库。",
+    "summary": "基于Atlas 800推理服务器，提供千问、YOLO、语音大模型部署方案，包含环境部署、模型迁移与专项调优服务。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0115",
+        "days": 2,
+        "name": "模型部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0109",
+        "days": 2,
+        "name": "开发与运行环境部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0133",
+        "days": 2,
+        "name": "模型迁移/部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 28,
+    "total_amount": 168000,
+    "total_amount_cn": "壹拾陆万捌仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908101525",
+    "created_at": "2026-09-08 10:15:25",
+    "customer": "桂林银行",
+    "requirement": "服务期内提供集群部署、网络配置、AI软件栈安装、集群调优及主流大模型部署适配服务，两台双机A3，一台单机A2",
+    "summary": "针对双机A3集群和单机A2环境，提供集群环境搭建、组网配置、AI软件栈安装、集群验证及调优，并部署适配主流大模型，包含必选安装部署评估方案设计。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0120",
+        "days": 3,
+        "name": "集群环境搭建方案设计",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0122",
+        "days": 5,
+        "name": "多机跨交换机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 39,
+    "total_amount": 234000,
+    "total_amount_cn": "贰拾叁万肆仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908101446",
+    "created_at": "2026-09-08 10:14:46",
+    "customer": "桂林银行",
+    "requirement": "服务期内提供集群部署、网络配置、AI软件栈安装、集群调优及主流大模型部署适配服务，两台双机A3，一台单机A2",
+    "summary": "针对双机A3集群和单机A2环境，提供集群环境搭建、组网配置、AI软件栈安装、集群验证及调优，并部署适配主流大模型，包含必选安装部署评估方案设计。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0120",
+        "days": 3,
+        "name": "集群环境搭建方案设计",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0122",
+        "days": 5,
+        "name": "多机跨交换机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0112",
+        "days": 2,
+        "name": "安装部署评估与方案设计（必选）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 39,
+    "total_amount": 234000,
+    "total_amount_cn": "贰拾叁万肆仟元整",
+    "price_per_day": 6000
+  },
+  {
+    "id": "Q20260908101412",
+    "created_at": "2026-09-08 10:14:12",
+    "customer": "桂林银行智算项目",
+    "requirement": "服务期内提供集群部署、网络配置、AI软件栈安装、集群调优及主流大模型部署适配服务",
+    "summary": "提供集群环境搭建部署、组网配置、集群验证、升级服务及DeepSeek集群部署，并包含专项调优和常规大模型部署适配，覆盖客户全部需求。",
+    "items": [
+      {
+        "amount": 12000,
+        "code": "45SC0110",
+        "days": 2,
+        "name": "集群环境搭建部署赋能",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 18000,
+        "code": "45SC0120",
+        "days": 3,
+        "name": "集群环境搭建方案设计",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 12000,
+        "code": "45SC0121",
+        "days": 2,
+        "name": "双机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0122",
+        "days": 5,
+        "name": "多机跨交换机组网",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0123",
+        "days": 5,
+        "name": "集群验证",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 120000,
+        "code": "45SC0124",
+        "days": 20,
+        "name": "根据部署模型进行升级服务",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 48000,
+        "code": "42SC0119",
+        "days": 8,
+        "name": "DeepSeek集群部署（8人天）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 90000,
+        "code": "42SC0120",
+        "days": 15,
+        "name": "专项调优（单次15人天）",
+        "price_per_day": 6000
+      },
+      {
+        "amount": 30000,
+        "code": "45SC0135",
+        "days": 5,
+        "name": "常规大模型部署",
+        "price_per_day": 6000
+      }
+    ],
+    "total_days": 65,
+    "total_amount": 390000,
+    "total_amount_cn": "叁拾玖万元整",
+    "price_per_day": 6000
+  }
+]
